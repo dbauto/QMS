@@ -7,344 +7,354 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260921-redesign4">
+<link rel="stylesheet" href="./styles.css?v=20260921-v2">
 </head>
 <body>
-<div class="shell">
-  <aside class="side">
-    <div class="brandWrap">
+<div class="appShell">
+  <aside class="sideNav">
+    <div class="brand">
       <div class="brandMark">N</div>
-      <div><div class="brandName">NexusQMS</div><div class="brandTag">QUALITY MANAGEMENT</div></div>
+      <div><strong>NexusQMS</strong><span>Quality Management</span></div>
     </div>
 
-    <button class="tenantSwitch">
-      <div class="tenantLogo">AM</div>
-      <div class="tenantText"><strong>ABC Manufacturing</strong><span>Production workspace</span></div>
-      <span class="chev">⌄</span>
+    <button class="workspaceSwitch">
+      <span class="workspaceAvatar">AM</span>
+      <span class="workspaceText"><b>ABC Manufacturing</b><small>Production workspace</small></span>
+      <span class="workspaceChevron">⌄</span>
     </button>
 
-    <nav class="nav">
-      <div class="navLabel">WORKSPACE</div>
+    <nav class="primaryNav">
+      <div class="navGroup">Workspace</div>
       <button class="navItem active" data-view="dashboard"><span class="navIcon">⌂</span><span>Overview</span></button>
-      <button class="navItem" data-view="repository"><span class="navIcon">▱</span><span>Documents</span><span class="navCount">1,428</span></button>
-      <button class="navItem" data-view="approvals"><span class="navIcon">✓</span><span>My tasks</span><span class="navCount warn">9</span></button>
+      <button class="navItem" data-view="repository"><span class="navIcon">▤</span><span>Documents</span><span class="navMeta">1,428</span></button>
+      <button class="navItem" data-view="approvals"><span class="navIcon">✓</span><span>My tasks</span><span class="navBadge">9</span></button>
       <button class="navItem" data-view="register"><span class="navIcon">▦</span><span>Register</span></button>
       <button class="navItem" data-view="audit"><span class="navIcon">◫</span><span>Audit trail</span></button>
 
-      <div class="navLabel">CONTROL</div>
+      <div class="navGroup">Control</div>
       <button class="navItem" data-view="relationships"><span class="navIcon">↗</span><span>Sources & evidence</span></button>
       <button class="navItem" data-view="structure"><span class="navIcon">⌘</span><span>Structure</span></button>
       <button class="navItem" data-view="types"><span class="navIcon">◇</span><span>Document types</span></button>
 
-      <div class="navLabel">INTELLIGENCE</div>
+      <div class="navGroup">Intelligence</div>
       <button class="navItem" data-view="ai"><span class="navIcon">✦</span><span>QMS AI</span></button>
       <button class="navItem" onclick="openBuilder()"><span class="navIcon">⚡</span><span>Repository builder</span></button>
 
-      <div class="navLabel">ADMIN</div>
+      <div class="navGroup">Administration</div>
       <button class="navItem" data-view="users"><span class="navIcon">♙</span><span>Users & access</span></button>
       <button class="navItem" data-view="settings"><span class="navIcon">⚙</span><span>Settings</span></button>
     </nav>
 
-    <div class="sideFoot">
-      <div class="securityDot"></div>
-      <div><b>Workspace protected</b><span>MFA · Audit logging · RBAC</span></div>
-    </div>
+    <div class="sideStatus"><i></i><div><b>Protected workspace</b><span>MFA · RBAC · audit logging</span></div></div>
   </aside>
 
-  <main class="main">
-    <header class="top">
-      <div class="mobileBrand">NexusQMS</div>
-      <div class="globalSearch"><span>⌕</span><input placeholder="Search documents, evidence, records or ask QMS AI"></div>
-      <div class="topActions">
-        <button class="aiAsk" onclick="showView('ai')">✦ Ask QMS AI</button>
-        <button class="iconBtn">?</button>
-        <button class="iconBtn">🔔<i>3</i></button>
-        <div class="profile"><div class="avatar">MS</div><div><b>Maria Santos</b><span>Quality Manager</span></div><span>⌄</span></div>
+  <main class="mainArea">
+    <header class="commandBar">
+      <div class="commandSearch"><span>⌕</span><input id="globalSearch" placeholder="Search documents, records, evidence..."></div>
+      <div class="commandActions">
+        <button class="btn subtle" onclick="showView('ai')">✦ Ask QMS AI</button>
+        <button class="iconButton" aria-label="Help">?</button>
+        <button class="iconButton notification" aria-label="Notifications">♢<i>3</i></button>
+        <button class="profileButton"><span class="avatar">MS</span><span><b>Maria Santos</b><small>Quality Manager</small></span><span>⌄</span></button>
       </div>
     </header>
 
-    <section class="content">
-
+    <section class="pageBody">
       <div id="dashboard" class="view active">
-        <div class="pageHead">
-          <div>
-            <div class="eyebrow">QUALITY WORKSPACE</div>
-            <h1>Good afternoon, Maria</h1>
-            <p>Here is what needs attention across your quality system today.</p>
-          </div>
-          <div class="headActions">
-            <button class="secondary" onclick="openManualRepo()">＋ Add document</button>
-            <button class="primary" onclick="openBuilder()">✦ Onboard with AI</button>
-          </div>
+        <div class="pageHeader">
+          <div><h1>Overview</h1><p>Document control status and work that needs attention.</p></div>
+          <div class="pageActions"><button class="btn secondary" onclick="openManualRepo()">Add document</button><button class="btn primary" onclick="openBuilder()">Onboard repository</button></div>
         </div>
 
-        <div class="statusStrip">
-          <div class="readiness">
-            <div class="ring"><span>92</span><small>%</small></div>
-            <div><div class="eyebrow">DOCUMENT CONTROL READINESS</div><h3>System is in good standing</h3><p>7 overdue reviews and 9 approvals need attention.</p></div>
-          </div>
-          <div class="stripMetric"><span>Controlled</span><b>1,428</b><small>+34 this month</small></div>
-          <div class="stripMetric"><span>Effective</span><b>1,236</b><small class="good">86.6% current</small></div>
-          <div class="stripMetric"><span>Pending</span><b>24</b><small>9 assigned to you</small></div>
-          <div class="stripMetric"><span>Evidence</span><b>8,942</b><small class="good">Linked resources</small></div>
+        <div class="systemBanner">
+          <div class="systemStatus"><span class="statusDot good"></span><div><b>Document control is operating normally</b><span>7 overdue reviews and 9 approval tasks need attention.</span></div></div>
+          <button class="btn link" onclick="showView('approvals')">Review tasks</button>
         </div>
 
-        <div class="dashGrid">
-          <section class="workCard">
-            <div class="cardHead"><div><h3>My work</h3><p>Items that require your action</p></div><button class="textBtn" onclick="showView('approvals')">View all →</button></div>
-            <div class="taskRow urgent">
-              <div class="taskIcon">✓</div>
-              <div class="taskMain"><b>Final Inspection Work Instruction</b><span>WI-PROD-021 · Rev 03 · Final approval</span></div>
-              <div class="taskMeta"><span class="pill danger">Due today</span><b>Review</b></div>
-            </div>
-            <div class="taskRow">
-              <div class="taskIcon">✓</div>
-              <div class="taskMain"><b>Control of Nonconforming Outputs</b><span>SOP-QA-014 · Rev 06 · Final approval</span></div>
-              <div class="taskMeta"><span class="pill warn">2 days</span><b>Review</b></div>
-            </div>
-            <div class="taskRow">
-              <div class="taskIcon">↻</div>
-              <div class="taskMain"><b>Supplier Control Procedure</b><span>SOP-PUR-012 · Rev 05 · Periodic review</span></div>
-              <div class="taskMeta"><span class="pill">8 days</span><b>Open</b></div>
-            </div>
-            <div class="taskRow">
-              <div class="taskIcon">◫</div>
-              <div class="taskMain"><b>Quality Policy acknowledgement</b><span>POL-001 · Rev 05</span></div>
-              <div class="taskMeta"><span class="pill">5 days</span><b>Open</b></div>
+        <div class="metricGrid">
+          <article class="metricCard"><span>Controlled documents</span><b>1,428</b><small>34 added this month</small></article>
+          <article class="metricCard"><span>Effective</span><b>1,236</b><small><i class="statusDot good"></i>86.6% current</small></article>
+          <article class="metricCard"><span>Pending approval</span><b>24</b><small><i class="statusDot warn"></i>9 assigned to you</small></article>
+          <article class="metricCard"><span>Review overdue</span><b>7</b><small><i class="statusDot danger"></i>Oldest: 18 days</small></article>
+          <article class="metricCard"><span>Linked evidence</span><b>8,942</b><small>Across 1,106 resources</small></article>
+        </div>
+
+        <div class="dashboardGrid">
+          <section class="surface">
+            <div class="sectionHeader"><div><h2>My work</h2><p>Items requiring your action</p></div><button class="btn link" onclick="showView('approvals')">View all</button></div>
+            <div class="workTable">
+              <div class="workRow"><span class="workKind">Approval</span><div><b>Final Inspection Work Instruction</b><small>WI-PROD-021 · Rev 03 · Operations</small></div><span class="tag danger">Due today</span><button class="btn text" onclick="showView('approvals')">Review</button></div>
+              <div class="workRow"><span class="workKind">Approval</span><div><b>Control of Nonconforming Outputs</b><small>SOP-QA-014 · Rev 06 · Quality</small></div><span class="tag warning">2 days</span><button class="btn text" onclick="showView('approvals')">Review</button></div>
+              <div class="workRow"><span class="workKind">Review</span><div><b>Supplier Control Procedure</b><small>SOP-PUR-012 · Rev 05 · Purchasing</small></div><span class="tag neutral">8 days</span><button class="btn text" onclick="showView('register')">Open</button></div>
+              <div class="workRow"><span class="workKind">Acknowledge</span><div><b>Quality Policy</b><small>POL-001 · Rev 05 · Management</small></div><span class="tag neutral">5 days</span><button class="btn text">Open</button></div>
             </div>
           </section>
 
-          <section class="healthCard">
-            <div class="cardHead"><div><h3>Document health</h3><p>Current lifecycle distribution</p></div><button class="textBtn" onclick="showView('register')">Register →</button></div>
-            <div class="healthBody">
-              <div class="donut2"><div><b>1,428</b><span>documents</span></div></div>
-              <div class="legend">
-                <div><i class="lg effective"></i><span>Effective</span><b>1,236</b><em>86.6%</em></div>
-                <div><i class="lg review"></i><span>In review</span><b>71</b><em>5.0%</em></div>
-                <div><i class="lg draft"></i><span>Draft</span><b>66</b><em>4.6%</em></div>
-                <div><i class="lg obsolete"></i><span>Obsolete</span><b>55</b><em>3.8%</em></div>
-              </div>
-            </div>
+          <section class="surface reviewPanel">
+            <div class="sectionHeader"><div><h2>Upcoming reviews</h2><p>Next 30 days</p></div><button class="btn link" onclick="showView('register')">Open register</button></div>
+            <div class="reviewItem"><div><b>SOP-PUR-012</b><span>Supplier Control Procedure</span></div><strong>8 days</strong></div>
+            <div class="reviewItem"><div><b>SOP-QA-005</b><span>Internal Audit Procedure</span></div><strong>13 days</strong></div>
+            <div class="reviewItem"><div><b>SOP-HR-003</b><span>Training Management</span></div><strong>18 days</strong></div>
+            <div class="reviewItem"><div><b>EXT-STD-002</b><span>Customer Quality Specification</span></div><strong>24 days</strong></div>
           </section>
         </div>
 
-        <div class="dashGrid lower">
-          <section class="panel activityPanel">
-            <div class="cardHead"><div><h3>Recent controlled activity</h3><p>Latest governed changes across the workspace</p></div><button class="textBtn" onclick="showView('audit')">Audit trail →</button></div>
-            <div class="timeline">
-              <div class="timelineItem"><span class="time">10:16</span><i class="dot goodDot"></i><div><b>SOP-QA-001 Rev 05 released</b><p>Approval route completed · System</p></div><span class="pill success">Released</span></div>
-              <div class="timelineItem"><span class="time">09:41</span><i class="dot"></i><div><b>Calibration certificate linked</b><p>CAL-CERT-2026-0084 · Ana Reyes</p></div><span class="pill">Evidence</span></div>
-              <div class="timelineItem"><span class="time">09:10</span><i class="dot goodDot"></i><div><b>WI-PROD-018 Rev 02 approved</b><p>Final approval · Maria Santos</p></div><span class="pill success">Approved</span></div>
-              <div class="timelineItem"><span class="time">08:42</span><i class="dot"></i><div><b>SOP-QA-001 Rev 04 downloaded</b><p>Controlled copy · John Cruz</p></div><span class="pill">Access</span></div>
+        <div class="dashboardGrid lower">
+          <section class="surface">
+            <div class="sectionHeader"><div><h2>Recent controlled activity</h2><p>Latest governed changes</p></div><button class="btn link" onclick="showView('audit')">Audit trail</button></div>
+            <div class="activityTable">
+              <div><span>10:16</span><i class="activityIcon success">✓</i><p><b>SOP-QA-001 Rev 05 released</b><small>Approval route AR-882 completed · System</small></p><span class="tag success">Released</span></div>
+              <div><span>09:41</span><i class="activityIcon">↗</i><p><b>Calibration certificate linked</b><small>CAL-CERT-2026-0084 · Ana Reyes</small></p><span class="tag neutral">Evidence</span></div>
+              <div><span>09:10</span><i class="activityIcon success">✓</i><p><b>WI-PROD-018 Rev 02 approved</b><small>Final approval · Maria Santos</small></p><span class="tag success">Approved</span></div>
+              <div><span>08:42</span><i class="activityIcon">↓</i><p><b>SOP-QA-001 Rev 04 downloaded</b><small>Controlled copy · John Cruz</small></p><span class="tag neutral">Access</span></div>
             </div>
           </section>
 
-          <section class="panel attentionPanel">
-            <div class="cardHead"><div><h3>Attention</h3><p>Potential quality-system gaps</p></div></div>
-            <div class="attentionItem"><div class="attentionIcon dangerBg">!</div><div><b>7 overdue reviews</b><span>Oldest is 18 days overdue</span></div><button onclick="showView('register')">Resolve</button></div>
-            <div class="attentionItem"><div class="attentionIcon warnBg">↗</div><div><b>4 unlinked records</b><span>Evidence relationships are incomplete</span></div><button onclick="showView('relationships')">Review</button></div>
-            <div class="attentionItem"><div class="attentionIcon aiBg">✦</div><div><b>74 onboarding questions</b><span>AI needs human classification</span></div><button onclick="openBuilder()">Continue</button></div>
+          <section class="surface">
+            <div class="sectionHeader"><div><h2>Document lifecycle</h2><p>Current controlled-document distribution</p></div></div>
+            <div class="lifecycleBars">
+              <div><span>Effective</span><div><i style="width:86.6%"></i></div><b>1,236</b></div>
+              <div><span>In review</span><div><i style="width:5%"></i></div><b>71</b></div>
+              <div><span>Draft</span><div><i style="width:4.6%"></i></div><b>66</b></div>
+              <div><span>Obsolete</span><div><i style="width:3.8%"></i></div><b>55</b></div>
+            </div>
           </section>
         </div>
       </div>
 
       <div id="repository" class="view">
-        <div class="pageHead compact">
-          <div><div class="eyebrow">DOCUMENT CONTROL</div><h1>Documents</h1><p>One canonical repository for controlled documents, records and evidence.</p></div>
-          <div class="headActions"><button class="secondary">Import</button><button class="primary" onclick="openManualRepo()">＋ Add document</button></div>
+        <div class="pageHeader">
+          <div><h1>Documents</h1><p>Controlled documents, records and evidence in one canonical repository.</p></div>
+          <div class="pageActions"><button class="btn secondary" data-toast-title="Import ready" data-toast-message="Import flow is available from the repository builder.">Import</button><button class="btn primary" onclick="openManualRepo()">Add document</button></div>
         </div>
 
-        <div class="repoWorkspace">
-          <aside class="repoFolders">
-            <div class="repoSearch">⌕ <input placeholder="Filter structure"></div>
-            <button class="folder active"><span>▾</span><b>ABC Manufacturing</b><em>1,428</em></button>
-            <button class="folder level1"><span>▾</span>Quality <em>486</em></button>
-            <button class="folder level2 active2">Procedures <em>84</em></button>
-            <button class="folder level2">Work Instructions <em>126</em></button>
-            <button class="folder level2">Forms & Templates <em>97</em></button>
-            <button class="folder level2">Records & Evidence <em>161</em></button>
-            <button class="folder level1"><span>›</span>Operations <em>368</em></button>
-            <button class="folder level1"><span>›</span>Engineering <em>271</em></button>
-            <button class="folder level1"><span>›</span>Purchasing <em>144</em></button>
-            <button class="folder level1"><span>›</span>Human Resources <em>93</em></button>
-            <div class="folderDivider"></div>
-            <button class="folder">◈ External documents <em>203</em></button>
-            <button class="folder">⊘ Obsolete / archive <em>55</em></button>
+        <div class="documentWorkspace">
+          <aside class="structurePane">
+            <div class="paneSearch"><span>⌕</span><input placeholder="Filter structure"></div>
+            <div class="treeLabel">Repository</div>
+            <button class="treeRow root active"><span>⌄</span><b>ABC Manufacturing</b><em>1,428</em></button>
+            <button class="treeRow l1"><span>⌄</span>Quality <em>486</em></button>
+            <button class="treeRow l2 selected">Procedures <em>84</em></button>
+            <button class="treeRow l2">Work instructions <em>126</em></button>
+            <button class="treeRow l2">Forms & templates <em>97</em></button>
+            <button class="treeRow l2">Records & evidence <em>161</em></button>
+            <button class="treeRow l1"><span>›</span>Operations <em>368</em></button>
+            <button class="treeRow l1"><span>›</span>Engineering <em>271</em></button>
+            <button class="treeRow l1"><span>›</span>Purchasing <em>144</em></button>
+            <button class="treeRow l1"><span>›</span>Human Resources <em>93</em></button>
+            <div class="treeDivider"></div>
+            <button class="treeRow"><span>◈</span>External documents <em>203</em></button>
+            <button class="treeRow"><span>⊘</span>Obsolete / archive <em>55</em></button>
           </aside>
 
-          <section class="repoList">
-            <div class="repoListHead">
-              <div><b>Quality / Procedures</b><span>84 controlled documents</span></div>
-              <div class="repoTools"><button>Filter</button><button>⇅</button><button>⋯</button></div>
+          <section class="documentListPane">
+            <div class="paneHeader">
+              <div><h2>Quality / Procedures</h2><span>84 controlled documents</span></div>
+              <div><button class="iconButton" title="Filter">⌕</button><button class="iconButton" title="Sort">⇅</button><button class="iconButton">⋯</button></div>
             </div>
-            <div class="docListHead"><span>DOCUMENT</span><span>OWNER</span><span>STATUS</span></div>
-            <button class="docListItem selected" data-doc="qa014">
-              <div><b>SOP-QA-014</b><strong>Control of Nonconforming Outputs</strong><small>SOP · Rev 06 · Updated 15 Sep</small></div>
-              <span>M. Santos</span><span class="pill success">Effective</span>
+            <div class="documentTableHeader"><span>Document</span><span>Rev</span><span>Owner</span><span>Status</span><span>Review</span></div>
+            <button class="documentRow selected" data-doc="qa014">
+              <div><b>SOP-QA-014</b><strong>Control of Nonconforming Outputs</strong><small>SOP · Quality</small></div><span>06</span><span>M. Santos</span><span class="tag success">Effective</span><span>15 Sep 2027</span>
             </button>
-            <button class="docListItem" data-doc="qa005">
-              <div><b>SOP-QA-005</b><strong>Internal Audit Procedure</strong><small>SOP · Rev 04 · Updated 02 Sep</small></div>
-              <span>A. Reyes</span><span class="pill warn">Review due</span>
+            <button class="documentRow" data-doc="qa005">
+              <div><b>SOP-QA-005</b><strong>Internal Audit Procedure</strong><small>SOP · Quality</small></div><span>04</span><span>A. Reyes</span><span class="tag warning">Review due</span><span>03 Oct 2026</span>
             </button>
-            <button class="docListItem" data-doc="qa001">
-              <div><b>SOP-QA-001</b><strong>Document Control Procedure</strong><small>SOP · Rev 05 · Updated today</small></div>
-              <span>M. Santos</span><span class="pill success">Effective</span>
+            <button class="documentRow" data-doc="qa001">
+              <div><b>SOP-QA-001</b><strong>Document Control Procedure</strong><small>SOP · Quality</small></div><span>05</span><span>M. Santos</span><span class="tag success">Effective</span><span>20 Sep 2027</span>
             </button>
-            <button class="docListItem" data-doc="qa020">
-              <div><b>SOP-QA-020</b><strong>Corrective Action Procedure</strong><small>SOP · Rev 03 · Updated 28 Aug</small></div>
-              <span>J. Dela Cruz</span><span class="pill">Draft</span>
+            <button class="documentRow" data-doc="qa020">
+              <div><b>SOP-QA-020</b><strong>Corrective Action Procedure</strong><small>SOP · Quality</small></div><span>03</span><span>J. Dela Cruz</span><span class="tag neutral">Draft</span><span>—</span>
+            </button>
+            <button class="documentRow" data-doc="qa009">
+              <div><b>SOP-QA-009</b><strong>Management of Customer Complaints</strong><small>SOP · Quality</small></div><span>07</span><span>L. Garcia</span><span class="tag success">Effective</span><span>11 Jan 2027</span>
             </button>
           </section>
 
-          <section class="docInspector">
-            <div class="inspectorTop">
-              <div><span class="docType">CONTROLLED DOCUMENT</span><h2 id="docTitle">Control of Nonconforming Outputs</h2><div class="docCode"><b id="docCode">SOP-QA-014</b><span>Rev 06</span><span class="pill success">Effective</span></div></div>
-              <button class="iconBtn">⋯</button>
+          <aside class="inspectorPane">
+            <div class="inspectorHeader">
+              <div><span class="recordLabel">Controlled document</span><h2 id="docTitle">Control of Nonconforming Outputs</h2><div class="recordMeta"><b id="docCode">SOP-QA-014</b><span id="docRev">Rev 06</span><span id="docStatus" class="tag success">Effective</span></div></div>
+              <button class="iconButton">⋯</button>
             </div>
-            <div class="docActions"><button class="primary">Open document</button><button class="secondary">Create revision</button></div>
-
-            <div class="inspectorTabs">
+            <div class="inspectorActions"><button class="btn primary">Open document</button><button class="btn secondary">Create revision</button></div>
+            <div class="tabBar inspectorTabs">
               <button class="active" data-tab="summary">Summary</button>
               <button data-tab="revisions">Revisions</button>
-              <button data-tab="links">Links</button>
+              <button data-tab="links">Relationships</button>
               <button data-tab="workflow">Workflow</button>
-              <button data-tab="history">History</button>
+              <button data-tab="history">Audit</button>
             </div>
 
-            <div class="inspectorPane active" id="tab-summary">
-              <div class="infoGrid">
-                <div><span>Owner</span><b>Quality Department</b></div>
-                <div><span>Approver</span><b>Quality Manager</b></div>
-                <div><span>Effective date</span><b>15 Sep 2026</b></div>
-                <div><span>Next review</span><b>15 Sep 2027</b></div>
-              </div>
-              <div class="summaryBlock"><h4>Purpose</h4><p>Defines the controls for identifying, segregating, reviewing and dispositioning nonconforming outputs.</p></div>
-              <div class="summaryBlock"><div class="blockHead"><h4>Linked resources</h4><button class="textBtn">Manage links</button></div>
-                <div class="resourceChip"><span>↗</span><div><b>WI-QA-003</b><small>Inspection Work Instruction · Follow current</small></div></div>
-                <div class="resourceChip"><span>↗</span><div><b>FORM-QA-011</b><small>NCR Form · Follow current</small></div></div>
-                <div class="resourceChip"><span>◫</span><div><b>23 evidence records</b><small>Includes NCR-2026-091 and IA-2026-004</small></div></div>
-              </div>
+            <div class="inspectorContent inspectorPaneContent active" id="tab-summary">
+              <dl class="detailGrid">
+                <div><dt>Owner</dt><dd id="docOwner">Quality Department</dd></div>
+                <div><dt>Approver</dt><dd id="docApprover">Quality Manager</dd></div>
+                <div><dt>Effective date</dt><dd id="docEffective">15 Sep 2026</dd></div>
+                <div><dt>Next review</dt><dd id="docReview">15 Sep 2027</dd></div>
+              </dl>
+              <section class="detailSection"><h3>Purpose</h3><p id="docPurpose">Defines controls for identifying, segregating, reviewing and dispositioning nonconforming outputs.</p></section>
+              <section class="detailSection"><div class="sectionTitleRow"><h3>Relationships</h3><button class="btn link">Manage</button></div>
+                <button class="linkedRecord"><span>↗</span><div><b>WI-QA-003</b><small>Inspection Work Instruction · follows current</small></div></button>
+                <button class="linkedRecord"><span>↗</span><div><b>FORM-QA-011</b><small>NCR Form · follows current</small></div></button>
+                <button class="linkedRecord"><span>◫</span><div><b>23 evidence records</b><small>NCRs, audit records and inspection evidence</small></div></button>
+              </section>
             </div>
-            <div class="inspectorPane" id="tab-revisions"><div class="revisionLine current"><b>Rev 06</b><span>Effective · 15 Sep 2026</span></div><div class="revisionLine"><b>Rev 05</b><span>Obsolete · 12 Mar 2026</span></div><div class="revisionLine"><b>Rev 04</b><span>Obsolete · 18 Jul 2025</span></div></div>
-            <div class="inspectorPane" id="tab-links"><div class="summaryBlock"><h4>References</h4><div class="resourceChip"><span>↗</span><div><b>WI-QA-003</b><small>Follow current revision</small></div></div><div class="resourceChip"><span>↗</span><div><b>FORM-QA-011</b><small>Follow current revision</small></div></div></div><div class="summaryBlock"><h4>Referenced by</h4><p>SOP-PROD-009 · WI-WH-004 · 5 more</p></div></div>
-            <div class="inspectorPane" id="tab-workflow"><div class="workflowMini"><span class="done">Author ✓</span><i></i><span class="done">Review ✓</span><i></i><span class="done">Approve ✓</span><i></i><span class="done">Released ✓</span></div></div>
-            <div class="inspectorPane" id="tab-history"><div class="historyItem"><b>Released</b><span>15 Sep 2026 · System</span></div><div class="historyItem"><b>Approved</b><span>15 Sep 2026 · Maria Santos</span></div><div class="historyItem"><b>Submitted</b><span>13 Sep 2026 · Ana Reyes</span></div></div>
-          </section>
+            <div class="inspectorContent inspectorPaneContent" id="tab-revisions">
+              <div class="revisionRow current"><div><b>Rev 06</b><span>Effective</span></div><small>15 Sep 2026 · Maria Santos</small></div>
+              <div class="revisionRow"><div><b>Rev 05</b><span>Obsolete</span></div><small>12 Mar 2026 · retained</small></div>
+              <div class="revisionRow"><div><b>Rev 04</b><span>Obsolete</span></div><small>18 Jul 2025 · retained</small></div>
+            </div>
+            <div class="inspectorContent inspectorPaneContent" id="tab-links">
+              <section class="detailSection"><h3>References</h3><button class="linkedRecord"><span>↗</span><div><b>WI-QA-003</b><small>Follow current revision</small></div></button><button class="linkedRecord"><span>↗</span><div><b>FORM-QA-011</b><small>Follow current revision</small></div></button></section>
+              <section class="detailSection"><h3>Referenced by</h3><p>SOP-PROD-009 · WI-WH-004 · 5 more</p></section>
+            </div>
+            <div class="inspectorContent inspectorPaneContent" id="tab-workflow">
+              <div class="miniWorkflow"><div class="done"><i>✓</i><span><b>Author</b><small>Ana Reyes</small></span></div><div class="done"><i>✓</i><span><b>Department review</b><small>QA Supervisor</small></span></div><div class="done"><i>✓</i><span><b>Final approval</b><small>Maria Santos</small></span></div><div class="done"><i>✓</i><span><b>Released</b><small>System</small></span></div></div>
+            </div>
+            <div class="inspectorContent inspectorPaneContent" id="tab-history">
+              <div class="auditMini"><span>15 Sep 10:16</span><div><b>Released</b><small>System · AR-882 completed</small></div></div>
+              <div class="auditMini"><span>15 Sep 10:15</span><div><b>Approved</b><small>Maria Santos</small></div></div>
+              <div class="auditMini"><span>13 Sep 14:22</span><div><b>Submitted for approval</b><small>Ana Reyes</small></div></div>
+            </div>
+          </aside>
         </div>
       </div>
 
       <div id="approvals" class="view">
-        <div class="pageHead compact"><div><div class="eyebrow">ACTION CENTER</div><h1>My tasks</h1><p>Review, approve and acknowledge controlled changes assigned to you.</p></div><div class="headActions"><button class="secondary">Route templates</button></div></div>
+        <div class="pageHeader"><div><h1>My tasks</h1><p>Review, approve and acknowledge controlled changes assigned to you.</p></div><div class="pageActions"><button class="btn secondary">Route templates</button></div></div>
         <div class="taskWorkspace">
           <section class="taskQueue">
             <div class="queueTabs"><button class="active">Assigned to me <b>9</b></button><button>Requested by me <b>4</b></button><button>All active <b>24</b></button></div>
-            <button class="approvalItem selected">
-              <div class="approvalTop"><span class="pill danger">Due today</span><small>FINAL APPROVAL</small></div>
-              <b>WI-PROD-021 · Rev 03</b><strong>Final Inspection Work Instruction</strong><span>Owner: Ana Reyes · Operations</span>
-            </button>
-            <button class="approvalItem">
-              <div class="approvalTop"><span class="pill warn">2 days</span><small>FINAL APPROVAL</small></div>
-              <b>SOP-QA-014 · Rev 06</b><strong>Control of Nonconforming Outputs</strong><span>Owner: Quality Department</span>
-            </button>
-            <button class="approvalItem">
-              <div class="approvalTop"><span class="pill">5 days</span><small>ACKNOWLEDGEMENT</small></div>
-              <b>POL-001 · Rev 05</b><strong>Quality Policy</strong><span>Owner: Executive Management</span>
-            </button>
+            <button class="approvalItem selected"><div class="approvalTop"><span class="tag danger">Due today</span><small>Final approval</small></div><b>WI-PROD-021 · Rev 03</b><strong>Final Inspection Work Instruction</strong><span>Owner: Ana Reyes · Operations</span></button>
+            <button class="approvalItem"><div class="approvalTop"><span class="tag warning">2 days</span><small>Final approval</small></div><b>SOP-QA-014 · Rev 06</b><strong>Control of Nonconforming Outputs</strong><span>Owner: Quality Department</span></button>
+            <button class="approvalItem"><div class="approvalTop"><span class="tag neutral">5 days</span><small>Acknowledgement</small></div><b>POL-001 · Rev 05</b><strong>Quality Policy</strong><span>Owner: Executive Management</span></button>
           </section>
           <section class="approvalDetail">
-            <div class="approvalHero">
-              <div><span class="docType">FINAL APPROVAL</span><h2>Final Inspection Work Instruction</h2><div class="docCode"><b>WI-PROD-021</b><span>Rev 03</span><span class="pill warn">In approval</span></div></div>
-              <button class="secondary">Open file</button>
-            </div>
-            <div class="changeBox"><span>CHANGE REASON</span><p>Updated final inspection criteria to align with customer specification CS-204 Rev 8 and added digital gauge verification.</p></div>
-            <div class="routeTimeline">
-              <div class="routeNode done"><i>✓</i><div><b>Author</b><span>Ana Reyes · 18 Sep 09:12</span></div></div>
-              <div class="routeNode done"><i>✓</i><div><b>Department review</b><span>Operations Supervisor · 19 Sep 11:44</span></div></div>
-              <div class="routeNode active"><i>3</i><div><b>Final approval</b><span>Maria Santos · Waiting for your action</span></div></div>
-              <div class="routeNode"><i>4</i><div><b>Release</b><span>System controlled</span></div></div>
-            </div>
-            <label class="commentLabel">Approval comment <span>optional</span></label>
-            <textarea class="commentBox" placeholder="Add a decision comment for the audit trail..."></textarea>
-            <div class="decisionBar"><button class="rejectBtn">Reject / return</button><div></div><button class="secondary">Request changes</button><button class="approveBtn">Approve revision</button></div>
+            <div class="approvalHero"><div><span class="recordLabel">Final approval</span><h2>Final Inspection Work Instruction</h2><div class="recordMeta"><b>WI-PROD-021</b><span>Rev 03</span><span class="tag warning">In approval</span></div></div><button class="btn secondary">Open file</button></div>
+            <div class="changeBox"><span>Change reason</span><p>Updated final inspection criteria to align with customer specification CS-204 Rev 8 and added digital gauge verification.</p></div>
+            <div class="routeTimeline"><div class="routeNode done"><i>✓</i><div><b>Author</b><span>Ana Reyes · 18 Sep 09:12</span></div></div><div class="routeNode done"><i>✓</i><div><b>Department review</b><span>Operations Supervisor · 19 Sep 11:44</span></div></div><div class="routeNode active"><i>3</i><div><b>Final approval</b><span>Maria Santos · Waiting for your action</span></div></div><div class="routeNode"><i>4</i><div><b>Release</b><span>System controlled</span></div></div></div>
+            <label class="commentLabel">Decision comment <span>optional</span></label>
+            <textarea class="commentBox" placeholder="Add a comment for the audit trail..."></textarea>
+            <div class="decisionBar"><button class="btn dangerOutline">Reject / return</button><div></div><button class="btn secondary">Request changes</button><button class="btn primary" data-toast-title="Revision approved" data-toast-message="The decision was recorded and the workflow can continue to release.">Approve revision</button></div>
           </section>
         </div>
       </div>
 
       <div id="register" class="view">
-        <div class="pageHead compact"><div><div class="eyebrow">CONTROLLED REGISTER</div><h1>Document register</h1><p>Canonical list of governed documents, records, external sources and evidence.</p></div><button class="primary" onclick="openManualRepo()">＋ New controlled document</button></div>
-        <div class="registerBar"><div class="filterSearch">⌕ <input placeholder="Search document no. or title"></div><select><option>All types</option><option>SOP</option><option>Work Instruction</option></select><select><option>All departments</option><option>Quality</option><option>Operations</option></select><select><option>All statuses</option><option>Effective</option><option>Draft</option></select><button class="secondary">More filters</button><div></div><button class="secondary">Export</button></div>
-        <div class="tableCard"><table><thead><tr><th>Document</th><th>Type</th><th>Department</th><th>Rev</th><th>Status</th><th>Owner</th><th>Next review</th><th>Links</th></tr></thead><tbody>
-          <tr onclick="showView('repository')"><td><b>SOP-QA-014</b><span>Control of Nonconforming Outputs</span></td><td>SOP</td><td>Quality</td><td>06</td><td><span class="pill success">Effective</span></td><td>M. Santos</td><td>15 Sep 2027</td><td>34</td></tr>
-          <tr><td><b>SOP-PUR-012</b><span>Supplier Control Procedure</span></td><td>SOP</td><td>Purchasing</td><td>05</td><td><span class="pill warn">Review due</span></td><td>J. Cruz</td><td>28 Sep 2026</td><td>19</td></tr>
-          <tr><td><b>WI-PROD-021</b><span>Final Inspection Work Instruction</span></td><td>Work Instruction</td><td>Operations</td><td>03</td><td><span class="pill info">In approval</span></td><td>A. Reyes</td><td>—</td><td>12</td></tr>
-          <tr><td><b>EXT-STD-002</b><span>Customer Quality Specification</span></td><td>External</td><td>Quality</td><td>2026.2</td><td><span class="pill success">Current</span></td><td>Document Control</td><td>01 Feb 2027</td><td>28</td></tr>
+        <div class="pageHeader"><div><h1>Document register</h1><p>Authoritative list of controlled documents, records, external sources and evidence.</p></div><div class="pageActions"><button class="btn primary" onclick="openManualRepo()">New controlled document</button></div></div>
+        <div class="filterBar"><div class="filterSearch"><span>⌕</span><input placeholder="Search document number or title"></div><select><option>All types</option><option>SOP</option><option>Work Instruction</option></select><select><option>All departments</option><option>Quality</option><option>Operations</option></select><select><option>All statuses</option><option>Effective</option><option>Draft</option></select><button class="btn secondary">More filters</button><span></span><button class="btn secondary">Export</button></div>
+        <div class="tableSurface"><table class="dataTable"><thead><tr><th>Document</th><th>Type</th><th>Department</th><th>Rev</th><th>Status</th><th>Owner</th><th>Next review</th><th>Links</th></tr></thead><tbody>
+          <tr onclick="showView('repository')"><td><b>SOP-QA-014</b><span>Control of Nonconforming Outputs</span></td><td>SOP</td><td>Quality</td><td>06</td><td><span class="tag success">Effective</span></td><td>M. Santos</td><td>15 Sep 2027</td><td>34</td></tr>
+          <tr><td><b>SOP-PUR-012</b><span>Supplier Control Procedure</span></td><td>SOP</td><td>Purchasing</td><td>05</td><td><span class="tag warning">Review due</span></td><td>J. Cruz</td><td>28 Sep 2026</td><td>19</td></tr>
+          <tr><td><b>WI-PROD-021</b><span>Final Inspection Work Instruction</span></td><td>Work Instruction</td><td>Operations</td><td>03</td><td><span class="tag info">In approval</span></td><td>A. Reyes</td><td>—</td><td>12</td></tr>
+          <tr><td><b>EXT-STD-002</b><span>Customer Quality Specification</span></td><td>External</td><td>Quality</td><td>2026.2</td><td><span class="tag success">Current</span></td><td>Document Control</td><td>01 Feb 2027</td><td>28</td></tr>
         </tbody></table></div>
       </div>
 
       <div id="audit" class="view">
-        <div class="pageHead compact"><div><div class="eyebrow">TRACEABILITY</div><h1>Audit trail</h1><p>Immutable event history across revisions, approvals, relationships and controlled access.</p></div><button class="secondary">Export audit report</button></div>
-        <div class="registerBar"><div class="filterSearch">⌕ <input placeholder="Search actor, resource or event"></div><select><option>All events</option><option>Approval</option><option>Revision</option><option>Access</option></select><input type="date" value="2026-09-20"><div></div></div>
-        <div class="tableCard"><table><thead><tr><th>Time</th><th>Actor</th><th>Event</th><th>Resource</th><th>Rev</th><th>Context</th><th>Result</th></tr></thead><tbody>
-          <tr><td>10:16:08</td><td>SYSTEM</td><td><b>RELEASED</b></td><td>SOP-QA-001</td><td>05</td><td>Approval route AR-882 completed</td><td><span class="pill success">Success</span></td></tr>
-          <tr><td>10:15:44</td><td>maria.santos</td><td><b>APPROVED</b></td><td>SOP-QA-001</td><td>05</td><td>Final approval · comment retained</td><td><span class="pill success">Success</span></td></tr>
-          <tr><td>09:41:12</td><td>ana.reyes</td><td><b>LINKED_EVIDENCE</b></td><td>CAL-CERT-2026-0084</td><td>—</td><td>Linked to EQ-DMM-14 + IA-2026-004</td><td><span class="pill success">Success</span></td></tr>
-          <tr><td>08:42:31</td><td>john.cruz</td><td><b>DOWNLOADED</b></td><td>SOP-QA-001</td><td>04</td><td>Signed URL · 5 min expiry</td><td><span class="pill success">Success</span></td></tr>
+        <div class="pageHeader"><div><h1>Audit trail</h1><p>Immutable event history across revisions, approvals, relationships and controlled access.</p></div><div class="pageActions"><button class="btn secondary">Export audit report</button></div></div>
+        <div class="filterBar"><div class="filterSearch"><span>⌕</span><input placeholder="Search actor, resource or event"></div><select><option>All events</option><option>Approval</option><option>Revision</option><option>Access</option></select><input class="dateInput" type="date" value="2026-09-20"><span></span></div>
+        <div class="tableSurface"><table class="dataTable"><thead><tr><th>Timestamp</th><th>Actor</th><th>Event</th><th>Resource</th><th>Rev</th><th>Context</th><th>Result</th></tr></thead><tbody>
+          <tr><td>2026-09-20 10:16:08</td><td>SYSTEM</td><td><b>RELEASED</b></td><td>SOP-QA-001</td><td>05</td><td>Approval route AR-882 completed</td><td><span class="tag success">Success</span></td></tr>
+          <tr><td>2026-09-20 10:15:44</td><td>maria.santos</td><td><b>APPROVED</b></td><td>SOP-QA-001</td><td>05</td><td>Final approval · comment retained</td><td><span class="tag success">Success</span></td></tr>
+          <tr><td>2026-09-20 09:41:12</td><td>ana.reyes</td><td><b>LINKED_EVIDENCE</b></td><td>CAL-CERT-2026-0084</td><td>—</td><td>Linked to EQ-DMM-14 + IA-2026-004</td><td><span class="tag success">Success</span></td></tr>
+          <tr><td>2026-09-20 08:42:31</td><td>john.cruz</td><td><b>DOWNLOADED</b></td><td>SOP-QA-001</td><td>04</td><td>Signed URL · 5 min expiry</td><td><span class="tag success">Success</span></td></tr>
         </tbody></table></div>
       </div>
 
       <div id="relationships" class="view">
-        <div class="pageHead compact"><div><div class="eyebrow">RESOURCE GRAPH</div><h1>Sources & evidence</h1><p>Upload once, link everywhere, and retain revision-aware traceability.</p></div><button class="primary">＋ Link resource</button></div>
-        <div class="relationHero">
-          <div class="canonicalCard"><span class="docType">CANONICAL RESOURCE</span><h2>Calibration Certificate — DMM-14</h2><div class="docCode"><b>CAL-CERT-2026-0084</b><span class="pill success">Current</span></div><div class="infoGrid"><div><span>Resource ID</span><b>RES-88291</b></div><div><span>Storage</span><b>S3 · immutable</b></div></div></div>
-          <div class="graphCard"><h3>Relationship map</h3><div class="graph"><div class="graphNode center">CAL-CERT<br><b>2026-0084</b></div><div class="graphNode n1">Equipment<br><b>DMM-14</b></div><div class="graphNode n2">Calibration<br><b>Program</b></div><div class="graphNode n3">Internal Audit<br><b>IA-2026-004</b></div><div class="graphNode n4">Maintenance<br><b>MR-229</b></div><svg viewBox="0 0 600 260"><line x1="300" y1="130" x2="100" y2="55"/><line x1="300" y1="130" x2="500" y2="55"/><line x1="300" y1="130" x2="105" y2="210"/><line x1="300" y1="130" x2="495" y2="210"/></svg></div></div>
+        <div class="pageHeader"><div><h1>Sources & evidence</h1><p>Canonical resources linked to documents, records, audits and external requirements.</p></div><div class="pageActions"><button class="btn secondary">Import resources</button><button class="btn primary">Link resource</button></div></div>
+
+        <div class="resourceSummary">
+          <article><span>Canonical resources</span><b>8,942</b><small>Across records and evidence</small></article>
+          <article><span>Linked</span><b>8,938</b><small><i class="statusDot good"></i>99.96%</small></article>
+          <article><span>Unlinked</span><b>4</b><small><i class="statusDot warn"></i>Needs review</small></article>
+          <article><span>External sources</span><b>203</b><small>Tracked for currency</small></article>
+        </div>
+
+        <div class="resourceWorkspace">
+          <section class="resourceList">
+            <div class="filterBar embedded"><div class="filterSearch"><span>⌕</span><input placeholder="Search resource"></div><select><option>All resource types</option><option>Evidence</option><option>External</option><option>Record</option></select><select><option>All link states</option><option>Linked</option><option>Unlinked</option></select><button class="btn secondary">Filters</button></div>
+            <div class="resourceTableHeader"><span>Resource</span><span>Type</span><span>Linked to</span><span>Owner</span><span>Status</span></div>
+            <button class="resourceRow selected" data-resource="cal"><div><b>CAL-CERT-2026-0084</b><strong>Calibration Certificate — DMM-14</strong><small>Updated 18 Sep 2026</small></div><span>Certificate</span><span>4 records</span><span>Metrology</span><span class="tag success">Current</span></button>
+            <button class="resourceRow" data-resource="audit"><div><b>IA-2026-004</b><strong>Internal Audit — Production Line 2</strong><small>Completed 12 Sep 2026</small></div><span>Audit record</span><span>12 records</span><span>Quality</span><span class="tag success">Closed</span></button>
+            <button class="resourceRow" data-resource="supplier"><div><b>SUP-EVAL-2026-031</b><strong>Supplier Evaluation — Alpha Metals</strong><small>Updated 02 Sep 2026</small></div><span>Quality record</span><span>2 records</span><span>Purchasing</span><span class="tag success">Current</span></button>
+            <button class="resourceRow" data-resource="external"><div><b>CS-204</b><strong>Customer Quality Specification</strong><small>Rev 8 · received 05 Sep 2026</small></div><span>External source</span><span>9 records</span><span>Quality</span><span class="tag info">Tracked</span></button>
+            <button class="resourceRow" data-resource="orphan"><div><b>REC-2026-114</b><strong>Receiving Inspection Attachment</strong><small>Imported 20 Sep 2026</small></div><span>Evidence</span><span>0 records</span><span>Warehouse</span><span class="tag warning">Unlinked</span></button>
+          </section>
+
+          <aside class="resourceInspector">
+            <div class="inspectorHeader compactInspector"><div><span class="recordLabel" id="resType">Certificate</span><h2 id="resTitle">Calibration Certificate — DMM-14</h2><div class="recordMeta"><b id="resCode">CAL-CERT-2026-0084</b><span id="resStatus" class="tag success">Current</span></div></div><button class="iconButton">⋯</button></div>
+            <dl class="detailGrid resourceDetails"><div><dt>Resource ID</dt><dd id="resId">RES-88291</dd></div><div><dt>Storage</dt><dd id="resStorage">S3 · immutable</dd></div><div><dt>Owner</dt><dd id="resOwner">Metrology</dd></div><div><dt>Relationships</dt><dd id="resCount">4 active</dd></div></dl>
+            <section class="detailSection"><div class="sectionTitleRow"><h3>Used by</h3><button class="btn link">Manage links</button></div><div id="resUsedBy">
+              <button class="linkedRecord"><span>▦</span><div><b>DMM-14</b><small>Equipment record · EVIDENCED_BY</small></div></button>
+              <button class="linkedRecord"><span>▦</span><div><b>IA-2026-004</b><small>Internal audit · EVIDENCED_BY</small></div></button>
+              <button class="linkedRecord"><span>▦</span><div><b>MR-229</b><small>Maintenance record · RELATED_TO</small></div></button>
+            </div></section>
+            <section class="detailSection relationSection"><div class="sectionTitleRow"><h3>Relationship map</h3><button class="btn link">Expand</button></div>
+              <div class="miniGraph"><span class="node center">CAL-CERT<br><b>2026-0084</b></span><span class="node topLeft">DMM-14</span><span class="node topRight">Calibration Program</span><span class="node bottomLeft">IA-2026-004</span><span class="node bottomRight">MR-229</span><svg viewBox="0 0 400 180"><line x1="200" y1="90" x2="72" y2="38"/><line x1="200" y1="90" x2="330" y2="38"/><line x1="200" y1="90" x2="72" y2="145"/><line x1="200" y1="90" x2="330" y2="145"/></svg></div>
+              <p class="relationshipHint">Living links follow the current revision. Historical evidence can be pinned to the exact revision used.</p>
+            </section>
+          </aside>
         </div>
       </div>
 
       <div id="structure" class="view">
-        <div class="pageHead compact"><div><div class="eyebrow">CONFIGURATION</div><h1>Repository structure</h1><p>Configure how each tenant organizes documents without changing the core data model.</p></div><button class="primary">＋ Add level</button></div>
-        <div class="settingsGrid"><section class="panel"><h3>Current hierarchy</h3><div class="structureLevel"><span>1</span><div><b>Department</b><small>Quality, Operations, Engineering...</small></div><i>⋮⋮</i></div><div class="structureLevel"><span>2</span><div><b>Process</b><small>Document Control, Audit, Purchasing...</small></div><i>⋮⋮</i></div><div class="structureLevel"><span>3</span><div><b>Document type</b><small>SOP, Work Instruction, Form...</small></div><i>⋮⋮</i></div><div class="structureLevel"><span>4</span><div><b>Document / resource</b><small>Canonical controlled item</small></div><i>⋮⋮</i></div></section><section class="panel"><h3>Structure presets</h3><div class="preset"><b>Multi-site manufacturer</b><span>Site → Department → Process → Document</span><button>Use</button></div><div class="preset"><b>Service organization</b><span>Business Unit → Process → Category</span><button>Use</button></div><div class="preset"><b>Simple SME</b><span>Department → Type → Document</span><button>Use</button></div></section></div>
+        <div class="pageHeader"><div><h1>Repository structure</h1><p>Configure navigation without changing the canonical resource model.</p></div><div class="pageActions"><button class="btn primary">Add level</button></div></div>
+        <div class="settingsGrid"><section class="surface"><div class="sectionHeader"><div><h2>Current hierarchy</h2><p>Drag levels to reorder how users browse the repository.</p></div></div><div class="structureLevel"><span>1</span><div><b>Department</b><small>Quality, Operations, Engineering...</small></div><i>⋮⋮</i></div><div class="structureLevel"><span>2</span><div><b>Process</b><small>Document Control, Audit, Purchasing...</small></div><i>⋮⋮</i></div><div class="structureLevel"><span>3</span><div><b>Document type</b><small>SOP, Work Instruction, Form...</small></div><i>⋮⋮</i></div><div class="structureLevel"><span>4</span><div><b>Document / resource</b><small>Canonical controlled item</small></div><i>⋮⋮</i></div></section><section class="surface"><div class="sectionHeader"><div><h2>Presets</h2><p>Starting points for common organization models.</p></div></div><div class="preset"><div><b>Multi-site manufacturer</b><span>Site → Department → Process → Document</span></div><button class="btn secondary">Use</button></div><div class="preset"><div><b>Service organization</b><span>Business unit → Process → Category</span></div><button class="btn secondary">Use</button></div><div class="preset"><div><b>Simple SME</b><span>Department → Type → Document</span></div><button class="btn secondary">Use</button></div></section></div>
       </div>
 
       <div id="types" class="view">
-        <div class="pageHead compact"><div><div class="eyebrow">CONFIGURATION</div><h1>Document types</h1><p>Define metadata, numbering, approval and review rules by controlled resource type.</p></div><button class="primary">＋ Add type</button></div>
-        <div class="typeGrid">
-          <div class="typeCard"><span class="typeIcon">P</span><div><b>Policy</b><span>37 documents</span><small>Approval + acknowledgement</small></div><button>›</button></div>
-          <div class="typeCard"><span class="typeIcon">S</span><div><b>SOP / Procedure</b><span>184 documents</span><small>Full revision control</small></div><button>›</button></div>
-          <div class="typeCard"><span class="typeIcon">W</span><div><b>Work Instruction</b><span>326 documents</span><small>Department approval</small></div><button>›</button></div>
-          <div class="typeCard"><span class="typeIcon">F</span><div><b>Form / Template</b><span>391 documents</span><small>Controlled master</small></div><button>›</button></div>
-          <div class="typeCard"><span class="typeIcon">E</span><div><b>External Document</b><span>203 documents</span><small>Source + review tracking</small></div><button>›</button></div>
+        <div class="pageHeader"><div><h1>Document types</h1><p>Numbering, metadata, approval and review rules for each governed type.</p></div><div class="pageActions"><button class="btn primary">Add type</button></div></div>
+        <div class="typeWorkspace">
+          <section class="typeTablePane">
+            <div class="typeTableHeader"><span>Type</span><span>Prefix</span><span>Numbering</span><span>Approval rule</span><span>Review</span><span>Documents</span><span>Status</span></div>
+            <button class="typeRow selected" data-type="sop"><div><b>SOP / Procedure</b><small>Full revision control</small></div><span>SOP</span><span>SOP-{DEPT}-{###}</span><span>Dept review → Quality</span><span>12 mo</span><span>184</span><span class="tag success">Active</span></button>
+            <button class="typeRow" data-type="wi"><div><b>Work Instruction</b><small>Operational instruction</small></div><span>WI</span><span>WI-{DEPT}-{###}</span><span>Dept approval</span><span>12 mo</span><span>326</span><span class="tag success">Active</span></button>
+            <button class="typeRow" data-type="form"><div><b>Form / Template</b><small>Controlled master</small></div><span>FORM</span><span>FORM-{DEPT}-{###}</span><span>Owner → Quality</span><span>24 mo</span><span>391</span><span class="tag success">Active</span></button>
+            <button class="typeRow" data-type="policy"><div><b>Policy</b><small>Approval + acknowledgement</small></div><span>POL</span><span>POL-{###}</span><span>Executive approval</span><span>24 mo</span><span>37</span><span class="tag success">Active</span></button>
+            <button class="typeRow" data-type="external"><div><b>External Document</b><small>Source + currency tracking</small></div><span>EXT</span><span>EXT-{SRC}-{###}</span><span>Document control</span><span>12 mo</span><span>203</span><span class="tag success">Active</span></button>
+          </section>
+          <aside class="typeInspector">
+            <div class="inspectorHeader compactInspector"><div><span class="recordLabel">Type configuration</span><h2 id="typeName">SOP / Procedure</h2><div class="recordMeta"><span class="tag success">Active</span><span id="typeCount">184 documents</span></div></div><button class="iconButton">⋯</button></div>
+            <div class="formSection"><label>Prefix<input id="typePrefix" value="SOP"></label><label>Numbering format<input id="typeNumbering" value="SOP-{DEPT}-{###}"></label></div>
+            <div class="formSection"><label>Default approval route<select id="typeApproval"><option>Department review → Quality approval</option></select></label><label>Default review cycle<select id="typeReview"><option>12 months</option><option>24 months</option></select></label></div>
+            <section class="detailSection"><h3>Control requirements</h3><label class="checkRow"><input type="checkbox" checked> Revision history required</label><label class="checkRow"><input type="checkbox" checked> Change reason required</label><label class="checkRow"><input type="checkbox" checked> Approval before release</label><label class="checkRow"><input type="checkbox"> User acknowledgement required</label></section>
+            <div class="inspectorFooter"><button class="btn secondary">Deactivate type</button><button class="btn primary" data-toast-title="Type settings saved" data-toast-message="The configuration is ready to apply to future documents.">Save changes</button></div>
+          </aside>
         </div>
       </div>
 
       <div id="ai" class="view">
-        <div class="pageHead compact"><div><div class="eyebrow">QMS INTELLIGENCE</div><h1>QMS AI</h1><p>Permission-aware assistant grounded in effective documents, relationships and audit history.</p></div><button class="secondary" onclick="openBuilder()">⚡ Repository builder</button></div>
+        <div class="pageHeader"><div><h1>QMS AI</h1><p>Permission-aware assistance grounded in current documents, relationships and audit history.</p></div><div class="pageActions"><button class="btn secondary" onclick="openBuilder()">Repository builder</button></div></div>
         <div class="aiWorkspace">
           <section class="aiChat">
             <div class="aiIntro"><div class="aiOrb">✦</div><div><b>Nexus QMS AI</b><span>Grounded in your authorized quality-system data</span></div></div>
             <div class="bubble ai"><b>QMS AI</b><br>I can search effective documents, trace evidence, compare revisions and prepare controlled actions for your approval.</div>
             <div class="bubble user">What procedure applies when incoming material fails inspection?</div>
             <div class="bubble ai">The current effective procedure is <b>SOP-QA-014 Rev 06 — Control of Nonconforming Outputs</b>. It references <b>WI-QA-003</b> for inspection and <b>FORM-QA-011</b> for NCR recording. I found <b>23 linked evidence records</b>.</div>
-            <div class="answerSources"><span>SOURCES</span><button>SOP-QA-014 · Rev 06</button><button>WI-QA-003</button><button>FORM-QA-011</button></div>
-            <div class="chatComposer"><input placeholder="Ask about documents, evidence, approvals or audits..."><button>✦</button></div>
+            <div class="answerSources"><span>Sources</span><button>SOP-QA-014 · Rev 06</button><button>WI-QA-003</button><button>FORM-QA-011</button></div>
+            <div class="chatComposer"><input placeholder="Ask about documents, evidence, approvals or audits..."><button class="btn primary">Send</button></div>
           </section>
           <aside class="aiSide">
-            <section class="panel"><h3>Agent boundaries</h3><div class="permissionRow"><span>Search authorized documents</span><b class="good">Allowed</b></div><div class="permissionRow"><span>Trace references & evidence</span><b class="good">Allowed</b></div><div class="permissionRow"><span>Create revision draft</span><b class="amber">Confirm</b></div><div class="permissionRow"><span>Submit for approval</span><b class="amber">Confirm</b></div><div class="permissionRow"><span>Approve / release</span><b class="red">Blocked</b></div></section>
-            <section class="panel"><h3>Try asking</h3><button class="promptChip">Show procedures due for review next month</button><button class="promptChip">Trace evidence for Supplier Control</button><button class="promptChip">Prepare an auditor evidence package</button></section>
+            <section class="surface"><div class="sectionHeader"><div><h2>Permissions</h2><p>What this assistant can do in this workspace</p></div></div><div class="permissionRow"><span>Search authorized documents</span><b class="good">Allowed</b></div><div class="permissionRow"><span>Trace references & evidence</span><b class="good">Allowed</b></div><div class="permissionRow"><span>Create revision draft</span><b class="amber">Confirm</b></div><div class="permissionRow"><span>Submit for approval</span><b class="amber">Confirm</b></div><div class="permissionRow"><span>Approve / release</span><b class="red">Blocked</b></div></section>
+            <section class="surface"><div class="sectionHeader"><div><h2>Suggested questions</h2></div></div><button class="promptChip">Show procedures due for review next month</button><button class="promptChip">Trace evidence for Supplier Control</button><button class="promptChip">Prepare an auditor evidence package</button></section>
           </aside>
         </div>
       </div>
 
       <div id="users" class="view">
-        <div class="pageHead compact"><div><div class="eyebrow">ADMINISTRATION</div><h1>Users & access</h1><p>Role-based access with separation of duties and document-level exceptions.</p></div><button class="primary">＋ Invite user</button></div>
-        <div class="statusStrip smallStrip"><div class="stripMetric"><span>Licensed users</span><b>50</b><small>48 active</small></div><div class="stripMetric"><span>Document owners</span><b>18</b></div><div class="stripMetric"><span>Reviewers</span><b>12</b></div><div class="stripMetric"><span>Approvers</span><b>6</b></div><div class="stripMetric"><span>Auditors</span><b>3</b></div></div>
-        <div class="panel"><div class="cardHead"><div><h3>Separation of duties</h3><p>System Administrator, Document Controller and Quality Approver remain independent authorities.</p></div><span class="pill success">Enforced</span></div></div>
+        <div class="pageHeader"><div><h1>Users & access</h1><p>Role-based access with separation of duties and document-level exceptions.</p></div><div class="pageActions"><button class="btn primary">Invite user</button></div></div>
+        <div class="metricGrid smallMetrics"><article class="metricCard"><span>Licensed users</span><b>50</b><small>48 active</small></article><article class="metricCard"><span>Document owners</span><b>18</b></article><article class="metricCard"><span>Reviewers</span><b>12</b></article><article class="metricCard"><span>Approvers</span><b>6</b></article><article class="metricCard"><span>Auditors</span><b>3</b></article></div>
+        <section class="surface"><div class="sectionHeader"><div><h2>Separation of duties</h2><p>System Administrator, Document Controller and Quality Approver remain independent authorities.</p></div><span class="tag success">Enforced</span></div></section>
       </div>
 
       <div id="settings" class="view">
-        <div class="pageHead compact"><div><div class="eyebrow">ADMINISTRATION</div><h1>Organization settings</h1><p>Tenant-specific document-control, security and governance defaults.</p></div><button class="primary">Save changes</button></div>
-        <div class="settingsGrid"><section class="panel"><h3>Document control</h3><div class="settingRow"><div><b>Default review cycle</b><span>Applied when a document type has no override</span></div><select><option>12 months</option><option>24 months</option></select></div><div class="settingRow"><div><b>Obsolete retention</b><span>Minimum retention of historical revisions</span></div><select><option>7 years</option></select></div><div class="settingRow"><div><b>Require change reason</b><span>Mandatory for every new revision</span></div><span class="toggle on"></span></div></section><section class="panel"><h3>Security</h3><div class="settingRow"><div><b>Multi-factor authentication</b><span>Required for all licensed users</span></div><span class="toggle on"></span></div><div class="settingRow"><div><b>Signed file URLs</b><span>Time-limited document downloads</span></div><span class="toggle on"></span></div><div class="settingRow"><div><b>Audit deletion</b><span>Append-only event history</span></div><span class="pill danger">Prohibited</span></div></section></div>
+        <div class="pageHeader"><div><h1>Organization settings</h1><p>Document-control, security and governance defaults for this workspace.</p></div><div class="pageActions"><button class="btn primary">Save changes</button></div></div>
+        <div class="settingsGrid">
+          <section class="surface"><div class="sectionHeader"><div><h2>Document control</h2></div></div><div class="settingRow"><div><b>Default review cycle</b><span>Used when a document type has no override</span></div><select><option>12 months</option><option>24 months</option></select></div><div class="settingRow"><div><b>Obsolete retention</b><span>Minimum retention for historical revisions</span></div><select><option>7 years</option></select></div><div class="settingRow"><div><b>Require change reason</b><span>Mandatory on every new revision</span></div><span class="toggle on"></span></div></section>
+          <section class="surface"><div class="sectionHeader"><div><h2>Security</h2></div></div><div class="settingRow"><div><b>Multi-factor authentication</b><span>Required for licensed users</span></div><span class="toggle on"></span></div><div class="settingRow"><div><b>Signed file URLs</b><span>Time-limited document downloads</span></div><span class="toggle on"></span></div><div class="settingRow"><div><b>Audit deletion</b><span>Append-only event history</span></div><span class="tag danger">Prohibited</span></div></section>
+        </div>
       </div>
-
     </section>
   </main>
 </div>
@@ -437,6 +447,7 @@
   </div>
 </div>
 
-<script src="./app.js?v=20260921-redesign4"></script>
+
+<script src="./app.js?v=20260921-v2"></script>
 </body>
 </html>
