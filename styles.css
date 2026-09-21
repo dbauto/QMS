@@ -354,3 +354,50 @@ textarea.fieldInput{min-height:78px;resize:vertical}
 .routeArrow{display:grid;place-items:center;color:var(--subtle)}
 .routeArrow .lucide{width:14px;height:14px}
 .notificationCount{position:absolute!important;right:-4px!important;top:-5px!important;min-width:16px!important;height:16px!important;border-radius:8px!important;background:#d92d20!important;color:#fff!important;font-style:normal!important;font-size:9px!important;display:grid!important;place-items:center!important}
+
+
+/* Collapsible navigation and side panels */
+.sideNav,.mainArea{transition:transform .2s ease,margin-left .2s ease}
+body.navHidden .sideNav{transform:translateX(-100%)}
+body.navHidden .mainArea{margin-left:0}
+.shellToggle{flex:0 0 auto}
+.inspectorHeaderActions{display:flex;gap:6px;align-items:center}
+.paneUtility{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;padding:0 2px}
+.paneUtility>span,.typePaneToolbar>span{font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--subtle);font-weight:700}
+.paneClose{width:28px;height:28px}
+.paneRestore{display:none}
+.paneTitleGroup{display:flex;align-items:center;gap:7px;min-width:0}
+.paneTitleGroup>div{min-width:0}
+.documentWorkspace.structureHidden{grid-template-columns:minmax(540px,1fr) 390px}
+.documentWorkspace.structureHidden .structurePane{display:none}
+.documentWorkspace.structureHidden #showStructurePane{display:grid}
+.documentWorkspace.inspectorHidden{grid-template-columns:220px minmax(540px,1fr)}
+.documentWorkspace.inspectorHidden .inspectorPane{display:none}
+.documentWorkspace.inspectorHidden #showDocumentInspector{display:grid}
+.documentWorkspace.structureHidden.inspectorHidden{grid-template-columns:1fr}
+.resourceWorkspace.inspectorHidden{grid-template-columns:1fr}
+.resourceWorkspace.inspectorHidden .resourceInspector{display:none}
+.resourceWorkspace.inspectorHidden #showResourceInspector{display:grid}
+.typeWorkspace.inspectorHidden{grid-template-columns:1fr}
+.typeWorkspace.inspectorHidden .typeInspector{display:none}
+.typeWorkspace.inspectorHidden #showTypeInspector{display:grid}
+.typePaneToolbar{display:flex;align-items:center;justify-content:space-between;min-height:42px;padding:0 12px;border-bottom:1px solid var(--line)}
+.typeWorkspace:not(.inspectorHidden) .typePaneToolbar{display:none}
+.filterBar.embedded{grid-template-columns:auto minmax(220px,1fr) auto auto auto}
+.filterBar.embedded #showResourceInspector{display:none}
+.resourceWorkspace.inspectorHidden .filterBar.embedded #showResourceInspector{display:grid}
+.emptyInline{border:1px dashed var(--line-strong);border-radius:7px;padding:12px;background:#fafbfc}
+.emptyInline b,.emptyInline span{display:block}
+.emptyInline b{font-size:10px;color:var(--ink)}
+.emptyInline span{font-size:9px;color:var(--muted);margin-top:2px}
+
+@media(max-width:1120px){
+  .documentWorkspace.structureHidden{grid-template-columns:1fr}
+  .documentWorkspace.inspectorHidden{grid-template-columns:200px 1fr}
+  .documentWorkspace.structureHidden.inspectorHidden{grid-template-columns:1fr}
+}
+@media(max-width:780px){
+  body.navHidden .sideNav{transform:translateX(-100%)}
+  body.navHidden .mainArea{margin-left:0}
+  .documentWorkspace.inspectorHidden{grid-template-columns:1fr}
+}
