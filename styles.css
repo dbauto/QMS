@@ -303,3 +303,7 @@ td:first-child b,td:first-child span{display:block}.tableCard td:first-child b{c
   .healthBody{grid-template-columns:1fr}.donut2{margin:auto}.typeGrid{grid-template-columns:1fr}
   .choiceGrid,.formGrid{grid-template-columns:1fr}.profile{display:none}.globalSearch{width:100%}
 }
+.toast{position:fixed;right:22px;bottom:22px;z-index:200;background:#12232a;color:white;border:1px solid #27404a;border-radius:10px;padding:12px 14px;min-width:280px;max-width:380px;box-shadow:0 16px 50px rgba(0,0,0,.24);opacity:0;transform:translateY(10px);transition:.22s ease}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast b,.toast span{display:block}.toast b{font-size:10px}.toast span{font-size:8px;color:#b8c7cd;margin-top:3px}
+button.pressed{transform:scale(.985)}
