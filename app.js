@@ -1,35 +1,153 @@
-const items=[...document.querySelectorAll('.navItem[data-view]')];
+const navItems=[...document.querySelectorAll('.navItem[data-view]')];
+
 function showView(id){
- document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
- const v=document.getElementById(id); if(v)v.classList.add('active');
- items.forEach(i=>i.classList.toggle('active',i.dataset.view===id));
- window.scrollTo(0,0);
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const target=document.getElementById(id);
+  if(target) target.classList.add('active');
+  navItems.forEach(item=>item.classList.toggle('active',item.dataset.view===id));
+  window.scrollTo({top:0,behavior:'smooth'});
 }
-items.forEach(i=>i.addEventListener('click',()=>showView(i.dataset.view)));
+navItems.forEach(item=>item.addEventListener('click',()=>showView(item.dataset.view)));
+
 let wizStep=1;
-function openBuilder(){wizStep=1;renderWizard();document.getElementById('builder').classList.add('show')}
-function closeBuilder(){document.getElementById('builder').classList.remove('show')}
+function openBuilder(){
+  wizStep=1;
+  renderWizard();
+  document.getElementById('builder')?.classList.add('show');
+}
+function closeBuilder(){document.getElementById('builder')?.classList.remove('show')}
 function renderWizard(){
- document.querySelectorAll('.wiz').forEach((e,i)=>e.style.display=(i+1===wizStep?'block':'none'));
- document.querySelectorAll('.wp').forEach((e,i)=>{e.classList.toggle('active',i+1===wizStep);e.classList.toggle('done',i+1<wizStep)});
- document.getElementById('prevBtn').style.display=wizStep===1?'none':'inline-block';
- document.getElementById('nextBtn').style.display=wizStep===5?'none':'inline-block';
+  document.querySelectorAll('#builder .wiz').forEach((el,i)=>el.style.display=(i+1===wizStep?'block':'none'));
+  document.querySelectorAll('#builder .wp').forEach((el,i)=>{
+    el.classList.toggle('active',i+1===wizStep);
+    el.classList.toggle('done',i+1<wizStep);
+  });
+  const prev=document.getElementById('prevBtn');
+  const next=document.getElementById('nextBtn');
+  if(prev) prev.style.display=wizStep===1?'none':'inline-flex';
+  if(next) next.style.display=wizStep===5?'none':'inline-flex';
 }
-function wizardMove(n){wizStep=Math.max(1,Math.min(5,wizStep+n));renderWizard()}
+function wizardMove(delta){
+  wizStep=Math.max(1,Math.min(5,wizStep+delta));
+  renderWizard();
+}
 function addAIReply(){
- const area=document.querySelector('#wiz3 .aiInterview');
- const input=document.querySelector('#wiz3 .chatInput input');
- const b=document.createElement('div');b.className='bubble ai';b.innerHTML='<b>QMS AI</b><br>Thanks. I will configure the Quality Manager as the authority who confirms the current effective revision during onboarding. I can now prepare the proposed repository.';
- area.insertBefore(b,area.querySelector('.chatInput'));input.value='';
+  const area=document.getElementById('wiz3');
+  if(!area) return;
+  const composer=area.querySelector('.chatComposer');
+  if(area.querySelector('.confirmationReply')) return;
+  const reply=document.createElement('div');
+  reply.className='bubble ai confirmationReply';
+  reply.innerHTML='<b>QMS AI</b><br>Understood. I will treat the Quality Manager as the authority who confirms the current effective revision during onboarding. I can now prepare the proposed repository.';
+  area.insertBefore(reply,composer);
+  const input=composer?.querySelector('input');
+  if(input) input.value='';
 }
-function buildRepo(){closeBuilder();showView('repository');setTimeout(()=>alert('Draft repository created. All resources remain pending human validation before controlled status is assigned.'),100)}
-document.querySelectorAll('.sourceChoice').forEach(x=>x.onclick=()=>{document.querySelectorAll('.sourceChoice').forEach(y=>y.classList.remove('selected'));x.classList.add('selected')});
-document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{t.parentElement.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active')});
-document.querySelectorAll('button').forEach(b=>{if(!b.onclick&&!b.closest('.sourceChoices')&&!b.id)b.addEventListener('click',()=>{b.animate([{transform:'scale(1)'},{transform:'scale(.97)'},{transform:'scale(1)'}],{duration:140})})});
+function buildRepo(){
+  closeBuilder();
+  showView('repository');
+  toast('Draft repository created','Resources remain pending human validation before controlled status is assigned.');
+}
 
 let manualStep=1;
-function openManualRepo(){manualStep=1;renderManual();document.getElementById('manualRepo').classList.add('show')}
-function closeManualRepo(){document.getElementById('manualRepo').classList.remove('show')}
-function renderManual(){document.querySelectorAll('.manualPage').forEach((e,i)=>e.style.display=(i+1===manualStep?'block':'none'));document.querySelectorAll('.ms').forEach((e,i)=>{e.classList.toggle('active',i+1===manualStep);e.classList.toggle('done',i+1<manualStep)});document.getElementById('manualPrev').style.display=manualStep===1?'none':'inline-block';document.getElementById('manualNext').style.display=manualStep===7?'none':'inline-block'}
-function manualMove(n){manualStep=Math.max(1,Math.min(7,manualStep+n));renderManual()}
-function finishManualRepo(){closeManualRepo();showView('repository');setTimeout(()=>alert('SOP-PUR-012 Rev 05 created as DRAFT. Approval route is ready for submission; the document is not Effective yet.'),100)}
+function openManualRepo(){
+  manualStep=1;
+  renderManual();
+  document.getElementById('manualRepo')?.classList.add('show');
+}
+function closeManualRepo(){document.getElementById('manualRepo')?.classList.remove('show')}
+function renderManual(){
+  document.querySelectorAll('#manualRepo .manualPage').forEach((el,i)=>el.style.display=(i+1===manualStep?'block':'none'));
+  document.querySelectorAll('#manualRepo .ms').forEach((el,i)=>{
+    el.classList.toggle('active',i+1===manualStep);
+    el.classList.toggle('done',i+1<manualStep);
+  });
+  const prev=document.getElementById('manualPrev');
+  const next=document.getElementById('manualNext');
+  if(prev) prev.style.display=manualStep===1?'none':'inline-flex';
+  if(next) next.style.display=manualStep===7?'none':'inline-flex';
+}
+function manualMove(delta){
+  manualStep=Math.max(1,Math.min(7,manualStep+delta));
+  renderManual();
+}
+function finishManualRepo(){
+  closeManualRepo();
+  showView('repository');
+  toast('Controlled draft created','SOP-PUR-012 Rev 05 is Draft. It is not Effective until its approval route is completed.');
+}
+
+function toast(title,message){
+  document.querySelector('.toast')?.remove();
+  const el=document.createElement('div');
+  el.className='toast';
+  el.innerHTML='<b>'+title+'</b><span>'+message+'</span>';
+  document.body.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add('show'));
+  setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),250)},4200);
+}
+
+document.querySelectorAll('.choiceGrid').forEach(group=>{
+  group.querySelectorAll('.sourceChoice').forEach(choice=>{
+    choice.addEventListener('click',()=>{
+      group.querySelectorAll('.sourceChoice').forEach(x=>x.classList.remove('selected'));
+      choice.classList.add('selected');
+    });
+  });
+});
+
+const inspectorTabs=[...document.querySelectorAll('.inspectorTabs button[data-tab]')];
+inspectorTabs.forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    inspectorTabs.forEach(x=>x.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.inspectorPane').forEach(p=>p.classList.remove('active'));
+    document.getElementById('tab-'+tab.dataset.tab)?.classList.add('active');
+  });
+});
+
+const docs={
+  qa014:{title:'Control of Nonconforming Outputs',code:'SOP-QA-014'},
+  qa005:{title:'Internal Audit Procedure',code:'SOP-QA-005'},
+  qa001:{title:'Document Control Procedure',code:'SOP-QA-001'},
+  qa020:{title:'Corrective Action Procedure',code:'SOP-QA-020'}
+};
+document.querySelectorAll('.docListItem').forEach(item=>{
+  item.addEventListener('click',()=>{
+    document.querySelectorAll('.docListItem').forEach(x=>x.classList.remove('selected'));
+    item.classList.add('selected');
+    const data=docs[item.dataset.doc];
+    if(data){
+      const title=document.getElementById('docTitle');
+      const code=document.getElementById('docCode');
+      if(title) title.textContent=data.title;
+      if(code) code.textContent=data.code;
+    }
+  });
+});
+
+document.querySelectorAll('.approvalItem').forEach(item=>{
+  item.addEventListener('click',()=>{
+    document.querySelectorAll('.approvalItem').forEach(x=>x.classList.remove('selected'));
+    item.classList.add('selected');
+  });
+});
+
+document.querySelectorAll('.modal').forEach(modal=>{
+  modal.addEventListener('click',e=>{
+    if(e.target===modal){
+      if(modal.id==='builder') closeBuilder();
+      if(modal.id==='manualRepo') closeManualRepo();
+    }
+  });
+});
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeBuilder();closeManualRepo()}
+});
+
+document.querySelectorAll('button').forEach(button=>{
+  button.addEventListener('mousedown',()=>button.classList.add('pressed'));
+  button.addEventListener('mouseup',()=>button.classList.remove('pressed'));
+  button.addEventListener('mouseleave',()=>button.classList.remove('pressed'));
+});
