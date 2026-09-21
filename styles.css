@@ -334,3 +334,23 @@ textarea.fieldInput{min-height:78px;resize:vertical}
 @media(max-width:780px){
   .sideNav{width:64px;padding:12px 7px}.brand>div:last-child,.workspaceText,.workspaceChevron,.navGroup,.navItem>span:not(.navIcon),.sideStatus>div{display:none}.brand{justify-content:center;padding:0 0 12px}.workspaceSwitch{justify-content:center;padding:7px}.navItem{justify-content:center;padding:0}.navIcon{font-size:15px}.mainArea{margin-left:64px}.commandBar{padding:0 12px}.commandActions .subtle,.profileButton>span:not(.avatar){display:none}.commandSearch{width:100%}.pageBody{padding:18px 14px}.pageHeader{align-items:flex-start;flex-direction:column}.metricGrid,.resourceSummary{grid-template-columns:1fr 1fr}.documentWorkspace{grid-template-columns:1fr}.structurePane{display:none}.documentListPane{border-right:0}.taskWorkspace{grid-template-columns:1fr}.taskQueue{border-right:0;border-bottom:1px solid var(--line)}.filterBar{grid-template-columns:1fr 1fr}.filterBar>span{display:none}.formGrid,.wizardGrid,.wizardGrid.thirds,.reviewGrid,.proposalGrid{grid-template-columns:1fr}.choiceGrid{grid-template-columns:1fr 1fr}.resourceTableHeader,.resourceRow{grid-template-columns:minmax(200px,1.6fr) 92px 78px}.resourceTableHeader span:nth-child(4),.resourceTableHeader span:nth-child(5),.resourceRow>span:nth-child(4),.resourceRow>span:nth-child(5){display:none}.typeTableHeader,.typeRow{grid-template-columns:minmax(160px,1.2fr) 60px 120px 60px}.typeTableHeader span:nth-child(4),.typeTableHeader span:nth-child(5),.typeTableHeader span:nth-child(6),.typeRow>span:nth-child(4),.typeRow>span:nth-child(5),.typeRow>span:nth-child(6){display:none}
 }
+
+
+/* Lucide icon system */
+.lucide{display:block;flex:0 0 auto;stroke-width:1.8}
+.navIcon{display:grid;place-items:center}
+.navIcon .lucide{width:16px;height:16px}
+.workspaceChevron .lucide,.profileChevron .lucide{width:14px;height:14px;color:var(--subtle)}
+.commandSearch .lucide,.paneSearch .lucide,.filterSearch .lucide{width:14px;height:14px;color:var(--subtle)}
+.btn .lucide{width:14px;height:14px}
+.iconButton .lucide,.iconBtn .lucide{width:16px;height:16px}
+.linkedRecord>span .lucide{width:13px;height:13px}
+.activityIcon .lucide{width:12px;height:12px}
+.miniWorkflow>div>i .lucide,.routeNode>i .lucide{width:12px;height:12px}
+.aiOrb .lucide,.uploadIcon .lucide,.aiHelp>span .lucide{width:17px;height:17px}
+.sourceChoice>.lucide{width:20px;height:20px;color:var(--brand);stroke-width:1.7}
+.treeRow>span:first-child{display:grid;place-items:center}
+.treeRow>span:first-child .lucide{width:13px;height:13px}
+.routeArrow{display:grid;place-items:center;color:var(--subtle)}
+.routeArrow .lucide{width:14px;height:14px}
+.notificationCount{position:absolute!important;right:-4px!important;top:-5px!important;min-width:16px!important;height:16px!important;border-radius:8px!important;background:#d92d20!important;color:#fff!important;font-style:normal!important;font-size:9px!important;display:grid!important;place-items:center!important}
