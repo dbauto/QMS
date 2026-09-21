@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260921-v2">
+<link rel="stylesheet" href="./styles.css?v=20260921-icons1">
 </head>
 <body>
 <div class="appShell">
@@ -20,29 +20,29 @@
     <button class="workspaceSwitch">
       <span class="workspaceAvatar">AM</span>
       <span class="workspaceText"><b>ABC Manufacturing</b><small>Production workspace</small></span>
-      <span class="workspaceChevron">⌄</span>
+      <span class="workspaceChevron"><i data-lucide="chevron-down"></i></span>
     </button>
 
     <nav class="primaryNav">
       <div class="navGroup">Workspace</div>
-      <button class="navItem active" data-view="dashboard"><span class="navIcon">⌂</span><span>Overview</span></button>
-      <button class="navItem" data-view="repository"><span class="navIcon">▤</span><span>Documents</span><span class="navMeta">1,428</span></button>
-      <button class="navItem" data-view="approvals"><span class="navIcon">✓</span><span>My tasks</span><span class="navBadge">9</span></button>
-      <button class="navItem" data-view="register"><span class="navIcon">▦</span><span>Register</span></button>
-      <button class="navItem" data-view="audit"><span class="navIcon">◫</span><span>Audit trail</span></button>
+      <button class="navItem active" data-view="dashboard"><span class="navIcon"><i data-lucide="layout-dashboard"></i></span><span>Overview</span></button>
+      <button class="navItem" data-view="repository"><span class="navIcon"><i data-lucide="files"></i></span><span>Documents</span><span class="navMeta">1,428</span></button>
+      <button class="navItem" data-view="approvals"><span class="navIcon"><i data-lucide="clipboard-check"></i></span><span>My tasks</span><span class="navBadge">9</span></button>
+      <button class="navItem" data-view="register"><span class="navIcon"><i data-lucide="table-properties"></i></span><span>Register</span></button>
+      <button class="navItem" data-view="audit"><span class="navIcon"><i data-lucide="history"></i></span><span>Audit trail</span></button>
 
       <div class="navGroup">Control</div>
-      <button class="navItem" data-view="relationships"><span class="navIcon">↗</span><span>Sources & evidence</span></button>
-      <button class="navItem" data-view="structure"><span class="navIcon">⌘</span><span>Structure</span></button>
-      <button class="navItem" data-view="types"><span class="navIcon">◇</span><span>Document types</span></button>
+      <button class="navItem" data-view="relationships"><span class="navIcon"><i data-lucide="network"></i></span><span>Sources & evidence</span></button>
+      <button class="navItem" data-view="structure"><span class="navIcon"><i data-lucide="folder-tree"></i></span><span>Structure</span></button>
+      <button class="navItem" data-view="types"><span class="navIcon"><i data-lucide="file-cog"></i></span><span>Document types</span></button>
 
       <div class="navGroup">Intelligence</div>
-      <button class="navItem" data-view="ai"><span class="navIcon">✦</span><span>QMS AI</span></button>
-      <button class="navItem" onclick="openBuilder()"><span class="navIcon">⚡</span><span>Repository builder</span></button>
+      <button class="navItem" data-view="ai"><span class="navIcon"><i data-lucide="sparkles"></i></span><span>QMS AI</span></button>
+      <button class="navItem" onclick="openBuilder()"><span class="navIcon"><i data-lucide="folder-input"></i></span><span>Repository builder</span></button>
 
       <div class="navGroup">Administration</div>
-      <button class="navItem" data-view="users"><span class="navIcon">♙</span><span>Users & access</span></button>
-      <button class="navItem" data-view="settings"><span class="navIcon">⚙</span><span>Settings</span></button>
+      <button class="navItem" data-view="users"><span class="navIcon"><i data-lucide="users"></i></span><span>Users & access</span></button>
+      <button class="navItem" data-view="settings"><span class="navIcon"><i data-lucide="settings"></i></span><span>Settings</span></button>
     </nav>
 
     <div class="sideStatus"><i></i><div><b>Protected workspace</b><span>MFA · RBAC · audit logging</span></div></div>
@@ -50,12 +50,12 @@
 
   <main class="mainArea">
     <header class="commandBar">
-      <div class="commandSearch"><span>⌕</span><input id="globalSearch" placeholder="Search documents, records, evidence..."></div>
+      <div class="commandSearch"><span><i data-lucide="search"></i></span><input id="globalSearch" placeholder="Search documents, records, evidence..."></div>
       <div class="commandActions">
-        <button class="btn subtle" onclick="showView('ai')">✦ Ask QMS AI</button>
-        <button class="iconButton" aria-label="Help">?</button>
-        <button class="iconButton notification" aria-label="Notifications">♢<i>3</i></button>
-        <button class="profileButton"><span class="avatar">MS</span><span><b>Maria Santos</b><small>Quality Manager</small></span><span>⌄</span></button>
+        <button class="btn subtle" onclick="showView('ai')"><i data-lucide="sparkles"></i>Ask QMS AI</button>
+        <button class="iconButton" aria-label="Help" title="Help"><i data-lucide="circle-help"></i></button>
+        <button class="iconButton notification" aria-label="Notifications" title="Notifications"><i data-lucide="bell"></i><i class="notificationCount">3</i></button>
+        <button class="profileButton"><span class="avatar">MS</span><span><b>Maria Santos</b><small>Quality Manager</small></span><span class="profileChevron"><i data-lucide="chevron-down"></i></span></button>
       </div>
     </header>
 
@@ -103,10 +103,10 @@
           <section class="surface">
             <div class="sectionHeader"><div><h2>Recent controlled activity</h2><p>Latest governed changes</p></div><button class="btn link" onclick="showView('audit')">Audit trail</button></div>
             <div class="activityTable">
-              <div><span>10:16</span><i class="activityIcon success">✓</i><p><b>SOP-QA-001 Rev 05 released</b><small>Approval route AR-882 completed · System</small></p><span class="tag success">Released</span></div>
-              <div><span>09:41</span><i class="activityIcon">↗</i><p><b>Calibration certificate linked</b><small>CAL-CERT-2026-0084 · Ana Reyes</small></p><span class="tag neutral">Evidence</span></div>
-              <div><span>09:10</span><i class="activityIcon success">✓</i><p><b>WI-PROD-018 Rev 02 approved</b><small>Final approval · Maria Santos</small></p><span class="tag success">Approved</span></div>
-              <div><span>08:42</span><i class="activityIcon">↓</i><p><b>SOP-QA-001 Rev 04 downloaded</b><small>Controlled copy · John Cruz</small></p><span class="tag neutral">Access</span></div>
+              <div><span>10:16</span><i class="activityIcon success"><i data-lucide="check"></i></i><p><b>SOP-QA-001 Rev 05 released</b><small>Approval route AR-882 completed · System</small></p><span class="tag success">Released</span></div>
+              <div><span>09:41</span><i class="activityIcon"><i data-lucide="link-2"></i></i><p><b>Calibration certificate linked</b><small>CAL-CERT-2026-0084 · Ana Reyes</small></p><span class="tag neutral">Evidence</span></div>
+              <div><span>09:10</span><i class="activityIcon success"><i data-lucide="check"></i></i><p><b>WI-PROD-018 Rev 02 approved</b><small>Final approval · Maria Santos</small></p><span class="tag success">Approved</span></div>
+              <div><span>08:42</span><i class="activityIcon"><i data-lucide="download"></i></i><p><b>SOP-QA-001 Rev 04 downloaded</b><small>Controlled copy · John Cruz</small></p><span class="tag neutral">Access</span></div>
             </div>
           </section>
 
@@ -130,27 +130,27 @@
 
         <div class="documentWorkspace">
           <aside class="structurePane">
-            <div class="paneSearch"><span>⌕</span><input placeholder="Filter structure"></div>
+            <div class="paneSearch"><span><i data-lucide="search"></i></span><input placeholder="Filter structure"></div>
             <div class="treeLabel">Repository</div>
-            <button class="treeRow root active"><span>⌄</span><b>ABC Manufacturing</b><em>1,428</em></button>
-            <button class="treeRow l1"><span>⌄</span>Quality <em>486</em></button>
+            <button class="treeRow root active"><span><i data-lucide="chevron-down"></i></span><b>ABC Manufacturing</b><em>1,428</em></button>
+            <button class="treeRow l1"><span><i data-lucide="chevron-down"></i></span>Quality <em>486</em></button>
             <button class="treeRow l2 selected">Procedures <em>84</em></button>
             <button class="treeRow l2">Work instructions <em>126</em></button>
             <button class="treeRow l2">Forms & templates <em>97</em></button>
             <button class="treeRow l2">Records & evidence <em>161</em></button>
-            <button class="treeRow l1"><span>›</span>Operations <em>368</em></button>
-            <button class="treeRow l1"><span>›</span>Engineering <em>271</em></button>
-            <button class="treeRow l1"><span>›</span>Purchasing <em>144</em></button>
-            <button class="treeRow l1"><span>›</span>Human Resources <em>93</em></button>
+            <button class="treeRow l1"><span><i data-lucide="chevron-right"></i></span>Operations <em>368</em></button>
+            <button class="treeRow l1"><span><i data-lucide="chevron-right"></i></span>Engineering <em>271</em></button>
+            <button class="treeRow l1"><span><i data-lucide="chevron-right"></i></span>Purchasing <em>144</em></button>
+            <button class="treeRow l1"><span><i data-lucide="chevron-right"></i></span>Human Resources <em>93</em></button>
             <div class="treeDivider"></div>
-            <button class="treeRow"><span>◈</span>External documents <em>203</em></button>
-            <button class="treeRow"><span>⊘</span>Obsolete / archive <em>55</em></button>
+            <button class="treeRow"><span><i data-lucide="external-link"></i></span>External documents <em>203</em></button>
+            <button class="treeRow"><span><i data-lucide="archive"></i></span>Obsolete / archive <em>55</em></button>
           </aside>
 
           <section class="documentListPane">
             <div class="paneHeader">
               <div><h2>Quality / Procedures</h2><span>84 controlled documents</span></div>
-              <div><button class="iconButton" title="Filter">⌕</button><button class="iconButton" title="Sort">⇅</button><button class="iconButton">⋯</button></div>
+              <div><button class="iconButton" title="Filter"><i data-lucide="list-filter"></i></button><button class="iconButton" title="Sort"><i data-lucide="arrow-up-down"></i></button><button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button></div>
             </div>
             <div class="documentTableHeader"><span>Document</span><span>Rev</span><span>Owner</span><span>Status</span><span>Review</span></div>
             <button class="documentRow selected" data-doc="qa014">
@@ -173,7 +173,7 @@
           <aside class="inspectorPane">
             <div class="inspectorHeader">
               <div><span class="recordLabel">Controlled document</span><h2 id="docTitle">Control of Nonconforming Outputs</h2><div class="recordMeta"><b id="docCode">SOP-QA-014</b><span id="docRev">Rev 06</span><span id="docStatus" class="tag success">Effective</span></div></div>
-              <button class="iconButton">⋯</button>
+              <button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button>
             </div>
             <div class="inspectorActions"><button class="btn primary">Open document</button><button class="btn secondary">Create revision</button></div>
             <div class="tabBar inspectorTabs">
@@ -193,9 +193,9 @@
               </dl>
               <section class="detailSection"><h3>Purpose</h3><p id="docPurpose">Defines controls for identifying, segregating, reviewing and dispositioning nonconforming outputs.</p></section>
               <section class="detailSection"><div class="sectionTitleRow"><h3>Relationships</h3><button class="btn link">Manage</button></div>
-                <button class="linkedRecord"><span>↗</span><div><b>WI-QA-003</b><small>Inspection Work Instruction · follows current</small></div></button>
-                <button class="linkedRecord"><span>↗</span><div><b>FORM-QA-011</b><small>NCR Form · follows current</small></div></button>
-                <button class="linkedRecord"><span>◫</span><div><b>23 evidence records</b><small>NCRs, audit records and inspection evidence</small></div></button>
+                <button class="linkedRecord"><span><i data-lucide="link-2"></i></span><div><b>WI-QA-003</b><small>Inspection Work Instruction · follows current</small></div></button>
+                <button class="linkedRecord"><span><i data-lucide="link-2"></i></span><div><b>FORM-QA-011</b><small>NCR Form · follows current</small></div></button>
+                <button class="linkedRecord"><span><i data-lucide="paperclip"></i></span><div><b>23 evidence records</b><small>NCRs, audit records and inspection evidence</small></div></button>
               </section>
             </div>
             <div class="inspectorContent inspectorPaneContent" id="tab-revisions">
@@ -204,11 +204,11 @@
               <div class="revisionRow"><div><b>Rev 04</b><span>Obsolete</span></div><small>18 Jul 2025 · retained</small></div>
             </div>
             <div class="inspectorContent inspectorPaneContent" id="tab-links">
-              <section class="detailSection"><h3>References</h3><button class="linkedRecord"><span>↗</span><div><b>WI-QA-003</b><small>Follow current revision</small></div></button><button class="linkedRecord"><span>↗</span><div><b>FORM-QA-011</b><small>Follow current revision</small></div></button></section>
+              <section class="detailSection"><h3>References</h3><button class="linkedRecord"><span><i data-lucide="link-2"></i></span><div><b>WI-QA-003</b><small>Follow current revision</small></div></button><button class="linkedRecord"><span><i data-lucide="link-2"></i></span><div><b>FORM-QA-011</b><small>Follow current revision</small></div></button></section>
               <section class="detailSection"><h3>Referenced by</h3><p>SOP-PROD-009 · WI-WH-004 · 5 more</p></section>
             </div>
             <div class="inspectorContent inspectorPaneContent" id="tab-workflow">
-              <div class="miniWorkflow"><div class="done"><i>✓</i><span><b>Author</b><small>Ana Reyes</small></span></div><div class="done"><i>✓</i><span><b>Department review</b><small>QA Supervisor</small></span></div><div class="done"><i>✓</i><span><b>Final approval</b><small>Maria Santos</small></span></div><div class="done"><i>✓</i><span><b>Released</b><small>System</small></span></div></div>
+              <div class="miniWorkflow"><div class="done"><i><i data-lucide="check"></i></i><span><b>Author</b><small>Ana Reyes</small></span></div><div class="done"><i><i data-lucide="check"></i></i><span><b>Department review</b><small>QA Supervisor</small></span></div><div class="done"><i><i data-lucide="check"></i></i><span><b>Final approval</b><small>Maria Santos</small></span></div><div class="done"><i><i data-lucide="check"></i></i><span><b>Released</b><small>System</small></span></div></div>
             </div>
             <div class="inspectorContent inspectorPaneContent" id="tab-history">
               <div class="auditMini"><span>15 Sep 10:16</span><div><b>Released</b><small>System · AR-882 completed</small></div></div>
@@ -231,7 +231,7 @@
           <section class="approvalDetail">
             <div class="approvalHero"><div><span class="recordLabel">Final approval</span><h2>Final Inspection Work Instruction</h2><div class="recordMeta"><b>WI-PROD-021</b><span>Rev 03</span><span class="tag warning">In approval</span></div></div><button class="btn secondary">Open file</button></div>
             <div class="changeBox"><span>Change reason</span><p>Updated final inspection criteria to align with customer specification CS-204 Rev 8 and added digital gauge verification.</p></div>
-            <div class="routeTimeline"><div class="routeNode done"><i>✓</i><div><b>Author</b><span>Ana Reyes · 18 Sep 09:12</span></div></div><div class="routeNode done"><i>✓</i><div><b>Department review</b><span>Operations Supervisor · 19 Sep 11:44</span></div></div><div class="routeNode active"><i>3</i><div><b>Final approval</b><span>Maria Santos · Waiting for your action</span></div></div><div class="routeNode"><i>4</i><div><b>Release</b><span>System controlled</span></div></div></div>
+            <div class="routeTimeline"><div class="routeNode done"><i><i data-lucide="check"></i></i><div><b>Author</b><span>Ana Reyes · 18 Sep 09:12</span></div></div><div class="routeNode done"><i><i data-lucide="check"></i></i><div><b>Department review</b><span>Operations Supervisor · 19 Sep 11:44</span></div></div><div class="routeNode active"><i>3</i><div><b>Final approval</b><span>Maria Santos · Waiting for your action</span></div></div><div class="routeNode"><i>4</i><div><b>Release</b><span>System controlled</span></div></div></div>
             <label class="commentLabel">Decision comment <span>optional</span></label>
             <textarea class="commentBox" placeholder="Add a comment for the audit trail..."></textarea>
             <div class="decisionBar"><button class="btn dangerOutline">Reject / return</button><div></div><button class="btn secondary">Request changes</button><button class="btn primary" data-toast-title="Revision approved" data-toast-message="The decision was recorded and the workflow can continue to release.">Approve revision</button></div>
@@ -241,7 +241,7 @@
 
       <div id="register" class="view">
         <div class="pageHeader"><div><h1>Document register</h1><p>Authoritative list of controlled documents, records, external sources and evidence.</p></div><div class="pageActions"><button class="btn primary" onclick="openManualRepo()">New controlled document</button></div></div>
-        <div class="filterBar"><div class="filterSearch"><span>⌕</span><input placeholder="Search document number or title"></div><select><option>All types</option><option>SOP</option><option>Work Instruction</option></select><select><option>All departments</option><option>Quality</option><option>Operations</option></select><select><option>All statuses</option><option>Effective</option><option>Draft</option></select><button class="btn secondary">More filters</button><span></span><button class="btn secondary">Export</button></div>
+        <div class="filterBar"><div class="filterSearch"><span><i data-lucide="search"></i></span><input placeholder="Search document number or title"></div><select><option>All types</option><option>SOP</option><option>Work Instruction</option></select><select><option>All departments</option><option>Quality</option><option>Operations</option></select><select><option>All statuses</option><option>Effective</option><option>Draft</option></select><button class="btn secondary">More filters</button><span></span><button class="btn secondary">Export</button></div>
         <div class="tableSurface"><table class="dataTable"><thead><tr><th>Document</th><th>Type</th><th>Department</th><th>Rev</th><th>Status</th><th>Owner</th><th>Next review</th><th>Links</th></tr></thead><tbody>
           <tr onclick="showView('repository')"><td><b>SOP-QA-014</b><span>Control of Nonconforming Outputs</span></td><td>SOP</td><td>Quality</td><td>06</td><td><span class="tag success">Effective</span></td><td>M. Santos</td><td>15 Sep 2027</td><td>34</td></tr>
           <tr><td><b>SOP-PUR-012</b><span>Supplier Control Procedure</span></td><td>SOP</td><td>Purchasing</td><td>05</td><td><span class="tag warning">Review due</span></td><td>J. Cruz</td><td>28 Sep 2026</td><td>19</td></tr>
@@ -252,7 +252,7 @@
 
       <div id="audit" class="view">
         <div class="pageHeader"><div><h1>Audit trail</h1><p>Immutable event history across revisions, approvals, relationships and controlled access.</p></div><div class="pageActions"><button class="btn secondary">Export audit report</button></div></div>
-        <div class="filterBar"><div class="filterSearch"><span>⌕</span><input placeholder="Search actor, resource or event"></div><select><option>All events</option><option>Approval</option><option>Revision</option><option>Access</option></select><input class="dateInput" type="date" value="2026-09-20"><span></span></div>
+        <div class="filterBar"><div class="filterSearch"><span><i data-lucide="search"></i></span><input placeholder="Search actor, resource or event"></div><select><option>All events</option><option>Approval</option><option>Revision</option><option>Access</option></select><input class="dateInput" type="date" value="2026-09-20"><span></span></div>
         <div class="tableSurface"><table class="dataTable"><thead><tr><th>Timestamp</th><th>Actor</th><th>Event</th><th>Resource</th><th>Rev</th><th>Context</th><th>Result</th></tr></thead><tbody>
           <tr><td>2026-09-20 10:16:08</td><td>SYSTEM</td><td><b>RELEASED</b></td><td>SOP-QA-001</td><td>05</td><td>Approval route AR-882 completed</td><td><span class="tag success">Success</span></td></tr>
           <tr><td>2026-09-20 10:15:44</td><td>maria.santos</td><td><b>APPROVED</b></td><td>SOP-QA-001</td><td>05</td><td>Final approval · comment retained</td><td><span class="tag success">Success</span></td></tr>
@@ -273,7 +273,7 @@
 
         <div class="resourceWorkspace">
           <section class="resourceList">
-            <div class="filterBar embedded"><div class="filterSearch"><span>⌕</span><input placeholder="Search resource"></div><select><option>All resource types</option><option>Evidence</option><option>External</option><option>Record</option></select><select><option>All link states</option><option>Linked</option><option>Unlinked</option></select><button class="btn secondary">Filters</button></div>
+            <div class="filterBar embedded"><div class="filterSearch"><span><i data-lucide="search"></i></span><input placeholder="Search resource"></div><select><option>All resource types</option><option>Evidence</option><option>External</option><option>Record</option></select><select><option>All link states</option><option>Linked</option><option>Unlinked</option></select><button class="btn secondary">Filters</button></div>
             <div class="resourceTableHeader"><span>Resource</span><span>Type</span><span>Linked to</span><span>Owner</span><span>Status</span></div>
             <button class="resourceRow selected" data-resource="cal"><div><b>CAL-CERT-2026-0084</b><strong>Calibration Certificate — DMM-14</strong><small>Updated 18 Sep 2026</small></div><span>Certificate</span><span>4 records</span><span>Metrology</span><span class="tag success">Current</span></button>
             <button class="resourceRow" data-resource="audit"><div><b>IA-2026-004</b><strong>Internal Audit — Production Line 2</strong><small>Completed 12 Sep 2026</small></div><span>Audit record</span><span>12 records</span><span>Quality</span><span class="tag success">Closed</span></button>
@@ -283,12 +283,12 @@
           </section>
 
           <aside class="resourceInspector">
-            <div class="inspectorHeader compactInspector"><div><span class="recordLabel" id="resType">Certificate</span><h2 id="resTitle">Calibration Certificate — DMM-14</h2><div class="recordMeta"><b id="resCode">CAL-CERT-2026-0084</b><span id="resStatus" class="tag success">Current</span></div></div><button class="iconButton">⋯</button></div>
+            <div class="inspectorHeader compactInspector"><div><span class="recordLabel" id="resType">Certificate</span><h2 id="resTitle">Calibration Certificate — DMM-14</h2><div class="recordMeta"><b id="resCode">CAL-CERT-2026-0084</b><span id="resStatus" class="tag success">Current</span></div></div><button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button></div>
             <dl class="detailGrid resourceDetails"><div><dt>Resource ID</dt><dd id="resId">RES-88291</dd></div><div><dt>Storage</dt><dd id="resStorage">S3 · immutable</dd></div><div><dt>Owner</dt><dd id="resOwner">Metrology</dd></div><div><dt>Relationships</dt><dd id="resCount">4 active</dd></div></dl>
             <section class="detailSection"><div class="sectionTitleRow"><h3>Used by</h3><button class="btn link">Manage links</button></div><div id="resUsedBy">
-              <button class="linkedRecord"><span>▦</span><div><b>DMM-14</b><small>Equipment record · EVIDENCED_BY</small></div></button>
-              <button class="linkedRecord"><span>▦</span><div><b>IA-2026-004</b><small>Internal audit · EVIDENCED_BY</small></div></button>
-              <button class="linkedRecord"><span>▦</span><div><b>MR-229</b><small>Maintenance record · RELATED_TO</small></div></button>
+              <button class="linkedRecord"><span><i data-lucide="link-2"></i></span><div><b>DMM-14</b><small>Equipment record · EVIDENCED_BY</small></div></button>
+              <button class="linkedRecord"><span><i data-lucide="link-2"></i></span><div><b>IA-2026-004</b><small>Internal audit · EVIDENCED_BY</small></div></button>
+              <button class="linkedRecord"><span><i data-lucide="link-2"></i></span><div><b>MR-229</b><small>Maintenance record · RELATED_TO</small></div></button>
             </div></section>
             <section class="detailSection relationSection"><div class="sectionTitleRow"><h3>Relationship map</h3><button class="btn link">Expand</button></div>
               <div class="miniGraph"><span class="node center">CAL-CERT<br><b>2026-0084</b></span><span class="node topLeft">DMM-14</span><span class="node topRight">Calibration Program</span><span class="node bottomLeft">IA-2026-004</span><span class="node bottomRight">MR-229</span><svg viewBox="0 0 400 180"><line x1="200" y1="90" x2="72" y2="38"/><line x1="200" y1="90" x2="330" y2="38"/><line x1="200" y1="90" x2="72" y2="145"/><line x1="200" y1="90" x2="330" y2="145"/></svg></div>
@@ -315,7 +315,7 @@
             <button class="typeRow" data-type="external"><div><b>External Document</b><small>Source + currency tracking</small></div><span>EXT</span><span>EXT-{SRC}-{###}</span><span>Document control</span><span>12 mo</span><span>203</span><span class="tag success">Active</span></button>
           </section>
           <aside class="typeInspector">
-            <div class="inspectorHeader compactInspector"><div><span class="recordLabel">Type configuration</span><h2 id="typeName">SOP / Procedure</h2><div class="recordMeta"><span class="tag success">Active</span><span id="typeCount">184 documents</span></div></div><button class="iconButton">⋯</button></div>
+            <div class="inspectorHeader compactInspector"><div><span class="recordLabel">Type configuration</span><h2 id="typeName">SOP / Procedure</h2><div class="recordMeta"><span class="tag success">Active</span><span id="typeCount">184 documents</span></div></div><button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button></div>
             <div class="formSection"><label>Prefix<input id="typePrefix" value="SOP"></label><label>Numbering format<input id="typeNumbering" value="SOP-{DEPT}-{###}"></label></div>
             <div class="formSection"><label>Default approval route<select id="typeApproval"><option>Department review → Quality approval</option></select></label><label>Default review cycle<select id="typeReview"><option>12 months</option><option>24 months</option></select></label></div>
             <section class="detailSection"><h3>Control requirements</h3><label class="checkRow"><input type="checkbox" checked> Revision history required</label><label class="checkRow"><input type="checkbox" checked> Change reason required</label><label class="checkRow"><input type="checkbox" checked> Approval before release</label><label class="checkRow"><input type="checkbox"> User acknowledgement required</label></section>
@@ -328,7 +328,7 @@
         <div class="pageHeader"><div><h1>QMS AI</h1><p>Permission-aware assistance grounded in current documents, relationships and audit history.</p></div><div class="pageActions"><button class="btn secondary" onclick="openBuilder()">Repository builder</button></div></div>
         <div class="aiWorkspace">
           <section class="aiChat">
-            <div class="aiIntro"><div class="aiOrb">✦</div><div><b>Nexus QMS AI</b><span>Grounded in your authorized quality-system data</span></div></div>
+            <div class="aiIntro"><div class="aiOrb"><i data-lucide="sparkles"></i></div><div><b>Nexus QMS AI</b><span>Grounded in your authorized quality-system data</span></div></div>
             <div class="bubble ai"><b>QMS AI</b><br>I can search effective documents, trace evidence, compare revisions and prepare controlled actions for your approval.</div>
             <div class="bubble user">What procedure applies when incoming material fails inspection?</div>
             <div class="bubble ai">The current effective procedure is <b>SOP-QA-014 Rev 06 — Control of Nonconforming Outputs</b>. It references <b>WI-QA-003</b> for inspection and <b>FORM-QA-011</b> for NCR recording. I found <b>23 linked evidence records</b>.</div>
@@ -361,7 +361,7 @@
 
 <div class="modal" id="manualRepo">
   <div class="modalBox wide">
-    <div class="modalHead"><div><span class="eyebrow">MANUAL DOCUMENT SETUP</span><h2>Add a controlled document</h2><p>Build the record manually when you do not need AI-assisted onboarding.</p></div><button class="iconBtn" onclick="closeManualRepo()">✕</button></div>
+    <div class="modalHead"><div><span class="eyebrow">MANUAL DOCUMENT SETUP</span><h2>Add a controlled document</h2><p>Build the record manually when you do not need AI-assisted onboarding.</p></div><button class="iconBtn" onclick="closeManualRepo()" aria-label="Close"><i data-lucide="x"></i></button></div>
     <div class="manualSteps"><div class="ms active">1 Structure</div><div class="ms">2 Type</div><div class="ms">3 File</div><div class="ms">4 Metadata</div><div class="ms">5 Links</div><div class="ms">6 Approval</div><div class="ms">7 Review</div></div>
 
     <div class="manualPage">
@@ -371,13 +371,13 @@
 
     <div class="manualPage" style="display:none">
       <h3>Select the control type</h3>
-      <div class="choiceGrid"><button class="sourceChoice selected">S<b>SOP / Procedure</b><span>Full revision control</span></button><button class="sourceChoice">W<b>Work Instruction</b><span>Operational instruction</span></button><button class="sourceChoice">F<b>Form / Template</b><span>Controlled master</span></button><button class="sourceChoice">E<b>External Document</b><span>Customer / standard / supplier</span></button></div>
+      <div class="choiceGrid"><button class="sourceChoice selected"><i data-lucide="file-text"></i><b>SOP / Procedure</b><span>Full revision control</span></button><button class="sourceChoice"><i data-lucide="list-checks"></i><b>Work Instruction</b><span>Operational instruction</span></button><button class="sourceChoice"><i data-lucide="file-input"></i><b>Form / Template</b><span>Controlled master</span></button><button class="sourceChoice"><i data-lucide="external-link"></i><b>External Document</b><span>Customer / standard / supplier</span></button></div>
       <label class="fieldLabel">Document numbering rule</label><input class="fieldInput" value="SOP-{DEPT}-{###}">
     </div>
 
     <div class="manualPage" style="display:none">
       <h3>Upload the current file</h3>
-      <div class="dropzone"><div class="uploadIcon">↑</div><b>Drop the document here</b><span>PDF, DOCX, XLSX or supported company file</span><button class="secondary">Browse file</button></div>
+      <div class="dropzone"><div class="uploadIcon"><i data-lucide="upload"></i></div><b>Drop the document here</b><span>PDF, DOCX, XLSX or supported company file</span><button class="secondary">Browse file</button></div>
       <div class="fileReady"><div><b>Supplier_Control_Procedure_Rev5.docx</b><span>2.8 MB · Ready to upload</span></div><span class="pill success">Ready</span></div>
     </div>
 
@@ -395,7 +395,7 @@
 
     <div class="manualPage" style="display:none">
       <h3>Approval route for this revision</h3>
-      <div class="routeBuilder"><div class="routeBox done"><span>1</span><div><b>Owner</b><small>John Cruz</small></div></div><i>→</i><div class="routeBox"><span>2</span><div><b>Department review</b><small>Purchasing Manager</small></div></div><i>→</i><div class="routeBox"><span>3</span><div><b>Final approval</b><small>Quality Manager</small></div></div><i>→</i><div class="routeBox mutedBox"><span>4</span><div><b>Release</b><small>System controlled</small></div></div></div>
+      <div class="routeBuilder"><div class="routeBox done"><span>1</span><div><b>Owner</b><small>John Cruz</small></div></div><i class="routeArrow"><i data-lucide="arrow-right"></i></i><div class="routeBox"><span>2</span><div><b>Department review</b><small>Purchasing Manager</small></div></div><i class="routeArrow"><i data-lucide="arrow-right"></i></i><div class="routeBox"><span>3</span><div><b>Final approval</b><small>Quality Manager</small></div></div><i class="routeArrow"><i data-lucide="arrow-right"></i></i><div class="routeBox mutedBox"><span>4</span><div><b>Release</b><small>System controlled</small></div></div></div>
       <button class="secondary">Customize route</button>
     </div>
 
@@ -411,17 +411,17 @@
 
 <div class="modal" id="builder">
   <div class="modalBox wide">
-    <div class="modalHead"><div><span class="eyebrow">AI REPOSITORY BUILDER</span><h2>Onboard an existing document repository</h2><p>AI inventories and proposes. A human approves every controlled decision.</p></div><button class="iconBtn" onclick="closeBuilder()">✕</button></div>
+    <div class="modalHead"><div><span class="eyebrow">AI REPOSITORY BUILDER</span><h2>Onboard an existing document repository</h2><p>AI inventories and proposes. A human approves every controlled decision.</p></div><button class="iconBtn" onclick="closeBuilder()" aria-label="Close"><i data-lucide="x"></i></button></div>
     <div class="wizardProgress"><div class="wp active">1 Company</div><div class="wp">2 Sources</div><div class="wp">3 Interview</div><div class="wp">4 Proposal</div><div class="wp">5 Review</div></div>
 
     <div class="wiz" id="wiz1">
-      <div class="wizardGrid"><div><h3>Tell us about the company</h3><p class="muted">QMS AI will use this context to propose departments, types and relationships.</p><label class="fieldLabel">Company name</label><input class="fieldInput" value="Apex Precision Manufacturing"><label class="fieldLabel">What does the company do?</label><textarea class="fieldInput">We manufacture precision metal components for automotive customers.</textarea></div><div class="aiHelp"><span>✦</span><h3>QMS AI will help</h3><p>Identify departments and processes</p><p>Recognize SOPs, WIs, forms and records</p><p>Detect likely revisions and duplicates</p><p>Find references and evidence</p><p>Propose approval routes</p></div></div>
+      <div class="wizardGrid"><div><h3>Tell us about the company</h3><p class="muted">QMS AI will use this context to propose departments, types and relationships.</p><label class="fieldLabel">Company name</label><input class="fieldInput" value="Apex Precision Manufacturing"><label class="fieldLabel">What does the company do?</label><textarea class="fieldInput">We manufacture precision metal components for automotive customers.</textarea></div><div class="aiHelp"><span><i data-lucide="sparkles"></i></span><h3>QMS AI will help</h3><p>Identify departments and processes</p><p>Recognize SOPs, WIs, forms and records</p><p>Detect likely revisions and duplicates</p><p>Find references and evidence</p><p>Propose approval routes</p></div></div>
     </div>
 
     <div class="wiz" id="wiz2" style="display:none">
       <h3>Connect the existing repository</h3><p class="muted">Nothing is reorganized or deleted during discovery.</p>
-      <div class="choiceGrid"><button class="sourceChoice selected">↑<b>Upload folders / ZIP</b><span>Existing file directory</span></button><button class="sourceChoice">▦<b>SharePoint / OneDrive</b><span>Company repository</span></button><button class="sourceChoice">△<b>Google Drive</b><span>Shared drives / folders</span></button><button class="sourceChoice">☁<b>S3 / Cloud</b><span>Object storage</span></button></div>
-      <div class="dropzone"><div class="uploadIcon">↑</div><b>Drop folders, ZIPs or files here</b><span>Mock source · Quality Management System · 1,428 files · 7.4 GB</span><button class="secondary">Browse files</button></div>
+      <div class="choiceGrid"><button class="sourceChoice selected"><i data-lucide="folder-up"></i><b>Upload folders / ZIP</b><span>Existing file directory</span></button><button class="sourceChoice"><i data-lucide="building-2"></i><b>SharePoint / OneDrive</b><span>Company repository</span></button><button class="sourceChoice"><i data-lucide="hard-drive"></i><b>Google Drive</b><span>Shared drives / folders</span></button><button class="sourceChoice"><i data-lucide="cloud"></i><b>S3 / Cloud</b><span>Object storage</span></button></div>
+      <div class="dropzone"><div class="uploadIcon"><i data-lucide="upload"></i></div><b>Drop folders, ZIPs or files here</b><span>Mock source · Quality Management System · 1,428 files · 7.4 GB</span><button class="secondary">Browse files</button></div>
     </div>
 
     <div class="wiz" id="wiz3" style="display:none">
@@ -448,6 +448,7 @@
 </div>
 
 
-<script src="./app.js?v=20260921-v2"></script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="./app.js?v=20260921-icons1"></script>
 </body>
 </html>
