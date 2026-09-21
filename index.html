@@ -3,226 +3,437 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NexusQMS — Intelligent Document Control</title>
-<link rel="stylesheet" href="./styles.css?v=20260921-redesign1"><style>@import url("./styles.css?v=20260921-redesign1");</style>
+<title>NexusQMS — Quality Workspace</title>
+<link rel="stylesheet" href="./styles.css?v=20260921-redesign2">
 </head>
 <body>
-<div class="app">
-<aside class="side">
-  <div class="brand"><b>◆</b> NexusQMS<small>INTELLIGENT DOCUMENT CONTROL</small></div>
-  <div class="tenant"><strong>ABC Manufacturing Inc.</strong>Tenant: ABC-001 · Production</div>
-  <div class="navTitle">Workspace</div>
-  <div class="navItem active" data-view="dashboard">▣ <span>Dashboard</span></div>
-  <div class="navItem" data-view="repository">▢ <span>Repository</span></div>
-  <div class="navItem" data-view="register">▤ <span>Document Register</span></div>
-  <div class="navItem" data-view="approvals">☑ <span>Approvals</span></div>
-  <div class="navItem" data-view="audit">◫ <span>Audit Logs</span></div>
-  <div class="navTitle">Structure</div>
-  <div class="navItem" data-view="structure">⌘ <span>Modular Structure</span></div>
-  <div class="navItem" data-view="relationships">↗ <span>Sources & Evidence</span></div>
-  <div class="navItem" data-view="types">◇ <span>Document Types</span></div>
-  <div class="navTitle">Intelligence</div>
-  <div class="navItem" data-view="ai">✦ <span>QMS AI</span></div>
-  <div class="navItem" onclick="openBuilder()">⚡ <span>AI Repository Builder</span></div>
-  <div class="navTitle">Administration</div>
-  <div class="navItem" data-view="users">♙ <span>Users & Access</span></div>
-  <div class="navItem" data-view="settings">⚙ <span>Organization Settings</span></div>
-</aside>
-
-<main class="main">
-<header class="top">
-  <div class="search">⌕ Search document number, title, evidence, source, record, or ask AI…</div>
-  <div class="topSpacer"></div>
-  <button class="soft" onclick="showView('ai')">✦ Ask QMS AI</button>
-  <button class="ghost">🔔 3</button><div class="avatar">MS</div>
-</header>
-
-<section class="content">
-<div id="dashboard" class="view active">
- <div class="pageHead"><div><h1>Quality workspace</h1><div class="muted">Document control, approvals, evidence and ISO-ready traceability.</div></div><button class="primary" onclick="openBuilder()">✦ Onboard repository with AI</button></div>
- <div class="cards">
-  <div class="card">Controlled documents<div class="metric">1,428</div><span class="green small">+34 this month</span></div>
-  <div class="card">Effective<div class="metric">1,236</div><span class="green small">86.6% current</span></div>
-  <div class="card">Pending approvals<div class="metric">24</div><span class="amber small">9 need your action</span></div>
-  <div class="card">Review overdue<div class="metric">7</div><span class="red small">Requires attention</span></div>
-  <div class="card">Linked evidence<div class="metric">8,942</div><span class="green small">Centralized resources</span></div>
- </div>
- <div class="grid3">
-  <div class="panel"><h3>Document lifecycle</h3><div class="donut"></div><div class="muted small" style="text-align:center">Effective 86% · Review 5% · Draft 5% · Obsolete 4%</div></div>
-  <div class="panel"><h3>Documents by department</h3><div class="bars"><div class="bar" style="height:92%"><span>320</span></div><div class="bar" style="height:77%"><span>268</span></div><div class="bar" style="height:62%"><span>214</span></div><div class="bar" style="height:47%"><span>156</span></div><div class="bar" style="height:31%"><span>98</span></div><div class="bar" style="height:22%"><span>74</span></div></div><div class="muted small" style="text-align:center">Quality · Operations · Engineering · Purchasing · HR · Others</div></div>
-  <div class="panel"><h3>Upcoming reviews</h3><div class="row"><div class="grow"><b>Supplier Control Procedure</b><div class="muted small">SOP-PUR-012 · Rev 05</div></div><span class="badge review">8 days</span></div><div class="row"><div class="grow"><b>Internal Audit Procedure</b><div class="muted small">SOP-QA-005 · Rev 04</div></div><span class="badge review">13 days</span></div><div class="row"><div class="grow"><b>Training Management</b><div class="muted small">SOP-HR-003 · Rev 07</div></div><span class="badge review">18 days</span></div></div>
- </div>
- <div class="grid3">
-  <div class="panel"><h3>My approval tasks</h3><div class="row"><div class="grow"><b>WI-PROD-021 Rev 03</b><div class="muted small">Review · Production</div></div><span class="badge danger">Due today</span></div><div class="row"><div class="grow"><b>SOP-QA-014 Rev 06</b><div class="muted small">Final approval · Quality</div></div><span class="badge review">2 days</span></div><div class="row"><div class="grow"><b>POL-001 Rev 05</b><div class="muted small">Acknowledgement</div></div><span class="badge">5 days</span></div></div>
-  <div class="panel"><h3>Recent controlled activity</h3><div class="row"><div class="grow"><b>SOP-QA-001 Rev 05 released</b><div class="muted small">System · 10:16 AM</div></div><span class="badge effective">Released</span></div><div class="row"><div class="grow"><b>Calibration certificate linked</b><div class="muted small">Ana Reyes · 9:41 AM</div></div><span class="badge">Evidence</span></div><div class="row"><div class="grow"><b>WI-PROD-018 Rev 02 approved</b><div class="muted small">Maria Santos · 9:10 AM</div></div><span class="badge effective">Approved</span></div></div>
-  <div class="panel"><h3>Quick actions</h3><div class="quick"><button onclick="showView('register')"><b>＋</b>New document</button><button onclick="showView('approvals')"><b>⇄</b>Approval route</button><button onclick="openBuilder()"><b>✦</b>Bulk AI import</button><button onclick="showView('relationships')"><b>↗</b>Link evidence</button><button onclick="showView('audit')"><b>◫</b>Audit trail</button><button onclick="showView('ai')"><b>⌕</b>Ask AI</button></div></div>
- </div>
- <div class="banner"><div><b>New client onboarding without manually rebuilding their folders.</b><div class="muted small" style="margin-top:4px">Connect or upload the existing repository. The AI inventories files, asks for guidance, proposes a modular structure and relationships, then waits for human approval before committing.</div></div><button class="primary" onclick="openBuilder()">Start AI onboarding</button></div>
-</div>
-
-<div id="repository" class="view">
- <div class="pageHead"><div><h1>Repository</h1><div class="muted">One centralized resource registry. Folder views never duplicate the underlying file.</div></div><button class="primary" onclick="openManualRepo()">＋ Upload / create</button></div>
- <div class="tree">
-  <div class="treeNav"><b>Organization view</b><div class="muted small" style="margin:4px 0 12px">Structure is configurable per tenant.</div><div class="treeItem sel">▾ ABC Manufacturing</div><div class="treeItem indent1">▾ Quality</div><div class="treeItem indent2">Procedures <span class="muted">(84)</span></div><div class="treeItem indent2">Work Instructions <span class="muted">(126)</span></div><div class="treeItem indent2">Forms <span class="muted">(97)</span></div><div class="treeItem indent1">▸ Engineering</div><div class="treeItem indent1">▸ Operations</div><div class="treeItem indent1">▸ Purchasing</div><div class="treeItem indent1">▸ Human Resources</div><hr style="border:0;border-top:1px solid var(--line)"><div class="treeItem">◈ External Documents</div><div class="treeItem">◫ Records & Evidence</div><div class="treeItem">⊘ Obsolete / Archive</div></div>
-  <div>
-   <div class="docHero">
-    <div class="docHeroTop"><div><div class="docNo">SOP-QA-014 · CONTROLLED DOCUMENT</div><h2>Control of Nonconforming Outputs</h2><span class="badge effective">EFFECTIVE · REV 06</span></div><div><button class="ghost">⋯ More</button> <button class="primary">Create revision</button></div></div>
-    <div class="metaGrid"><div class="meta"><label>Owner</label>Quality Department</div><div class="meta"><label>Approver</label>Quality Manager</div><div class="meta"><label>Effective date</label>15 Sep 2026</div><div class="meta"><label>Next review</label>15 Sep 2027</div></div>
-    <div class="tabs"><div class="tab active">Overview</div><div class="tab">Revisions</div><div class="tab">Relationships</div><div class="tab">Approvals</div><div class="tab">Audit trail</div></div>
-    <div class="relGrid">
-      <div class="relCard"><h4>References <span class="badge">4</span></h4><div class="linkItem"><b>WI-QA-003</b> Inspection Work Instruction<br><span class="muted">Follow current revision</span></div><div class="linkItem"><b>FORM-QA-011</b> NCR Form<br><span class="muted">Follow current revision</span></div></div>
-      <div class="relCard"><h4>Evidence <span class="badge">23</span></h4><div class="linkItem"><b>NCR-2026-091</b> Supplier defect record</div><div class="linkItem"><b>IA-2026-004</b> Internal audit record</div></div>
-      <div class="relCard"><h4>Referenced by <span class="badge">7</span></h4><div class="linkItem"><b>SOP-PROD-009</b> Production Control</div><div class="linkItem"><b>WI-WH-004</b> Material Segregation</div></div>
+<div class="shell">
+  <aside class="side">
+    <div class="brandWrap">
+      <div class="brandMark">N</div>
+      <div><div class="brandName">NexusQMS</div><div class="brandTag">QUALITY MANAGEMENT</div></div>
     </div>
-   </div>
-   <div class="panel"><h3>Revision-aware links</h3><div class="muted small">References can follow the current effective revision or remain pinned to the exact historical revision used as audit evidence. Reverse relationships are generated automatically.</div></div>
+
+    <button class="tenantSwitch">
+      <div class="tenantLogo">AM</div>
+      <div class="tenantText"><strong>ABC Manufacturing</strong><span>Production workspace</span></div>
+      <span class="chev">⌄</span>
+    </button>
+
+    <nav class="nav">
+      <div class="navLabel">WORKSPACE</div>
+      <button class="navItem active" data-view="dashboard"><span class="navIcon">⌂</span><span>Overview</span></button>
+      <button class="navItem" data-view="repository"><span class="navIcon">▱</span><span>Documents</span><span class="navCount">1,428</span></button>
+      <button class="navItem" data-view="approvals"><span class="navIcon">✓</span><span>My tasks</span><span class="navCount warn">9</span></button>
+      <button class="navItem" data-view="register"><span class="navIcon">▦</span><span>Register</span></button>
+      <button class="navItem" data-view="audit"><span class="navIcon">◫</span><span>Audit trail</span></button>
+
+      <div class="navLabel">CONTROL</div>
+      <button class="navItem" data-view="relationships"><span class="navIcon">↗</span><span>Sources & evidence</span></button>
+      <button class="navItem" data-view="structure"><span class="navIcon">⌘</span><span>Structure</span></button>
+      <button class="navItem" data-view="types"><span class="navIcon">◇</span><span>Document types</span></button>
+
+      <div class="navLabel">INTELLIGENCE</div>
+      <button class="navItem" data-view="ai"><span class="navIcon">✦</span><span>QMS AI</span></button>
+      <button class="navItem" onclick="openBuilder()"><span class="navIcon">⚡</span><span>Repository builder</span></button>
+
+      <div class="navLabel">ADMIN</div>
+      <button class="navItem" data-view="users"><span class="navIcon">♙</span><span>Users & access</span></button>
+      <button class="navItem" data-view="settings"><span class="navIcon">⚙</span><span>Settings</span></button>
+    </nav>
+
+    <div class="sideFoot">
+      <div class="securityDot"></div>
+      <div><b>Workspace protected</b><span>MFA · Audit logging · RBAC</span></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="top">
+      <div class="mobileBrand">NexusQMS</div>
+      <div class="globalSearch"><span>⌕</span><input placeholder="Search documents, evidence, records or ask QMS AI"></div>
+      <div class="topActions">
+        <button class="aiAsk" onclick="showView('ai')">✦ Ask QMS AI</button>
+        <button class="iconBtn">?</button>
+        <button class="iconBtn">🔔<i>3</i></button>
+        <div class="profile"><div class="avatar">MS</div><div><b>Maria Santos</b><span>Quality Manager</span></div><span>⌄</span></div>
+      </div>
+    </header>
+
+    <section class="content">
+
+      <div id="dashboard" class="view active">
+        <div class="pageHead">
+          <div>
+            <div class="eyebrow">QUALITY WORKSPACE</div>
+            <h1>Good afternoon, Maria</h1>
+            <p>Here is what needs attention across your quality system today.</p>
+          </div>
+          <div class="headActions">
+            <button class="secondary" onclick="openManualRepo()">＋ Add document</button>
+            <button class="primary" onclick="openBuilder()">✦ Onboard with AI</button>
+          </div>
+        </div>
+
+        <div class="statusStrip">
+          <div class="readiness">
+            <div class="ring"><span>92</span><small>%</small></div>
+            <div><div class="eyebrow">DOCUMENT CONTROL READINESS</div><h3>System is in good standing</h3><p>7 overdue reviews and 9 approvals need attention.</p></div>
+          </div>
+          <div class="stripMetric"><span>Controlled</span><b>1,428</b><small>+34 this month</small></div>
+          <div class="stripMetric"><span>Effective</span><b>1,236</b><small class="good">86.6% current</small></div>
+          <div class="stripMetric"><span>Pending</span><b>24</b><small>9 assigned to you</small></div>
+          <div class="stripMetric"><span>Evidence</span><b>8,942</b><small class="good">Linked resources</small></div>
+        </div>
+
+        <div class="dashGrid">
+          <section class="workCard">
+            <div class="cardHead"><div><h3>My work</h3><p>Items that require your action</p></div><button class="textBtn" onclick="showView('approvals')">View all →</button></div>
+            <div class="taskRow urgent">
+              <div class="taskIcon">✓</div>
+              <div class="taskMain"><b>Final Inspection Work Instruction</b><span>WI-PROD-021 · Rev 03 · Final approval</span></div>
+              <div class="taskMeta"><span class="pill danger">Due today</span><b>Review</b></div>
+            </div>
+            <div class="taskRow">
+              <div class="taskIcon">✓</div>
+              <div class="taskMain"><b>Control of Nonconforming Outputs</b><span>SOP-QA-014 · Rev 06 · Final approval</span></div>
+              <div class="taskMeta"><span class="pill warn">2 days</span><b>Review</b></div>
+            </div>
+            <div class="taskRow">
+              <div class="taskIcon">↻</div>
+              <div class="taskMain"><b>Supplier Control Procedure</b><span>SOP-PUR-012 · Rev 05 · Periodic review</span></div>
+              <div class="taskMeta"><span class="pill">8 days</span><b>Open</b></div>
+            </div>
+            <div class="taskRow">
+              <div class="taskIcon">◫</div>
+              <div class="taskMain"><b>Quality Policy acknowledgement</b><span>POL-001 · Rev 05</span></div>
+              <div class="taskMeta"><span class="pill">5 days</span><b>Open</b></div>
+            </div>
+          </section>
+
+          <section class="healthCard">
+            <div class="cardHead"><div><h3>Document health</h3><p>Current lifecycle distribution</p></div><button class="textBtn" onclick="showView('register')">Register →</button></div>
+            <div class="healthBody">
+              <div class="donut2"><div><b>1,428</b><span>documents</span></div></div>
+              <div class="legend">
+                <div><i class="lg effective"></i><span>Effective</span><b>1,236</b><em>86.6%</em></div>
+                <div><i class="lg review"></i><span>In review</span><b>71</b><em>5.0%</em></div>
+                <div><i class="lg draft"></i><span>Draft</span><b>66</b><em>4.6%</em></div>
+                <div><i class="lg obsolete"></i><span>Obsolete</span><b>55</b><em>3.8%</em></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="dashGrid lower">
+          <section class="panel activityPanel">
+            <div class="cardHead"><div><h3>Recent controlled activity</h3><p>Latest governed changes across the workspace</p></div><button class="textBtn" onclick="showView('audit')">Audit trail →</button></div>
+            <div class="timeline">
+              <div class="timelineItem"><span class="time">10:16</span><i class="dot goodDot"></i><div><b>SOP-QA-001 Rev 05 released</b><p>Approval route completed · System</p></div><span class="pill success">Released</span></div>
+              <div class="timelineItem"><span class="time">09:41</span><i class="dot"></i><div><b>Calibration certificate linked</b><p>CAL-CERT-2026-0084 · Ana Reyes</p></div><span class="pill">Evidence</span></div>
+              <div class="timelineItem"><span class="time">09:10</span><i class="dot goodDot"></i><div><b>WI-PROD-018 Rev 02 approved</b><p>Final approval · Maria Santos</p></div><span class="pill success">Approved</span></div>
+              <div class="timelineItem"><span class="time">08:42</span><i class="dot"></i><div><b>SOP-QA-001 Rev 04 downloaded</b><p>Controlled copy · John Cruz</p></div><span class="pill">Access</span></div>
+            </div>
+          </section>
+
+          <section class="panel attentionPanel">
+            <div class="cardHead"><div><h3>Attention</h3><p>Potential quality-system gaps</p></div></div>
+            <div class="attentionItem"><div class="attentionIcon dangerBg">!</div><div><b>7 overdue reviews</b><span>Oldest is 18 days overdue</span></div><button onclick="showView('register')">Resolve</button></div>
+            <div class="attentionItem"><div class="attentionIcon warnBg">↗</div><div><b>4 unlinked records</b><span>Evidence relationships are incomplete</span></div><button onclick="showView('relationships')">Review</button></div>
+            <div class="attentionItem"><div class="attentionIcon aiBg">✦</div><div><b>74 onboarding questions</b><span>AI needs human classification</span></div><button onclick="openBuilder()">Continue</button></div>
+          </section>
+        </div>
+      </div>
+
+      <div id="repository" class="view">
+        <div class="pageHead compact">
+          <div><div class="eyebrow">DOCUMENT CONTROL</div><h1>Documents</h1><p>One canonical repository for controlled documents, records and evidence.</p></div>
+          <div class="headActions"><button class="secondary">Import</button><button class="primary" onclick="openManualRepo()">＋ Add document</button></div>
+        </div>
+
+        <div class="repoWorkspace">
+          <aside class="repoFolders">
+            <div class="repoSearch">⌕ <input placeholder="Filter structure"></div>
+            <button class="folder active"><span>▾</span><b>ABC Manufacturing</b><em>1,428</em></button>
+            <button class="folder level1"><span>▾</span>Quality <em>486</em></button>
+            <button class="folder level2 active2">Procedures <em>84</em></button>
+            <button class="folder level2">Work Instructions <em>126</em></button>
+            <button class="folder level2">Forms & Templates <em>97</em></button>
+            <button class="folder level2">Records & Evidence <em>161</em></button>
+            <button class="folder level1"><span>›</span>Operations <em>368</em></button>
+            <button class="folder level1"><span>›</span>Engineering <em>271</em></button>
+            <button class="folder level1"><span>›</span>Purchasing <em>144</em></button>
+            <button class="folder level1"><span>›</span>Human Resources <em>93</em></button>
+            <div class="folderDivider"></div>
+            <button class="folder">◈ External documents <em>203</em></button>
+            <button class="folder">⊘ Obsolete / archive <em>55</em></button>
+          </aside>
+
+          <section class="repoList">
+            <div class="repoListHead">
+              <div><b>Quality / Procedures</b><span>84 controlled documents</span></div>
+              <div class="repoTools"><button>Filter</button><button>⇅</button><button>⋯</button></div>
+            </div>
+            <div class="docListHead"><span>DOCUMENT</span><span>OWNER</span><span>STATUS</span></div>
+            <button class="docListItem selected" data-doc="qa014">
+              <div><b>SOP-QA-014</b><strong>Control of Nonconforming Outputs</strong><small>SOP · Rev 06 · Updated 15 Sep</small></div>
+              <span>M. Santos</span><span class="pill success">Effective</span>
+            </button>
+            <button class="docListItem" data-doc="qa005">
+              <div><b>SOP-QA-005</b><strong>Internal Audit Procedure</strong><small>SOP · Rev 04 · Updated 02 Sep</small></div>
+              <span>A. Reyes</span><span class="pill warn">Review due</span>
+            </button>
+            <button class="docListItem" data-doc="qa001">
+              <div><b>SOP-QA-001</b><strong>Document Control Procedure</strong><small>SOP · Rev 05 · Updated today</small></div>
+              <span>M. Santos</span><span class="pill success">Effective</span>
+            </button>
+            <button class="docListItem" data-doc="qa020">
+              <div><b>SOP-QA-020</b><strong>Corrective Action Procedure</strong><small>SOP · Rev 03 · Updated 28 Aug</small></div>
+              <span>J. Dela Cruz</span><span class="pill">Draft</span>
+            </button>
+          </section>
+
+          <section class="docInspector">
+            <div class="inspectorTop">
+              <div><span class="docType">CONTROLLED DOCUMENT</span><h2 id="docTitle">Control of Nonconforming Outputs</h2><div class="docCode"><b id="docCode">SOP-QA-014</b><span>Rev 06</span><span class="pill success">Effective</span></div></div>
+              <button class="iconBtn">⋯</button>
+            </div>
+            <div class="docActions"><button class="primary">Open document</button><button class="secondary">Create revision</button></div>
+
+            <div class="inspectorTabs">
+              <button class="active" data-tab="summary">Summary</button>
+              <button data-tab="revisions">Revisions</button>
+              <button data-tab="links">Links</button>
+              <button data-tab="workflow">Workflow</button>
+              <button data-tab="history">History</button>
+            </div>
+
+            <div class="inspectorPane active" id="tab-summary">
+              <div class="infoGrid">
+                <div><span>Owner</span><b>Quality Department</b></div>
+                <div><span>Approver</span><b>Quality Manager</b></div>
+                <div><span>Effective date</span><b>15 Sep 2026</b></div>
+                <div><span>Next review</span><b>15 Sep 2027</b></div>
+              </div>
+              <div class="summaryBlock"><h4>Purpose</h4><p>Defines the controls for identifying, segregating, reviewing and dispositioning nonconforming outputs.</p></div>
+              <div class="summaryBlock"><div class="blockHead"><h4>Linked resources</h4><button class="textBtn">Manage links</button></div>
+                <div class="resourceChip"><span>↗</span><div><b>WI-QA-003</b><small>Inspection Work Instruction · Follow current</small></div></div>
+                <div class="resourceChip"><span>↗</span><div><b>FORM-QA-011</b><small>NCR Form · Follow current</small></div></div>
+                <div class="resourceChip"><span>◫</span><div><b>23 evidence records</b><small>Includes NCR-2026-091 and IA-2026-004</small></div></div>
+              </div>
+            </div>
+            <div class="inspectorPane" id="tab-revisions"><div class="revisionLine current"><b>Rev 06</b><span>Effective · 15 Sep 2026</span></div><div class="revisionLine"><b>Rev 05</b><span>Obsolete · 12 Mar 2026</span></div><div class="revisionLine"><b>Rev 04</b><span>Obsolete · 18 Jul 2025</span></div></div>
+            <div class="inspectorPane" id="tab-links"><div class="summaryBlock"><h4>References</h4><div class="resourceChip"><span>↗</span><div><b>WI-QA-003</b><small>Follow current revision</small></div></div><div class="resourceChip"><span>↗</span><div><b>FORM-QA-011</b><small>Follow current revision</small></div></div></div><div class="summaryBlock"><h4>Referenced by</h4><p>SOP-PROD-009 · WI-WH-004 · 5 more</p></div></div>
+            <div class="inspectorPane" id="tab-workflow"><div class="workflowMini"><span class="done">Author ✓</span><i></i><span class="done">Review ✓</span><i></i><span class="done">Approve ✓</span><i></i><span class="done">Released ✓</span></div></div>
+            <div class="inspectorPane" id="tab-history"><div class="historyItem"><b>Released</b><span>15 Sep 2026 · System</span></div><div class="historyItem"><b>Approved</b><span>15 Sep 2026 · Maria Santos</span></div><div class="historyItem"><b>Submitted</b><span>13 Sep 2026 · Ana Reyes</span></div></div>
+          </section>
+        </div>
+      </div>
+
+      <div id="approvals" class="view">
+        <div class="pageHead compact"><div><div class="eyebrow">ACTION CENTER</div><h1>My tasks</h1><p>Review, approve and acknowledge controlled changes assigned to you.</p></div><div class="headActions"><button class="secondary">Route templates</button></div></div>
+        <div class="taskWorkspace">
+          <section class="taskQueue">
+            <div class="queueTabs"><button class="active">Assigned to me <b>9</b></button><button>Requested by me <b>4</b></button><button>All active <b>24</b></button></div>
+            <button class="approvalItem selected">
+              <div class="approvalTop"><span class="pill danger">Due today</span><small>FINAL APPROVAL</small></div>
+              <b>WI-PROD-021 · Rev 03</b><strong>Final Inspection Work Instruction</strong><span>Owner: Ana Reyes · Operations</span>
+            </button>
+            <button class="approvalItem">
+              <div class="approvalTop"><span class="pill warn">2 days</span><small>FINAL APPROVAL</small></div>
+              <b>SOP-QA-014 · Rev 06</b><strong>Control of Nonconforming Outputs</strong><span>Owner: Quality Department</span>
+            </button>
+            <button class="approvalItem">
+              <div class="approvalTop"><span class="pill">5 days</span><small>ACKNOWLEDGEMENT</small></div>
+              <b>POL-001 · Rev 05</b><strong>Quality Policy</strong><span>Owner: Executive Management</span>
+            </button>
+          </section>
+          <section class="approvalDetail">
+            <div class="approvalHero">
+              <div><span class="docType">FINAL APPROVAL</span><h2>Final Inspection Work Instruction</h2><div class="docCode"><b>WI-PROD-021</b><span>Rev 03</span><span class="pill warn">In approval</span></div></div>
+              <button class="secondary">Open file</button>
+            </div>
+            <div class="changeBox"><span>CHANGE REASON</span><p>Updated final inspection criteria to align with customer specification CS-204 Rev 8 and added digital gauge verification.</p></div>
+            <div class="routeTimeline">
+              <div class="routeNode done"><i>✓</i><div><b>Author</b><span>Ana Reyes · 18 Sep 09:12</span></div></div>
+              <div class="routeNode done"><i>✓</i><div><b>Department review</b><span>Operations Supervisor · 19 Sep 11:44</span></div></div>
+              <div class="routeNode active"><i>3</i><div><b>Final approval</b><span>Maria Santos · Waiting for your action</span></div></div>
+              <div class="routeNode"><i>4</i><div><b>Release</b><span>System controlled</span></div></div>
+            </div>
+            <label class="commentLabel">Approval comment <span>optional</span></label>
+            <textarea class="commentBox" placeholder="Add a decision comment for the audit trail..."></textarea>
+            <div class="decisionBar"><button class="rejectBtn">Reject / return</button><div></div><button class="secondary">Request changes</button><button class="approveBtn">Approve revision</button></div>
+          </section>
+        </div>
+      </div>
+
+      <div id="register" class="view">
+        <div class="pageHead compact"><div><div class="eyebrow">CONTROLLED REGISTER</div><h1>Document register</h1><p>Canonical list of governed documents, records, external sources and evidence.</p></div><button class="primary" onclick="openManualRepo()">＋ New controlled document</button></div>
+        <div class="registerBar"><div class="filterSearch">⌕ <input placeholder="Search document no. or title"></div><select><option>All types</option><option>SOP</option><option>Work Instruction</option></select><select><option>All departments</option><option>Quality</option><option>Operations</option></select><select><option>All statuses</option><option>Effective</option><option>Draft</option></select><button class="secondary">More filters</button><div></div><button class="secondary">Export</button></div>
+        <div class="tableCard"><table><thead><tr><th>Document</th><th>Type</th><th>Department</th><th>Rev</th><th>Status</th><th>Owner</th><th>Next review</th><th>Links</th></tr></thead><tbody>
+          <tr onclick="showView('repository')"><td><b>SOP-QA-014</b><span>Control of Nonconforming Outputs</span></td><td>SOP</td><td>Quality</td><td>06</td><td><span class="pill success">Effective</span></td><td>M. Santos</td><td>15 Sep 2027</td><td>34</td></tr>
+          <tr><td><b>SOP-PUR-012</b><span>Supplier Control Procedure</span></td><td>SOP</td><td>Purchasing</td><td>05</td><td><span class="pill warn">Review due</span></td><td>J. Cruz</td><td>28 Sep 2026</td><td>19</td></tr>
+          <tr><td><b>WI-PROD-021</b><span>Final Inspection Work Instruction</span></td><td>Work Instruction</td><td>Operations</td><td>03</td><td><span class="pill info">In approval</span></td><td>A. Reyes</td><td>—</td><td>12</td></tr>
+          <tr><td><b>EXT-STD-002</b><span>Customer Quality Specification</span></td><td>External</td><td>Quality</td><td>2026.2</td><td><span class="pill success">Current</span></td><td>Document Control</td><td>01 Feb 2027</td><td>28</td></tr>
+        </tbody></table></div>
+      </div>
+
+      <div id="audit" class="view">
+        <div class="pageHead compact"><div><div class="eyebrow">TRACEABILITY</div><h1>Audit trail</h1><p>Immutable event history across revisions, approvals, relationships and controlled access.</p></div><button class="secondary">Export audit report</button></div>
+        <div class="registerBar"><div class="filterSearch">⌕ <input placeholder="Search actor, resource or event"></div><select><option>All events</option><option>Approval</option><option>Revision</option><option>Access</option></select><input type="date" value="2026-09-20"><div></div></div>
+        <div class="tableCard"><table><thead><tr><th>Time</th><th>Actor</th><th>Event</th><th>Resource</th><th>Rev</th><th>Context</th><th>Result</th></tr></thead><tbody>
+          <tr><td>10:16:08</td><td>SYSTEM</td><td><b>RELEASED</b></td><td>SOP-QA-001</td><td>05</td><td>Approval route AR-882 completed</td><td><span class="pill success">Success</span></td></tr>
+          <tr><td>10:15:44</td><td>maria.santos</td><td><b>APPROVED</b></td><td>SOP-QA-001</td><td>05</td><td>Final approval · comment retained</td><td><span class="pill success">Success</span></td></tr>
+          <tr><td>09:41:12</td><td>ana.reyes</td><td><b>LINKED_EVIDENCE</b></td><td>CAL-CERT-2026-0084</td><td>—</td><td>Linked to EQ-DMM-14 + IA-2026-004</td><td><span class="pill success">Success</span></td></tr>
+          <tr><td>08:42:31</td><td>john.cruz</td><td><b>DOWNLOADED</b></td><td>SOP-QA-001</td><td>04</td><td>Signed URL · 5 min expiry</td><td><span class="pill success">Success</span></td></tr>
+        </tbody></table></div>
+      </div>
+
+      <div id="relationships" class="view">
+        <div class="pageHead compact"><div><div class="eyebrow">RESOURCE GRAPH</div><h1>Sources & evidence</h1><p>Upload once, link everywhere, and retain revision-aware traceability.</p></div><button class="primary">＋ Link resource</button></div>
+        <div class="relationHero">
+          <div class="canonicalCard"><span class="docType">CANONICAL RESOURCE</span><h2>Calibration Certificate — DMM-14</h2><div class="docCode"><b>CAL-CERT-2026-0084</b><span class="pill success">Current</span></div><div class="infoGrid"><div><span>Resource ID</span><b>RES-88291</b></div><div><span>Storage</span><b>S3 · immutable</b></div></div></div>
+          <div class="graphCard"><h3>Relationship map</h3><div class="graph"><div class="graphNode center">CAL-CERT<br><b>2026-0084</b></div><div class="graphNode n1">Equipment<br><b>DMM-14</b></div><div class="graphNode n2">Calibration<br><b>Program</b></div><div class="graphNode n3">Internal Audit<br><b>IA-2026-004</b></div><div class="graphNode n4">Maintenance<br><b>MR-229</b></div><svg viewBox="0 0 600 260"><line x1="300" y1="130" x2="100" y2="55"/><line x1="300" y1="130" x2="500" y2="55"/><line x1="300" y1="130" x2="105" y2="210"/><line x1="300" y1="130" x2="495" y2="210"/></svg></div></div>
+        </div>
+      </div>
+
+      <div id="structure" class="view">
+        <div class="pageHead compact"><div><div class="eyebrow">CONFIGURATION</div><h1>Repository structure</h1><p>Configure how each tenant organizes documents without changing the core data model.</p></div><button class="primary">＋ Add level</button></div>
+        <div class="settingsGrid"><section class="panel"><h3>Current hierarchy</h3><div class="structureLevel"><span>1</span><div><b>Department</b><small>Quality, Operations, Engineering...</small></div><i>⋮⋮</i></div><div class="structureLevel"><span>2</span><div><b>Process</b><small>Document Control, Audit, Purchasing...</small></div><i>⋮⋮</i></div><div class="structureLevel"><span>3</span><div><b>Document type</b><small>SOP, Work Instruction, Form...</small></div><i>⋮⋮</i></div><div class="structureLevel"><span>4</span><div><b>Document / resource</b><small>Canonical controlled item</small></div><i>⋮⋮</i></div></section><section class="panel"><h3>Structure presets</h3><div class="preset"><b>Multi-site manufacturer</b><span>Site → Department → Process → Document</span><button>Use</button></div><div class="preset"><b>Service organization</b><span>Business Unit → Process → Category</span><button>Use</button></div><div class="preset"><b>Simple SME</b><span>Department → Type → Document</span><button>Use</button></div></section></div>
+      </div>
+
+      <div id="types" class="view">
+        <div class="pageHead compact"><div><div class="eyebrow">CONFIGURATION</div><h1>Document types</h1><p>Define metadata, numbering, approval and review rules by controlled resource type.</p></div><button class="primary">＋ Add type</button></div>
+        <div class="typeGrid">
+          <div class="typeCard"><span class="typeIcon">P</span><div><b>Policy</b><span>37 documents</span><small>Approval + acknowledgement</small></div><button>›</button></div>
+          <div class="typeCard"><span class="typeIcon">S</span><div><b>SOP / Procedure</b><span>184 documents</span><small>Full revision control</small></div><button>›</button></div>
+          <div class="typeCard"><span class="typeIcon">W</span><div><b>Work Instruction</b><span>326 documents</span><small>Department approval</small></div><button>›</button></div>
+          <div class="typeCard"><span class="typeIcon">F</span><div><b>Form / Template</b><span>391 documents</span><small>Controlled master</small></div><button>›</button></div>
+          <div class="typeCard"><span class="typeIcon">E</span><div><b>External Document</b><span>203 documents</span><small>Source + review tracking</small></div><button>›</button></div>
+        </div>
+      </div>
+
+      <div id="ai" class="view">
+        <div class="pageHead compact"><div><div class="eyebrow">QMS INTELLIGENCE</div><h1>QMS AI</h1><p>Permission-aware assistant grounded in effective documents, relationships and audit history.</p></div><button class="secondary" onclick="openBuilder()">⚡ Repository builder</button></div>
+        <div class="aiWorkspace">
+          <section class="aiChat">
+            <div class="aiIntro"><div class="aiOrb">✦</div><div><b>Nexus QMS AI</b><span>Grounded in your authorized quality-system data</span></div></div>
+            <div class="bubble ai"><b>QMS AI</b><br>I can search effective documents, trace evidence, compare revisions and prepare controlled actions for your approval.</div>
+            <div class="bubble user">What procedure applies when incoming material fails inspection?</div>
+            <div class="bubble ai">The current effective procedure is <b>SOP-QA-014 Rev 06 — Control of Nonconforming Outputs</b>. It references <b>WI-QA-003</b> for inspection and <b>FORM-QA-011</b> for NCR recording. I found <b>23 linked evidence records</b>.</div>
+            <div class="answerSources"><span>SOURCES</span><button>SOP-QA-014 · Rev 06</button><button>WI-QA-003</button><button>FORM-QA-011</button></div>
+            <div class="chatComposer"><input placeholder="Ask about documents, evidence, approvals or audits..."><button>✦</button></div>
+          </section>
+          <aside class="aiSide">
+            <section class="panel"><h3>Agent boundaries</h3><div class="permissionRow"><span>Search authorized documents</span><b class="good">Allowed</b></div><div class="permissionRow"><span>Trace references & evidence</span><b class="good">Allowed</b></div><div class="permissionRow"><span>Create revision draft</span><b class="amber">Confirm</b></div><div class="permissionRow"><span>Submit for approval</span><b class="amber">Confirm</b></div><div class="permissionRow"><span>Approve / release</span><b class="red">Blocked</b></div></section>
+            <section class="panel"><h3>Try asking</h3><button class="promptChip">Show procedures due for review next month</button><button class="promptChip">Trace evidence for Supplier Control</button><button class="promptChip">Prepare an auditor evidence package</button></section>
+          </aside>
+        </div>
+      </div>
+
+      <div id="users" class="view">
+        <div class="pageHead compact"><div><div class="eyebrow">ADMINISTRATION</div><h1>Users & access</h1><p>Role-based access with separation of duties and document-level exceptions.</p></div><button class="primary">＋ Invite user</button></div>
+        <div class="statusStrip smallStrip"><div class="stripMetric"><span>Licensed users</span><b>50</b><small>48 active</small></div><div class="stripMetric"><span>Document owners</span><b>18</b></div><div class="stripMetric"><span>Reviewers</span><b>12</b></div><div class="stripMetric"><span>Approvers</span><b>6</b></div><div class="stripMetric"><span>Auditors</span><b>3</b></div></div>
+        <div class="panel"><div class="cardHead"><div><h3>Separation of duties</h3><p>System Administrator, Document Controller and Quality Approver remain independent authorities.</p></div><span class="pill success">Enforced</span></div></div>
+      </div>
+
+      <div id="settings" class="view">
+        <div class="pageHead compact"><div><div class="eyebrow">ADMINISTRATION</div><h1>Organization settings</h1><p>Tenant-specific document-control, security and governance defaults.</p></div><button class="primary">Save changes</button></div>
+        <div class="settingsGrid"><section class="panel"><h3>Document control</h3><div class="settingRow"><div><b>Default review cycle</b><span>Applied when a document type has no override</span></div><select><option>12 months</option><option>24 months</option></select></div><div class="settingRow"><div><b>Obsolete retention</b><span>Minimum retention of historical revisions</span></div><select><option>7 years</option></select></div><div class="settingRow"><div><b>Require change reason</b><span>Mandatory for every new revision</span></div><span class="toggle on"></span></div></section><section class="panel"><h3>Security</h3><div class="settingRow"><div><b>Multi-factor authentication</b><span>Required for all licensed users</span></div><span class="toggle on"></span></div><div class="settingRow"><div><b>Signed file URLs</b><span>Time-limited document downloads</span></div><span class="toggle on"></span></div><div class="settingRow"><div><b>Audit deletion</b><span>Append-only event history</span></div><span class="pill danger">Prohibited</span></div></section></div>
+      </div>
+
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="manualRepo">
+  <div class="modalBox wide">
+    <div class="modalHead"><div><span class="eyebrow">MANUAL DOCUMENT SETUP</span><h2>Add a controlled document</h2><p>Build the record manually when you do not need AI-assisted onboarding.</p></div><button class="iconBtn" onclick="closeManualRepo()">✕</button></div>
+    <div class="manualSteps"><div class="ms active">1 Structure</div><div class="ms">2 Type</div><div class="ms">3 File</div><div class="ms">4 Metadata</div><div class="ms">5 Links</div><div class="ms">6 Approval</div><div class="ms">7 Review</div></div>
+
+    <div class="manualPage">
+      <h3>Choose where this document appears</h3>
+      <div class="wizardGrid"><div class="panel"><div class="folderMini active">ABC Manufacturing</div><div class="folderMini l1">▾ Purchasing</div><div class="folderMini l2 active">Procedures</div><div class="folderMini l1">› Quality</div><div class="folderMini l1">› Operations</div><button class="secondary">＋ Add structure node</button></div><div class="panel"><h3>Selected location</h3><div class="pathBox">ABC Manufacturing <span>›</span> Purchasing <span>›</span> Procedures</div><p class="muted small">This is a navigation location only. The underlying resource stays canonical and may be linked anywhere else.</p></div></div>
+    </div>
+
+    <div class="manualPage" style="display:none">
+      <h3>Select the control type</h3>
+      <div class="choiceGrid"><button class="sourceChoice selected">S<b>SOP / Procedure</b><span>Full revision control</span></button><button class="sourceChoice">W<b>Work Instruction</b><span>Operational instruction</span></button><button class="sourceChoice">F<b>Form / Template</b><span>Controlled master</span></button><button class="sourceChoice">E<b>External Document</b><span>Customer / standard / supplier</span></button></div>
+      <label class="fieldLabel">Document numbering rule</label><input class="fieldInput" value="SOP-{DEPT}-{###}">
+    </div>
+
+    <div class="manualPage" style="display:none">
+      <h3>Upload the current file</h3>
+      <div class="dropzone"><div class="uploadIcon">↑</div><b>Drop the document here</b><span>PDF, DOCX, XLSX or supported company file</span><button class="secondary">Browse file</button></div>
+      <div class="fileReady"><div><b>Supplier_Control_Procedure_Rev5.docx</b><span>2.8 MB · Ready to upload</span></div><span class="pill success">Ready</span></div>
+    </div>
+
+    <div class="manualPage" style="display:none">
+      <h3>Controlled metadata</h3>
+      <div class="formGrid"><label>Document number<input value="SOP-PUR-012"></label><label>Revision<input value="05"></label><label>Title<input value="Supplier Control Procedure"></label><label>Owner<select><option>John Cruz</option><option>Maria Santos</option></select></label><label>Department<select><option>Purchasing</option><option>Quality</option></select></label><label>Review cycle<select><option>12 months</option><option>24 months</option></select></label></div>
+      <label class="fieldLabel">Initial issue / change reason</label><textarea class="fieldInput">Initial migration into controlled repository.</textarea>
+    </div>
+
+    <div class="manualPage" style="display:none">
+      <h3>Add references and evidence</h3>
+      <div class="wizardGrid thirds"><div class="linkPanel"><span>REFERENCES</span><b>WI-PUR-004</b><small>Supplier Assessment</small><button>＋ Add reference</button></div><div class="linkPanel"><span>EVIDENCE</span><b>SUP-EVAL-2026-031</b><small>Supplier evaluation record</small><button>＋ Add evidence</button></div><div class="linkPanel"><span>EXTERNAL SOURCE</span><b>CS-204</b><small>Customer specification</small><button>＋ Add source</button></div></div>
+      <p class="muted small">Living links can follow the current effective revision; historical evidence may pin an exact revision.</p>
+    </div>
+
+    <div class="manualPage" style="display:none">
+      <h3>Approval route for this revision</h3>
+      <div class="routeBuilder"><div class="routeBox done"><span>1</span><div><b>Owner</b><small>John Cruz</small></div></div><i>→</i><div class="routeBox"><span>2</span><div><b>Department review</b><small>Purchasing Manager</small></div></div><i>→</i><div class="routeBox"><span>3</span><div><b>Final approval</b><small>Quality Manager</small></div></div><i>→</i><div class="routeBox mutedBox"><span>4</span><div><b>Release</b><small>System controlled</small></div></div></div>
+      <button class="secondary">Customize route</button>
+    </div>
+
+    <div class="manualPage" style="display:none">
+      <h3>Review before creating</h3>
+      <div class="reviewGrid"><div class="reviewSummary"><span>PATH</span><b>Purchasing / Procedures</b><span>DOCUMENT</span><b>SOP-PUR-012 · Rev 05</b><span>OWNER</span><b>John Cruz</b><span>REVIEW CYCLE</span><b>12 months</b></div><div class="nextSteps"><h4>What happens next</h4><ol><li>File stored as one canonical resource</li><li>Revision created with Draft status</li><li>Relationships are saved</li><li>Approval route snapshot is created</li><li>Audit event is recorded</li><li>Document becomes Effective only after approval</li></ol></div></div>
+      <div class="reviewCallout"><div><b>Create controlled draft?</b><span>It will appear in the repository immediately as Draft / Pending submission.</span></div><button class="primary" onclick="finishManualRepo()">Create controlled draft</button></div>
+    </div>
+
+    <div class="modalActions"><button class="secondary" id="manualPrev" onclick="manualMove(-1)" style="display:none">← Back</button><div></div><button class="primary" id="manualNext" onclick="manualMove(1)">Continue →</button></div>
   </div>
- </div>
 </div>
 
-<div id="register" class="view">
- <div class="pageHead"><div><h1>Document register</h1><div class="muted">Canonical registry across controlled documents, records, external sources and evidence.</div></div><button class="primary">＋ New controlled document</button></div>
- <div class="tableWrap"><div class="toolbar"><input placeholder="Search register…"><select><option>All departments</option><option>Quality</option><option>Engineering</option></select><select><option>All statuses</option><option>Effective</option><option>Draft</option><option>Review</option></select><button class="ghost">Filters</button><div class="grow"></div><button class="ghost">Export register</button></div>
- <table><thead><tr><th>Document no.</th><th>Title</th><th>Type</th><th>Department</th><th>Revision</th><th>Status</th><th>Owner</th><th>Next review</th><th>Links</th></tr></thead><tbody>
- <tr><td class="docTitle" onclick="showView('repository')">SOP-QA-014</td><td>Control of Nonconforming Outputs</td><td>SOP</td><td>Quality</td><td>06</td><td><span class="badge effective">Effective</span></td><td>M. Santos</td><td>15 Sep 2027</td><td>34</td></tr>
- <tr><td class="docTitle">SOP-PUR-012</td><td>Supplier Control Procedure</td><td>SOP</td><td>Purchasing</td><td>05</td><td><span class="badge review">Review due</span></td><td>J. Cruz</td><td>28 Sep 2026</td><td>19</td></tr>
- <tr><td class="docTitle">WI-PROD-021</td><td>Final Inspection Work Instruction</td><td>Work Instruction</td><td>Operations</td><td>03</td><td><span class="badge draft">In approval</span></td><td>A. Reyes</td><td>—</td><td>12</td></tr>
- <tr><td class="docTitle">EXT-STD-002</td><td>Customer Quality Specification</td><td>External</td><td>Quality</td><td>2026.2</td><td><span class="badge effective">Current</span></td><td>Document Control</td><td>01 Feb 2027</td><td>28</td></tr>
- </tbody></table></div>
-</div>
-
-<div id="approvals" class="view">
- <div class="pageHead"><div><h1>Approval routing</h1><div class="muted">Each revision snapshots its own configurable route for permanent historical traceability.</div></div><button class="primary">＋ New route template</button></div>
- <div class="panel"><h3>SOP-QA-014 · Revision 06</h3><div class="route"><div class="step"><b>1 · Author</b><span class="green small">✓ Ana Reyes</span></div><div class="arrow">→</div><div class="step"><b>2 · Department review</b><span class="green small">✓ QA Supervisor</span></div><div class="arrow">→</div><div class="step"><b>3 · Parallel review</b><span class="green small">✓ Engineering<br>✓ Operations</span></div><div class="arrow">→</div><div class="step"><b>4 · Final approval</b><span class="amber small">● Quality Manager</span></div><div class="arrow">→</div><div class="step"><b>5 · Release</b><span class="muted small">System controlled</span></div></div></div>
- <div class="grid2" style="margin-top:14px"><div class="panel"><h3>Routing rules</h3><div class="row"><div class="grow"><b>Sequential + parallel steps</b><div class="muted small">Mix reviewers and approvers in one route.</div></div><span class="badge effective">Enabled</span></div><div class="row"><div class="grow"><b>Conditional approver</b><div class="muted small">Require Engineering when document affects equipment.</div></div><span class="badge effective">Enabled</span></div><div class="row"><div class="grow"><b>Escalation</b><div class="muted small">Notify manager after 3 overdue days.</div></div><span class="badge">3 days</span></div></div><div class="panel"><h3>Revision controls</h3><div class="row"><div class="grow"><b>Route snapshot</b><div class="muted small">Historical workflow cannot change after submission.</div></div><span class="badge effective">Locked</span></div><div class="row"><div class="grow"><b>Rejection behavior</b><div class="muted small">Return to author and preserve comments.</div></div></div><div class="row"><div class="grow"><b>Release authority</b><div class="muted small">Only after final approval.</div></div></div></div></div>
-</div>
-
-<div id="audit" class="view">
- <div class="pageHead"><div><h1>Immutable audit trail</h1><div class="muted">Append-only activity history across documents, revisions, approvals, relationships and access.</div></div><button class="ghost">Export audit report</button></div>
- <div class="tableWrap"><div class="toolbar"><input placeholder="Search actor, document, event…"><select><option>All event types</option><option>Approval</option><option>Download</option><option>Revision</option></select><input type="date" value="2026-09-20"></div>
- <table><thead><tr><th>Timestamp</th><th>Actor</th><th>Action</th><th>Resource</th><th>Revision</th><th>Context</th><th>Result</th></tr></thead><tbody class="audit">
- <tr><td>2026-09-20 10:16:08</td><td>SYSTEM</td><td>RELEASED</td><td>SOP-QA-001</td><td>05</td><td>Approval route AR-882 completed</td><td>SUCCESS</td></tr>
- <tr><td>2026-09-20 10:15:44</td><td>maria.santos</td><td>APPROVED</td><td>SOP-QA-001</td><td>05</td><td>Final approval · comment retained</td><td>SUCCESS</td></tr>
- <tr><td>2026-09-20 09:41:12</td><td>ana.reyes</td><td>LINKED_EVIDENCE</td><td>CAL-CERT-2026-0084</td><td>—</td><td>Linked to EQ-DMM-14 + IA-2026-004</td><td>SUCCESS</td></tr>
- <tr><td>2026-09-20 08:42:31</td><td>john.cruz</td><td>DOWNLOADED</td><td>SOP-QA-001</td><td>04</td><td>Signed URL · 5 min expiry</td><td>SUCCESS</td></tr>
- </tbody></table></div>
-</div>
-
-<div id="structure" class="view">
- <div class="pageHead"><div><h1>Modular document structure</h1><div class="muted">Clients can organize by department, process, site, business unit or their own hierarchy without changing the core schema.</div></div><button class="primary">＋ Add structure level</button></div>
- <div class="grid2"><div class="panel"><h3>Current hierarchy</h3><div class="treeItem sel">1 · Department</div><div class="treeItem indent1">2 · Process</div><div class="treeItem indent2">3 · Document Type</div><div class="treeItem indent2">4 · Document / Resource</div><div class="muted small" style="margin-top:12px">Drag/drop configuration would be implemented in the production UI.</div></div><div class="panel"><h3>Alternative client structures</h3><div class="row"><div class="grow"><b>Multi-site manufacturer</b><div class="muted small">Site → Department → Process → Document</div></div></div><div class="row"><div class="grow"><b>Service organization</b><div class="muted small">Business Unit → Process → Document Category</div></div></div><div class="row"><div class="grow"><b>Simple SME</b><div class="muted small">Department → Document Type → Document</div></div></div></div></div>
-</div>
-
-<div id="relationships" class="view">
- <div class="pageHead"><div><h1>Centralized sources, references & evidence</h1><div class="muted">Upload once, link everywhere. No duplicate copies across departments or documents.</div></div><button class="primary">＋ Link resource</button></div>
- <div class="grid3"><div class="panel"><h3>Canonical resource</h3><div class="docNo">CAL-CERT-2026-0084</div><h2 style="font-size:18px">Calibration Certificate — DMM-14</h2><span class="badge effective">Current</span><div class="row"><div class="grow">Resource ID</div><b>RES-88291</b></div><div class="row"><div class="grow">Storage object</div><b>S3 · immutable</b></div></div><div class="panel"><h3>Used as evidence by</h3><div class="linkItem">Equipment DMM-14</div><div class="linkItem">Calibration Program</div><div class="linkItem">Internal Audit IA-2026-004</div><div class="linkItem">Maintenance Record MR-229</div></div><div class="panel"><h3>Relationship types</h3><div class="linkItem">REFERENCES</div><div class="linkItem">EVIDENCED_BY</div><div class="linkItem">REQUIRED_BY</div><div class="linkItem">SUPERSEDES</div><div class="linkItem">DERIVED_FROM</div><div class="linkItem">RELATED_TO</div></div></div>
-</div>
-
-<div id="types" class="view"><div class="pageHead"><div><h1>Document types</h1><div class="muted">Tenant-configurable metadata, numbering and control requirements.</div></div><button class="primary">＋ Add type</button></div><div class="cards"><div class="card"><b>Policy</b><div class="metric">37</div><span class="small muted">Approval + acknowledgement</span></div><div class="card"><b>SOP / Procedure</b><div class="metric">184</div><span class="small muted">Full revision control</span></div><div class="card"><b>Work Instruction</b><div class="metric">326</div><span class="small muted">Department approval</span></div><div class="card"><b>Form / Template</b><div class="metric">391</div><span class="small muted">Controlled master</span></div><div class="card"><b>External</b><div class="metric">203</div><span class="small muted">Source + review tracking</span></div></div></div>
-
-<div id="ai" class="view">
- <div class="pageHead"><div><h1>QMS AI</h1><div class="muted">Permission-aware assistant grounded in current effective documents and centralized relationships.</div></div><button class="soft" onclick="openBuilder()">⚡ Repository Builder</button></div>
- <div class="aiPanel">
-  <div class="chat"><div class="chatBody"><div class="bubble ai"><b>QMS AI</b><br>I can search controlled documents, trace references/evidence, inspect revision history and prepare actions for your approval.</div><div class="bubble user">What procedure applies when incoming material fails inspection?</div><div class="bubble ai">The current effective procedure is <b>SOP-QA-014 Rev 06 — Control of Nonconforming Outputs</b>. It references <b>WI-QA-003</b> for inspection and <b>FORM-QA-011</b> for NCR recording. I found 23 linked evidence records. Would you like the applicable steps or the evidence trail?</div></div><div class="chatInput"><input placeholder="Ask about documents, evidence, approvals or audits…"><button class="primary">Send</button></div></div>
-  <div><div class="panel"><h3>Agent permissions</h3><div class="row"><div class="grow">Search authorized documents</div><span class="badge effective">Allowed</span></div><div class="row"><div class="grow">Trace references/evidence</div><span class="badge effective">Allowed</span></div><div class="row"><div class="grow">Create revision draft</div><span class="badge review">Human confirm</span></div><div class="row"><div class="grow">Submit for approval</div><span class="badge review">Human confirm</span></div><div class="row"><div class="grow">Approve / release</div><span class="badge danger">Not allowed</span></div></div><div class="panel" style="margin-top:14px"><h3>Suggested questions</h3><div class="linkItem">Show procedures due for review next month</div><div class="linkItem">Trace evidence for Supplier Control</div><div class="linkItem">Which documents changed after IA-2026-004?</div><div class="linkItem">Prepare an auditor evidence package</div></div></div>
- </div>
-</div>
-
-<div id="users" class="view"><div class="pageHead"><div><h1>Users & access</h1><div class="muted">Role-based access with department and document-level exceptions.</div></div><button class="primary">＋ Invite user</button></div><div class="cards"><div class="card">Licensed users<div class="metric">50</div><span class="small green">48 active</span></div><div class="card">Document owners<div class="metric">18</div></div><div class="card">Reviewers<div class="metric">12</div></div><div class="card">Approvers<div class="metric">6</div></div><div class="card">Auditors<div class="metric">3</div></div></div><div class="panel"><h3>Separation of duties</h3><div class="muted">System Administrator, Document Controller and Quality Approver are independent authorities. Admin access does not automatically grant approval authority.</div></div></div>
-
-<div id="settings" class="view"><div class="pageHead"><div><h1>Organization settings</h1><div class="muted">Tenant-specific QMS configuration.</div></div><button class="primary">Save changes</button></div><div class="grid2"><div class="panel"><h3>Document control</h3><div class="row"><div class="grow">Default review cycle</div><b>12 months</b></div><div class="row"><div class="grow">Obsolete document retention</div><b>7 years</b></div><div class="row"><div class="grow">Require change reason</div><span class="badge effective">Yes</span></div></div><div class="panel"><h3>Security</h3><div class="row"><div class="grow">MFA</div><span class="badge effective">Required</span></div><div class="row"><div class="grow">Signed file URLs</div><span class="badge effective">Enabled</span></div><div class="row"><div class="grow">Audit deletion</div><span class="badge danger">Prohibited</span></div></div></div></div>
-</section>
-</main>
-</div>
-
-<div class="modal" id="manualRepo"><div class="modalBox" style="width:min(980px,97vw)"><div class="pageHead"><div><div class="docNo">MANUAL REPOSITORY SETUP</div><h2 style="margin:4px 0">Add and organize company documents</h2><div class="muted">Use this when the Document Controller wants to build the repository manually instead of AI onboarding.</div></div><button class="ghost" onclick="closeManualRepo()">✕</button></div>
-<div class="manualSteps"><div class="ms active">1 Structure</div><div class="ms">2 Document type</div><div class="ms">3 Upload</div><div class="ms">4 Metadata</div><div class="ms">5 Relationships</div><div class="ms">6 Approval</div><div class="ms">7 Review</div></div>
-<div class="manualPage"><h3>1. Choose where this document belongs</h3><div class="grid2"><div class="panel"><b>Repository path</b><div class="treeItem sel">ABC Manufacturing</div><div class="treeItem indent1">▾ Quality</div><div class="treeItem indent2 sel">Procedures</div><div class="treeItem indent1">▸ Operations</div><div class="treeItem indent1">▸ Engineering</div><button class="soft" style="margin-top:10px">＋ Add department / folder</button></div><div class="panel"><h3>Selected location</h3><p><b>Quality → Procedures</b></p><div class="field"><label>Or create a new structure node</label><input placeholder="e.g. Supplier Quality"></div><p class="muted small">The folder is only a navigation view. The uploaded resource remains canonical and can be linked elsewhere without copying it.</p></div></div></div>
-<div class="manualPage" style="display:none"><h3>2. What kind of controlled resource is this?</h3><div class="sourceChoices"><button class="sourceChoice selected">▤<b>SOP / Procedure</b><span>Full revision control</span></button><button class="sourceChoice">▧<b>Work Instruction</b><span>Operational instruction</span></button><button class="sourceChoice">□<b>Form / Template</b><span>Controlled master</span></button><button class="sourceChoice">◈<b>External Document</b><span>Customer / standard / supplier</span></button></div><div class="field"><label>Document numbering rule</label><input value="SOP-{DEPT}-{###}"></div></div>
-<div class="manualPage" style="display:none"><h3>3. Upload the file</h3><div class="dropzone"><b>Drop the current document here</b><br><span class="muted small">PDF, DOCX, XLSX or supported company file</span><br><button class="soft" style="margin-top:10px">Browse file</button></div><div class="panel" style="margin-top:12px"><b>Example selected file</b><div class="row"><div class="grow">Supplier_Control_Procedure_Rev5.docx</div><span class="badge effective">Ready</span></div></div></div>
-<div class="manualPage" style="display:none"><h3>4. Define controlled metadata</h3><div class="formGrid"><div class="field"><label>Document number</label><input value="SOP-PUR-012"></div><div class="field"><label>Revision</label><input value="05"></div><div class="field"><label>Title</label><input value="Supplier Control Procedure"></div><div class="field"><label>Owner</label><select><option>John Cruz</option><option>Maria Santos</option></select></div><div class="field"><label>Department</label><select><option>Purchasing</option><option>Quality</option></select></div><div class="field"><label>Review cycle</label><select><option>12 months</option><option>24 months</option></select></div></div><div class="field"><label>Change / initial issue reason</label><textarea>Initial migration into controlled repository.</textarea></div></div>
-<div class="manualPage" style="display:none"><h3>5. Link references and evidence</h3><div class="grid3"><div class="panel"><h3>References</h3><div class="linkItem">WI-PUR-004 · Supplier Assessment</div><button class="soft">＋ Link reference</button></div><div class="panel"><h3>Evidence / records</h3><div class="linkItem">SUP-EVAL-2026-031</div><button class="soft">＋ Link evidence</button></div><div class="panel"><h3>External sources</h3><div class="linkItem">Customer Spec CS-204</div><button class="soft">＋ Link source</button></div></div><p class="muted small">Choose “follow current revision” for living references or pin an exact revision for historical evidence.</p></div>
-<div class="manualPage" style="display:none"><h3>6. Configure approval for this revision</h3><div class="route"><div class="step"><b>1 · Owner</b><span class="small">John Cruz</span></div><div class="arrow">→</div><div class="step"><b>2 · Review</b><span class="small">Purchasing Manager</span></div><div class="arrow">→</div><div class="step"><b>3 · Final approval</b><span class="small">Quality Manager</span></div><div class="arrow">→</div><div class="step"><b>4 · Release</b><span class="small muted">System</span></div></div><button class="soft" style="margin-top:14px">Customize this revision route</button></div>
-<div class="manualPage" style="display:none"><h3>7. Review before creating</h3><div class="grid2"><div class="panel"><h3>Document</h3><div class="row"><div class="grow">Path</div><b>Purchasing → Procedures</b></div><div class="row"><div class="grow">Document</div><b>SOP-PUR-012 Rev 05</b></div><div class="row"><div class="grow">Owner</div><b>John Cruz</b></div><div class="row"><div class="grow">Review cycle</div><b>12 months</b></div></div><div class="panel"><h3>What happens next</h3><div class="row">1 · File stored as centralized resource</div><div class="row">2 · Revision created as Draft</div><div class="row">3 · Relationships saved</div><div class="row">4 · Approval route snapshot created</div><div class="row">5 · Audit event recorded</div><div class="row">6 · Only becomes Effective after approval</div></div></div><div class="banner"><div><b>Create as controlled draft?</b><div class="muted small">It will appear in the repository immediately as Draft / Pending submission.</div></div><button class="primary" onclick="finishManualRepo()">Create controlled draft</button></div></div>
-<div class="modalActions"><button class="ghost" id="manualPrev" onclick="manualMove(-1)" style="display:none">← Back</button><div class="grow"></div><button class="primary" id="manualNext" onclick="manualMove(1)">Continue →</button></div></div></div>
 <div class="modal" id="builder">
- <div class="modalBox" style="width:min(980px,97vw)">
-  <div style="display:flex;justify-content:space-between;gap:12px;align-items:start">
-   <div><div class="docNo">NEW CLIENT ONBOARDING</div><h2 style="margin:3px 0">Build a repository with QMS AI</h2><div class="muted">A guided setup. The client can answer in plain language; AI does the structuring work.</div></div>
-   <button class="ghost" onclick="closeBuilder()">✕</button>
-  </div>
-  <div class="wizardProgress" style="display:flex;gap:6px;margin:20px 0">
-   <div class="wp active" data-p="1">1 Company</div><div class="wp" data-p="2">2 Files</div><div class="wp" data-p="3">3 AI interview</div><div class="wp" data-p="4">4 Proposal</div><div class="wp" data-p="5">5 Review</div>
-  </div>
+  <div class="modalBox wide">
+    <div class="modalHead"><div><span class="eyebrow">AI REPOSITORY BUILDER</span><h2>Onboard an existing document repository</h2><p>AI inventories and proposes. A human approves every controlled decision.</p></div><button class="iconBtn" onclick="closeBuilder()">✕</button></div>
+    <div class="wizardProgress"><div class="wp active">1 Company</div><div class="wp">2 Sources</div><div class="wp">3 Interview</div><div class="wp">4 Proposal</div><div class="wp">5 Review</div></div>
 
-  <div class="wiz" id="wiz1">
-   <div class="grid2"><div>
-    <h3>Tell us about the company</h3><div class="muted small">No ISO configuration knowledge is required. QMS AI will ask only what it needs.</div>
-    <div class="field" style="margin-top:16px"><label>Company name</label><input id="companyName" value="Apex Precision Manufacturing"></div>
-    <div class="field" style="margin-top:10px"><label>What does the company do?</label><textarea>We manufacture precision metal components for automotive customers.</textarea></div>
-   </div><div class="panel" style="background:#f6f9ff"><h3>✦ QMS AI will help with</h3>
-    <div class="row">✓ Identify departments and processes</div><div class="row">✓ Recognize SOPs, WIs, forms and records</div><div class="row">✓ Detect likely revisions and duplicates</div><div class="row">✓ Find references and supporting evidence</div><div class="row">✓ Propose approval routes</div>
-   </div></div>
-  </div>
-
-  <div class="wiz" id="wiz2" style="display:none">
-   <h3>Where are the company's documents?</h3><div class="muted small">Choose one or more sources. Nothing is reorganized or deleted during discovery.</div>
-   <div class="sourceChoices">
-    <button class="sourceChoice selected">⬆<b>Upload folders / ZIP</b><span>Drop an existing file directory</span></button>
-    <button class="sourceChoice">▦<b>SharePoint / OneDrive</b><span>Connect company repository</span></button>
-    <button class="sourceChoice">△<b>Google Drive</b><span>Connect shared drives/folders</span></button>
-    <button class="sourceChoice">☁<b>S3 / Cloud storage</b><span>Connect existing object storage</span></button>
-   </div>
-   <div class="dropzone"><b>Drop folders, ZIPs or files here</b><br><span class="muted small">Mock source: Quality Management System / 1,428 files / 7.4 GB</span><br><button class="soft" style="margin-top:10px">Browse files</button></div>
-  </div>
-
-  <div class="wiz" id="wiz3" style="display:none">
-   <div class="aiInterview">
-    <div class="panel"><h3>✦ QMS AI has scanned the file names and folders</h3>
-     <div class="cards" style="grid-template-columns:repeat(4,1fr);margin-top:12px"><div class="card"><b>1,428</b><div class="small muted">Files found</div></div><div class="card"><b>6</b><div class="small muted">Likely departments</div></div><div class="card"><b>11</b><div class="small muted">Document types</div></div><div class="card"><b>74</b><div class="small muted">Need clarification</div></div></div>
+    <div class="wiz" id="wiz1">
+      <div class="wizardGrid"><div><h3>Tell us about the company</h3><p class="muted">QMS AI will use this context to propose departments, types and relationships.</p><label class="fieldLabel">Company name</label><input class="fieldInput" value="Apex Precision Manufacturing"><label class="fieldLabel">What does the company do?</label><textarea class="fieldInput">We manufacture precision metal components for automotive customers.</textarea></div><div class="aiHelp"><span>✦</span><h3>QMS AI will help</h3><p>Identify departments and processes</p><p>Recognize SOPs, WIs, forms and records</p><p>Detect likely revisions and duplicates</p><p>Find references and evidence</p><p>Propose approval routes</p></div></div>
     </div>
-    <div class="bubble ai"><b>QMS AI</b><br>I found folders for Quality, Production, Engineering, Purchasing, HR and Management. Should these become your top-level departments, or do you organize documents differently?</div>
-    <div class="bubble user">Use those departments, but Production should be called Operations.</div>
-    <div class="bubble ai"><b>QMS AI</b><br>Got it. I also found files named SOP-QA-001 Rev1 through Rev5. I can group them as revisions of one controlled document. I will <b>not</b> decide which revision is effective. Who normally confirms the current revision?</div>
-    <div class="chatInput"><input value="The Quality Manager confirms it."><button class="primary" onclick="addAIReply()">Send</button></div>
-   </div>
-  </div>
 
-  <div class="wiz" id="wiz4" style="display:none">
-   <div style="display:flex;justify-content:space-between;align-items:center"><div><h3 style="margin-bottom:4px">Proposed repository</h3><div class="muted small">AI proposal only — nothing has been committed.</div></div><span class="badge review">Needs human review</span></div>
-   <div class="proposal">
-    <div class="proposalTree">
-     <div class="treeItem sel">▾ Apex Precision Manufacturing</div>
-     <div class="treeItem indent1">▾ Quality <span class="muted">· 486 resources</span></div>
-     <div class="treeItem indent2">▾ Policies <span class="muted">· 18</span></div>
-     <div class="treeItem indent2">▾ Procedures / SOP <span class="muted">· 84</span></div>
-     <div class="treeItem indent2">▸ Work Instructions <span class="muted">· 126</span></div>
-     <div class="treeItem indent2">▸ Forms & Templates <span class="muted">· 97</span></div>
-     <div class="treeItem indent2">▸ Records & Evidence <span class="muted">· 161</span></div>
-     <div class="treeItem indent1">▸ Operations <span class="muted">· 368</span></div>
-     <div class="treeItem indent1">▸ Engineering <span class="muted">· 271</span></div>
-     <div class="treeItem indent1">▸ Purchasing <span class="muted">· 144</span></div>
-     <div class="treeItem indent1">▸ Human Resources <span class="muted">· 93</span></div>
-     <div class="treeItem indent1">▸ Management <span class="muted">· 66</span></div>
+    <div class="wiz" id="wiz2" style="display:none">
+      <h3>Connect the existing repository</h3><p class="muted">Nothing is reorganized or deleted during discovery.</p>
+      <div class="choiceGrid"><button class="sourceChoice selected">↑<b>Upload folders / ZIP</b><span>Existing file directory</span></button><button class="sourceChoice">▦<b>SharePoint / OneDrive</b><span>Company repository</span></button><button class="sourceChoice">△<b>Google Drive</b><span>Shared drives / folders</span></button><button class="sourceChoice">☁<b>S3 / Cloud</b><span>Object storage</span></button></div>
+      <div class="dropzone"><div class="uploadIcon">↑</div><b>Drop folders, ZIPs or files here</b><span>Mock source · Quality Management System · 1,428 files · 7.4 GB</span><button class="secondary">Browse files</button></div>
     </div>
-    <div class="panel"><h3>AI findings</h3>
-     <div class="row"><div class="grow"><b>217 revision groups</b><div class="muted small">Files likely belonging to the same controlled document</div></div><button class="soft">Review</button></div>
-     <div class="row"><div class="grow"><b>312 proposed relationships</b><div class="muted small">References, sources and evidence links</div></div><button class="soft">Review</button></div>
-     <div class="row"><div class="grow"><b>41 possible duplicates</b><div class="muted small">No files will be deleted automatically</div></div><button class="soft">Resolve</button></div>
-     <div class="row"><div class="grow"><b>74 uncertain files</b><div class="muted small">AI confidence below configured threshold</div></div><button class="soft">Classify</button></div>
+
+    <div class="wiz" id="wiz3" style="display:none">
+      <div class="scanSummary"><div><b>1,428</b><span>Files found</span></div><div><b>6</b><span>Likely departments</span></div><div><b>11</b><span>Document types</span></div><div><b>74</b><span>Need clarification</span></div></div>
+      <div class="bubble ai"><b>QMS AI</b><br>I found Quality, Production, Engineering, Purchasing, HR and Management. Should these become your top-level departments?</div>
+      <div class="bubble user">Yes, but rename Production to Operations.</div>
+      <div class="bubble ai"><b>QMS AI</b><br>I also found SOP-QA-001 Rev1 through Rev5. I can group these as revisions, but I will not decide which revision is effective. Who confirms the current revision?</div>
+      <div class="chatComposer inline"><input value="The Quality Manager confirms it."><button class="primary" onclick="addAIReply()">Send</button></div>
     </div>
-   </div>
-  </div>
 
-  <div class="wiz" id="wiz5" style="display:none">
-   <h3>Review before creating the repository</h3>
-   <div class="grid2"><div class="panel"><h3>Will be created</h3><div class="row">✓ 6 departments</div><div class="row">✓ 11 document types</div><div class="row">✓ 1,428 centralized resources</div><div class="row">✓ 217 revision groups</div><div class="row">✓ 312 proposed links after confirmation</div></div>
-   <div class="panel"><h3>Will NOT be automated</h3><div class="row">✕ Marking revisions effective</div><div class="row">✕ Approving controlled documents</div><div class="row">✕ Deleting suspected duplicates</div><div class="row">✕ Accepting low-confidence relationships</div><div class="row">✕ Changing source files</div></div></div>
-   <div class="banner" style="margin-top:12px"><div><b>Ready to create a draft repository.</b><div class="muted small">The Document Controller can continue reviewing classifications and relationships after creation.</div></div><button class="primary" onclick="buildRepo()">Create draft repository</button></div>
-  </div>
+    <div class="wiz" id="wiz4" style="display:none">
+      <div class="proposalHead"><div><h3>Proposed repository</h3><p>Nothing has been committed yet.</p></div><span class="pill warn">Needs human review</span></div>
+      <div class="proposalGrid"><div class="proposalTree"><b>▾ Apex Precision Manufacturing</b><span>▾ Quality <em>486</em></span><small>Policies <em>18</em></small><small>Procedures / SOP <em>84</em></small><small>Work Instructions <em>126</em></small><small>Forms & Templates <em>97</em></small><small>Records & Evidence <em>161</em></small><span>› Operations <em>368</em></span><span>› Engineering <em>271</em></span><span>› Purchasing <em>144</em></span><span>› Human Resources <em>93</em></span></div><div class="findingList"><div><b>217 revision groups</b><span>Likely versions of the same controlled document</span><button>Review</button></div><div><b>312 proposed relationships</b><span>References, sources and evidence links</span><button>Review</button></div><div><b>41 possible duplicates</b><span>No files will be deleted automatically</span><button>Resolve</button></div><div><b>74 uncertain files</b><span>Confidence below configured threshold</span><button>Classify</button></div></div></div>
+    </div>
 
-  <div class="modalActions"><button class="ghost" id="prevBtn" onclick="wizardMove(-1)" style="display:none">← Back</button><div class="grow"></div><button class="primary" id="nextBtn" onclick="wizardMove(1)">Continue →</button></div>
- </div>
+    <div class="wiz" id="wiz5" style="display:none">
+      <h3>Review before creating the draft repository</h3>
+      <div class="reviewGrid"><div class="nextSteps"><h4>Will be created</h4><ul><li>6 departments</li><li>11 document types</li><li>1,428 centralized resources</li><li>217 revision groups</li><li>312 proposed links after confirmation</li></ul></div><div class="nextSteps blocked"><h4>Will not be automated</h4><ul><li>Marking revisions effective</li><li>Approving controlled documents</li><li>Deleting suspected duplicates</li><li>Accepting low-confidence relationships</li><li>Changing source files</li></ul></div></div>
+      <div class="reviewCallout"><div><b>Ready to create the draft repository</b><span>The Document Controller can continue reviewing classifications and links after creation.</span></div><button class="primary" onclick="buildRepo()">Create draft repository</button></div>
+    </div>
+
+    <div class="modalActions"><button class="secondary" id="prevBtn" onclick="wizardMove(-1)" style="display:none">← Back</button><div></div><button class="primary" id="nextBtn" onclick="wizardMove(1)">Continue →</button></div>
+  </div>
 </div>
-<script src="./app.js?v=20260920-2"></script>
-</body></html>
+
+<script src="./app.js?v=20260921-redesign2"></script>
+</body>
+</html>
