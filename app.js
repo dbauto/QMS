@@ -1,3 +1,6 @@
+function refreshIcons(){
+  if(window.lucide) window.lucide.createIcons();
+}
 const navItems=[...document.querySelectorAll('.navItem[data-view]')];
 
 function showView(id){
@@ -129,7 +132,8 @@ function renderUsedBy(items){
     host.innerHTML='<div class="emptyInline"><b>No active relationships</b><span>Link this resource to the document, record or audit it supports.</span></div>';
     return;
   }
-  host.innerHTML=items.map(([code,label])=>'<button class="linkedRecord"><span>▦</span><div><b>'+code+'</b><small>'+label+'</small></div></button>').join('');
+  host.innerHTML=items.map(([code,label])=>'<button class="linkedRecord"><span><i data-lucide="link-2"></i></span><div><b>'+code+'</b><small>'+label+'</small></div></button>').join('');
+  refreshIcons();
 }
 document.querySelectorAll('.resourceRow').forEach(row=>{
   row.addEventListener('click',()=>{
@@ -274,3 +278,6 @@ document.querySelectorAll('.modal').forEach(modal=>{
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){closeBuilder();closeManualRepo()}
 });
+
+document.addEventListener('DOMContentLoaded',refreshIcons);
+refreshIcons();
