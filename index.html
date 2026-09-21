@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260921-icons1">
+<link rel="stylesheet" href="./styles.css?v=20260921-panels1">
 </head>
 <body>
 <div class="appShell">
@@ -50,6 +50,7 @@
 
   <main class="mainArea">
     <header class="commandBar">
+      <button class="iconButton shellToggle" id="sidebarToggle" aria-label="Hide navigation" title="Hide navigation"><i data-lucide="panel-left-close"></i></button>
       <div class="commandSearch"><span><i data-lucide="search"></i></span><input id="globalSearch" placeholder="Search documents, records, evidence..."></div>
       <div class="commandActions">
         <button class="btn subtle" onclick="showView('ai')"><i data-lucide="sparkles"></i>Ask QMS AI</button>
@@ -130,6 +131,7 @@
 
         <div class="documentWorkspace">
           <aside class="structurePane">
+            <div class="paneUtility"><span>Repository</span><button class="iconButton paneClose" id="hideStructurePane" aria-label="Hide repository structure" title="Hide repository structure"><i data-lucide="panel-left-close"></i></button></div>
             <div class="paneSearch"><span><i data-lucide="search"></i></span><input placeholder="Filter structure"></div>
             <div class="treeLabel">Repository</div>
             <button class="treeRow root active"><span><i data-lucide="chevron-down"></i></span><b>ABC Manufacturing</b><em>1,428</em></button>
@@ -149,8 +151,8 @@
 
           <section class="documentListPane">
             <div class="paneHeader">
-              <div><h2>Quality / Procedures</h2><span>84 controlled documents</span></div>
-              <div><button class="iconButton" title="Filter"><i data-lucide="list-filter"></i></button><button class="iconButton" title="Sort"><i data-lucide="arrow-up-down"></i></button><button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button></div>
+              <div class="paneTitleGroup"><button class="iconButton paneRestore" id="showStructurePane" aria-label="Show repository structure" title="Show repository structure"><i data-lucide="panel-left-open"></i></button><div><h2>Quality / Procedures</h2><span>84 controlled documents</span></div></div>
+              <div><button class="iconButton paneRestore" id="showDocumentInspector" aria-label="Show document details" title="Show document details"><i data-lucide="panel-right-open"></i></button><button class="iconButton" title="Filter"><i data-lucide="list-filter"></i></button><button class="iconButton" title="Sort"><i data-lucide="arrow-up-down"></i></button><button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button></div>
             </div>
             <div class="documentTableHeader"><span>Document</span><span>Rev</span><span>Owner</span><span>Status</span><span>Review</span></div>
             <button class="documentRow selected" data-doc="qa014">
@@ -173,7 +175,7 @@
           <aside class="inspectorPane">
             <div class="inspectorHeader">
               <div><span class="recordLabel">Controlled document</span><h2 id="docTitle">Control of Nonconforming Outputs</h2><div class="recordMeta"><b id="docCode">SOP-QA-014</b><span id="docRev">Rev 06</span><span id="docStatus" class="tag success">Effective</span></div></div>
-              <button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button>
+              <div class="inspectorHeaderActions"><button class="iconButton" id="hideDocumentInspector" aria-label="Hide document details" title="Hide document details"><i data-lucide="panel-right-close"></i></button><button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button></div>
             </div>
             <div class="inspectorActions"><button class="btn primary">Open document</button><button class="btn secondary">Create revision</button></div>
             <div class="tabBar inspectorTabs">
@@ -273,7 +275,7 @@
 
         <div class="resourceWorkspace">
           <section class="resourceList">
-            <div class="filterBar embedded"><div class="filterSearch"><span><i data-lucide="search"></i></span><input placeholder="Search resource"></div><select><option>All resource types</option><option>Evidence</option><option>External</option><option>Record</option></select><select><option>All link states</option><option>Linked</option><option>Unlinked</option></select><button class="btn secondary">Filters</button></div>
+            <div class="filterBar embedded"><button class="iconButton paneRestore" id="showResourceInspector" aria-label="Show resource details" title="Show resource details"><i data-lucide="panel-right-open"></i></button><div class="filterSearch"><span><i data-lucide="search"></i></span><input placeholder="Search resource"></div><select><option>All resource types</option><option>Evidence</option><option>External</option><option>Record</option></select><select><option>All link states</option><option>Linked</option><option>Unlinked</option></select><button class="btn secondary">Filters</button></div>
             <div class="resourceTableHeader"><span>Resource</span><span>Type</span><span>Linked to</span><span>Owner</span><span>Status</span></div>
             <button class="resourceRow selected" data-resource="cal"><div><b>CAL-CERT-2026-0084</b><strong>Calibration Certificate — DMM-14</strong><small>Updated 18 Sep 2026</small></div><span>Certificate</span><span>4 records</span><span>Metrology</span><span class="tag success">Current</span></button>
             <button class="resourceRow" data-resource="audit"><div><b>IA-2026-004</b><strong>Internal Audit — Production Line 2</strong><small>Completed 12 Sep 2026</small></div><span>Audit record</span><span>12 records</span><span>Quality</span><span class="tag success">Closed</span></button>
@@ -283,7 +285,7 @@
           </section>
 
           <aside class="resourceInspector">
-            <div class="inspectorHeader compactInspector"><div><span class="recordLabel" id="resType">Certificate</span><h2 id="resTitle">Calibration Certificate — DMM-14</h2><div class="recordMeta"><b id="resCode">CAL-CERT-2026-0084</b><span id="resStatus" class="tag success">Current</span></div></div><button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button></div>
+            <div class="inspectorHeader compactInspector"><div><span class="recordLabel" id="resType">Certificate</span><h2 id="resTitle">Calibration Certificate — DMM-14</h2><div class="recordMeta"><b id="resCode">CAL-CERT-2026-0084</b><span id="resStatus" class="tag success">Current</span></div></div><div class="inspectorHeaderActions"><button class="iconButton" id="hideResourceInspector" aria-label="Hide resource details" title="Hide resource details"><i data-lucide="panel-right-close"></i></button><button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button></div></div>
             <dl class="detailGrid resourceDetails"><div><dt>Resource ID</dt><dd id="resId">RES-88291</dd></div><div><dt>Storage</dt><dd id="resStorage">S3 · immutable</dd></div><div><dt>Owner</dt><dd id="resOwner">Metrology</dd></div><div><dt>Relationships</dt><dd id="resCount">4 active</dd></div></dl>
             <section class="detailSection"><div class="sectionTitleRow"><h3>Used by</h3><button class="btn link">Manage links</button></div><div id="resUsedBy">
               <button class="linkedRecord"><span><i data-lucide="link-2"></i></span><div><b>DMM-14</b><small>Equipment record · EVIDENCED_BY</small></div></button>
@@ -307,6 +309,7 @@
         <div class="pageHeader"><div><h1>Document types</h1><p>Numbering, metadata, approval and review rules for each governed type.</p></div><div class="pageActions"><button class="btn primary">Add type</button></div></div>
         <div class="typeWorkspace">
           <section class="typeTablePane">
+            <div class="typePaneToolbar"><span>Configured types</span><button class="iconButton paneRestore" id="showTypeInspector" aria-label="Show type settings" title="Show type settings"><i data-lucide="panel-right-open"></i></button></div>
             <div class="typeTableHeader"><span>Type</span><span>Prefix</span><span>Numbering</span><span>Approval rule</span><span>Review</span><span>Documents</span><span>Status</span></div>
             <button class="typeRow selected" data-type="sop"><div><b>SOP / Procedure</b><small>Full revision control</small></div><span>SOP</span><span>SOP-{DEPT}-{###}</span><span>Dept review → Quality</span><span>12 mo</span><span>184</span><span class="tag success">Active</span></button>
             <button class="typeRow" data-type="wi"><div><b>Work Instruction</b><small>Operational instruction</small></div><span>WI</span><span>WI-{DEPT}-{###}</span><span>Dept approval</span><span>12 mo</span><span>326</span><span class="tag success">Active</span></button>
@@ -315,7 +318,7 @@
             <button class="typeRow" data-type="external"><div><b>External Document</b><small>Source + currency tracking</small></div><span>EXT</span><span>EXT-{SRC}-{###}</span><span>Document control</span><span>12 mo</span><span>203</span><span class="tag success">Active</span></button>
           </section>
           <aside class="typeInspector">
-            <div class="inspectorHeader compactInspector"><div><span class="recordLabel">Type configuration</span><h2 id="typeName">SOP / Procedure</h2><div class="recordMeta"><span class="tag success">Active</span><span id="typeCount">184 documents</span></div></div><button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button></div>
+            <div class="inspectorHeader compactInspector"><div><span class="recordLabel">Type configuration</span><h2 id="typeName">SOP / Procedure</h2><div class="recordMeta"><span class="tag success">Active</span><span id="typeCount">184 documents</span></div></div><div class="inspectorHeaderActions"><button class="iconButton" id="hideTypeInspector" aria-label="Hide type settings" title="Hide type settings"><i data-lucide="panel-right-close"></i></button><button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button></div></div>
             <div class="formSection"><label>Prefix<input id="typePrefix" value="SOP"></label><label>Numbering format<input id="typeNumbering" value="SOP-{DEPT}-{###}"></label></div>
             <div class="formSection"><label>Default approval route<select id="typeApproval"><option>Department review → Quality approval</option></select></label><label>Default review cycle<select id="typeReview"><option>12 months</option><option>24 months</option></select></label></div>
             <section class="detailSection"><h3>Control requirements</h3><label class="checkRow"><input type="checkbox" checked> Revision history required</label><label class="checkRow"><input type="checkbox" checked> Change reason required</label><label class="checkRow"><input type="checkbox" checked> Approval before release</label><label class="checkRow"><input type="checkbox"> User acknowledgement required</label></section>
@@ -449,6 +452,6 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260921-icons1"></script>
+<script src="./app.js?v=20260921-panels1"></script>
 </body>
 </html>
