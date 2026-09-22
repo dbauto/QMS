@@ -6,8 +6,8 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-effective-import1">
+<title>iQMS — Quality Workspace</title>
+<link rel="stylesheet" href="./styles.css?v=20260922-iqms1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -119,8 +119,8 @@ body.navExpanded .railExpand span{display:inline!important}
 <div class="appShell">
   <aside class="sideNav">
     <div class="brand">
-      <div class="brandMark" title="NexusQMS"><i data-lucide="shield-check"></i></div>
-      <div><strong>NexusQMS</strong><span>Quality Management</span></div>
+      <div class="brandMark" title="iQMS"><i data-lucide="shield-check"></i></div>
+      <div><strong>iQMS</strong><span>Quality Management</span></div>
     </div>
 
     <button class="workspaceSwitch">
@@ -444,7 +444,7 @@ body.navExpanded .railExpand span{display:inline!important}
                     <section class="previewSection"><h3>2. Scope</h3><p>This controlled document applies to personnel and activities within the assigned process space. Users must verify the current effective revision before use.</p></section>
                     <section class="previewSection"><h3>3. Responsibilities</h3><table><tbody><tr><th>Process Owner</th><td id="previewOwner">Quality Department</td></tr><tr><th>Approver</th><td id="previewApprover">Quality Manager</td></tr><tr><th>Document Control</th><td>Maintains revision, release, distribution and obsolete-copy controls.</td></tr></tbody></table></section>
                     <section class="previewSection"><h3>4. Controlled Procedure</h3><ol><li>Confirm the applicable document and effective revision.</li><li>Perform the activity using approved forms, work instructions and referenced sources.</li><li>Retain generated evidence according to the configured retention requirement.</li><li>Escalate exceptions through the assigned quality workflow.</li></ol></section>
-                    <footer class="previewFooter"><span id="previewFooterCode">SOP-QA-014 · Rev 06</span><span>Controlled copy — verify current revision in NexusQMS</span><span>Page 1 of 3</span></footer>
+                    <footer class="previewFooter"><span id="previewFooterCode">SOP-QA-014 · Rev 06</span><span>Controlled copy — verify current revision in iQMS</span><span>Page 1 of 3</span></footer>
                   </article>
                 </div>
               </div>
@@ -672,7 +672,7 @@ body.navExpanded .railExpand span{display:inline!important}
         <div class="pageHeader"><div><h1>QMS AI</h1><p>Permission-aware assistance grounded in current documents, relationships and audit history.</p></div><div class="pageActions"><button class="btn secondary" onclick="openBuilder()">Repository builder</button></div></div>
         <div class="aiWorkspace">
           <section class="aiChat">
-            <div class="aiIntro"><div class="aiOrb"><i data-lucide="sparkles"></i></div><div><b>Nexus QMS AI</b><span>Grounded in your authorized quality-system data</span></div></div>
+            <div class="aiIntro"><div class="aiOrb"><i data-lucide="sparkles"></i></div><div><b>iQMS AI</b><span>Grounded in your authorized quality-system data</span></div></div>
             <div class="bubble ai"><b>QMS AI</b><br>I can search effective documents, trace evidence, compare revisions and prepare controlled actions for your approval.</div>
             <div class="bubble user">What procedure applies when incoming material fails inspection?</div>
             <div class="bubble ai">The current effective procedure is <b>SOP-QA-014 Rev 06 — Control of Nonconforming Outputs</b>. It references <b>WI-QA-003</b> for inspection and <b>FORM-QA-011</b> for NCR recording. I found <b>23 linked evidence records</b>.</div>
@@ -763,19 +763,19 @@ body.navExpanded .railExpand span{display:inline!important}
 
     <div class="registrationPage sourceIntentPage" style="display:none">
       <div class="registrationPageIntro">
-        <div><h3 id="sourceIntentHeading">How are you adding this controlled information?</h3><p id="sourceIntentHelp">Choose one action. Nexus only shows the fields needed for that action.</p></div>
+        <div><h3 id="sourceIntentHeading">How are you adding this controlled information?</h3><p id="sourceIntentHelp">Choose one action. iQMS only shows the fields needed for that action.</p></div>
         <span class="singleChoiceBadge"><i data-lucide="circle-dot"></i>Choose one</span>
       </div>
 
       <div class="sourceIntentGrid" id="sourceIntentGrid">
         <button class="sourceIntentCard selected" data-source-mode="upload" onclick="selectRegistrationSource('upload')">
           <span class="sourceIntentIcon"><i data-lucide="upload"></i></span>
-          <div><b id="sourceUploadTitle">Upload a new document</b><p id="sourceUploadText">I already have the file and want to register it in NexusQMS.</p></div>
+          <div><b id="sourceUploadTitle">Upload a new document</b><p id="sourceUploadText">I already have the file and want to register it in iQMS.</p></div>
           <i class="sourceChoiceCheck" data-lucide="check"></i>
         </button>
         <button class="sourceIntentCard" data-source-mode="effective" onclick="selectRegistrationSource('effective')">
           <span class="sourceIntentIcon"><i data-lucide="badge-check"></i></span>
-          <div><b>Register an existing effective document</b><p>It was already approved and effective before Nexus. Register the current revision without a new approval workflow.</p></div>
+          <div><b>Register an existing effective document</b><p>It was already approved and effective before iQMS. Register the current revision without a new approval workflow.</p></div>
           <i class="sourceChoiceCheck" data-lucide="check"></i>
         </button>
         <button class="sourceIntentCard" data-source-mode="create" onclick="selectRegistrationSource('create')">
@@ -785,7 +785,7 @@ body.navExpanded .railExpand span{display:inline!important}
         </button>
         <button class="sourceIntentCard" data-source-mode="existing" onclick="selectRegistrationSource('existing')">
           <span class="sourceIntentIcon"><i data-lucide="link-2"></i></span>
-          <div><b id="sourceExistingTitle">Add an existing Nexus document</b><p id="sourceExistingText">The resource already exists. Add it to a space without creating a duplicate.</p></div>
+          <div><b id="sourceExistingTitle">Add an existing iQMS document</b><p id="sourceExistingText">The resource already exists. Add it to a space without creating a duplicate.</p></div>
           <i class="sourceChoiceCheck" data-lucide="check"></i>
         </button>
         <button class="sourceIntentCard externalIntent" data-source-mode="external" onclick="selectRegistrationSource('external')">
@@ -802,10 +802,10 @@ body.navExpanded .railExpand span{display:inline!important}
       <div class="sourceIntentPanel" id="sourcePanelEffective">
         <div class="existingEffectiveNotice">
           <i data-lucide="badge-check"></i>
-          <div><b>No new approval is required</b><span>Use this for a document that is already the approved/current revision in the client's existing QMS. Nexus records it as Effective and creates an onboarding audit event instead of sending it through review and approval again.</span></div>
+          <div><b>No new approval is required</b><span>Use this for a document that is already the approved/current revision in the client's existing QMS. iQMS records it as Effective and creates an onboarding audit event instead of sending it through review and approval again.</span></div>
         </div>
-        <div class="dropzone registrationDropzone effectiveUpload"><div class="uploadIcon"><i data-lucide="upload"></i></div><b>Upload the current effective file</b><span>Upload the approved/current copy being brought into NexusQMS.</span><button class="btn secondary"><i data-lucide="folder-open"></i>Browse file</button></div>
-        <div class="effectiveImportRule"><i data-lucide="shield-check"></i><div><b>What Nexus will preserve</b><span>Current revision, original effective date, next review date, source/legacy document reference and who registered it.</span></div></div>
+        <div class="dropzone registrationDropzone effectiveUpload"><div class="uploadIcon"><i data-lucide="upload"></i></div><b>Upload the current effective file</b><span>Upload the approved/current copy being brought into iQMS.</span><button class="btn secondary"><i data-lucide="folder-open"></i>Browse file</button></div>
+        <div class="effectiveImportRule"><i data-lucide="shield-check"></i><div><b>What iQMS will preserve</b><span>Current revision, original effective date, next review date, source/legacy document reference and who registered it.</span></div></div>
       </div>
 
       <div class="sourceIntentPanel" id="sourcePanelCreate">
@@ -829,7 +829,7 @@ body.navExpanded .railExpand span{display:inline!important}
       </div>
 
       <div class="sourceIntentPanel" id="sourcePanelExisting">
-        <div class="existingResourceNotice"><i data-lucide="copy-x"></i><div><b>No new document will be created</b><span>Nexus will create a relationship to the selected resource. Its Document ID, revision history and approvals remain unchanged.</span></div></div>
+        <div class="existingResourceNotice"><i data-lucide="copy-x"></i><div><b>No new document will be created</b><span>iQMS will create a relationship to the selected resource. Its Document ID, revision history and approvals remain unchanged.</span></div></div>
         <div class="existingResourceControls">
           <label>Add to space
             <select id="existingTargetSpace">
@@ -863,7 +863,7 @@ body.navExpanded .railExpand span{display:inline!important}
           <label>Currency review date<input id="externalReview" class="fieldInput" type="date" value="2027-09-22"></label>
           <label>Source owner / publisher<input id="externalOwner" class="fieldInput" placeholder="Organization responsible for the source"></label>
         </div>
-        <div class="externalSourceNote"><i data-lucide="info"></i><span>External documents are controlled by their publisher. Nexus tracks the applicable version, source, review date and internal QMS relationships.</span></div>
+        <div class="externalSourceNote"><i data-lucide="info"></i><span>External documents are controlled by their publisher. iQMS tracks the applicable version, source, review date and internal QMS relationships.</span></div>
       </div>
     </div>
 
@@ -1046,7 +1046,7 @@ body.navExpanded .railExpand span{display:inline!important}
         <section><span class="eyebrow">RELEASE</span><label class="fieldLabel">Release authority<select class="fieldInput"><option>System after final approval</option><option>Document Control after final approval</option><option>Quality Manager after final approval</option></select></label><label class="checkRow"><input type="checkbox" checked> Notify reviewers and approvers</label></section>
       </div>
 
-      <label class="fieldLabel">Revision / change reason</label><textarea class="fieldInput">Initial registration in NexusQMS controlled information library.</textarea>
+      <label class="fieldLabel">Revision / change reason</label><textarea class="fieldInput">Initial registration in iQMS controlled information library.</textarea>
     </div>
 
     <div class="registrationPage" style="display:none">
@@ -1066,7 +1066,7 @@ body.navExpanded .railExpand span{display:inline!important}
 <div class="modal" id="spaceModal">
   <div class="modalBox spaceModalBox">
     <div class="modalHead">
-      <div><span class="eyebrow">DOCUMENT SPACE</span><h2>Create a document space</h2><p>Add a logical working container without duplicating the canonical resources stored in NexusQMS.</p></div>
+      <div><span class="eyebrow">DOCUMENT SPACE</span><h2>Create a document space</h2><p>Add a logical working container without duplicating the canonical resources stored in iQMS.</p></div>
       <button class="iconBtn" onclick="closeSpaceModal()" aria-label="Close"><i data-lucide="x"></i></button>
     </div>
     <div class="spaceForm">
@@ -1176,6 +1176,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-effective-import1"></script>
+<script src="./app.js?v=20260922-iqms1"></script>
 </body>
 </html>
