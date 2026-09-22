@@ -55,11 +55,12 @@ document.addEventListener('keydown',e=>{
 
 const viewLabels={
   dashboard:'Overview',
-  repository:'Documents',
+  repository:'Controlled information',
+  records:'Records & evidence',
   approvals:'My tasks',
   register:'Document register',
   audit:'Audit trail',
-  relationships:'Sources & evidence',
+  relationships:'Relationship map',
   structure:'Repository structure',
   types:'Document types',
   ai:'QMS AI',
@@ -105,6 +106,22 @@ document.querySelectorAll('[data-toast-title]').forEach(button=>{
   button.addEventListener('click',()=>toast(button.dataset.toastTitle,button.dataset.toastMessage||'Action recorded in this prototype.'));
 });
 
+
+
+function openMasterLibrary(kind){
+  if(kind==='controlled'){
+    showView('repository');
+    setTimeout(()=>document.getElementById('controlledMasterPanel')?.scrollIntoView({behavior:'smooth',block:'start'}),120);
+  }else if(kind==='record'){
+    showView('records');
+  }
+}
+document.getElementById('controlledSearch')?.addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase();
+  document.querySelectorAll('.controlledLibraryRow').forEach(row=>{
+    row.style.display=!q||row.textContent.toLowerCase().includes(q)?'grid':'none';
+  });
+});
 
 /* QMS document spaces */
 const spaceDefinitions={
@@ -521,6 +538,38 @@ document.querySelectorAll('.resourceRow').forEach(row=>{
   });
 });
 
+
+const evidenceItems={
+  screening:{type:'Completed form',title:'Candidate Screening Record — Batch 0918',code:'REC-SCR-2026-0918',status:'Retained',kind:'success',date:'18 Sep 2026',owner:'Recruitment',retention:'5 years',access:'Recruitment + Quality',process:'Recruitment',document:'QMS-PRO-REC-001 · Recruitment Procedure',audit:'Internal Audit 2026'},
+  interview:{type:'Interview record',title:'Candidate Interview Record — A. Santos',code:'REC-INT-2026-442',status:'Retained',kind:'success',date:'17 Sep 2026',owner:'Recruitment',retention:'5 years',access:'Recruitment + Quality',process:'Recruitment',document:'SOP-REC-004 · Screening SOP',audit:'Internal Audit 2026'},
+  cal:{type:'Certificate',title:'Calibration Certificate — DMM-14',code:'CAL-CERT-2026-0084',status:'Current',kind:'success',date:'18 Sep 2026',owner:'Metrology',retention:'7 years',access:'Quality + Operations',process:'Operations',document:'WI-QA-003 · Inspection Work Instruction',audit:'IA-2026-004'},
+  audit:{type:'Audit evidence',title:'Internal Audit — Production Line 2',code:'IA-2026-004',status:'Closed',kind:'success',date:'12 Sep 2026',owner:'Quality',retention:'7 years',access:'Quality + Auditors',process:'Internal Audit',document:'SOP-QA-005 · Internal Audit Procedure',audit:'Audit Program 2026'},
+  orphan:{type:'Evidence',title:'Receiving Inspection Attachment',code:'REC-2026-114',status:'Unlinked',kind:'warning',date:'20 Sep 2026',owner:'Warehouse',retention:'Pending classification',access:'Warehouse + Quality',process:'Unclassified',document:'Not linked',audit:'Not linked'}
+};
+function selectEvidence(key,row){
+  const d=evidenceItems[key];
+  if(!d) return;
+  document.querySelectorAll('.evidenceRow').forEach(x=>x.classList.remove('selected'));
+  row?.classList.add('selected');
+  document.getElementById('evidenceType').textContent=d.type;
+  document.getElementById('evidenceTitle').textContent=d.title;
+  document.getElementById('evidenceCode').textContent=d.code;
+  setTag(document.getElementById('evidenceStatus'),d.status,d.kind);
+  document.getElementById('evidenceDate').textContent=d.date;
+  document.getElementById('evidenceOwner').textContent=d.owner;
+  document.getElementById('evidenceRetention').textContent=d.retention;
+  document.getElementById('evidenceAccess').textContent=d.access;
+  document.getElementById('traceProcess').textContent=d.process;
+  document.getElementById('traceDocument').textContent=d.document;
+  document.getElementById('traceEvidence').textContent=d.title.replace(/ — .*/,'');
+  document.getElementById('traceAudit').textContent=d.audit;
+}
+document.querySelectorAll('.evidenceRow').forEach(row=>row.addEventListener('click',()=>selectEvidence(row.dataset.evidence,row)));
+document.getElementById('recordsSearch')?.addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase();
+  document.querySelectorAll('.evidenceRow').forEach(row=>row.style.display=!q||row.textContent.toLowerCase().includes(q)?'grid':'none');
+});
+
 /* Document type configuration */
 const typeConfigs={
   sop:{name:'SOP / Procedure',count:'184 documents',prefix:'SOP',numbering:'SOP-{DEPT}-{###}',approval:'Department review → Quality approval',review:'12 months'},
@@ -552,10 +601,135 @@ globalSearch?.addEventListener('input',()=>{
   const q=globalSearch.value.trim().toLowerCase();
   const active=document.querySelector('.view.active');
   if(!active) return;
-  active.querySelectorAll('.documentRow,.resourceRow,.dataTable tbody tr').forEach(row=>{
+  active.querySelectorAll('.documentRow,.resourceRow,.controlledLibraryRow,.evidenceRow,.dataTable tbody tr').forEach(row=>{
     row.style.display=!q||row.textContent.toLowerCase().includes(q)?'':'none';
   });
 });
+
+
+/* Canonical QMS resource registration */
+let registrationStep=1;
+let registrationClass='controlled';
+
+function openRegisterResource(kind='controlled'){
+  registrationClass=kind==='record'?'record':'controlled';
+  registrationStep=1;
+  selectRegistrationClass(registrationClass,false);
+  renderRegistration();
+  document.getElementById('registerResourceModal')?.classList.add('show');
+  refreshIcons();
+}
+function closeRegisterResource(){document.getElementById('registerResourceModal')?.classList.remove('show')}
+
+function selectRegistrationClass(kind,rerender=true){
+  registrationClass=kind==='record'?'record':'controlled';
+  document.querySelectorAll('.registrationClass').forEach(card=>card.classList.toggle('selected',card.dataset.class===registrationClass));
+  const controlled=registrationClass==='controlled';
+  document.querySelectorAll('.registrationControlledFields').forEach(x=>x.style.display=controlled?'grid':'none');
+  document.querySelectorAll('.registrationRecordFields').forEach(x=>x.style.display=controlled?'none':'grid');
+  const title=document.getElementById('registerResourceTitle');
+  const subtitle=document.getElementById('registerResourceSubtitle');
+  const identity=document.getElementById('identityHeading');
+  const hint=document.getElementById('registerDropHint');
+  if(title) title.textContent=controlled?'Register controlled information':'Register record / evidence';
+  if(subtitle) subtitle.textContent=controlled?'Create one canonical controlled resource and connect it to the QMS context where it applies.':'Register retained proof and connect it to the process, controlled information and verification context it evidences.';
+  if(identity) identity.textContent=controlled?'Document identity & control metadata':'Record identity & retention metadata';
+  if(hint) hint.textContent=controlled?'Example: Recruitment_Procedure_Rev3.docx':'Example: Candidate_Screening_Record_0918.pdf';
+  if(rerender) renderRegistration();
+}
+
+function registrationPages(){
+  return [...document.querySelectorAll('#registerResourceModal .registrationPage')];
+}
+function renderRegistration(){
+  const controlled=registrationClass==='controlled';
+  const pages=registrationPages();
+  // Record/evidence skips Governance page (page 6).
+  const effectiveStep=registrationStep;
+  pages.forEach((el,i)=>{
+    const page=i+1;
+    let show=page===effectiveStep;
+    if(!controlled && effectiveStep===6){show=false}
+    el.style.display=show?'block':'none';
+  });
+  document.querySelectorAll('#registerResourceModal .rs').forEach((el,i)=>{
+    const step=i+1;
+    el.classList.toggle('active',step===effectiveStep);
+    el.classList.toggle('done',step<effectiveStep);
+    if(el.classList.contains('controlledOnly')) el.style.display=controlled?'block':'none';
+  });
+  const prev=document.getElementById('registerPrev');
+  const next=document.getElementById('registerNext');
+  if(prev) prev.style.display=effectiveStep===1?'none':'inline-flex';
+  if(next) next.style.display=effectiveStep===7?'none':'inline-flex';
+  updateRegistrationReview();
+  refreshIcons();
+}
+function moveRegistration(delta){
+  let next=registrationStep+delta;
+  if(registrationClass==='record'){
+    if(delta>0 && next===6) next=7;
+    if(delta<0 && next===6) next=5;
+  }
+  registrationStep=Math.max(1,Math.min(7,next));
+  renderRegistration();
+}
+function updateRegistrationReview(){
+  const controlled=registrationClass==='controlled';
+  const reviewLibrary=document.getElementById('reviewLibrary');
+  const reviewIdentity=document.getElementById('reviewIdentity');
+  const reviewState=document.getElementById('reviewNextState');
+  const reviewDetail=document.getElementById('reviewNextStateDetail');
+  const confirmTitle=document.getElementById('registerConfirmTitle');
+  const confirmText=document.getElementById('registerConfirmText');
+  const mapping=document.getElementById('mappingPreviewResource');
+  if(controlled){
+    const id=document.getElementById('regId')?.value||'QMS-PRO-REC-001';
+    const title=document.getElementById('regTitle')?.value||'Recruitment Procedure';
+    if(reviewLibrary) reviewLibrary.textContent='Controlled Information';
+    if(reviewIdentity) reviewIdentity.textContent=id+' · '+title;
+    if(reviewState) reviewState.textContent='Draft revision created';
+    if(reviewDetail) reviewDetail.textContent='Approval route is snapshotted. The document is not Effective until final approval.';
+    if(confirmTitle) confirmTitle.textContent='Create controlled draft?';
+    if(confirmText) confirmText.textContent='The canonical resource, relationships and approval workflow will be created together.';
+    if(mapping) mapping.textContent=title;
+  }else{
+    const id=document.getElementById('recId')?.value||'REC-SCR-2026-0918';
+    const title=document.getElementById('recTitle')?.value||'Candidate Screening Record';
+    if(reviewLibrary) reviewLibrary.textContent='Records & Evidence';
+    if(reviewIdentity) reviewIdentity.textContent=id+' · '+title;
+    if(reviewState) reviewState.textContent='Retained record registered';
+    if(reviewDetail) reviewDetail.textContent='Retention, access and traceability are applied. No approval lifecycle is forced unless configured for this record type.';
+    if(confirmTitle) confirmTitle.textContent='Register record / evidence?';
+    if(confirmText) confirmText.textContent='The canonical record and its QMS traceability links will be created together.';
+    if(mapping) mapping.textContent=title;
+  }
+}
+
+document.querySelectorAll('.sourceMethod').forEach(btn=>btn.addEventListener('click',()=>{
+  btn.parentElement.querySelectorAll('.sourceMethod').forEach(x=>x.classList.remove('selected'));
+  btn.classList.add('selected');
+}));
+document.querySelectorAll('.relationshipPick').forEach(btn=>btn.addEventListener('click',()=>{
+  btn.classList.toggle('selected');
+  const icon=btn.lastElementChild;
+  if(icon && icon.dataset) icon.setAttribute('data-lucide',btn.classList.contains('selected')?'check':'plus');
+  refreshIcons();
+}));
+['regTitle','regId','recTitle','recId'].forEach(id=>document.getElementById(id)?.addEventListener('input',updateRegistrationReview));
+
+function finishResourceRegistration(){
+  const controlled=registrationClass==='controlled';
+  closeRegisterResource();
+  if(controlled){
+    showView('repository');
+    toast('Controlled resource registered','A Draft revision was created in Controlled Information with QMS mapping, relationships and a snapshotted approval route.');
+    setTimeout(()=>document.getElementById('controlledMasterPanel')?.scrollIntoView({behavior:'smooth',block:'start'}),120);
+  }else{
+    showView('records');
+    toast('Record / evidence registered','The retained record was added to the shared evidence library with process, controlled-information and audit traceability.');
+  }
+}
 
 /* Manual document wizard */
 let manualStep=1;
@@ -641,11 +815,12 @@ document.querySelectorAll('.modal').forEach(modal=>{
       if(modal.id==='builder') closeBuilder();
       if(modal.id==='manualRepo') closeManualRepo();
       if(modal.id==='spaceModal') closeSpaceModal();
+      if(modal.id==='registerResourceModal') closeRegisterResource();
     }
   });
 });
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeBuilder();closeManualRepo();closeSpaceModal()}
+  if(e.key==='Escape'){closeBuilder();closeManualRepo();closeSpaceModal();closeRegisterResource()}
 });
 
 document.addEventListener('DOMContentLoaded',refreshIcons);
