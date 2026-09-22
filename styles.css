@@ -2573,3 +2573,178 @@ body.navExpanded .navItem:hover{background:#172e47}
 @media(max-width:760px){
   .documentTraceabilityHeader{flex-direction:column}
 }
+
+
+/* Reduce card fatigue in per-document traceability.
+   One primary surface, flat sections, simple timeline. */
+#repositoryDocument [data-doc-panel="traceability"] .documentTraceabilityHeader{
+  min-height:auto;
+  padding:2px 0 12px;
+  margin-bottom:0;
+  border:0;
+  border-bottom:1px solid var(--line);
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+#repositoryDocument [data-doc-panel="traceability"] .documentTraceabilityHeader .recordLabel{
+  display:none;
+}
+#repositoryDocument [data-doc-panel="traceability"] .documentTraceabilityHeader h2{
+  margin:0 0 3px;
+  font-size:13px;
+}
+#repositoryDocument [data-doc-panel="traceability"] .documentTraceabilityHeader p{
+  font-size:8px;
+  color:var(--muted);
+}
+#repositoryDocument [data-doc-panel="traceability"] .documentTraceabilityWorkspace{
+  grid-template-columns:minmax(620px,1fr) 290px;
+  gap:0;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+#repositoryDocument [data-doc-panel="traceability"] .documentTraceabilitySections{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  background:#fff;
+}
+#repositoryDocument [data-doc-panel="traceability"] .documentTraceabilitySections .traceSection{
+  min-height:150px;
+  padding:18px 20px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+#repositoryDocument [data-doc-panel="traceability"] .documentTraceabilitySections .traceSection:nth-child(odd){
+  border-right:1px solid var(--line);
+}
+#repositoryDocument [data-doc-panel="traceability"] .documentTraceabilitySections .traceSection:nth-child(-n+4){
+  border-bottom:1px solid var(--line);
+}
+#repositoryDocument [data-doc-panel="traceability"] .traceSectionHead{
+  padding-bottom:8px;
+  border-bottom:0;
+}
+#repositoryDocument [data-doc-panel="traceability"] .traceSectionIcon{
+  width:24px;
+  height:24px;
+  border-radius:6px;
+}
+#repositoryDocument [data-doc-panel="traceability"] .traceSectionIcon .lucide{
+  width:13px;
+  height:13px;
+}
+#repositoryDocument [data-doc-panel="traceability"] .traceSectionHead h3{
+  font-size:9px;
+}
+#repositoryDocument [data-doc-panel="traceability"] .traceSectionHead p{
+  margin-top:1px;
+  font-size:7px;
+}
+#repositoryDocument [data-doc-panel="traceability"] .traceItems{
+  margin-top:2px;
+}
+#repositoryDocument [data-doc-panel="traceability"] .traceItem{
+  min-height:38px;
+  padding:6px 0;
+}
+#repositoryDocument [data-doc-panel="traceability"] .traceItem b{
+  font-size:8px;
+}
+#repositoryDocument [data-doc-panel="traceability"] .traceItem span{
+  font-size:7px;
+}
+
+#repositoryDocument [data-doc-panel="traceability"] .documentTracePathPanel{
+  position:sticky;
+  top:72px;
+  align-self:stretch;
+  min-height:100%;
+  padding:18px 16px;
+  border:0;
+  border-left:1px solid var(--line);
+  border-radius:0;
+  background:#fafbfc;
+  box-shadow:none;
+}
+#repositoryDocument [data-doc-panel="traceability"] .tracePathHeader{
+  padding-bottom:12px;
+}
+#repositoryDocument [data-doc-panel="traceability"] .tracePathHeader .recordLabel{
+  display:block;
+}
+#repositoryDocument [data-doc-panel="traceability"] .tracePath{
+  position:relative;
+  padding:14px 0 8px;
+  gap:0;
+}
+#repositoryDocument [data-doc-panel="traceability"] .tracePath:before{
+  content:"";
+  position:absolute;
+  left:13px;
+  top:28px;
+  bottom:30px;
+  width:1px;
+  background:#d8dee5;
+}
+#repositoryDocument [data-doc-panel="traceability"] .tracePath>.lucide{
+  display:none;
+}
+#repositoryDocument [data-doc-panel="traceability"] .tracePathStep{
+  position:relative;
+  min-height:58px;
+  grid-template-columns:28px minmax(0,1fr);
+  gap:9px;
+  padding:7px 0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+}
+#repositoryDocument [data-doc-panel="traceability"] .tracePathStep>span{
+  position:relative;
+  z-index:1;
+  width:26px;
+  height:26px;
+  border:1px solid #fff;
+  box-shadow:0 0 0 2px #fafbfc;
+}
+#repositoryDocument [data-doc-panel="traceability"] .tracePathStep small{
+  font-size:6.5px;
+}
+#repositoryDocument [data-doc-panel="traceability"] .tracePathStep b{
+  font-size:8px;
+}
+#repositoryDocument [data-doc-panel="traceability"] .tracePathNote{
+  margin-top:4px;
+  padding-top:10px;
+}
+
+@media(max-width:1100px){
+  #repositoryDocument [data-doc-panel="traceability"] .documentTraceabilityWorkspace{
+    grid-template-columns:1fr;
+  }
+  #repositoryDocument [data-doc-panel="traceability"] .documentTracePathPanel{
+    position:static;
+    border-left:0;
+    border-top:1px solid var(--line);
+    min-height:auto;
+  }
+}
+@media(max-width:760px){
+  #repositoryDocument [data-doc-panel="traceability"] .documentTraceabilitySections{
+    grid-template-columns:1fr;
+  }
+  #repositoryDocument [data-doc-panel="traceability"] .documentTraceabilitySections .traceSection{
+    border-right:0!important;
+    border-bottom:1px solid var(--line)!important;
+  }
+  #repositoryDocument [data-doc-panel="traceability"] .documentTraceabilitySections .traceSection:last-child{
+    border-bottom:0!important;
+  }
+}
