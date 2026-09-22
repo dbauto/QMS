@@ -1144,3 +1144,104 @@ body.navExpanded .navItem:hover{background:#172e47}
   .governanceGrid{grid-template-columns:1fr}
   .controlledLibraryToolbar{grid-template-columns:1fr}
 }
+
+
+/* Modal button system — consistent actions across all NexusQMS dialogs */
+.modal .btn,
+.modal button.btn{
+  min-width:96px;
+  height:36px;
+  border-radius:7px;
+  padding:0 14px;
+  font-size:10px;
+  font-weight:700;
+  line-height:1;
+  box-shadow:none;
+}
+.modal .btn.primary,
+.modal button.btn.primary{
+  background:var(--brand);
+  border:1px solid var(--brand);
+  color:#fff;
+}
+.modal .btn.primary:hover,
+.modal button.btn.primary:hover{background:var(--brand-hover);border-color:var(--brand-hover)}
+.modal .btn.secondary,
+.modal button.btn.secondary{
+  background:#fff;
+  border:1px solid var(--line-strong);
+  color:#344054;
+}
+.modal .btn.secondary:hover,
+.modal button.btn.secondary:hover{background:#f8fafb;border-color:#c6cdd6}
+.modal .btn:active{transform:translateY(1px)}
+.modal .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+.modal .iconBtn{
+  width:32px;
+  height:32px;
+  min-width:32px;
+  border:1px solid transparent;
+  border-radius:7px;
+  background:transparent;
+  color:#667085;
+  display:grid;
+  place-items:center;
+  padding:0;
+}
+.modal .iconBtn:hover{background:#f2f4f7;color:#344054}
+.modal .iconBtn .lucide{width:16px;height:16px}
+
+/* Footer actions should never stretch a single button across the modal */
+.modal .modalActions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border-top:1px solid var(--line);
+  padding-top:14px;
+  margin-top:14px;
+}
+.modal .modalActions > div,
+.modal .modalActions > span{flex:1 1 auto}
+.modal .modalActions > .btn{flex:0 0 auto}
+.modal .modalActions > .btn:first-child:not([style*="display:none"]){margin-right:auto}
+.modal .modalActions > .btn:last-child{margin-left:auto}
+
+/* Wizard/content buttons */
+.modal .dropzone .btn,
+.modal .dropzone button.btn{margin-top:4px}
+.modal .sourceMethod,
+.modal .registrationClass,
+.modal .relationshipPick,
+.modal .addRelationship{
+  font-family:inherit;
+  transition:border-color .15s ease,background .15s ease,box-shadow .15s ease,transform .12s ease;
+}
+.modal .sourceMethod:hover,
+.modal .registrationClass:hover,
+.modal .relationshipPick:hover,
+.modal .addRelationship:hover{border-color:#aebbc7;background:#fbfcfd}
+.modal .sourceMethod:active,
+.modal .registrationClass:active,
+.modal .relationshipPick:active,
+.modal .addRelationship:active{transform:translateY(1px)}
+.modal .registrationClass.selected,
+.modal .sourceMethod.selected{box-shadow:inset 0 0 0 1px #74b6aa}
+.modal .relationshipPick.selected{background:#f7fbfa}
+
+/* Keep review CTAs visually intentional */
+.modal .reviewCallout .btn,
+.modal .reviewCallout button.btn{min-width:132px}
+.modal .reviewCallout{gap:18px}
+.modal .reviewCallout>div{min-width:0}
+
+/* Compact on smaller screens */
+@media(max-width:700px){
+  .modal .modalActions{flex-wrap:wrap}
+  .modal .modalActions > div,
+  .modal .modalActions > span{display:none}
+  .modal .modalActions > .btn{flex:1 1 calc(50% - 4px);margin:0!important}
+  .modal .modalActions > .btn:only-child{flex:1 1 100%}
+  .modal .reviewCallout{align-items:stretch;flex-direction:column}
+  .modal .reviewCallout .btn{width:100%}
+}
