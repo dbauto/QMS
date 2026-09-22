@@ -349,6 +349,131 @@ document.querySelectorAll('#repositoryBrowseTabs [data-repository-tab]').forEach
   button.addEventListener('click',()=>setRepositoryPanel(button.dataset.repositoryTab));
 });
 
+let activeRepositorySpaceId='quality';
+let dmsDocumentTypeFilter='all';
+let documentReturnContext='hub';
+
+function spaceIconName(spaceId){
+  return {
+    management:'landmark',quality:'shield-check',recruitment:'user-round-search',operations:'workflow',
+    engineering:'drafting-compass',purchasing:'handshake',hr:'users',external:'book-open-check'
+  }[spaceId]||'folder-kanban';
+}
+function spaceToneClass(spaceId){
+  return {
+    management:'toneIndigo',quality:'toneBlue',recruitment:'toneTeal',operations:'toneTeal',
+    engineering:'toneViolet',purchasing:'toneAmber',hr:'toneRose',external:'toneSlate'
+  }[spaceId]||'toneSlate';
+}
+function spacePurpose(spaceId,space){
+  return {
+    management:'Quality policy, objectives and system-level governance documents.',
+    quality:'Policies, procedures, audits, NCR controls and quality-system documents.',
+    recruitment:'Recruitment procedures, screening controls, interview guidance and controlled forms.',
+    operations:'Production procedures, work instructions and shop-floor forms.',
+    engineering:'Specifications, drawings, technical standards and engineering changes.',
+    purchasing:'Supplier controls, approved-source documents and purchasing requirements.',
+    hr:'Training procedures, role requirements and competency controls.',
+    external:'Standards, regulations and customer-controlled specifications.'
+  }[spaceId]||space?.purpose||'Controlled information for this QMS area.';
+}
+function dmsCounts(spaceId,space){
+  const presets={
+    management:[66,61,5],quality:[486,472,7],recruitment:[118,112,6],operations:[368,344,4],
+    engineering:[271,258,12],purchasing:[144,133,11],hr:[93,87,6],external:[203,194,9]
+  };
+  return presets[spaceId]||[space?.count||0,space?.count||0,0];
+}
+function renderDmsSpace(spaceId){
+  const space=spaceDefinitions[spaceId];
+  if(!space) return;
+  activeRepositorySpaceId=spaceId;
+  activeSpace=space;
+  document.querySelectorAll('#dmsSpaceTabs [data-dms-space]').forEach(button=>button.classList.toggle('active',button.dataset.dmsSpace===spaceId));
+
+  const title=document.getElementById('dmsSpaceTitle');
+  const purpose=document.getElementById('dmsSpacePurpose');
+  const icon=document.getElementById('dmsSpaceHeroIcon');
+  if(title) title.textContent=space.name;
+  if(purpose) purpose.textContent=spacePurpose(spaceId,space);
+  if(icon){
+    icon.className='dmsSpaceHeroIcon '+spaceToneClass(spaceId);
+    icon.innerHTML='<i data-lucide="'+spaceIconName(spaceId)+'"></i>';
+  }
+  const counts=dmsCounts(spaceId,space);
+  const set=(id,value)=>{const el=document.getElementById(id);if(el) el.textContent=value};
+  set('dmsSpaceCount',counts[0]); set('dmsSpaceEffective',counts[1]); set('dmsSpaceAttention',counts[2]); set('dmsDocTabCount',counts[0]);
+  document.querySelectorAll('.dmsContextSpaceName').forEach(el=>el.textContent=space.name);
+  renderDmsDocuments();
+  refreshIcons();
+}
+function renderDmsDocuments(){
+  const space=spaceDefinitions[activeRepositorySpaceId];
+  const host=document.getElementById('dmsDocumentRows');
+  if(!space||!host) return;
+  const q=(document.getElementById('dmsDocumentSearch')?.value||'').trim().toLowerCase();
+  const docs=(space.docs||[]).filter(doc=>{
+    const matchesSearch=!q||(doc.code+' '+doc.title+' '+doc.owner+' '+doc.type).toLowerCase().includes(q);
+    const type=(doc.type||'').toLowerCase();
+    const matchesType=dmsDocumentTypeFilter==='all'||type.includes(dmsDocumentTypeFilter);
+    return matchesSearch&&matchesType;
+  });
+  host.innerHTML=docs.map(doc=>{
+    const statusClass=doc.kind||'neutral';
+    const type=(doc.type||'Controlled document').split(' · ')[0];
+    return '<button class="dmsDocumentRow" data-code="'+escapeHtml(doc.code)+'">'
+      +'<div><b>'+escapeHtml(doc.code)+'</b><strong>'+escapeHtml(doc.title)+'</strong><small>'+escapeHtml(space.name)+'</small></div>'
+      +'<span>'+escapeHtml(type)+'</span><span>'+escapeHtml(doc.rev||'—')+'</span><span>'+escapeHtml(doc.owner||'—')+'</span>'
+      +'<span class="tag '+statusClass+'">'+escapeHtml(doc.status||'—')+'</span><span>'+escapeHtml(doc.review||'—')+'</span><i data-lucide="chevron-right"></i></button>';
+  }).join('');
+  const empty=document.getElementById('dmsDocumentEmpty');
+  if(empty) empty.style.display=docs.length?'none':'grid';
+  refreshIcons();
+}
+function openDocumentFromWorkspace(spaceId,documentCode){
+  const space=spaceDefinitions[spaceId];
+  if(!space) return;
+  const doc=space.docs?.find(x=>x.code===documentCode);
+  if(!doc) return;
+  activeSpace=space;
+  activeRepositorySpaceId=spaceId;
+  documentReturnContext='hub';
+  const hub=document.getElementById('repositoryHub');
+  const spaceView=document.getElementById('repositorySpace');
+  const docView=document.getElementById('repositoryDocument');
+  if(hub) hub.style.display='none';
+  if(spaceView) spaceView.style.display='none';
+  if(docView) docView.style.display='block';
+  selectSpaceDocument(doc,null);
+}
+document.getElementById('dmsSpaceTabs')?.addEventListener('click',e=>{
+  const button=e.target.closest('[data-dms-space]');
+  if(button) renderDmsSpace(button.dataset.dmsSpace);
+});
+document.getElementById('dmsSpaceSearch')?.addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase();
+  document.querySelectorAll('#dmsSpaceTabs [data-dms-space]').forEach(button=>{
+    button.style.display=!q||button.textContent.toLowerCase().includes(q)?'grid':'none';
+  });
+});
+document.getElementById('dmsDocumentSearch')?.addEventListener('input',renderDmsDocuments);
+document.querySelectorAll('#dmsDocumentTypeTabs [data-doc-type]').forEach(button=>button.addEventListener('click',()=>{
+  document.querySelectorAll('#dmsDocumentTypeTabs [data-doc-type]').forEach(x=>x.classList.remove('active'));
+  button.classList.add('active');
+  dmsDocumentTypeFilter=button.dataset.docType||'all';
+  renderDmsDocuments();
+}));
+document.getElementById('dmsDocumentRows')?.addEventListener('click',e=>{
+  const row=e.target.closest('.dmsDocumentRow[data-code]');
+  if(row) openDocumentFromWorkspace(activeRepositorySpaceId,row.dataset.code);
+});
+document.querySelectorAll('#dmsContextTabs [data-dms-context]').forEach(button=>button.addEventListener('click',()=>{
+  const tab=button.dataset.dmsContext;
+  document.querySelectorAll('#dmsContextTabs [data-dms-context]').forEach(x=>x.classList.toggle('active',x===button));
+  document.querySelectorAll('[data-dms-context-panel]').forEach(panel=>panel.classList.toggle('active',panel.dataset.dmsContextPanel===tab));
+  refreshIcons();
+}));
+
 function applyControlledLibraryFilters(){
   const q=(document.getElementById('controlledSearch')?.value||'').trim().toLowerCase();
   const type=document.getElementById('controlledTypeFilter')?.value||'all';
@@ -557,12 +682,14 @@ function resetControlledInformation(){
   if(hub) hub.style.display='block';
   if(space) space.style.display='none';
   if(doc) doc.style.display='none';
-  activeSpace=null;
+  activeSpace=spaceDefinitions[activeRepositorySpaceId]||spaceDefinitions.quality;
   setRepositoryPanel('spaces');
+  renderDmsSpace(activeRepositorySpaceId||'quality');
   if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information';
 }
 
 function openDocumentSpace(spaceId,override=null){
+  documentReturnContext='space';
   const base=override||spaceDefinitions[spaceId];
   if(!base) return;
   if(!document.getElementById('repository')?.classList.contains('active')) showView('repository');
@@ -584,22 +711,25 @@ function openDocumentSpace(spaceId,override=null){
 }
 
 function openControlledDocument(spaceId,documentCode){
-  const base=spaceDefinitions[spaceId];
-  if(!base) return;
-  openDocumentSpace(spaceId);
-  const index=(base.docs||[]).findIndex(doc=>doc.code===documentCode);
-  if(index<0) return;
-  const row=document.querySelector('#spaceDocumentRows .spaceDocumentItem[data-space-doc-index="'+index+'"]');
-  const doc=base.docs[index];
-  if(doc) selectSpaceDocument(doc,row);
+  if(!document.getElementById('repository')?.classList.contains('active')) showView('repository');
+  openDocumentFromWorkspace(spaceId,documentCode);
 }
 
 function closeDocumentDetail(){
+  const hub=document.getElementById('repositoryHub');
   const space=document.getElementById('repositorySpace');
   const doc=document.getElementById('repositoryDocument');
   if(doc) doc.style.display='none';
-  if(space) space.style.display='block';
-  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information / '+(activeSpace?.name||'Space');
+  if(documentReturnContext==='hub'){
+    if(space) space.style.display='none';
+    if(hub) hub.style.display='block';
+    renderDmsSpace(activeRepositorySpaceId||'quality');
+    if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information';
+  }else{
+    if(hub) hub.style.display='none';
+    if(space) space.style.display='block';
+    if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information / '+(activeSpace?.name||'Space');
+  }
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -627,7 +757,7 @@ document.getElementById('spaceDocumentRows')?.addEventListener('click',e=>{
   const row=e.target.closest('.spaceDocumentItem[data-space-doc-index]');
   if(!row||!activeSpace) return;
   const doc=activeSpace.docs?.[Number(row.dataset.spaceDocIndex)];
-  if(doc) selectSpaceDocument(doc,row);
+  if(doc){documentReturnContext='space';selectSpaceDocument(doc,row);}
 });
 
 
@@ -696,6 +826,13 @@ function renderCustomSpaceCard(space){
     <span class="spaceMeta"><b>0</b> resources · ${escapeHtml(space.type||'Custom space')}</span>`;
   spacesHost.insertBefore(card,createCard);
   spaceDefinitions[space.id]={...space,docs:space.docs||[],count:space.count||0,path:space.path||space.name};
+  const rail=document.getElementById('dmsSpaceTabs');
+  if(rail && !rail.querySelector('[data-dms-space="'+space.id+'"]')){
+    const tab=document.createElement('button');
+    tab.dataset.dmsSpace=space.id;
+    tab.innerHTML='<span class="dmsTabIcon toneSlate"><i data-lucide="folder-kanban"></i></span><span><b>'+escapeHtml(space.name)+'</b><small>0 documents</small></span><i data-lucide="chevron-right"></i>';
+    rail.appendChild(tab);
+  }
   refreshIcons();
 }
 loadCustomSpaces().forEach(renderCustomSpaceCard);
@@ -1872,3 +2009,5 @@ updateApprovalRouteSummary();
 /* iQMS build: 20260922-hierarchy1 */
 
 renderTraceability('QMS-PRO-REC-001');
+
+renderDmsSpace('quality');

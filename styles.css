@@ -3078,3 +3078,289 @@ html,body{background:var(--bg)}
   #repositoryHub .documentSpaces:not(.featuredSpaces),
   #repositoryHub .featuredSpaces{grid-template-columns:1fr}
 }
+
+
+/* ============================================================
+   DMS-style controlled-information interaction
+   Persistent primary-space rail -> contextual tabs -> documents
+   ============================================================ */
+.repositoryModeTabs{
+  display:flex;
+  gap:18px;
+  border-bottom:1px solid #e9e6ee;
+  margin:0 0 14px;
+  padding:0 2px;
+}
+.repositoryModeTabs button{
+  position:relative;
+  height:40px;
+  padding:0 2px;
+  border:0;
+  background:transparent;
+  color:#8c8795;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:9px;
+  font-weight:700;
+}
+.repositoryModeTabs button.active{color:#2f2b36}
+.repositoryModeTabs button.active:after{
+  content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#63c6b1
+}
+.repositoryModeTabs .lucide{width:13px;height:13px}
+
+.dmsWorkspace{
+  min-height:650px;
+  display:grid;
+  grid-template-columns:250px minmax(0,1fr);
+  border:1px solid #ebe8ef;
+  border-radius:9px;
+  background:#fff;
+  overflow:hidden;
+  box-shadow:0 6px 24px rgba(29,27,37,.035);
+}
+.dmsSpaceRail{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  background:#faf9fc;
+  border-right:1px solid #ebe8ef;
+}
+.dmsRailHeader{
+  min-height:68px;
+  padding:12px 12px 8px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.dmsRailHeader h2{margin:2px 0 0;font-size:12px;color:#2b2832}
+.dmsRailHeader .iconButton{width:28px;height:28px;background:#fff}
+.dmsRailSearch{
+  height:34px;
+  margin:0 10px 8px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:0 9px;
+  border:1px solid #e7e4eb;
+  border-radius:6px;
+  background:#fff;
+}
+.dmsRailSearch .lucide{width:12px;height:12px;color:#aaa5b2}
+.dmsRailSearch input{width:100%;border:0;outline:0;background:transparent;font-size:9px}
+.dmsSpaceTabs{display:flex;flex-direction:column;padding:3px 8px 10px;gap:2px}
+.dmsSpaceTabs>button{
+  width:100%;
+  min-height:52px;
+  display:grid;
+  grid-template-columns:30px minmax(0,1fr) 14px;
+  gap:8px;
+  align-items:center;
+  padding:7px 8px;
+  border:0;
+  border-radius:6px;
+  background:transparent;
+  text-align:left;
+  color:#5d5867;
+}
+.dmsSpaceTabs>button:hover{background:#f2f0f5}
+.dmsSpaceTabs>button.active{background:#fff;box-shadow:0 1px 4px rgba(29,27,37,.06);color:#27242d}
+.dmsTabIcon{
+  width:28px;height:28px;border-radius:7px;display:grid;place-items:center
+}
+.dmsTabIcon .lucide{width:14px;height:14px}
+.dmsSpaceTabs b,.dmsSpaceTabs small{display:block}
+.dmsSpaceTabs b{font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dmsSpaceTabs small{margin-top:2px;font-size:7px;color:#aaa5b2}
+.dmsSpaceTabs>button>.lucide{width:12px;height:12px;color:#b7b2bd}
+.dmsRailFooter{
+  margin:auto 8px 8px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:0 9px;
+  border:0;
+  border-top:1px solid #e9e6ed;
+  background:transparent;
+  color:#807b89;
+  font-size:8px;
+}
+.dmsRailFooter .lucide{width:13px;height:13px}
+
+.dmsSpaceWorkspace{min-width:0;background:#fff}
+.dmsSpaceHeader{
+  min-height:92px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:14px 16px;
+  border-bottom:1px solid #efedf2;
+}
+.dmsSpaceIdentity{display:flex;align-items:center;gap:10px;min-width:0}
+.dmsSpaceHeroIcon{
+  width:38px;height:38px;border-radius:9px;display:grid;place-items:center;flex:0 0 auto
+}
+.dmsSpaceHeroIcon .lucide{width:18px;height:18px}
+.dmsSpaceIdentity h2{margin:2px 0 2px;font-size:15px;color:#24212a}
+.dmsSpaceIdentity p{margin:0;max-width:620px;font-size:8px;color:#9994a1}
+.dmsSpaceActions{display:flex;align-items:center;gap:14px}
+.dmsSpaceStats{display:flex;align-items:center;gap:0}
+.dmsSpaceStats>span{min-width:74px;padding:0 12px;border-left:1px solid #efedf2}
+.dmsSpaceStats b,.dmsSpaceStats small{display:block}
+.dmsSpaceStats b{font-size:13px;color:#2d2a33}
+.dmsSpaceStats small{margin-top:1px;font-size:7px;color:#aaa5b2}
+
+.dmsContextTabs{
+  display:flex;
+  align-items:center;
+  gap:22px;
+  height:46px;
+  padding:0 16px;
+  border-bottom:1px solid #efedf2;
+  background:#fff;
+}
+.dmsContextTabs button{
+  position:relative;
+  height:46px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#8c8794;
+  font-size:9px;
+  font-weight:700;
+}
+.dmsContextTabs button.active{color:#2e2a34}
+.dmsContextTabs button.active:after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:#63c6b1
+}
+.dmsContextTabs span{
+  margin-left:4px;padding:2px 5px;border-radius:8px;background:#f2f0f5;color:#77717f;font-size:7px
+}
+.dmsContextPanel{display:none}
+.dmsContextPanel.active{display:block}
+
+.dmsDocumentToolbar{
+  min-height:52px;
+  display:grid;
+  grid-template-columns:minmax(240px,1fr) auto 32px;
+  gap:10px;
+  align-items:center;
+  padding:9px 14px;
+  border-bottom:1px solid #efedf2;
+  background:#fbfafc;
+}
+.dmsDocumentTypeTabs{display:flex;gap:3px}
+.dmsDocumentTypeTabs button{
+  height:28px;padding:0 8px;border:0;border-radius:5px;background:transparent;color:#8e8997;font-size:8px;font-weight:650
+}
+.dmsDocumentTypeTabs button:hover{background:#f1eff4}
+.dmsDocumentTypeTabs button.active{background:#fff;color:#2f2b36;box-shadow:0 1px 4px rgba(29,27,37,.08)}
+.dmsDocumentHead,.dmsDocumentRow{
+  display:grid;
+  grid-template-columns:minmax(260px,1.55fr) 120px 52px 130px 90px 96px 18px;
+  gap:8px;
+  align-items:center;
+}
+.dmsDocumentHead{
+  min-height:32px;
+  padding:0 14px;
+  background:#fff;
+  border-bottom:1px solid #efedf2;
+  color:#aaa5b2;
+  font-size:7px;
+  font-weight:800;
+  text-transform:uppercase;
+}
+.dmsDocumentRow{
+  width:100%;
+  min-height:64px;
+  padding:8px 14px;
+  border:0;
+  border-bottom:1px solid #f0eef3;
+  background:#fff;
+  text-align:left;
+}
+.dmsDocumentRow:hover{background:#fcfbfd}
+.dmsDocumentRow>div b,.dmsDocumentRow>div strong,.dmsDocumentRow>div small{display:block}
+.dmsDocumentRow>div b{font-size:7px;color:#168675;margin-bottom:1px}
+.dmsDocumentRow>div strong{font-size:10px;color:#2b2832;font-weight:650}
+.dmsDocumentRow>div small{margin-top:2px;font-size:7px;color:#aaa5b2}
+.dmsDocumentRow>span:not(.tag){font-size:8px;color:#625d6c}
+.dmsDocumentRow>.lucide{width:12px;height:12px;color:#b6b2bd}
+.dmsEmpty{min-height:240px;place-items:center;text-align:center;padding:30px;color:#9994a1}
+.dmsEmpty .lucide{width:24px;height:24px}
+.dmsEmpty b,.dmsEmpty span{display:block}
+.dmsEmpty b{margin-top:6px;font-size:10px;color:#4d4855}
+.dmsEmpty span{font-size:8px}
+
+.dmsContextPlaceholder{
+  min-height:360px;
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) auto;
+  gap:12px;
+  align-items:start;
+  padding:28px;
+}
+.dmsContextPlaceholder>span{
+  width:38px;height:38px;border-radius:9px;background:#f1eff5;color:#77717f;display:grid;place-items:center
+}
+.dmsContextPlaceholder>span .lucide{width:17px;height:17px}
+.dmsContextPlaceholder h3{margin:2px 0 4px;font-size:12px;color:#2b2832}
+.dmsContextPlaceholder p{margin:0;max-width:560px;font-size:8px;color:#9994a1;line-height:1.5}
+.dmsActivityList{padding:10px 16px}
+.dmsActivityList>div{
+  display:grid;grid-template-columns:56px 26px minmax(0,1fr);
+  gap:8px;align-items:center;min-height:58px;border-bottom:1px solid #efedf2
+}
+.dmsActivityList p{margin:0}
+.dmsActivityList p b,.dmsActivityList p small{display:block}
+.dmsActivityList p b{font-size:9px;color:#2f2b35}
+.dmsActivityList p small{font-size:7px;color:#9f9aa6}
+.dmsActivityList>div>span{font-size:7px;color:#aaa5b2}
+
+/* Stronger document-level tab interaction. */
+.documentDetailTabs{
+  height:44px;
+  gap:24px;
+  padding:0 4px;
+  margin-bottom:10px;
+  border-bottom:1px solid #e9e6ed;
+}
+.documentDetailTabs button{
+  position:relative;
+  height:44px;
+  padding:0 2px;
+  border:0;
+  color:#8b8693;
+  font-size:9px;
+}
+.documentDetailTabs button.active{color:#24212a;border-bottom-color:transparent}
+.documentDetailTabs button.active:after{
+  content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#63c6b1
+}
+
+@media(max-width:1180px){
+  .dmsWorkspace{grid-template-columns:220px minmax(0,1fr)}
+  .dmsSpaceStats{display:none}
+  .dmsDocumentHead,.dmsDocumentRow{grid-template-columns:minmax(240px,1.5fr) 110px 50px 100px 86px 86px 16px}
+}
+@media(max-width:900px){
+  .dmsWorkspace{grid-template-columns:1fr}
+  .dmsSpaceRail{border-right:0;border-bottom:1px solid #ebe8ef}
+  .dmsSpaceTabs{display:grid;grid-template-columns:repeat(2,1fr)}
+  .dmsRailFooter{display:none}
+  .dmsDocumentToolbar{grid-template-columns:1fr}
+  .dmsDocumentHead,.dmsDocumentRow{grid-template-columns:minmax(240px,1fr) 90px 70px 16px}
+  .dmsDocumentHead span:nth-child(3),.dmsDocumentHead span:nth-child(4),.dmsDocumentHead span:nth-child(6),
+  .dmsDocumentRow>span:nth-child(3),.dmsDocumentRow>span:nth-child(4),.dmsDocumentRow>span:nth-child(6){display:none}
+}
+@media(max-width:620px){
+  .dmsSpaceTabs{grid-template-columns:1fr}
+  .dmsSpaceHeader{align-items:flex-start;flex-direction:column}
+  .dmsSpaceActions{width:100%;justify-content:flex-end}
+  .dmsContextTabs{overflow:auto}
+}

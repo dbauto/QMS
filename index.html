@@ -8,7 +8,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-reference-ui1">
+<link rel="stylesheet" href="./styles.css?v=20260922-dms-tabs2">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -301,67 +301,139 @@ body.navExpanded .railExpand span{display:inline!important}
             </div>
           </div>
 
-          <div class="repositoryHierarchyBar" aria-label="Controlled information hierarchy">
-            <span class="hierarchyStep active"><i>1</i><b>Primary space</b><small>Choose the QMS area</small></span>
-            <i data-lucide="chevron-right"></i>
-            <span class="hierarchyStep"><i>2</i><b>Documents</b><small>Browse that space</small></span>
-            <i data-lucide="chevron-right"></i>
-            <span class="hierarchyStep"><i>3</i><b>Document</b><small>Open the controlled item</small></span>
-          </div>
+          
 
           <div class="repositoryModeTabs" id="repositoryBrowseTabs">
-            <button class="active" data-repository-tab="spaces"><i data-lucide="layout-grid"></i>Browse by space</button>
+            <button class="active" data-repository-tab="spaces"><i data-lucide="panels-top-left"></i>Workspace</button>
             <button data-repository-tab="all"><i data-lucide="list"></i>All documents</button>
           </div>
 
           <section class="repositoryPanel active" data-repository-panel="spaces">
-            <div class="repositoryBrowseHeader">
-              <div><h2>Choose a primary space</h2><p>Spaces reflect how people work in the QMS. They are views of the same canonical controlled information — not duplicate storage folders.</p></div>
-              <div class="spaceCountLabel"><b>8</b><span>configured spaces</span></div>
-            </div>
+            <div class="dmsWorkspace">
+              <aside class="dmsSpaceRail">
+                <div class="dmsRailHeader">
+                  <div><span class="recordLabel">PRIMARY SPACES</span><h2>QMS areas</h2></div>
+                  <button class="iconButton" onclick="openSpaceModal()" title="Create space"><i data-lucide="plus"></i></button>
+                </div>
+                <div class="dmsRailSearch"><i data-lucide="search"></i><input id="dmsSpaceSearch" placeholder="Find a space..."></div>
 
-            <div class="spaceGroupLabel"><span>Management system</span><small>System-level governance and quality controls</small></div>
-            <div class="documentSpaces featuredSpaces">
-              <button class="spaceCard" data-space-id="management" data-space-name="Management System" data-space-path="Management / System Documents" data-space-count="66">
-                <span class="spaceIcon toneIndigo"><i data-lucide="landmark"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
-                <strong>Management System</strong><p>Quality policy, objectives and system-level governance documents.</p><span class="spaceMeta"><b>66</b> resources · <b>6</b> approvals</span>
-              </button>
-              <button class="spaceCard" data-space-id="quality" data-space-name="Quality Management" data-space-path="Quality / Procedures" data-space-count="486">
-                <span class="spaceIcon toneBlue"><i data-lucide="shield-check"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
-                <strong>Quality Management</strong><p>Policies, procedures, audits, NCR controls and quality-system documents.</p><span class="spaceMeta"><b>486</b> resources · <b>7</b> reviews due</span>
-              </button>
-            </div>
+                <div class="dmsSpaceTabs" id="dmsSpaceTabs">
+                  <button data-dms-space="management">
+                    <span class="dmsTabIcon toneIndigo"><i data-lucide="landmark"></i></span>
+                    <span><b>Management System</b><small>66 documents</small></span>
+                    <i data-lucide="chevron-right"></i>
+                  </button>
+                  <button class="active" data-dms-space="quality">
+                    <span class="dmsTabIcon toneBlue"><i data-lucide="shield-check"></i></span>
+                    <span><b>Quality Management</b><small>486 documents</small></span>
+                    <i data-lucide="chevron-right"></i>
+                  </button>
+                  <button data-dms-space="recruitment">
+                    <span class="dmsTabIcon toneTeal"><i data-lucide="user-round-search"></i></span>
+                    <span><b>Recruitment</b><small>118 documents</small></span>
+                    <i data-lucide="chevron-right"></i>
+                  </button>
+                  <button data-dms-space="operations">
+                    <span class="dmsTabIcon toneTeal"><i data-lucide="workflow"></i></span>
+                    <span><b>Operations</b><small>368 documents</small></span>
+                    <i data-lucide="chevron-right"></i>
+                  </button>
+                  <button data-dms-space="engineering">
+                    <span class="dmsTabIcon toneViolet"><i data-lucide="drafting-compass"></i></span>
+                    <span><b>Engineering</b><small>271 documents</small></span>
+                    <i data-lucide="chevron-right"></i>
+                  </button>
+                  <button data-dms-space="purchasing">
+                    <span class="dmsTabIcon toneAmber"><i data-lucide="handshake"></i></span>
+                    <span><b>Purchasing & Supplier Quality</b><small>144 documents</small></span>
+                    <i data-lucide="chevron-right"></i>
+                  </button>
+                  <button data-dms-space="hr">
+                    <span class="dmsTabIcon toneRose"><i data-lucide="users"></i></span>
+                    <span><b>People & Competence</b><small>93 documents</small></span>
+                    <i data-lucide="chevron-right"></i>
+                  </button>
+                  <button data-dms-space="external">
+                    <span class="dmsTabIcon toneSlate"><i data-lucide="book-open-check"></i></span>
+                    <span><b>External Standards</b><small>203 documents</small></span>
+                    <i data-lucide="chevron-right"></i>
+                  </button>
+                </div>
 
-            <div class="spaceGroupLabel"><span>Operational & support processes</span><small>Controlled information used by functions and process owners</small></div>
-            <div class="documentSpaces" id="documentSpaces">
-              <button class="spaceCard" data-space-id="recruitment" data-space-name="Recruitment" data-space-path="Recruitment / Controlled Information" data-space-count="118">
-                <span class="spaceIcon toneTeal"><i data-lucide="user-round-search"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
-                <strong>Recruitment</strong><p>Recruitment procedures, screening controls, interview guidance and controlled forms.</p><span class="spaceMeta"><b>118</b> resources · <b>6</b> linked records</span>
-              </button>
-              <button class="spaceCard" data-space-id="operations" data-space-name="Operations" data-space-path="Operations / Controlled Documents" data-space-count="368">
-                <span class="spaceIcon toneTeal"><i data-lucide="workflow"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
-                <strong>Operations</strong><p>Production procedures, work instructions and shop-floor forms.</p><span class="spaceMeta"><b>368</b> resources · <b>4</b> pending</span>
-              </button>
-              <button class="spaceCard" data-space-id="engineering" data-space-name="Engineering" data-space-path="Engineering / Controlled Documents" data-space-count="271">
-                <span class="spaceIcon toneViolet"><i data-lucide="drafting-compass"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
-                <strong>Engineering</strong><p>Specifications, drawings, technical standards and engineering changes.</p><span class="spaceMeta"><b>271</b> resources · <b>12</b> linked standards</span>
-              </button>
-              <button class="spaceCard" data-space-id="purchasing" data-space-name="Purchasing & Supplier Quality" data-space-path="Purchasing / Supplier Quality" data-space-count="144">
-                <span class="spaceIcon toneAmber"><i data-lucide="handshake"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
-                <strong>Purchasing & Supplier Quality</strong><p>Supplier controls, approved-source documents and purchasing requirements.</p><span class="spaceMeta"><b>144</b> resources · <b>19</b> supplier links</span>
-              </button>
-              <button class="spaceCard" data-space-id="hr" data-space-name="People & Competence" data-space-path="Human Resources / Competence" data-space-count="93">
-                <span class="spaceIcon toneRose"><i data-lucide="users"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
-                <strong>People & Competence</strong><p>Training procedures, role requirements and competency controls.</p><span class="spaceMeta"><b>93</b> resources · <b>18</b> training links</span>
-              </button>
-              <button class="spaceCard" data-space-id="external" data-space-name="External Standards & Customer Requirements" data-space-path="External Documents / Standards" data-space-count="203">
-                <span class="spaceIcon toneSlate"><i data-lucide="book-open-check"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
-                <strong>External Standards</strong><p>Standards, regulations and customer-controlled specifications.</p><span class="spaceMeta"><b>203</b> resources · <b>9</b> currency checks</span>
-              </button>
-              <button class="spaceCard createSpaceCard" onclick="openSpaceModal()">
-                <span class="spaceIcon createIcon"><i data-lucide="plus"></i></span>
-                <strong>Create process space</strong><p>Add another contextual QMS area without creating another storage location.</p><span class="spaceCreateLink">Configure space <i data-lucide="arrow-right"></i></span>
-              </button>
+                <button class="dmsRailFooter" onclick="showView('structure')"><i data-lucide="settings-2"></i><span>Manage spaces</span></button>
+              </aside>
+
+              <section class="dmsSpaceWorkspace">
+                <header class="dmsSpaceHeader">
+                  <div class="dmsSpaceIdentity">
+                    <span class="dmsSpaceHeroIcon toneBlue" id="dmsSpaceHeroIcon"><i data-lucide="shield-check"></i></span>
+                    <div>
+                      <span class="recordLabel">PRIMARY SPACE</span>
+                      <h2 id="dmsSpaceTitle">Quality Management</h2>
+                      <p id="dmsSpacePurpose">Policies, procedures, audits, NCR controls and quality-system documents.</p>
+                    </div>
+                  </div>
+                  <div class="dmsSpaceActions">
+                    <div class="dmsSpaceStats">
+                      <span><b id="dmsSpaceCount">486</b><small>Documents</small></span>
+                      <span><b id="dmsSpaceEffective">472</b><small>Effective</small></span>
+                      <span><b id="dmsSpaceAttention">7</b><small>Need attention</small></span>
+                    </div>
+                    <button class="btn primary" onclick="openRegisterResource('controlled')"><i data-lucide="file-plus-2"></i>Register document</button>
+                  </div>
+                </header>
+
+                <div class="dmsContextTabs" id="dmsContextTabs">
+                  <button class="active" data-dms-context="documents">Documents <span id="dmsDocTabCount">486</span></button>
+                  <button data-dms-context="evidence">Records & evidence</button>
+                  <button data-dms-context="requirements">Requirements</button>
+                  <button data-dms-context="activity">Activity</button>
+                </div>
+
+                <div class="dmsContextPanel active" data-dms-context-panel="documents">
+                  <div class="dmsDocumentToolbar">
+                    <div class="filterSearch"><span><i data-lucide="search"></i></span><input id="dmsDocumentSearch" placeholder="Search this space..."></div>
+                    <div class="dmsDocumentTypeTabs" id="dmsDocumentTypeTabs">
+                      <button class="active" data-doc-type="all">All</button>
+                      <button data-doc-type="procedure">Procedures</button>
+                      <button data-doc-type="sop">SOPs</button>
+                      <button data-doc-type="work instruction">Work instructions</button>
+                      <button data-doc-type="form">Forms</button>
+                    </div>
+                    <button class="iconButton" title="More filters"><i data-lucide="sliders-horizontal"></i></button>
+                  </div>
+
+                  <div class="dmsDocumentHead"><span>Document</span><span>Type</span><span>Rev</span><span>Owner</span><span>Status</span><span>Next review</span><span></span></div>
+                  <div class="dmsDocumentRows" id="dmsDocumentRows"></div>
+                  <div class="dmsEmpty" id="dmsDocumentEmpty" style="display:none">
+                    <i data-lucide="file-search"></i><b>No documents match this view</b><span>Try another filter or register a controlled document in this space.</span>
+                  </div>
+                </div>
+
+                <div class="dmsContextPanel" data-dms-context-panel="evidence">
+                  <div class="dmsContextPlaceholder">
+                    <span><i data-lucide="archive"></i></span>
+                    <div><h3>Records & evidence for <b class="dmsContextSpaceName">Quality Management</b></h3><p>Evidence linked to this primary space appears here without duplicating the canonical Records & Evidence library.</p></div>
+                    <button class="btn secondary" onclick="showView('records')">Open evidence library</button>
+                  </div>
+                </div>
+
+                <div class="dmsContextPanel" data-dms-context-panel="requirements">
+                  <div class="dmsContextPlaceholder">
+                    <span><i data-lucide="landmark"></i></span>
+                    <div><h3>Applicable requirements</h3><p>ISO clauses, customer requirements and other obligations mapped to this primary space.</p></div>
+                    <button class="btn secondary" onclick="showView('relationships')">Open traceability</button>
+                  </div>
+                </div>
+
+                <div class="dmsContextPanel" data-dms-context-panel="activity">
+                  <div class="dmsActivityList">
+                    <div><span>10:16</span><i class="activityIcon success"><i data-lucide="check"></i></i><p><b>Controlled document released</b><small>Latest approved revision became effective</small></p></div>
+                    <div><span>09:41</span><i class="activityIcon"><i data-lucide="link-2"></i></i><p><b>Evidence linked</b><small>New record connected to this space</small></p></div>
+                    <div><span>Yesterday</span><i class="activityIcon"><i data-lucide="history"></i></i><p><b>Review date updated</b><small>Document Control updated the next review schedule</small></p></div>
+                  </div>
+                </div>
+              </section>
             </div>
           </section>
 
@@ -1336,6 +1408,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-reference-ui1"></script>
+<script src="./app.js?v=20260922-dms-tabs2"></script>
 </body>
 </html>
