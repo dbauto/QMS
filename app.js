@@ -53,6 +53,99 @@ document.addEventListener('keydown',e=>{
 });
 
 
+const accessUsers={
+  maria:{name:'Maria Santos',subtitle:'Quality Manager · Quality',roles:['Approver','Document Owner']},
+  ana:{name:'Ana Reyes',subtitle:'Employee · Quality',roles:['Reviewer','Document Owner']},
+  oscar:{name:'Oscar Flores',subtitle:'Department Manager · Operations',roles:['Reviewer','Document Owner']},
+  lea:{name:'Lea Garcia',subtitle:'Department Manager · Recruitment',roles:['Approver','Document Owner']},
+  mika:{name:'Mika Torres',subtitle:'Employee · Quality',roles:['Document Controller']},
+  aaron:{name:'Aaron Lim',subtitle:'System Administrator · IT',roles:['System Admin']}
+};
+let activeAccessUser='maria';
+let editingRoleUser=null;
+
+function roleClass(role){
+  if(role==='Approver') return 'approve';
+  if(role==='Reviewer') return 'review';
+  if(role==='Document Controller') return 'control';
+  if(role==='System Admin') return 'admin';
+  if(role==='Auditor') return 'audit';
+  return '';
+}
+function rolePillHtml(role){
+  return '<span class="rolePill '+roleClass(role)+'">'+escapeHtml(role)+'</span>';
+}
+function getAccessRow(userId){
+  return document.querySelector('.accessUserRow[data-user-id="'+userId+'"]');
+}
+function getEffectiveRights(row){
+  if(!row) return [];
+  const labels=['View','Create/Edit','Review','Approve','Document Control','Admin'];
+  return [...row.querySelectorAll('.permissionCheck input')].map((input,i)=>input.checked?labels[i]:null).filter(Boolean);
+}
+function selectAccessUser(userId,row){
+  activeAccessUser=userId;
+  document.querySelectorAll('.accessUserRow').forEach(x=>x.classList.toggle('selected',x===row));
+  const user=accessUsers[userId];
+  if(!user) return;
+  const type=row?.querySelector('.userTypeSelect')?.value||user.subtitle.split(' · ')[0];
+  const dept=row?.dataset.dept||'';
+  const scope=row?.querySelector('.scopeSelect')?.value||'Assigned';
+  const roles=user.roles||[];
+  document.getElementById('accessDetailName').textContent=user.name;
+  document.getElementById('accessDetailSubtitle').textContent=type+' · '+dept;
+  document.getElementById('accessDetailRoles').innerHTML=roles.map(rolePillHtml).join('');
+  document.getElementById('accessDetailScope').textContent=scope;
+  const rights=getEffectiveRights(row);
+  document.getElementById('accessDetailRights').textContent=rights.length?rights.join(' · '):'No direct permissions';
+  refreshIcons();
+}
+function openRoleEditor(userId){
+  editingRoleUser=userId;
+  const user=accessUsers[userId];
+  if(!user) return;
+  document.getElementById('roleEditorTitle').textContent='Edit roles · '+user.name;
+  document.querySelectorAll('#roleEditorModal .roleOptionList input').forEach(input=>input.checked=(user.roles||[]).includes(input.value));
+  document.getElementById('roleEditorModal')?.classList.add('show');
+  refreshIcons();
+}
+function closeRoleEditor(){
+  document.getElementById('roleEditorModal')?.classList.remove('show');
+  editingRoleUser=null;
+}
+function saveRoleEditor(){
+  if(!editingRoleUser) return;
+  const user=accessUsers[editingRoleUser];
+  user.roles=[...document.querySelectorAll('#roleEditorModal .roleOptionList input:checked')].map(x=>x.value);
+  const row=getAccessRow(editingRoleUser);
+  const cell=row?.querySelector('.roleCell');
+  if(cell){
+    cell.innerHTML=user.roles.map(rolePillHtml).join('')+'<i data-lucide="pencil"></i>';
+  }
+  closeRoleEditor();
+  selectAccessUser(editingRoleUser||activeAccessUser,row);
+  toast('QMS roles updated',user.name+' now has '+(user.roles.length?user.roles.join(', '):'no assigned QMS duties')+'.');
+}
+function applyUserAccessFilters(){
+  const q=(document.getElementById('userAccessSearch')?.value||'').trim().toLowerCase();
+  const dept=document.getElementById('userDepartmentFilter')?.value||'all';
+  const status=document.getElementById('userStatusFilter')?.value||'all';
+  document.querySelectorAll('.accessUserRow').forEach(row=>{
+    const show=(!q||row.textContent.toLowerCase().includes(q))&&(dept==='all'||row.dataset.dept===dept)&&(status==='all'||row.dataset.status===status);
+    row.style.display=show?'grid':'none';
+  });
+}
+document.getElementById('userAccessSearch')?.addEventListener('input',applyUserAccessFilters);
+document.getElementById('userDepartmentFilter')?.addEventListener('change',applyUserAccessFilters);
+document.getElementById('userStatusFilter')?.addEventListener('change',applyUserAccessFilters);
+document.querySelectorAll('.accessUserRow input[type="checkbox"],.accessUserRow select').forEach(control=>control.addEventListener('change',()=>{
+  const row=control.closest('.accessUserRow');
+  if(row?.dataset.userId===activeAccessUser) selectAccessUser(activeAccessUser,row);
+}));
+document.getElementById('saveAccessChanges')?.addEventListener('click',()=>toast('Access changes saved','User permissions, scope and QMS duties were saved for this prototype.'));
+document.getElementById('inviteUserBtn')?.addEventListener('click',()=>toast('Invite user','User invitation setup will collect email, user type, QMS roles and initial access scope.'));
+document.getElementById('accessProfilesBtn')?.addEventListener('click',()=>toast('Access profiles','Profiles can provide safe defaults, while individual permissions and scopes remain configurable.'));
+
 const viewLabels={
   dashboard:'Overview',
   repository:'Controlled information',
@@ -2084,3 +2177,5 @@ updateApprovalRouteSummary();
 renderTraceability('QMS-PRO-REC-001');
 
 renderDmsSpace('quality');
+
+selectAccessUser('maria',document.querySelector('.accessUserRow[data-user-id="maria"]'));

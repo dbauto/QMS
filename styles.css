@@ -3711,3 +3711,136 @@ body.navExpanded .navItem{
 body.navExpanded .navMeta{
   font-size:9px!important;
 }
+
+
+/* Users & Access — editable permission matrix */
+.usersAccessHeader{align-items:center}
+.accessSummaryStrip{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px
+}
+.accessSummaryStrip>div{
+  min-height:82px;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:#fff
+}
+.accessSummaryStrip span,.accessSummaryStrip b,.accessSummaryStrip small{display:block}
+.accessSummaryStrip span{font-size:10px;color:var(--muted)}
+.accessSummaryStrip b{font-size:22px;color:var(--ink);margin:4px 0 1px}
+.accessSummaryStrip small{font-size:9px;color:var(--subtle)}
+
+.accessWorkspace{
+  border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden;box-shadow:var(--shadow)
+}
+.accessToolbar{
+  min-height:54px;display:grid;grid-template-columns:minmax(280px,1fr) 170px 140px 32px;gap:8px;align-items:center;
+  padding:9px 12px;border-bottom:1px solid var(--line);background:#fbfcfd
+}
+.accessToolbar select{
+  height:34px;border:1px solid var(--line-strong);border-radius:6px;background:#fff;padding:0 8px;font-size:11px
+}
+.accessGuidance{
+  min-height:50px;display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border-bottom:1px solid var(--line);background:#f8fcfb
+}
+.accessGuidance>.lucide{width:15px;height:15px;color:var(--brand);margin-top:2px}
+.accessGuidance b,.accessGuidance span{display:block}
+.accessGuidance b{font-size:10px;color:#2f4c46}
+.accessGuidance span{font-size:9px;color:#6f817d;margin-top:2px}
+
+.accessMatrixWrap{overflow:auto}
+.accessMatrixHead,.accessUserRow{
+  min-width:1280px;
+  display:grid;
+  grid-template-columns:minmax(235px,1.5fr) 150px minmax(210px,1.25fr) 145px repeat(6,76px) 74px 32px;
+  gap:8px;align-items:center
+}
+.accessMatrixHead{
+  min-height:38px;padding:0 12px;border-bottom:1px solid var(--line);background:#fafbfc;
+  color:var(--subtle);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.03em
+}
+.permissionHead{text-align:center}
+.accessUserRow{
+  min-height:72px;padding:8px 12px;border-bottom:1px solid var(--line);background:#fff
+}
+.accessUserRow:hover{background:#fcfdfd}
+.accessUserRow.selected{background:#f7fbfa;box-shadow:inset 3px 0 var(--brand)}
+.userIdentity{
+  min-width:0;display:grid;grid-template-columns:34px minmax(0,1fr);gap:9px;align-items:center;border:0;background:transparent;padding:0;text-align:left
+}
+.userAvatar{
+  width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#eef2f6;color:#475467;font-size:10px;font-weight:800
+}
+.userIdentity b,.userIdentity small{display:block}
+.userIdentity b{font-size:11px;color:var(--ink)}
+.userIdentity small{margin-top:2px;font-size:9px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.userTypeSelect,.scopeSelect{
+  width:100%;height:32px;border:1px solid var(--line-strong);border-radius:6px;background:#fff;padding:0 7px;font-size:10px
+}
+.roleCell{
+  min-width:0;display:flex;align-items:center;gap:4px;flex-wrap:wrap;border:0;background:transparent;padding:0;text-align:left
+}
+.roleCell>.lucide{width:12px;height:12px;color:var(--subtle);margin-left:2px}
+.rolePill{
+  display:inline-flex;align-items:center;min-height:21px;padding:2px 6px;border-radius:5px;background:#f2f4f7;color:#475467;font-size:8px;font-weight:700;white-space:nowrap
+}
+.rolePill.review{background:#eff8ff;color:#175cd3}
+.rolePill.approve{background:#ecfdf3;color:#067647}
+.rolePill.control{background:#f4f0ff;color:#6941c6}
+.rolePill.admin{background:#fff4e5;color:#b54708}
+.rolePill.audit{background:#f2f4f7;color:#344054}
+
+.permissionCheck{
+  width:100%;height:32px;display:grid;place-items:center;cursor:pointer
+}
+.permissionCheck input{position:absolute;opacity:0;pointer-events:none}
+.permissionCheck span{
+  width:18px;height:18px;border:1px solid #cfd4dc;border-radius:5px;background:#fff;display:grid;place-items:center
+}
+.permissionCheck input:checked+span{background:var(--brand);border-color:var(--brand)}
+.permissionCheck input:checked+span:after{
+  content:"";width:8px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)
+}
+.userStatus{
+  display:inline-flex;align-items:center;justify-content:center;height:23px;border-radius:12px;padding:0 8px;font-size:9px;font-weight:700
+}
+.userStatus.active{background:var(--green-bg);color:var(--green)}
+.accessUserRow .rowMenu{width:28px;height:28px}
+
+.accessFooter{
+  min-height:54px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 12px;background:#fafbfc
+}
+.accessFooter>div{display:flex;align-items:center;gap:7px;color:#667085;font-size:9px}
+.accessFooter>div>.lucide{width:14px;height:14px;color:var(--brand)}
+.accessFooter b{color:#344054}
+
+.accessUserDetail{
+  margin-top:12px;border:1px solid var(--line);border-radius:9px;background:#fff;padding:14px 16px
+}
+.accessDetailHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.accessDetailHeader h2{margin:2px 0 2px;font-size:16px;color:var(--ink)}
+.accessDetailHeader p{margin:0;font-size:10px;color:var(--muted)}
+.accessDetailGrid{display:grid;grid-template-columns:1.1fr .8fr 1.4fr;gap:24px;padding-top:12px}
+.accessDetailLabel{display:block;font-size:9px;color:var(--subtle);text-transform:uppercase;font-weight:800;margin-bottom:6px}
+.accessDetailGrid b{font-size:11px;color:#344054}
+.accessRoleList{display:flex;gap:5px;flex-wrap:wrap}
+
+.roleEditorBox{width:min(660px,96vw)}
+.roleOptionList{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.roleOptionList label{
+  min-height:84px;display:grid;grid-template-columns:18px 32px minmax(0,1fr);gap:8px;align-items:start;
+  padding:10px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer
+}
+.roleOptionList label:hover{border-color:#bfc9d3;background:#fbfcfd}
+.roleOptionList input{margin-top:5px;accent-color:var(--brand)}
+.roleOptionList label>span{width:30px;height:30px;border-radius:7px;background:#f2f4f7;color:#667085;display:grid;place-items:center}
+.roleOptionList label>span .lucide{width:15px;height:15px}
+.roleOptionList b,.roleOptionList small{display:block}
+.roleOptionList b{font-size:11px;color:var(--ink)}
+.roleOptionList small{font-size:9px;color:var(--muted);margin-top:3px;line-height:1.45}
+
+@media(max-width:1000px){
+  .accessSummaryStrip{grid-template-columns:repeat(3,1fr)}
+  .accessDetailGrid{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  .accessSummaryStrip{grid-template-columns:1fr 1fr}
+  .accessToolbar{grid-template-columns:1fr}
+  .roleOptionList{grid-template-columns:1fr}
+}
