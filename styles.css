@@ -1295,3 +1295,76 @@ body.navExpanded .navItem:hover{background:#172e47}
   line-height:1.4;
   font-weight:400;
 }
+
+
+/* Registration configuration: Primary Space + custom Document Types */
+.mappingInheritedCard{
+  display:grid;
+  grid-template-columns:110px minmax(0,1fr);
+  gap:4px 10px;
+  align-items:center;
+  border:1px solid #dfe5eb;
+  border-radius:8px;
+  background:#fafbfc;
+  padding:10px 12px;
+  margin-bottom:10px;
+}
+.mappingInheritedCard>span{
+  grid-row:1/3;
+  font-size:8px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:#98a2b3;
+  font-weight:700;
+}
+.mappingInheritedCard>b{font-size:10px;color:#344054}
+.mappingInheritedCard>small{font-size:8px;color:#98a2b3}
+
+.compactConfigModal{width:min(620px,94vw)}
+.quickConfigForm{display:flex;flex-direction:column;gap:11px}
+.quickConfigForm>label,.quickConfigGrid>label{
+  font-size:9px;
+  color:#667085;
+  font-weight:650;
+}
+.quickConfigGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.quickConfigForm .fieldInput{
+  display:block;
+  width:100%;
+  margin-top:4px;
+}
+.quickConfigForm textarea.fieldInput{min-height:82px;resize:vertical}
+.numberingPreview{
+  border:1px solid #dfe5eb;
+  border-radius:8px;
+  background:#f8fafb;
+  padding:11px 12px;
+}
+.numberingPreview span,.numberingPreview b,.numberingPreview small{display:block}
+.numberingPreview span{
+  font-size:7px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:#98a2b3;
+  font-weight:700;
+}
+.numberingPreview b{
+  margin-top:4px;
+  font-size:11px;
+  color:#344054;
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+.numberingPreview small{margin-top:3px;font-size:8px;color:#98a2b3;line-height:1.45}
+
+.registrationControlledFields>label select option[value="__create__"]{
+  font-weight:700;
+}
+
+.customTypeRow{background:#fcfdfd}
+.customTypeRow:hover{background:#f7faf9}
+
+@media(max-width:700px){
+  .quickConfigGrid{grid-template-columns:1fr}
+  .mappingInheritedCard{grid-template-columns:1fr}
+  .mappingInheritedCard>span{grid-row:auto}
+}
