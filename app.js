@@ -625,8 +625,18 @@ function openSecureRevisionDownload(){
   document.getElementById('secureDownloadFile').textContent=filename;
   document.getElementById('secureDownloadMeta').textContent='Editable '+ext.toUpperCase()+' · '+revision.rev+' working revision · '+classification;
   document.getElementById('securePasswordEmail').textContent=classification==='Restricted'
-    ? 'Restricted source checkout requires re-authentication and explicit export approval before a local editable file is issued.'
+    ? 'Restricted source checkout requires MFA re-authentication and explicit approval before any local editable file is issued.'
     : 'A one-time file password will be sent to '+profileEmailForPic(revision.pic)+'. The password is not displayed on this page.';
+  const secureAction=document.getElementById('secureRevisionAction');
+  if(secureAction){
+    if(classification==='Restricted'){
+      secureAction.innerHTML='<i data-lucide="send"></i>Request restricted source checkout';
+      secureAction.dataset.classification='Restricted';
+    }else{
+      secureAction.innerHTML='<i data-lucide="mail"></i>Send password & prepare download';
+      secureAction.dataset.classification=classification;
+    }
+  }
   document.getElementById('historyNewRev').textContent=revision.revRaw;
   document.getElementById('historyNewReason').textContent=revision.reason;
   const placement=document.getElementById('revisionHistoryPlacement');
@@ -644,6 +654,15 @@ function confirmSecureRevisionDownload(){
   if(!doc) return;
   const revision=openRevisions[doc.code];
   if(!revision) return;
+  const classification=documentClassification(doc);
+
+  if(classification==='Restricted'){
+    closeSecureRevisionDownload();
+    toast('Restricted source checkout requested',
+      'No editable file was issued. MFA re-authentication and explicit approval from Document Control / the information owner are required before a local Restricted working copy can be generated.');
+    return;
+  }
+
   revision.downloaded=true;
   revision.stage='Draft preparation';
   revision.downloadedAt=new Date().toISOString();
