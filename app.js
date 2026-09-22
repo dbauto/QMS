@@ -916,12 +916,12 @@ function configureSourceIntentForClass(){
 
   if(controlled){
     if(heading) heading.textContent='How are you adding this controlled information?';
-    if(help) help.textContent='Choose one action. Nexus only shows the fields needed for that action.';
+    if(help) help.textContent='Choose one action. iQMS only shows the fields needed for that action.';
     if(uploadTitle) uploadTitle.textContent='Upload a new document';
-    if(uploadText) uploadText.textContent='I already have the file and want to register it in NexusQMS.';
+    if(uploadText) uploadText.textContent='I already have the file and want to register it in iQMS.';
     if(createTitle) createTitle.textContent='Create a new document';
     if(createText) createText.textContent='I do not have the file yet. Start blank or from an authoring template.';
-    if(existingTitle) existingTitle.textContent='Add an existing Nexus document';
+    if(existingTitle) existingTitle.textContent='Add an existing iQMS document';
     if(existingText) existingText.textContent='The resource already exists. Add it to a space without creating a duplicate.';
     if(externalCard) externalCard.style.display='grid';
     if(effectiveCard) effectiveCard.style.display='grid';
@@ -937,7 +937,7 @@ function configureSourceIntentForClass(){
     if(createTitle) createTitle.textContent='Register without a file';
     if(createText) createText.textContent='Create a record entry for evidence that is mainly metadata or comes from another system.';
     if(existingTitle) existingTitle.textContent='Add existing evidence to this context';
-    if(existingText) existingText.textContent='The record already exists in Nexus. Link it without creating a duplicate.';
+    if(existingText) existingText.textContent='The record already exists in iQMS. Link it without creating a duplicate.';
     if(externalCard) externalCard.style.display='none';
     if(effectiveCard) effectiveCard.style.display='none';
     if(authoring) authoring.style.display='none';
@@ -1100,7 +1100,7 @@ function moveRegistration(delta){
 
   let next=registrationStep+delta;
 
-  // Existing Nexus resources are not re-registered. Step 2 goes directly to Review.
+  // Existing iQMS resources are not re-registered. Step 2 goes directly to Review.
   if(registrationSourceMode==='existing'){
     if(delta>0 && registrationStep===2) next=7;
     if(delta<0 && registrationStep===7) next=2;
@@ -1139,7 +1139,7 @@ function updateRegistrationReview(){
     if(reviewState) reviewState.textContent='Relationship will be created';
     if(reviewDetail) reviewDetail.textContent='No new resource, Document ID, revision or approval route will be created.';
     if(confirmTitle) confirmTitle.textContent='Add existing resource to '+target+'?';
-    if(confirmText) confirmText.textContent='Nexus will point this space to the existing canonical resource. The source resource remains unchanged.';
+    if(confirmText) confirmText.textContent='iQMS will point this space to the existing canonical resource. The source resource remains unchanged.';
     if(confirmButton) confirmButton.textContent='Add to space';
     if(mapping) mapping.textContent=selectedExistingResource.title||'Existing resource';
     return;
@@ -1157,14 +1157,14 @@ function updateRegistrationReview(){
     if(registrationSourceMode==='effective'){
       if(reviewApprovalRoute) reviewApprovalRoute.textContent='No new approval route · legacy/current effective import';
       if(reviewState) reviewState.textContent='Registered as Effective';
-      if(reviewDetail) reviewDetail.textContent='The current approved revision is onboarded directly. Nexus records the registration and source control details in the audit trail without creating approval tasks.';
+      if(reviewDetail) reviewDetail.textContent='The current approved revision is onboarded directly. iQMS records the registration and source control details in the audit trail without creating approval tasks.';
       if(confirmTitle) confirmTitle.textContent='Register this current effective document?';
-      if(confirmText) confirmText.textContent='Nexus will register the current revision as Effective and preserve its original effective date, review date and source references.';
+      if(confirmText) confirmText.textContent='iQMS will register the current revision as Effective and preserve its original effective date, review date and source references.';
       if(confirmButton) confirmButton.textContent='Register effective document';
     }else{
       if(reviewApprovalRoute) reviewApprovalRoute.textContent=approvalRouteSnapshotText()||'Configured for this revision';
       if(reviewState) reviewState.textContent=registrationSourceMode==='create'?(authoringMode==='template'?'Draft created from '+selectedAuthoringTemplate:'Blank controlled draft created'):(registrationSourceMode==='external'?'External document draft created':'Draft revision created');
-      if(reviewDetail) reviewDetail.textContent=registrationSourceMode==='external'?'Nexus will track the external source version, review date and internal relationships.':'Approval route is snapshotted. The document is not Effective until final approval.';
+      if(reviewDetail) reviewDetail.textContent=registrationSourceMode==='external'?'iQMS will track the external source version, review date and internal relationships.':'Approval route is snapshotted. The document is not Effective until final approval.';
       if(confirmTitle) confirmTitle.textContent='Create controlled draft?';
       if(confirmText) confirmText.textContent='The canonical resource, relationships and approval workflow will be created together.';
       if(confirmButton) confirmButton.textContent='Register resource';
