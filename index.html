@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-registration-config1">
+<link rel="stylesheet" href="./styles.css?v=20260922-intent-flow1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -749,7 +749,7 @@ body.navExpanded .railExpand span{display:inline!important}
     </div>
 
     <div class="registrationSteps">
-      <div class="rs active">1 Class</div><div class="rs">2 Source</div><div class="rs">3 Identity</div><div class="rs">4 QMS mapping</div><div class="rs">5 Relationships</div><div class="rs controlledOnly">6 Governance</div><div class="rs">7 Review</div>
+      <div class="rs active">1 Resource</div><div class="rs">2 How to add</div><div class="rs">3 Details</div><div class="rs">4 QMS context</div><div class="rs">5 Relationships</div><div class="rs controlledOnly">6 Governance</div><div class="rs">7 Review</div>
     </div>
 
     <div class="registrationPage">
@@ -761,10 +761,91 @@ body.navExpanded .railExpand span{display:inline!important}
       <div class="registrationInfo"><i data-lucide="info"></i><p>The resource will exist once in the canonical library. Process spaces, ISO clauses, risks, audits and other modules only create relationships to it.</p></div>
     </div>
 
-    <div class="registrationPage" style="display:none">
-      <h3>Add the source</h3>
-      <div class="sourceMethodGrid"><button class="sourceMethod selected"><i data-lucide="upload"></i><b>Upload file</b><span>PDF, DOCX, XLSX, image</span></button><button class="sourceMethod"><i data-lucide="file-plus-2"></i><b>Create from template</b><span>Start from controlled template</span></button><button class="sourceMethod"><i data-lucide="link-2"></i><b>Link existing resource</b><span>Reuse an existing canonical item</span></button><button class="sourceMethod"><i data-lucide="external-link"></i><b>External source</b><span>Track without importing</span></button></div>
-      <div class="dropzone"><div class="uploadIcon"><i data-lucide="upload"></i></div><b>Drop a file here</b><span id="registerDropHint">Example: Recruitment_Procedure_Rev3.docx</span><button class="btn secondary">Browse file</button></div>
+    <div class="registrationPage sourceIntentPage" style="display:none">
+      <div class="registrationPageIntro">
+        <div><h3 id="sourceIntentHeading">How are you adding this controlled information?</h3><p id="sourceIntentHelp">Choose one action. Nexus only shows the fields needed for that action.</p></div>
+        <span class="singleChoiceBadge"><i data-lucide="circle-dot"></i>Choose one</span>
+      </div>
+
+      <div class="sourceIntentGrid" id="sourceIntentGrid">
+        <button class="sourceIntentCard selected" data-source-mode="upload" onclick="selectRegistrationSource('upload')">
+          <span class="sourceIntentIcon"><i data-lucide="upload"></i></span>
+          <div><b id="sourceUploadTitle">Upload a new document</b><p id="sourceUploadText">I already have the file and want to register it in NexusQMS.</p></div>
+          <i class="sourceChoiceCheck" data-lucide="check"></i>
+        </button>
+        <button class="sourceIntentCard" data-source-mode="create" onclick="selectRegistrationSource('create')">
+          <span class="sourceIntentIcon"><i data-lucide="file-plus-2"></i></span>
+          <div><b id="sourceCreateTitle">Create a new document</b><p id="sourceCreateText">I do not have the file yet. Start blank or from an authoring template.</p></div>
+          <i class="sourceChoiceCheck" data-lucide="check"></i>
+        </button>
+        <button class="sourceIntentCard" data-source-mode="existing" onclick="selectRegistrationSource('existing')">
+          <span class="sourceIntentIcon"><i data-lucide="link-2"></i></span>
+          <div><b id="sourceExistingTitle">Add an existing Nexus document</b><p id="sourceExistingText">The resource already exists. Add it to a space without creating a duplicate.</p></div>
+          <i class="sourceChoiceCheck" data-lucide="check"></i>
+        </button>
+        <button class="sourceIntentCard externalIntent" data-source-mode="external" onclick="selectRegistrationSource('external')">
+          <span class="sourceIntentIcon"><i data-lucide="external-link"></i></span>
+          <div><b>Register an external document</b><p>Track a standard, customer specification, regulation or supplier-controlled source.</p></div>
+          <i class="sourceChoiceCheck" data-lucide="check"></i>
+        </button>
+      </div>
+
+      <div class="sourceIntentPanel active" id="sourcePanelUpload">
+        <div class="dropzone registrationDropzone"><div class="uploadIcon"><i data-lucide="upload"></i></div><b id="uploadPanelTitle">Drop the document file here</b><span id="registerDropHint">PDF, DOCX, XLSX or image · Example: Recruitment_Procedure_Rev3.docx</span><button class="btn secondary"><i data-lucide="folder-open"></i>Browse file</button></div>
+      </div>
+
+      <div class="sourceIntentPanel" id="sourcePanelCreate">
+        <div class="authoringChoice">
+          <button class="authoringOption selected" data-authoring-mode="blank" onclick="selectAuthoringMode('blank')"><span><i data-lucide="file"></i></span><div><b>Blank document</b><small>Start with an empty controlled draft.</small></div><i data-lucide="check"></i></button>
+          <button class="authoringOption" data-authoring-mode="template" onclick="selectAuthoringMode('template')"><span><i data-lucide="layout-template"></i></span><div><b>Use an authoring template</b><small>Start with a standard document structure.</small></div><i data-lucide="check"></i></button>
+        </div>
+        <div class="templatePicker" id="authoringTemplatePicker" style="display:none">
+          <div class="templatePickerHead"><div><b>Choose an authoring template</b><span>This only provides a starting structure. It is not the same as the QMS “Form / Template” document type.</span></div></div>
+          <div class="templateCards">
+            <button class="templateCard selected" data-template="Procedure Template"><i data-lucide="file-text"></i><div><b>Procedure Template</b><span>Purpose · Scope · Responsibilities · Procedure · Records · References</span></div><i data-lucide="check"></i></button>
+            <button class="templateCard" data-template="SOP Template"><i data-lucide="list-checks"></i><div><b>SOP Template</b><span>Purpose · Prerequisites · Steps · Controls · Records</span></div><i data-lucide="check"></i></button>
+            <button class="templateCard" data-template="Work Instruction Template"><i data-lucide="clipboard-list"></i><div><b>Work Instruction Template</b><span>Task · Tools · Safety · Detailed steps · Verification</span></div><i data-lucide="check"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sourceIntentPanel" id="sourcePanelExisting">
+        <div class="existingResourceNotice"><i data-lucide="copy-x"></i><div><b>No new document will be created</b><span>Nexus will create a relationship to the selected resource. Its Document ID, revision history and approvals remain unchanged.</span></div></div>
+        <div class="existingResourceControls">
+          <label>Add to space
+            <select id="existingTargetSpace">
+              <option value="Recruitment" data-code="REC">Recruitment</option>
+              <option value="Quality Management" data-code="QA">Quality Management</option>
+              <option value="Operations" data-code="OPS">Operations</option>
+              <option value="Engineering" data-code="ENG">Engineering</option>
+              <option value="Purchasing & Supplier Quality" data-code="PUR">Purchasing & Supplier Quality</option>
+              <option value="People & Competence" data-code="HR">People & Competence</option>
+              <option value="Management System" data-code="MGT">Management System</option>
+            </select>
+          </label>
+          <label>Relationship
+            <select id="existingRelationship"><option>Used by this space</option><option>Related controlled information</option><option>Reference</option><option>Required by process</option></select>
+          </label>
+        </div>
+        <div class="existingResourceSearch"><i data-lucide="search"></i><input id="existingResourceSearch" placeholder="Search Document ID or title..."></div>
+        <div class="existingResourceList" id="existingResourceList">
+          <button class="existingResourceItem selected" data-existing-id="SOP-QA-014" data-existing-title="Control of Nonconforming Outputs"><span><b>SOP-QA-014</b><strong>Control of Nonconforming Outputs</strong><small>Quality · Rev 06 · Effective</small></span><i data-lucide="check-circle-2"></i></button>
+          <button class="existingResourceItem" data-existing-id="SOP-PUR-012" data-existing-title="Supplier Control Procedure"><span><b>SOP-PUR-012</b><strong>Supplier Control Procedure</strong><small>Purchasing · Rev 05 · Review due</small></span><i data-lucide="circle"></i></button>
+          <button class="existingResourceItem" data-existing-id="WI-PROD-021" data-existing-title="Final Inspection Work Instruction"><span><b>WI-PROD-021</b><strong>Final Inspection Work Instruction</strong><small>Operations · Rev 03 · In approval</small></span><i data-lucide="circle"></i></button>
+        </div>
+      </div>
+
+      <div class="sourceIntentPanel" id="sourcePanelExternal">
+        <div class="externalSourceGrid">
+          <label>Source organization<input id="externalPublisher" class="fieldInput" value="Customer / Standards Body"></label>
+          <label>Reference number<input id="externalReference" class="fieldInput" placeholder="e.g. CS-204 or ISO 9001"></label>
+          <label>Source URL / location<input id="externalUrl" class="fieldInput" placeholder="https://... or controlled source location"></label>
+          <label>Source revision / version<input id="externalRevision" class="fieldInput" placeholder="e.g. Rev 8 / 2026 edition"></label>
+          <label>Currency review date<input id="externalReview" class="fieldInput" type="date" value="2027-09-22"></label>
+          <label>Source owner / publisher<input id="externalOwner" class="fieldInput" placeholder="Organization responsible for the source"></label>
+        </div>
+        <div class="externalSourceNote"><i data-lucide="info"></i><span>External documents are controlled by their publisher. Nexus tracks the applicable version, source, review date and internal QMS relationships.</span></div>
+      </div>
     </div>
 
     <div class="registrationPage" style="display:none">
@@ -858,11 +939,11 @@ body.navExpanded .railExpand span{display:inline!important}
     <div class="registrationPage" style="display:none">
       <h3>Review registration</h3>
       <div class="registrationReview">
-        <section><span class="eyebrow">CANONICAL RESOURCE</span><div class="reviewKeyValue"><span>Library</span><b id="reviewLibrary">Controlled Information</b></div><div class="reviewKeyValue"><span>Identity</span><b id="reviewIdentity">QMS-PRO-REC-001 · Recruitment Procedure</b></div><div class="reviewKeyValue"><span>Process</span><b>Recruitment</b></div><div class="reviewKeyValue"><span>ISO mapping</span><b>8.1 · 8.5</b></div></section>
+        <section><span class="eyebrow">CANONICAL RESOURCE</span><div class="reviewKeyValue"><span>Library</span><b id="reviewLibrary">Controlled Information</b></div><div class="reviewKeyValue"><span>Identity</span><b id="reviewIdentity">QMS-PRO-REC-001 · Recruitment Procedure</b></div><div class="reviewKeyValue"><span>Process</span><b id="reviewProcess">Recruitment</b></div><div class="reviewKeyValue"><span>ISO mapping</span><b id="reviewIso">8.1 · 8.5</b></div></section>
         <section><span class="eyebrow">TRACEABILITY CREATED</span><div class="traceReview"><span>Requirement</span><i data-lucide="arrow-right"></i><span>Process</span><i data-lucide="arrow-right"></i><span>Resource</span><i data-lucide="arrow-right"></i><span>Evidence</span></div><p>Process spaces and QMS modules will point to this resource. No duplicate file is created.</p></section>
         <section><span class="eyebrow">NEXT STATE</span><div class="nextStateBox"><i data-lucide="git-pull-request-create"></i><div><b id="reviewNextState">Draft revision created</b><span id="reviewNextStateDetail">Approval route is snapshotted. The document is not Effective until final approval.</span></div></div></section>
       </div>
-      <div class="reviewCallout"><div><b id="registerConfirmTitle">Create controlled draft?</b><span id="registerConfirmText">The canonical resource, relationships and workflow will be created together.</span></div><button class="btn primary" onclick="finishResourceRegistration()">Register resource</button></div>
+      <div class="reviewCallout"><div><b id="registerConfirmTitle">Create controlled draft?</b><span id="registerConfirmText">The canonical resource, relationships and workflow will be created together.</span></div><button class="btn primary" id="registerConfirmButton" onclick="finishResourceRegistration()">Register resource</button></div>
     </div>
 
     <div class="modalActions"><button class="btn secondary" id="registerPrev" onclick="moveRegistration(-1)" style="display:none"><i data-lucide="arrow-left"></i>Back</button><div></div><button class="btn primary" id="registerNext" onclick="moveRegistration(1)">Continue<i data-lucide="arrow-right"></i></button></div>
@@ -982,6 +1063,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-registration-config1"></script>
+<script src="./app.js?v=20260922-intent-flow1"></script>
 </body>
 </html>
