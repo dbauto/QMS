@@ -278,6 +278,13 @@ document.getElementById('relationshipSearch')?.addEventListener('input',e=>{
 
 const breadcrumbCurrent=document.getElementById('breadcrumbCurrent');
 
+document.querySelectorAll('#overviewPanelTabs [data-overview-tab]').forEach(button=>button.addEventListener('click',()=>{
+  const tab=button.dataset.overviewTab;
+  document.querySelectorAll('#overviewPanelTabs [data-overview-tab]').forEach(x=>x.classList.toggle('active',x===button));
+  document.querySelectorAll('[data-overview-panel]').forEach(panel=>panel.classList.toggle('active',panel.dataset.overviewPanel===tab));
+  refreshIcons();
+}));
+
 function showView(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   const target=document.getElementById(id);

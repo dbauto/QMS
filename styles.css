@@ -2748,3 +2748,333 @@ body.navExpanded .navItem:hover{background:#172e47}
     border-bottom:0!important;
   }
 }
+
+
+/* ============================================================
+   Reference-inspired iQMS UI refresh
+   Direction: dark utility rail + quiet white header + soft canvas
+   + a few strong content panels, not a wall of equal cards.
+   ============================================================ */
+:root{
+  --bg:#f7f6fb;
+  --surface:#ffffff;
+  --surface-subtle:#fbfafc;
+  --ink:#1d1b25;
+  --text:#403d49;
+  --muted:#797586;
+  --subtle:#aaa5b2;
+  --line:#eceaf0;
+  --line-strong:#dcd9e3;
+  --brand:#168675;
+  --brand-hover:#107365;
+  --brand-soft:#e7f6f2;
+  --shadow:0 1px 2px rgba(29,27,37,.03),0 5px 18px rgba(29,27,37,.035);
+}
+
+html,body{background:var(--bg)}
+.sideNav{
+  width:220px;
+  padding:14px 10px 12px;
+  background:#15131f;
+  border-right:0;
+}
+.brand{padding:4px 9px 14px}
+.brandMark{background:#1d7d70}
+.brand strong{color:#fff;font-size:14px}
+.brand span{color:#777286;font-size:9px}
+.workspaceSwitch{
+  margin-bottom:12px;
+  padding:8px 9px;
+  border:1px solid #2c2937;
+  background:#1d1b29;
+}
+.workspaceSwitch:hover{background:#242130}
+.workspaceAvatar{background:#253245;color:#9bd8cc}
+.workspaceText b{color:#fff;font-size:11px}
+.workspaceText small{color:#837e91;font-size:9px}
+.workspaceChevron .lucide{color:#777286}
+.navGroup{padding:13px 9px 5px;color:#605b70;font-size:8px}
+.navItem{
+  height:38px;
+  padding:0 10px;
+  border-radius:6px;
+  color:#b8b4c3;
+  font-size:10px;
+  font-weight:600;
+}
+.navItem:hover{background:#211f2b;color:#fff}
+.navItem.active{
+  background:#302d3d;
+  color:#fff;
+}
+.navItem.active .navIcon{color:#80d7c4}
+.navIcon{color:#777286}
+.navMeta{color:#6f6a79;font-size:8px}
+.navBadge{background:#694e00;color:#ffd77c}
+.sideStatus{
+  border-top:1px solid #292634;
+  padding:11px 8px 2px;
+}
+.sideStatus b{color:#cac6d4;font-size:9px}
+.sideStatus span{color:#6f6a79;font-size:8px}
+.mainArea{margin-left:220px}
+.commandBar{
+  height:64px;
+  padding:0 26px;
+  background:#fff;
+  border-bottom:1px solid #efedf2;
+  backdrop-filter:none;
+}
+.breadcrumb{color:#aaa6b1}
+.breadcrumb b{color:#514e5b}
+.headerIconButton{
+  width:34px;height:34px;border:0;background:transparent;color:#797586
+}
+.headerIconButton:hover{background:#f5f4f8}
+.profileButton{border-left:1px solid #efedf2;padding-left:14px}
+.avatar{background:#f0eef4;color:#5e5969}
+.profileButton b{font-size:10px}
+.profileButton small{font-size:8px}
+.pageBody{padding:24px 26px 38px}
+.pageHeader{margin-bottom:16px}
+.pageHeader h1{font-size:23px;letter-spacing:-.35px}
+.pageHeader p{font-size:10px;color:#7e7988}
+.btn{height:35px;border-radius:6px;font-size:10px}
+.btn.primary{background:#63c6b1;border-color:#63c6b1;color:#143f37}
+.btn.primary:hover{background:#54bda7;border-color:#54bda7}
+.btn.secondary{background:#fff;border-color:#ddd9e4;color:#4c4856}
+.surface,.tableSurface,.documentWorkspace,.taskWorkspace,.resourceWorkspace,.typeWorkspace{
+  border-color:#eeecf2;
+  border-radius:8px;
+  box-shadow:var(--shadow);
+}
+.sectionHeader h2{font-size:12px}
+.sectionHeader p{font-size:8px}
+.tag{font-size:8px;padding:3px 7px}
+
+/* Overview mirrors the reference: one main content panel + a calm utility column. */
+.overviewHeader{align-items:center}
+.overviewHealth{
+  min-height:42px;
+  margin-bottom:12px;
+  padding:0 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border:1px solid #dcefe9;
+  border-radius:7px;
+  background:#f8fcfb;
+}
+.overviewHealth>div{display:flex;align-items:center;gap:7px;min-width:0}
+.overviewHealth b{font-size:10px;color:#282530}
+.overviewHealth span:not(.statusDot){font-size:8px;color:#817c8a}
+.overviewMetrics{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  margin-bottom:14px;
+  border:1px solid #eeecf2;
+  border-radius:8px;
+  background:#fff;
+  overflow:hidden;
+}
+.overviewMetrics>div{
+  min-height:74px;
+  padding:11px 13px;
+  border-right:1px solid #efedf2;
+}
+.overviewMetrics>div:last-child{border-right:0}
+.overviewMetrics span,.overviewMetrics b,.overviewMetrics small{display:block}
+.overviewMetrics span{font-size:8px;color:#8b8694}
+.overviewMetrics b{font-size:20px;color:#1e1b25;margin:3px 0 1px;letter-spacing:-.3px}
+.overviewMetrics small{font-size:7px;color:#aaa5b2}
+
+.overviewBoard{
+  display:grid;
+  grid-template-columns:minmax(0,1.55fr) minmax(360px,.85fr);
+  gap:14px;
+  align-items:start;
+}
+.overviewMainPanel{padding:0;overflow:hidden;min-height:500px}
+.overviewPanelTabs{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  height:48px;
+  padding:0 16px;
+  border-bottom:1px solid #efedf2;
+}
+.overviewPanelTabs button{
+  position:relative;
+  height:48px;
+  border:0;
+  background:transparent;
+  color:#888391;
+  font-size:9px;
+  font-weight:650;
+}
+.overviewPanelTabs button.active{color:#27242d}
+.overviewPanelTabs button.active:after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:#706b80
+}
+.overviewPanelTabs span{
+  display:inline-grid;place-items:center;min-width:17px;height:17px;margin-left:4px;
+  padding:0 5px;border-radius:9px;background:#f0eef4;color:#625d6c;font-size:7px
+}
+.overviewTabPanel{display:none}
+.overviewTabPanel.active{display:block}
+.overviewPanelHeader{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+  padding:14px 16px 8px
+}
+.overviewPanelHeader h2{margin:0;font-size:12px;color:#27242d}
+.overviewPanelHeader p{margin:3px 0 0;font-size:8px;color:#9b96a3}
+.overviewWorkRow{
+  width:100%;
+  min-height:66px;
+  display:grid;
+  grid-template-columns:78px minmax(0,1fr) 78px 14px;
+  gap:10px;
+  align-items:center;
+  padding:9px 16px;
+  border:0;
+  border-top:1px solid #efedf2;
+  background:#fff;
+  text-align:left;
+}
+.overviewWorkRow:hover{background:#fbfafc}
+.overviewWorkRow .workType{font-size:8px;color:#918c99}
+.overviewWorkRow b,.overviewWorkRow small{display:block}
+.overviewWorkRow b{font-size:10px;color:#27242d}
+.overviewWorkRow small{margin-top:2px;font-size:8px;color:#9b96a3}
+.overviewWorkRow>.lucide{width:13px;height:13px;color:#b6b2bd}
+.overviewActivityList>div{
+  display:grid;grid-template-columns:44px 26px minmax(0,1fr) 72px;
+  gap:8px;align-items:center;min-height:62px;padding:8px 16px;border-top:1px solid #efedf2
+}
+.overviewActivityList>div>span:first-child{font-size:8px;color:#aaa5b2}
+.overviewActivityList p{margin:0}
+.overviewActivityList p b,.overviewActivityList p small{display:block}
+.overviewActivityList p b{font-size:10px;color:#27242d}
+.overviewActivityList p small{font-size:8px;color:#9b96a3;margin-top:2px}
+
+.overviewSideColumn{display:flex;flex-direction:column;gap:14px}
+.recentlyOpenedPanel,.upcomingPanel{padding:14px}
+.compactHeader{margin-bottom:10px}
+.recentFileGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.recentFileCard{
+  min-width:0;
+  border:0;
+  background:transparent;
+  text-align:left;
+  padding:0;
+}
+.recentFilePreview{
+  position:relative;
+  height:92px;
+  border-radius:6px;
+  background:#f4f2f8;
+  display:grid;
+  place-items:center;
+  color:#817b90;
+  margin-bottom:7px;
+}
+.recentFilePreview .lucide{width:24px;height:24px}
+.recentFilePreview em{
+  position:absolute;right:7px;bottom:7px;
+  padding:2px 4px;border-radius:3px;background:#fff;color:#8d8796;
+  font-style:normal;font-size:6px;font-weight:800
+}
+.recentFileCard b,.recentFileCard small{display:block}
+.recentFileCard b{
+  font-size:8px;color:#37333f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.recentFileCard small{
+  margin-top:2px;font-size:7px;color:#aaa5b2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.upcomingList button{
+  width:100%;min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:8px 0;border:0;border-top:1px solid #efedf2;background:transparent;text-align:left
+}
+.upcomingList button:first-child{border-top:0}
+.upcomingList b,.upcomingList span{display:block}
+.upcomingList b{font-size:8px;color:#168675}
+.upcomingList span{font-size:9px;color:#383540;margin-top:2px}
+.upcomingList strong{font-size:8px;color:#716c79}
+
+/* Controlled information: keep the hierarchy, but make spaces feel like clean workspace tiles. */
+.repositoryHierarchyBar{
+  padding:8px 12px;
+  border:1px solid #eeecf2;
+  border-radius:7px;
+  background:#fff;
+}
+.repositoryModeTabs{margin-top:12px}
+.repositoryModeTabs button{font-size:9px}
+.repositoryBrowseHeader{margin:12px 0 8px}
+.repositoryBrowseHeader h2{font-size:14px}
+.repositoryBrowseHeader p{font-size:8px}
+.spaceGroupLabel{margin:14px 0 6px}
+.documentSpaces{gap:10px}
+#repositoryHub .documentSpaces:not(.featuredSpaces){grid-template-columns:repeat(3,minmax(0,1fr))}
+#repositoryHub .featuredSpaces{grid-template-columns:repeat(2,minmax(0,1fr))}
+#repositoryHub .spaceCard{
+  min-height:126px;
+  border:1px solid #eeecf2;
+  border-radius:8px;
+  box-shadow:none;
+  background:#fff;
+}
+#repositoryHub .spaceCard:hover{
+  border-color:#ded9e4;
+  box-shadow:0 6px 18px rgba(29,27,37,.045);
+  transform:translateY(-1px)
+}
+#repositoryHub .spaceCard>p{font-size:8px;line-height:1.45}
+#repositoryHub .spaceCard>strong{font-size:10px}
+#repositoryHub .spaceMeta{font-size:7px}
+
+/* Records & evidence: reference-like summary tiles, but one strong table/inspector workspace. */
+#records .evidenceSummaryStrip{gap:8px}
+#records .evidenceSummaryStrip>div{
+  border:0;
+  border-radius:7px;
+  background:#fff;
+  box-shadow:var(--shadow);
+}
+#records .recordsWorkspace{border-radius:8px;box-shadow:var(--shadow)}
+#records .evidenceInspector{background:#fff}
+#records .detailGrid>div{
+  border-color:#efedf2;
+  background:#fbfafc;
+  border-radius:6px
+}
+#records .traceChain button{
+  border-color:#efedf2;
+  border-radius:6px
+}
+
+/* My tasks follows the same large-panel language. */
+#approvals .taskWorkspace{border-radius:8px;box-shadow:var(--shadow)}
+#approvals .approvalItem{min-height:86px}
+#approvals .changeBox{background:#fbfafc;border-color:#efedf2}
+
+/* Responsive */
+@media(max-width:1200px){
+  .overviewBoard{grid-template-columns:1fr}
+  .overviewSideColumn{display:grid;grid-template-columns:1fr 1fr}
+}
+@media(max-width:1000px){
+  .overviewMetrics{grid-template-columns:repeat(3,1fr)}
+  .overviewMetrics>div:nth-child(3){border-right:0}
+  .overviewMetrics>div:nth-child(-n+3){border-bottom:1px solid #efedf2}
+  #repositoryHub .documentSpaces:not(.featuredSpaces){grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:760px){
+  .overviewMetrics{grid-template-columns:1fr 1fr}
+  .overviewSideColumn{grid-template-columns:1fr}
+  .recentFileGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .overviewWorkRow{grid-template-columns:70px minmax(0,1fr) 70px}
+  .overviewWorkRow>.lucide{display:none}
+  #repositoryHub .documentSpaces:not(.featuredSpaces),
+  #repositoryHub .featuredSpaces{grid-template-columns:1fr}
+}

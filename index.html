@@ -8,7 +8,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-doc-trace-flat1">
+<link rel="stylesheet" href="./styles.css?v=20260922-reference-ui1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -178,64 +178,113 @@ body.navExpanded .railExpand span{display:inline!important}
 
     <section class="pageBody">
       <div id="dashboard" class="view active">
-        <div class="pageHeader">
-          <div><h1>Overview</h1><p>Document control status and work that needs attention.</p></div>
-          <div class="pageActions"><button class="btn secondary" onclick="openManualRepo()">Add document</button><button class="btn primary" onclick="openBuilder()">Onboard repository</button></div>
+        <div class="pageHeader overviewHeader">
+          <div>
+            <h1>Overview</h1>
+            <p>Your QMS workspace at a glance — what needs attention, what changed, and what you opened recently.</p>
+          </div>
+          <div class="pageActions">
+            <button class="btn secondary" onclick="openBuilder()"><i data-lucide="folder-input"></i>Onboard repository</button>
+            <button class="btn primary" onclick="openRegisterResource('controlled')"><i data-lucide="plus"></i>Create</button>
+          </div>
         </div>
 
-        <div class="systemBanner">
-          <div class="systemStatus"><span class="statusDot good"></span><div><b>Document control is operating normally</b><span>7 overdue reviews and 9 approval tasks need attention.</span></div></div>
+        <div class="overviewHealth">
+          <div><span class="statusDot good"></span><b>Document control is operating normally</b><span>7 overdue reviews · 9 approval tasks need attention</span></div>
           <button class="btn link" onclick="showView('approvals')">Review tasks</button>
         </div>
 
-        <div class="metricGrid">
-          <article class="metricCard"><span>Controlled documents</span><b>1,428</b><small>34 added this month</small></article>
-          <article class="metricCard"><span>Effective</span><b>1,236</b><small><i class="statusDot good"></i>86.6% current</small></article>
-          <article class="metricCard"><span>Pending approval</span><b>24</b><small><i class="statusDot warn"></i>9 assigned to you</small></article>
-          <article class="metricCard"><span>Review overdue</span><b>7</b><small><i class="statusDot danger"></i>Oldest: 18 days</small></article>
-          <article class="metricCard"><span>Linked evidence</span><b>8,942</b><small>Across 1,106 resources</small></article>
+        <div class="overviewMetrics">
+          <div><span>Controlled documents</span><b>1,428</b><small>34 added this month</small></div>
+          <div><span>Effective</span><b>1,236</b><small>86.6% current</small></div>
+          <div><span>Pending approval</span><b>24</b><small>9 assigned to you</small></div>
+          <div><span>Review overdue</span><b>7</b><small>Oldest: 18 days</small></div>
+          <div><span>Linked evidence</span><b>8,942</b><small>Across 1,106 resources</small></div>
         </div>
 
-        <div class="dashboardGrid">
-          <section class="surface">
-            <div class="sectionHeader"><div><h2>My work</h2><p>Items requiring your action</p></div><button class="btn link" onclick="showView('approvals')">View all</button></div>
-            <div class="workTable">
-              <div class="workRow"><span class="workKind">Approval</span><div><b>Final Inspection Work Instruction</b><small>WI-PROD-021 · Rev 03 · Operations</small></div><span class="tag danger">Due today</span><button class="btn text" onclick="showView('approvals')">Review</button></div>
-              <div class="workRow"><span class="workKind">Approval</span><div><b>Control of Nonconforming Outputs</b><small>SOP-QA-014 · Rev 06 · Quality</small></div><span class="tag warning">2 days</span><button class="btn text" onclick="showView('approvals')">Review</button></div>
-              <div class="workRow"><span class="workKind">Review</span><div><b>Supplier Control Procedure</b><small>SOP-PUR-012 · Rev 05 · Purchasing</small></div><span class="tag neutral">8 days</span><button class="btn text" onclick="showView('repository')">Open</button></div>
-              <div class="workRow"><span class="workKind">Acknowledge</span><div><b>Quality Policy</b><small>POL-001 · Rev 05 · Management</small></div><span class="tag neutral">5 days</span><button class="btn text">Open</button></div>
+        <div class="overviewBoard">
+          <section class="overviewMainPanel surface">
+            <div class="overviewPanelTabs" id="overviewPanelTabs">
+              <button class="active" data-overview-tab="work">My work <span>9</span></button>
+              <button data-overview-tab="activity">Recent activity</button>
+            </div>
+
+            <div class="overviewTabPanel active" data-overview-panel="work">
+              <div class="overviewPanelHeader">
+                <div><h2>Items requiring your action</h2><p>Prioritized by due date and workflow stage.</p></div>
+                <button class="btn link" onclick="showView('approvals')">View all</button>
+              </div>
+              <div class="overviewWorkList">
+                <button class="overviewWorkRow" onclick="showView('approvals')">
+                  <span class="workType">Approval</span>
+                  <div><b>Final Inspection Work Instruction</b><small>WI-PROD-021 · Rev 03 · Operations</small></div>
+                  <span class="tag danger">Due today</span>
+                  <i data-lucide="chevron-right"></i>
+                </button>
+                <button class="overviewWorkRow" onclick="showView('approvals')">
+                  <span class="workType">Approval</span>
+                  <div><b>Control of Nonconforming Outputs</b><small>SOP-QA-014 · Rev 06 · Quality</small></div>
+                  <span class="tag warning">2 days</span>
+                  <i data-lucide="chevron-right"></i>
+                </button>
+                <button class="overviewWorkRow" onclick="openControlledDocument('purchasing','SOP-PUR-012')">
+                  <span class="workType">Review</span>
+                  <div><b>Supplier Control Procedure</b><small>SOP-PUR-012 · Rev 05 · Purchasing</small></div>
+                  <span class="tag neutral">8 days</span>
+                  <i data-lucide="chevron-right"></i>
+                </button>
+                <button class="overviewWorkRow" onclick="openControlledDocument('management','POL-001')">
+                  <span class="workType">Acknowledge</span>
+                  <div><b>Quality Policy</b><small>POL-001 · Rev 05 · Management System</small></div>
+                  <span class="tag neutral">5 days</span>
+                  <i data-lucide="chevron-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="overviewTabPanel" data-overview-panel="activity">
+              <div class="overviewPanelHeader">
+                <div><h2>Recent controlled activity</h2><p>Latest governed changes in the workspace.</p></div>
+                <button class="btn link" onclick="showView('audit')">Audit trail</button>
+              </div>
+              <div class="overviewActivityList">
+                <div><span>10:16</span><i class="activityIcon success"><i data-lucide="check"></i></i><p><b>SOP-QA-001 Rev 05 released</b><small>Approval route AR-882 completed · System</small></p><span class="tag success">Released</span></div>
+                <div><span>09:41</span><i class="activityIcon"><i data-lucide="link-2"></i></i><p><b>Calibration certificate linked</b><small>CAL-CERT-2026-0084 · Ana Reyes</small></p><span class="tag neutral">Evidence</span></div>
+                <div><span>09:10</span><i class="activityIcon success"><i data-lucide="check"></i></i><p><b>WI-PROD-018 Rev 02 approved</b><small>Final approval · Maria Santos</small></p><span class="tag success">Approved</span></div>
+                <div><span>08:42</span><i class="activityIcon"><i data-lucide="download"></i></i><p><b>SOP-QA-001 Rev 04 downloaded</b><small>Controlled copy · John Cruz</small></p><span class="tag neutral">Access</span></div>
+              </div>
             </div>
           </section>
 
-          <section class="surface reviewPanel">
-            <div class="sectionHeader"><div><h2>Upcoming reviews</h2><p>Next 30 days</p></div><button class="btn link" onclick="showView('repository')">Open controlled information</button></div>
-            <div class="reviewItem"><div><b>SOP-PUR-012</b><span>Supplier Control Procedure</span></div><strong>8 days</strong></div>
-            <div class="reviewItem"><div><b>SOP-QA-005</b><span>Internal Audit Procedure</span></div><strong>13 days</strong></div>
-            <div class="reviewItem"><div><b>SOP-HR-003</b><span>Training Management</span></div><strong>18 days</strong></div>
-            <div class="reviewItem"><div><b>EXT-STD-002</b><span>Customer Quality Specification</span></div><strong>24 days</strong></div>
-          </section>
-        </div>
+          <aside class="overviewSideColumn">
+            <section class="surface recentlyOpenedPanel">
+              <div class="sectionHeader compactHeader"><div><h2>Recently opened</h2><p>Continue where you left off</p></div><button class="btn link" onclick="showView('repository')">View all</button></div>
+              <div class="recentFileGrid">
+                <button class="recentFileCard" onclick="openControlledDocument('recruitment','QMS-PRO-REC-001')">
+                  <span class="recentFilePreview"><i data-lucide="file-text"></i><em>PDF</em></span>
+                  <b>Recruitment Procedure</b><small>QMS-PRO-REC-001 · Rev 03</small>
+                </button>
+                <button class="recentFileCard" onclick="openControlledDocument('quality','SOP-QA-014')">
+                  <span class="recentFilePreview"><i data-lucide="file-check-2"></i><em>SOP</em></span>
+                  <b>Control of Nonconforming Outputs</b><small>SOP-QA-014 · Rev 06</small>
+                </button>
+                <button class="recentFileCard" onclick="openControlledDocument('operations','WI-PROD-021')">
+                  <span class="recentFilePreview"><i data-lucide="clipboard-list"></i><em>WI</em></span>
+                  <b>Final Inspection Work Instruction</b><small>WI-PROD-021 · Rev 03</small>
+                </button>
+              </div>
+            </section>
 
-        <div class="dashboardGrid lower">
-          <section class="surface">
-            <div class="sectionHeader"><div><h2>Recent controlled activity</h2><p>Latest governed changes</p></div><button class="btn link" onclick="showView('audit')">Audit trail</button></div>
-            <div class="activityTable">
-              <div><span>10:16</span><i class="activityIcon success"><i data-lucide="check"></i></i><p><b>SOP-QA-001 Rev 05 released</b><small>Approval route AR-882 completed · System</small></p><span class="tag success">Released</span></div>
-              <div><span>09:41</span><i class="activityIcon"><i data-lucide="link-2"></i></i><p><b>Calibration certificate linked</b><small>CAL-CERT-2026-0084 · Ana Reyes</small></p><span class="tag neutral">Evidence</span></div>
-              <div><span>09:10</span><i class="activityIcon success"><i data-lucide="check"></i></i><p><b>WI-PROD-018 Rev 02 approved</b><small>Final approval · Maria Santos</small></p><span class="tag success">Approved</span></div>
-              <div><span>08:42</span><i class="activityIcon"><i data-lucide="download"></i></i><p><b>SOP-QA-001 Rev 04 downloaded</b><small>Controlled copy · John Cruz</small></p><span class="tag neutral">Access</span></div>
-            </div>
-          </section>
-
-          <section class="surface">
-            <div class="sectionHeader"><div><h2>Document lifecycle</h2><p>Current controlled-document distribution</p></div></div>
-            <div class="lifecycleBars">
-              <div><span>Effective</span><div><i style="width:86.6%"></i></div><b>1,236</b></div>
-              <div><span>In review</span><div><i style="width:5%"></i></div><b>71</b></div>
-              <div><span>Draft</span><div><i style="width:4.6%"></i></div><b>66</b></div>
-              <div><span>Obsolete</span><div><i style="width:3.8%"></i></div><b>55</b></div>
-            </div>
-          </section>
+            <section class="surface upcomingPanel">
+              <div class="sectionHeader compactHeader"><div><h2>Upcoming reviews</h2><p>Next 30 days</p></div><button class="btn link" onclick="showView('repository')">Open register</button></div>
+              <div class="upcomingList">
+                <button onclick="openControlledDocument('purchasing','SOP-PUR-012')"><div><b>SOP-PUR-012</b><span>Supplier Control Procedure</span></div><strong>8 days</strong></button>
+                <button onclick="openControlledDocument('quality','SOP-QA-005')"><div><b>SOP-QA-005</b><span>Internal Audit Procedure</span></div><strong>13 days</strong></button>
+                <button><div><b>SOP-HR-003</b><span>Training Management</span></div><strong>18 days</strong></button>
+                <button onclick="openControlledDocument('external','EXT-STD-002')"><div><b>EXT-STD-002</b><span>Customer Quality Specification</span></div><strong>24 days</strong></button>
+              </div>
+            </section>
+          </aside>
         </div>
       </div>
 
@@ -1287,6 +1336,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-doc-trace1"></script>
+<script src="./app.js?v=20260922-reference-ui1"></script>
 </body>
 </html>
