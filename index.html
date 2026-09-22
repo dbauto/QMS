@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-shell3">
+<link rel="stylesheet" href="./styles.css?v=20260922-expand1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -29,10 +29,31 @@
 .navIcon .lucide{width:17px!important;height:17px!important}
 .navBadge{position:absolute!important;right:2px!important;top:2px!important;width:7px!important;min-width:7px!important;height:7px!important;padding:0!important;font-size:0!important;border-radius:50%!important;background:#f79009!important;border:1px solid #0f1c2e!important}
 .sideStatus{display:none!important}
-.railCollapse{margin-top:auto!important;width:40px!important;height:40px!important;border:0!important;border-radius:8px!important;background:transparent!important;color:#90a0b4!important;display:grid!important;place-items:center!important;padding:0!important}
+.railControls{margin-top:auto!important;width:100%!important;display:flex!important;flex-direction:column!important;align-items:center!important;gap:4px!important}
+.railExpand,.railCollapse{width:40px!important;height:40px!important;border:0!important;border-radius:8px!important;background:transparent!important;color:#90a0b4!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important}
+.railExpand:hover,.railCollapse:hover{background:rgba(255,255,255,.07)!important;color:#fff!important}
+.railExpand span,.railCollapse span{display:none!important;font-size:10px!important}
+.railExpand .lucide,.railCollapse .lucide{width:17px!important;height:17px!important}
+.railCollapse{margin-top:0!important;width:40px!important;height:40px!important;border:0!important;border-radius:8px!important;background:transparent!important;color:#90a0b4!important;display:grid!important;place-items:center!important;padding:0!important}
 .railCollapse:hover{background:rgba(255,255,255,.07)!important;color:#fff!important}
 .railCollapse .lucide{width:17px!important;height:17px!important}
 .railReveal{display:none;position:fixed;left:10px;top:11px;z-index:60;width:34px;height:34px;border:1px solid #e4e7ec;border-radius:7px;background:#fff;color:#475467;place-items:center}
+
+body.navExpanded .sideNav{width:228px!important;align-items:stretch!important;padding:14px 12px 12px!important;overflow:auto!important}
+body.navExpanded .mainArea{margin-left:228px!important}
+body.navExpanded .brand{width:auto!important;height:auto!important;justify-content:flex-start!important;padding:0 6px!important;margin:0 0 14px!important;gap:10px!important}
+body.navExpanded .brand>div:last-child{display:block!important}
+body.navExpanded .brand>div:last-child strong{display:block!important;color:#fff!important;font-size:14px!important}
+body.navExpanded .brand>div:last-child span{display:block!important;color:#73849a!important;font-size:9px!important}
+body.navExpanded .primaryNav{align-items:stretch!important}
+body.navExpanded .navGroup{width:auto!important;height:auto!important;padding:12px 9px 5px!important;margin:0!important;overflow:visible!important;color:#61758d!important;background:transparent!important;font-size:8px!important;letter-spacing:.1em!important}
+body.navExpanded .navItem{width:100%!important;height:36px!important;padding:0 9px!important;justify-content:flex-start!important;gap:9px!important}
+body.navExpanded .navItem>span:not(.navIcon):not(.navBadge):not(.navMeta){display:inline!important}
+body.navExpanded .navMeta{display:inline!important;margin-left:auto!important;color:#73849a!important;font-size:9px!important}
+body.navExpanded .navBadge{position:static!important;margin-left:auto!important;width:auto!important;min-width:18px!important;height:17px!important;padding:0 5px!important;font-size:9px!important;border:0!important;border-radius:9px!important;background:#6a4308!important;color:#ffd58a!important}
+body.navExpanded .railControls{align-items:stretch!important}
+body.navExpanded .railExpand,body.navExpanded .railCollapse{width:100%!important;height:34px!important;justify-content:flex-start!important;padding:0 9px!important;gap:9px!important}
+body.navExpanded .railExpand span,body.navExpanded .railCollapse span{display:inline!important}
 body.navHidden .sideNav{transform:translateX(-100%)!important}
 body.navHidden .mainArea{margin-left:0!important}
 body.navHidden .railReveal{display:grid!important}
@@ -103,7 +124,10 @@ body.navHidden .commandBar{padding-left:56px!important}
       <button class="navItem" data-view="settings"><span class="navIcon"><i data-lucide="settings"></i></span><span>Settings</span></button>
     </nav>
 
-    <button class="railCollapse" id="sidebarToggle" aria-label="Hide navigation" title="Hide navigation"><i data-lucide="panel-left-close"></i></button>
+    <div class="railControls">
+      <button class="railExpand" id="sidebarModeToggle" aria-label="Expand navigation" title="Expand navigation"><i data-lucide="panel-left-open"></i><span>Expand</span></button>
+      <button class="railCollapse" id="sidebarToggle" aria-label="Hide navigation" title="Hide navigation"><i data-lucide="panel-left-close"></i><span>Hide</span></button>
+    </div>
     <div class="sideStatus"><i></i><div><b>Protected workspace</b><span>MFA · RBAC · audit logging</span></div></div>
   </aside>
 
@@ -519,6 +543,6 @@ body.navHidden .commandBar{padding-left:56px!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-shell3"></script>
+<script src="./app.js?v=20260922-expand1"></script>
 </body>
 </html>
