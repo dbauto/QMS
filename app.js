@@ -637,6 +637,10 @@ globalSearch?.addEventListener('input',()=>{
 /* Canonical QMS resource registration */
 let registrationStep=1;
 let registrationClass='controlled';
+let registrationSourceMode='upload';
+let authoringMode='blank';
+let selectedAuthoringTemplate='Procedure Template';
+let selectedExistingResource={id:'SOP-QA-014',title:'Control of Nonconforming Outputs'};
 
 let quickTypeContext='registration';
 let lastValidRegType='Procedure';
@@ -779,6 +783,7 @@ function saveQuickSpace(){
   saveCustomSpaces(saved);
   renderCustomSpaceCard(space);
   refreshRegistrationOptions();
+  refreshExistingTargetSpaces();
   closeQuickSpaceModal();
 
   const select=document.getElementById('regSpace');
@@ -846,11 +851,140 @@ function syncRegistrationSpaceFromContext(){
   if(match) select.value=match.value;
 }
 
+function refreshExistingTargetSpaces(){
+  const select=document.getElementById('existingTargetSpace');
+  if(!select) return;
+  const current=select.value;
+  select.querySelectorAll('option[data-custom="1"]').forEach(o=>o.remove());
+  loadCustomSpaces().forEach(space=>{
+    const option=document.createElement('option');
+    option.value=space.name;
+    option.dataset.code=space.code;
+    option.dataset.custom='1';
+    option.textContent=space.name;
+    select.appendChild(option);
+  });
+  if([...select.options].some(o=>o.value===current)) select.value=current;
+  if(activeSpace?.name && [...select.options].some(o=>o.value===activeSpace.name)) select.value=activeSpace.name;
+}
+
+function setRegistrationTypeLocked(locked){
+  const type=document.getElementById('regType');
+  if(!type) return;
+  type.disabled=!!locked;
+  type.closest('label')?.classList.toggle('disabledField',!!locked);
+}
+
+function configureSourceIntentForClass(){
+  const controlled=registrationClass==='controlled';
+  const heading=document.getElementById('sourceIntentHeading');
+  const help=document.getElementById('sourceIntentHelp');
+  const uploadTitle=document.getElementById('sourceUploadTitle');
+  const uploadText=document.getElementById('sourceUploadText');
+  const createTitle=document.getElementById('sourceCreateTitle');
+  const createText=document.getElementById('sourceCreateText');
+  const existingTitle=document.getElementById('sourceExistingTitle');
+  const existingText=document.getElementById('sourceExistingText');
+  const externalCard=document.querySelector('.externalIntent');
+  const authoring=document.querySelector('.controlledAuthoringOptions');
+  const recordNoFile=document.querySelector('.recordNoFileOptions');
+  const uploadPanelTitle=document.getElementById('uploadPanelTitle');
+  const hint=document.getElementById('registerDropHint');
+
+  if(controlled){
+    if(heading) heading.textContent='How are you adding this controlled information?';
+    if(help) help.textContent='Choose one action. Nexus only shows the fields needed for that action.';
+    if(uploadTitle) uploadTitle.textContent='Upload a new document';
+    if(uploadText) uploadText.textContent='I already have the file and want to register it in NexusQMS.';
+    if(createTitle) createTitle.textContent='Create a new document';
+    if(createText) createText.textContent='I do not have the file yet. Start blank or from an authoring template.';
+    if(existingTitle) existingTitle.textContent='Add an existing Nexus document';
+    if(existingText) existingText.textContent='The resource already exists. Add it to a space without creating a duplicate.';
+    if(externalCard) externalCard.style.display='grid';
+    if(authoring) authoring.style.display='block';
+    if(recordNoFile) recordNoFile.style.display='none';
+    if(uploadPanelTitle) uploadPanelTitle.textContent='Drop the document file here';
+    if(hint) hint.textContent='PDF, DOCX, XLSX or image · Example: Recruitment_Procedure_Rev3.docx';
+  }else{
+    if(heading) heading.textContent='How are you adding this record or evidence?';
+    if(help) help.textContent='Choose one action. Records focus on retention and traceability, not document revision control.';
+    if(uploadTitle) uploadTitle.textContent='Upload record / evidence';
+    if(uploadText) uploadText.textContent='I have a completed form, certificate, image, report or evidence file.';
+    if(createTitle) createTitle.textContent='Register without a file';
+    if(createText) createText.textContent='Create a record entry for evidence that is mainly metadata or comes from another system.';
+    if(existingTitle) existingTitle.textContent='Add existing evidence to this context';
+    if(existingText) existingText.textContent='The record already exists in Nexus. Link it without creating a duplicate.';
+    if(externalCard) externalCard.style.display='none';
+    if(authoring) authoring.style.display='none';
+    if(recordNoFile) recordNoFile.style.display='block';
+    if(uploadPanelTitle) uploadPanelTitle.textContent='Drop the evidence file here';
+    if(hint) hint.textContent='PDF, XLSX, image or certificate · Example: Candidate_Screening_Record_0918.pdf';
+    if(registrationSourceMode==='external') registrationSourceMode='upload';
+  }
+}
+
+function selectRegistrationSource(mode){
+  if(registrationClass==='record' && mode==='external') mode='upload';
+  registrationSourceMode=mode;
+  document.querySelectorAll('.sourceIntentCard').forEach(card=>card.classList.toggle('selected',card.dataset.sourceMode===mode));
+  document.querySelectorAll('.sourceIntentPanel').forEach(panel=>panel.classList.remove('active'));
+  const panel=document.getElementById('sourcePanel'+mode.charAt(0).toUpperCase()+mode.slice(1));
+  panel?.classList.add('active');
+
+  if(registrationClass==='controlled'){
+    if(mode==='external'){
+      const type=document.getElementById('regType');
+      if(type){
+        if(type.value!=='__create__') lastValidRegType=type.value;
+        type.value='External Document';
+      }
+      setRegistrationTypeLocked(true);
+      generateControlledDocumentId();
+    }else{
+      setRegistrationTypeLocked(false);
+      const type=document.getElementById('regType');
+      if(type && type.value==='External Document' && lastValidRegType && lastValidRegType!=='External Document'){
+        type.value=lastValidRegType;
+      }
+      generateControlledDocumentId();
+    }
+  }
+
+  updateRegistrationReview();
+  refreshIcons();
+}
+
+function selectAuthoringMode(mode){
+  authoringMode=mode==='template'?'template':'blank';
+  document.querySelectorAll('.authoringOption').forEach(btn=>btn.classList.toggle('selected',btn.dataset.authoringMode===authoringMode));
+  const picker=document.getElementById('authoringTemplatePicker');
+  if(picker) picker.style.display=authoringMode==='template'?'block':'none';
+  refreshIcons();
+}
+
+function selectExistingResource(item){
+  document.querySelectorAll('.existingResourceItem').forEach(x=>{
+    const selected=x===item;
+    x.classList.toggle('selected',selected);
+    const icon=x.lastElementChild;
+    if(icon) icon.setAttribute('data-lucide',selected?'check-circle-2':'circle');
+  });
+  selectedExistingResource={id:item.dataset.existingId||'',title:item.dataset.existingTitle||''};
+  updateRegistrationReview();
+  refreshIcons();
+}
+
 function openRegisterResource(kind='controlled'){
   registrationClass=kind==='record'?'record':'controlled';
   registrationStep=1;
   refreshRegistrationOptions();
+  refreshExistingTargetSpaces();
+  registrationSourceMode='upload';
+  authoringMode='blank';
+  selectedAuthoringTemplate='Procedure Template';
   selectRegistrationClass(registrationClass,false);
+  configureSourceIntentForClass();
+  selectRegistrationSource('upload');
   if(registrationClass==='controlled'){
     syncRegistrationSpaceFromContext();
     const typeSelect=document.getElementById('regType');
@@ -880,6 +1014,8 @@ function selectRegistrationClass(kind,rerender=true){
   if(subtitle) subtitle.textContent=controlled?'Create one canonical controlled resource and connect it to the QMS context where it applies.':'Register retained proof and connect it to the process, controlled information and verification context it evidences.';
   if(identity) identity.textContent=controlled?'Document identity & control metadata':'Record identity & retention metadata';
   if(hint) hint.textContent=controlled?'Example: Recruitment_Procedure_Rev3.docx':'Example: Candidate_Screening_Record_0918.pdf';
+  configureSourceIntentForClass();
+  selectRegistrationSource(registrationSourceMode);
   if(rerender) renderRegistration();
 }
 
@@ -912,10 +1048,18 @@ function renderRegistration(){
 }
 function moveRegistration(delta){
   let next=registrationStep+delta;
+
+  // Existing Nexus resources are not re-registered. Step 2 goes directly to Review.
+  if(registrationSourceMode==='existing'){
+    if(delta>0 && registrationStep===2) next=7;
+    if(delta<0 && registrationStep===7) next=2;
+  }
+
   if(registrationClass==='record'){
     if(delta>0 && next===6) next=7;
     if(delta<0 && next===6) next=5;
   }
+
   registrationStep=Math.max(1,Math.min(7,next));
   renderRegistration();
 }
@@ -924,18 +1068,41 @@ function updateRegistrationReview(){
   updateRegistrationSpaceLabel();
   const reviewLibrary=document.getElementById('reviewLibrary');
   const reviewIdentity=document.getElementById('reviewIdentity');
+  const reviewProcess=document.getElementById('reviewProcess');
+  const reviewIso=document.getElementById('reviewIso');
   const reviewState=document.getElementById('reviewNextState');
   const reviewDetail=document.getElementById('reviewNextStateDetail');
   const confirmTitle=document.getElementById('registerConfirmTitle');
   const confirmText=document.getElementById('registerConfirmText');
+  const confirmButton=document.getElementById('registerConfirmButton');
   const mapping=document.getElementById('mappingPreviewResource');
+
+  if(registrationSourceMode==='existing'){
+    const target=document.getElementById('existingTargetSpace')?.value||activeSpace?.name||'Selected space';
+    const relation=document.getElementById('existingRelationship')?.value||'Used by this space';
+    if(reviewLibrary) reviewLibrary.textContent=controlled?'Controlled Information':'Records & Evidence';
+    if(reviewIdentity) reviewIdentity.textContent=(selectedExistingResource.id||'Existing resource')+' · '+(selectedExistingResource.title||'Selected resource');
+    if(reviewProcess) reviewProcess.textContent=target;
+    if(reviewIso) reviewIso.textContent=relation;
+    if(reviewState) reviewState.textContent='Relationship will be created';
+    if(reviewDetail) reviewDetail.textContent='No new resource, Document ID, revision or approval route will be created.';
+    if(confirmTitle) confirmTitle.textContent='Add existing resource to '+target+'?';
+    if(confirmText) confirmText.textContent='Nexus will point this space to the existing canonical resource. The source resource remains unchanged.';
+    if(confirmButton) confirmButton.textContent='Add to space';
+    if(mapping) mapping.textContent=selectedExistingResource.title||'Existing resource';
+    return;
+  }
+
+  if(confirmButton) confirmButton.textContent=controlled?'Register resource':'Register record / evidence';
   if(controlled){
     const id=document.getElementById('regId')?.value||'QMS-PRO-REC-001';
     const title=document.getElementById('regTitle')?.value||'Recruitment Procedure';
     if(reviewLibrary) reviewLibrary.textContent='Controlled Information';
     if(reviewIdentity) reviewIdentity.textContent=id+' · '+title;
-    if(reviewState) reviewState.textContent='Draft revision created';
-    if(reviewDetail) reviewDetail.textContent='Approval route is snapshotted. The document is not Effective until final approval.';
+    if(reviewProcess) reviewProcess.textContent=document.getElementById('regProcess')?.value||document.getElementById('regSpace')?.value||'—';
+    if(reviewIso) reviewIso.textContent=document.getElementById('regIso')?.value||'—';
+    if(reviewState) reviewState.textContent=registrationSourceMode==='create'?(authoringMode==='template'?'Draft created from '+selectedAuthoringTemplate:'Blank controlled draft created'):(registrationSourceMode==='external'?'External document draft created':'Draft revision created');
+    if(reviewDetail) reviewDetail.textContent=registrationSourceMode==='external'?'Nexus will track the external source version, review date and internal relationships.':('Approval route is snapshotted. The document is not Effective until final approval.');
     if(confirmTitle) confirmTitle.textContent='Create controlled draft?';
     if(confirmText) confirmText.textContent='The canonical resource, relationships and approval workflow will be created together.';
     if(mapping) mapping.textContent=title;
@@ -944,6 +1111,8 @@ function updateRegistrationReview(){
     const title=document.getElementById('recTitle')?.value||'Candidate Screening Record';
     if(reviewLibrary) reviewLibrary.textContent='Records & Evidence';
     if(reviewIdentity) reviewIdentity.textContent=id+' · '+title;
+    if(reviewProcess) reviewProcess.textContent=document.getElementById('regProcess')?.value||'—';
+    if(reviewIso) reviewIso.textContent='Retention + traceability';
     if(reviewState) reviewState.textContent='Retained record registered';
     if(reviewDetail) reviewDetail.textContent='Retention, access and traceability are applied. No approval lifecycle is forced unless configured for this record type.';
     if(confirmTitle) confirmTitle.textContent='Register record / evidence?';
@@ -952,10 +1121,21 @@ function updateRegistrationReview(){
   }
 }
 
-document.querySelectorAll('.sourceMethod').forEach(btn=>btn.addEventListener('click',()=>{
-  btn.parentElement.querySelectorAll('.sourceMethod').forEach(x=>x.classList.remove('selected'));
-  btn.classList.add('selected');
+
+document.querySelectorAll('.templateCard').forEach(card=>card.addEventListener('click',()=>{
+  document.querySelectorAll('.templateCard').forEach(x=>x.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedAuthoringTemplate=card.dataset.template||'Authoring Template';
+  refreshIcons();
 }));
+document.querySelectorAll('.existingResourceItem').forEach(item=>item.addEventListener('click',()=>selectExistingResource(item)));
+document.getElementById('existingResourceSearch')?.addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase();
+  document.querySelectorAll('.existingResourceItem').forEach(item=>item.style.display=!q||item.textContent.toLowerCase().includes(q)?'grid':'none');
+});
+document.getElementById('existingTargetSpace')?.addEventListener('change',updateRegistrationReview);
+document.getElementById('existingRelationship')?.addEventListener('change',updateRegistrationReview);
+
 document.querySelectorAll('.relationshipPick').forEach(btn=>btn.addEventListener('click',()=>{
   btn.classList.toggle('selected');
   const icon=btn.lastElementChild;
@@ -996,6 +1176,16 @@ document.getElementById('quickSpaceCode')?.addEventListener('input',e=>{
 
 function finishResourceRegistration(){
   const controlled=registrationClass==='controlled';
+
+  if(registrationSourceMode==='existing'){
+    const target=document.getElementById('existingTargetSpace')?.value||activeSpace?.name||'selected space';
+    const relation=document.getElementById('existingRelationship')?.value||'Used by this space';
+    closeRegisterResource();
+    toast('Existing resource added',(selectedExistingResource.id||'The resource')+' was linked to '+target+' as "'+relation+'". No duplicate resource was created.');
+    if(controlled) showView('repository'); else showView('records');
+    return;
+  }
+
   closeRegisterResource();
   if(controlled){
     const generatedId=document.getElementById('regId')?.value;
@@ -1113,3 +1303,8 @@ document.addEventListener('DOMContentLoaded',refreshIcons);
 refreshIcons();
 
 refreshRegistrationOptions();
+
+const initialExisting=document.querySelector('.existingResourceItem.selected');
+if(initialExisting) selectExistingResource(initialExisting);
+configureSourceIntentForClass();
+selectRegistrationSource('upload');
