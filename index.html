@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-space-detail1">
+<link rel="stylesheet" href="./styles.css?v=20260922-qms-model1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -132,13 +132,14 @@ body.navExpanded .railExpand span{display:inline!important}
     <nav class="primaryNav">
       <div class="navGroup">Workspace</div>
       <button class="navItem active" data-view="dashboard"><span class="navIcon"><i data-lucide="layout-dashboard"></i></span><span>Overview</span></button>
-      <button class="navItem" data-view="repository"><span class="navIcon"><i data-lucide="files"></i></span><span>Documents</span><span class="navMeta">1,428</span></button>
+      <button class="navItem" data-view="repository"><span class="navIcon"><i data-lucide="files"></i></span><span>Controlled information</span><span class="navMeta">1,428</span></button>
+      <button class="navItem" data-view="records"><span class="navIcon"><i data-lucide="archive"></i></span><span>Records & evidence</span><span class="navMeta">8,942</span></button>
       <button class="navItem" data-view="approvals"><span class="navIcon"><i data-lucide="clipboard-check"></i></span><span>My tasks</span><span class="navBadge">9</span></button>
       <button class="navItem" data-view="register"><span class="navIcon"><i data-lucide="table-properties"></i></span><span>Register</span></button>
       <button class="navItem" data-view="audit"><span class="navIcon"><i data-lucide="history"></i></span><span>Audit trail</span></button>
 
       <div class="navGroup">Control</div>
-      <button class="navItem" data-view="relationships"><span class="navIcon"><i data-lucide="network"></i></span><span>Sources & evidence</span></button>
+      <button class="navItem" data-view="relationships"><span class="navIcon"><i data-lucide="network"></i></span><span>Relationship map</span></button>
       <button class="navItem" data-view="structure"><span class="navIcon"><i data-lucide="folder-tree"></i></span><span>Structure</span></button>
       <button class="navItem" data-view="types"><span class="navIcon"><i data-lucide="file-cog"></i></span><span>Document types</span></button>
 
@@ -242,29 +243,44 @@ body.navExpanded .railExpand span{display:inline!important}
       <div id="repository" class="view">
         <div id="repositoryHub">
           <div class="pageHeader repositoryPageHeader">
-            <div><h1>Documents</h1><p>Organize the QMS into document spaces while keeping every resource in one canonical registry.</p></div>
+            <div><h1>Controlled information</h1><p>Primary controlled-document library plus process spaces that surface the same canonical resources in context.</p></div>
             <div class="pageActions">
               <button class="btn secondary" data-toast-title="Import ready" data-toast-message="Import files or connect an existing source through the Repository Builder."><i data-lucide="download"></i>Import</button>
-              <button class="btn secondary" onclick="openManualRepo()"><i data-lucide="file-plus-2"></i>Add document</button>
+              <button class="btn secondary" onclick="openRegisterResource('controlled')"><i data-lucide="file-plus-2"></i>Register document</button>
               <button class="btn primary" onclick="openSpaceModal()"><i data-lucide="plus"></i>Create space</button>
             </div>
           </div>
 
           <section class="repositoryIntro">
             <div>
-              <span class="eyebrow">DOCUMENT REPOSITORY</span>
-              <h2>Quality system spaces</h2>
-              <p>Use spaces as working containers for departments, processes or controlled resource groups. A document still exists only once in the central registry, even when linked across multiple spaces.</p>
+              <span class="eyebrow">QMS INFORMATION MODEL</span>
+              <h2>One source of truth, many working views</h2>
+              <p>Controlled Information is the primary document-control library. Records & Evidence is the shared proof library. Process spaces do not duplicate files — they link the same resources to the process, ISO requirement, risk, KPI, audit or improvement activity where they are used.</p>
             </div>
             <div class="repositoryStats">
-              <div><b>1,428</b><span>controlled resources</span></div>
-              <div><b>8</b><span>document spaces</span></div>
-              <div><b>8,942</b><span>linked evidence records</span></div>
+              <div><b>1,428</b><span>controlled information</span></div>
+              <div><b>8,942</b><span>records & evidence</span></div>
+              <div><b>312</b><span>cross-QMS relationships</span></div>
             </div>
           </section>
 
+          <div class="masterLibraryGrid">
+            <button class="masterLibraryCard" onclick="openMasterLibrary('controlled')">
+              <span class="masterLibraryIcon controlled"><i data-lucide="library"></i></span>
+              <div><span class="eyebrow">PRIMARY UPLOAD LOCATION</span><h3>Controlled Information</h3><p>Policies, manuals, procedures, SOPs, work instructions, forms, templates and external documents.</p></div>
+              <div class="masterLibraryMeta"><span><b>1,428</b> resources</span><span>Revision + approval controlled</span></div>
+              <i class="masterLibraryArrow" data-lucide="arrow-up-right"></i>
+            </button>
+            <button class="masterLibraryCard" onclick="showView('records')">
+              <span class="masterLibraryIcon evidence"><i data-lucide="archive"></i></span>
+              <div><span class="eyebrow">SHARED PROOF LIBRARY</span><h3>Records & Evidence</h3><p>Process records, completed forms, audit evidence, certificates, KPI records and management-review evidence.</p></div>
+              <div class="masterLibraryMeta"><span><b>8,942</b> evidence items</span><span>Retention + traceability controlled</span></div>
+              <i class="masterLibraryArrow" data-lucide="arrow-up-right"></i>
+            </button>
+          </div>
+
           <div class="spaceSectionHead">
-            <div><h2>Document spaces</h2><p>Open a space to work with its controlled documents, records and evidence.</p></div>
+            <div><h2>Process & working spaces</h2><p>Contextual views that bring together controlled information, records, requirements and workflow for a process or function.</p></div>
             <div class="spaceViewActions"><button class="iconButton active" title="Grid view"><i data-lucide="layout-grid"></i></button><button class="iconButton" title="List view"><i data-lucide="list"></i></button></div>
           </div>
 
@@ -327,8 +343,8 @@ body.navExpanded .railExpand span{display:inline!important}
             </button>
             <button class="spaceCard createSpaceCard" onclick="openSpaceModal()">
               <span class="spaceIcon createIcon"><i data-lucide="plus"></i></span>
-              <strong>Create document space</strong>
-              <p>Add a new logical container for a department, process, project or controlled resource group.</p>
+              <strong>Create process space</strong>
+              <p>Add a contextual workspace for a department, process, project or quality-system activity.</p>
               <span class="spaceCreateLink">Configure space <i data-lucide="arrow-right"></i></span>
             </button>
           </div>
@@ -344,13 +360,14 @@ body.navExpanded .railExpand span{display:inline!important}
             </div>
             <div class="pageActions">
               <button class="btn secondary"><i data-lucide="settings-2"></i>Space settings</button>
-              <button class="btn primary" onclick="openManualRepo()"><i data-lucide="file-plus-2"></i>Add document</button>
+              <button class="btn primary" onclick="openRegisterResource('controlled')"><i data-lucide="file-plus-2"></i>Register document</button>
             </div>
           </div>
 
           <div class="spaceTabs">
             <button class="active" data-space-tab="documents"><i data-lucide="files"></i>Documents <span id="spaceTabDocCount">486</span></button>
             <button data-space-tab="records"><i data-lucide="archive"></i>Records & evidence</button>
+            <button data-space-tab="requirements"><i data-lucide="landmark"></i>Related requirements</button>
             <button data-space-tab="approvals"><i data-lucide="clipboard-check"></i>Approvals</button>
             <button data-space-tab="activity"><i data-lucide="history"></i>Activity</button>
           </div>
@@ -373,7 +390,7 @@ body.navExpanded .railExpand span{display:inline!important}
                 <span><i data-lucide="folder-open"></i></span>
                 <h3>This space is ready</h3>
                 <p>Add a controlled document, link an existing canonical resource, or upload files for classification.</p>
-                <div><button class="btn primary" onclick="openManualRepo()">Add controlled document</button></div>
+                <div><button class="btn primary" onclick="openRegisterResource('controlled')">Register controlled document</button></div>
               </div>
             </aside>
 
@@ -463,6 +480,67 @@ body.navExpanded .railExpand span{display:inline!important}
               </div>
             </aside>
           </div>
+        </div>
+      </div>
+
+      <div id="records" class="view">
+        <div class="pageHeader">
+          <div><h1>Records & evidence</h1><p>Shared proof library for process outputs, completed records, certificates, KPI evidence, audits and management-review evidence.</p></div>
+          <div class="pageActions"><button class="btn secondary"><i data-lucide="link-2"></i>Link existing</button><button class="btn primary" onclick="openRegisterResource('record')"><i data-lucide="plus"></i>Register record / evidence</button></div>
+        </div>
+
+        <div class="evidenceSummaryStrip">
+          <div><span>Evidence items</span><b>8,942</b><small>Across 1,106 canonical resources</small></div>
+          <div><span>Linked to process</span><b>8,719</b><small>97.5% traceable</small></div>
+          <div><span>Retention due</span><b>18</b><small>Next 30 days</small></div>
+          <div><span>Unlinked</span><b>4</b><small>Needs classification</small></div>
+        </div>
+
+        <div class="recordsWorkspace">
+          <section class="recordsTablePane">
+            <div class="filterBar embedded recordsFilters">
+              <div class="filterSearch"><span><i data-lucide="search"></i></span><input id="recordsSearch" placeholder="Search records, evidence, certificate..."></div>
+              <select><option>All record types</option><option>Process record</option><option>Completed form</option><option>Audit evidence</option><option>Certificate</option><option>KPI record</option><option>Management review</option></select>
+              <select><option>All processes</option><option>Recruitment</option><option>Operations</option><option>Training</option><option>Procurement</option></select>
+              <select><option>All link states</option><option>Linked</option><option>Unlinked</option></select>
+            </div>
+            <div class="evidenceTableHead"><span>Record / evidence</span><span>Process</span><span>Related controlled info</span><span>Record date</span><span>Status</span></div>
+            <button class="evidenceRow selected" data-evidence="screening">
+              <div><b>REC-SCR-2026-0918</b><strong>Candidate Screening Record — Batch 0918</strong><small>Completed form · Recruitment</small></div><span>Recruitment</span><span>QMS-PRO-REC-001</span><span>18 Sep 2026</span><span class="tag success">Retained</span>
+            </button>
+            <button class="evidenceRow" data-evidence="interview">
+              <div><b>REC-INT-2026-442</b><strong>Candidate Interview Record — A. Santos</strong><small>Interview record · Recruitment</small></div><span>Recruitment</span><span>SOP-REC-004</span><span>17 Sep 2026</span><span class="tag success">Retained</span>
+            </button>
+            <button class="evidenceRow" data-evidence="cal">
+              <div><b>CAL-CERT-2026-0084</b><strong>Calibration Certificate — DMM-14</strong><small>Certificate · Metrology</small></div><span>Operations</span><span>WI-QA-003</span><span>18 Sep 2026</span><span class="tag success">Current</span>
+            </button>
+            <button class="evidenceRow" data-evidence="audit">
+              <div><b>IA-2026-004</b><strong>Internal Audit — Production Line 2</strong><small>Audit evidence · Quality</small></div><span>Internal Audit</span><span>SOP-QA-005</span><span>12 Sep 2026</span><span class="tag success">Closed</span>
+            </button>
+            <button class="evidenceRow" data-evidence="orphan">
+              <div><b>REC-2026-114</b><strong>Receiving Inspection Attachment</strong><small>Evidence · Warehouse</small></div><span>Unclassified</span><span>—</span><span>20 Sep 2026</span><span class="tag warning">Unlinked</span>
+            </button>
+          </section>
+
+          <aside class="evidenceInspector">
+            <div class="inspectorHeader compactInspector"><div><span class="recordLabel" id="evidenceType">Completed form</span><h2 id="evidenceTitle">Candidate Screening Record — Batch 0918</h2><div class="recordMeta"><b id="evidenceCode">REC-SCR-2026-0918</b><span id="evidenceStatus" class="tag success">Retained</span></div></div><button class="iconButton"><i data-lucide="ellipsis"></i></button></div>
+            <dl class="detailGrid resourceDetails">
+              <div><dt>Record date</dt><dd id="evidenceDate">18 Sep 2026</dd></div><div><dt>Owner</dt><dd id="evidenceOwner">Recruitment</dd></div>
+              <div><dt>Retention</dt><dd id="evidenceRetention">5 years</dd></div><div><dt>Access</dt><dd id="evidenceAccess">Recruitment + Quality</dd></div>
+            </dl>
+            <section class="detailSection"><h3>Traceability</h3>
+              <div class="traceChain">
+                <button><span>Process</span><b id="traceProcess">Recruitment</b></button><i data-lucide="arrow-down"></i>
+                <button><span>Controlled information</span><b id="traceDocument">QMS-PRO-REC-001 · Recruitment Procedure</b></button><i data-lucide="arrow-down"></i>
+                <button class="active"><span>Record / evidence</span><b id="traceEvidence">Candidate Screening Record</b></button><i data-lucide="arrow-down"></i>
+                <button><span>Audit / verification</span><b id="traceAudit">Internal Audit 2026</b></button>
+              </div>
+            </section>
+            <section class="detailSection"><div class="sectionTitleRow"><h3>Used as evidence by</h3><button class="btn link">Manage links</button></div>
+              <button class="linkedRecord"><span><i data-lucide="clipboard-check"></i></span><div><b>ISO 9001 · 8.5</b><small>Operational control evidence</small></div></button>
+              <button class="linkedRecord"><span><i data-lucide="search-check"></i></span><div><b>IA-2026-004</b><small>Internal audit evidence package</small></div></button>
+            </section>
+          </aside>
         </div>
       </div>
 
@@ -607,6 +685,102 @@ body.navExpanded .railExpand span{display:inline!important}
   </main>
 </div>
 
+<div class="modal" id="registerResourceModal">
+  <div class="modalBox wide registerResourceBox">
+    <div class="modalHead">
+      <div><span class="eyebrow">QMS REGISTRATION</span><h2 id="registerResourceTitle">Register controlled information</h2><p id="registerResourceSubtitle">Create one canonical resource and connect it to the QMS context where it applies.</p></div>
+      <button class="iconBtn" onclick="closeRegisterResource()" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+
+    <div class="registrationSteps">
+      <div class="rs active">1 Class</div><div class="rs">2 Source</div><div class="rs">3 Identity</div><div class="rs">4 QMS mapping</div><div class="rs">5 Relationships</div><div class="rs controlledOnly">6 Governance</div><div class="rs">7 Review</div>
+    </div>
+
+    <div class="registrationPage">
+      <h3>What are you registering?</h3>
+      <div class="registrationClassGrid">
+        <button class="registrationClass selected" data-class="controlled" onclick="selectRegistrationClass('controlled')"><span><i data-lucide="files"></i></span><b>Controlled Information</b><p>Policies, manuals, procedures, SOPs, work instructions, forms, templates and external documents.</p><small>Revision + approval controlled</small></button>
+        <button class="registrationClass" data-class="record" onclick="selectRegistrationClass('record')"><span><i data-lucide="archive"></i></span><b>Record / Evidence</b><p>Completed forms, process records, certificates, audit evidence, KPI evidence and retained proof.</p><small>Retention + traceability controlled</small></button>
+      </div>
+      <div class="registrationInfo"><i data-lucide="info"></i><p>The resource will exist once in the canonical library. Process spaces, ISO clauses, risks, audits and other modules only create relationships to it.</p></div>
+    </div>
+
+    <div class="registrationPage" style="display:none">
+      <h3>Add the source</h3>
+      <div class="sourceMethodGrid"><button class="sourceMethod selected"><i data-lucide="upload"></i><b>Upload file</b><span>PDF, DOCX, XLSX, image</span></button><button class="sourceMethod"><i data-lucide="file-plus-2"></i><b>Create from template</b><span>Start from controlled template</span></button><button class="sourceMethod"><i data-lucide="link-2"></i><b>Link existing resource</b><span>Reuse an existing canonical item</span></button><button class="sourceMethod"><i data-lucide="external-link"></i><b>External source</b><span>Track without importing</span></button></div>
+      <div class="dropzone"><div class="uploadIcon"><i data-lucide="upload"></i></div><b>Drop a file here</b><span id="registerDropHint">Example: Recruitment_Procedure_Rev3.docx</span><button class="secondary">Browse file</button></div>
+    </div>
+
+    <div class="registrationPage" style="display:none">
+      <h3 id="identityHeading">Document identity & control metadata</h3>
+      <div class="formGrid registrationControlledFields">
+        <label>Document title<input id="regTitle" value="Recruitment Procedure"></label>
+        <label>Document ID<input id="regId" value="QMS-PRO-REC-001"></label>
+        <label>Document type<select id="regType"><option>Procedure</option><option>Policy</option><option>Manual</option><option>SOP</option><option>Work Instruction</option><option>Form / Template</option><option>External Document</option></select></label>
+        <label>Owner<select id="regOwner"><option>Recruitment Manager</option><option>Quality Manager</option><option>Document Control</option></select></label>
+        <label>Revision / version<input id="regRev" value="03"></label>
+        <label>Initial status<select id="regStatus"><option>Draft</option><option>In Review</option></select></label>
+        <label>Planned effective date<input id="regEffective" type="date" value="2026-09-01"></label>
+        <label>Review date<input id="regReview" type="date" value="2027-09-01"></label>
+      </div>
+      <div class="formGrid registrationRecordFields" style="display:none">
+        <label>Record / evidence title<input id="recTitle" value="Candidate Screening Record"></label>
+        <label>Reference number<input id="recId" value="REC-SCR-2026-0918"></label>
+        <label>Record type<select id="recType"><option>Completed form</option><option>Process record</option><option>Certificate</option><option>Audit evidence</option><option>KPI record</option><option>Management review record</option></select></label>
+        <label>Owner / custodian<select id="recOwner"><option>Recruitment</option><option>Quality</option><option>Training</option><option>Document Control</option></select></label>
+        <label>Record date<input id="recDate" type="date" value="2026-09-18"></label>
+        <label>Retention period<select id="recRetention"><option>5 years</option><option>7 years</option><option>Permanent</option><option>Custom</option></select></label>
+        <label>Access class<select id="recAccess"><option>Recruitment + Quality</option><option>Quality only</option><option>Company internal</option><option>Restricted</option></select></label>
+        <label>Source system<input id="recSource" value="Recruitment process"></label>
+      </div>
+    </div>
+
+    <div class="registrationPage" style="display:none">
+      <h3>Map it into the QMS</h3>
+      <div class="mappingGrid">
+        <label>Applicable process<select id="regProcess"><option>Recruitment</option><option>Candidate Screening</option><option>Training</option><option>Procurement</option><option>Operations</option><option>Internal Audit</option></select></label>
+        <label>Process space<select id="regSpace"><option>Recruitment</option><option>Quality Management</option><option>People & Competence</option><option>Operations</option></select></label>
+        <label>ISO / HLS mapping<select id="regIso"><option>8.1 Operational planning and control</option><option>8.5 Production and service provision</option><option>7.2 Competence</option><option>7.5 Documented information</option><option>9.2 Internal audit</option></select></label>
+        <label>Responsible person<select><option>Recruitment Manager</option><option>Quality Manager</option><option>Process Owner</option></select></label>
+      </div>
+      <div class="mappingPreview">
+        <span>Requirement</span><i data-lucide="arrow-right"></i><span>Recruitment</span><i data-lucide="arrow-right"></i><span id="mappingPreviewResource">Recruitment Procedure</span><i data-lucide="arrow-right"></i><span>Records / Evidence</span>
+      </div>
+    </div>
+
+    <div class="registrationPage" style="display:none">
+      <h3>Connect related resources</h3>
+      <div class="relationshipPickerGrid">
+        <div><span class="eyebrow">RELATED CONTROLLED INFORMATION</span><button class="relationshipPick selected"><i data-lucide="files"></i><div><b>Screening SOP</b><small>SOP-REC-004 · Current</small></div><i data-lucide="check"></i></button><button class="relationshipPick"><i data-lucide="file-input"></i><div><b>Candidate Evaluation Form</b><small>FORM-REC-006 · Current</small></div><i data-lucide="plus"></i></button><button class="addRelationship"><i data-lucide="plus"></i>Add controlled information</button></div>
+        <div><span class="eyebrow">RELATED RECORDS / EVIDENCE</span><button class="relationshipPick selected"><i data-lucide="archive"></i><div><b>Candidate Screening Record</b><small>REC-SCR-2026-0918</small></div><i data-lucide="check"></i></button><button class="relationshipPick selected"><i data-lucide="archive"></i><div><b>Interview Record</b><small>REC-INT-2026-442</small></div><i data-lucide="check"></i></button><button class="addRelationship"><i data-lucide="plus"></i>Add record / evidence</button></div>
+        <div><span class="eyebrow">OTHER QMS LINKS</span><button class="relationshipPick"><i data-lucide="triangle-alert"></i><div><b>Risk</b><small>Incomplete candidate documentation</small></div><i data-lucide="plus"></i></button><button class="relationshipPick"><i data-lucide="search-check"></i><div><b>Audit</b><small>IA-2026-004</small></div><i data-lucide="plus"></i></button><button class="addRelationship"><i data-lucide="plus"></i>Add QMS relationship</button></div>
+      </div>
+    </div>
+
+    <div class="registrationPage controlledGovernancePage" style="display:none">
+      <h3>Governance for this revision</h3>
+      <div class="governanceGrid">
+        <section><span class="eyebrow">APPROVAL ROUTE</span><div class="routeBuilder compactRoute"><div class="routeBox done"><span>1</span><div><b>Owner</b><small>Recruitment Manager</small></div></div><i class="routeArrow"><i data-lucide="arrow-right"></i></i><div class="routeBox"><span>2</span><div><b>Process review</b><small>Operations Manager</small></div></div><i class="routeArrow"><i data-lucide="arrow-right"></i></i><div class="routeBox"><span>3</span><div><b>Final approval</b><small>Quality Manager</small></div></div></div></section>
+        <section><span class="eyebrow">CONTROL SETTINGS</span><label class="checkRow"><input type="checkbox" checked> Change reason required</label><label class="checkRow"><input type="checkbox" checked> Obsolete prior revision on release</label><label class="checkRow"><input type="checkbox" checked> Review reminder enabled</label><label class="checkRow"><input type="checkbox"> User acknowledgement required</label></section>
+        <section><span class="eyebrow">ACCESS</span><label class="fieldLabel">View<select class="fieldInput"><option>Company internal</option><option>Restricted departments</option></select></label><label class="fieldLabel">Edit<select class="fieldInput"><option>Owner + Document Control</option></select></label></section>
+      </div>
+      <label class="fieldLabel">Revision / change reason</label><textarea class="fieldInput">Initial registration in NexusQMS controlled information library.</textarea>
+    </div>
+
+    <div class="registrationPage" style="display:none">
+      <h3>Review registration</h3>
+      <div class="registrationReview">
+        <section><span class="eyebrow">CANONICAL RESOURCE</span><div class="reviewKeyValue"><span>Library</span><b id="reviewLibrary">Controlled Information</b></div><div class="reviewKeyValue"><span>Identity</span><b id="reviewIdentity">QMS-PRO-REC-001 · Recruitment Procedure</b></div><div class="reviewKeyValue"><span>Process</span><b>Recruitment</b></div><div class="reviewKeyValue"><span>ISO mapping</span><b>8.1 · 8.5</b></div></section>
+        <section><span class="eyebrow">TRACEABILITY CREATED</span><div class="traceReview"><span>Requirement</span><i data-lucide="arrow-right"></i><span>Process</span><i data-lucide="arrow-right"></i><span>Resource</span><i data-lucide="arrow-right"></i><span>Evidence</span></div><p>Process spaces and QMS modules will point to this resource. No duplicate file is created.</p></section>
+        <section><span class="eyebrow">NEXT STATE</span><div class="nextStateBox"><i data-lucide="git-pull-request-create"></i><div><b id="reviewNextState">Draft revision created</b><span id="reviewNextStateDetail">Approval route is snapshotted. The document is not Effective until final approval.</span></div></div></section>
+      </div>
+      <div class="reviewCallout"><div><b id="registerConfirmTitle">Create controlled draft?</b><span id="registerConfirmText">The canonical resource, relationships and workflow will be created together.</span></div><button class="primary" onclick="finishResourceRegistration()">Register resource</button></div>
+    </div>
+
+    <div class="modalActions"><button class="secondary" id="registerPrev" onclick="moveRegistration(-1)" style="display:none">Back</button><div></div><button class="primary" id="registerNext" onclick="moveRegistration(1)">Continue</button></div>
+  </div>
+</div>
+
 <div class="modal" id="spaceModal">
   <div class="modalBox spaceModalBox">
     <div class="modalHead">
@@ -720,6 +894,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-space-detail1"></script>
+<script src="./app.js?v=20260922-qms-model1"></script>
 </body>
 </html>
