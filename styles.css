@@ -4045,3 +4045,127 @@ body.navExpanded .navMeta{
   .profileAccessIntro{grid-template-columns:24px 1fr}
   .profileAccessIntro .btn{grid-column:1/-1;justify-self:start}
 }
+
+
+/* Revision-request + secure working-copy workflow */
+.documentRevisionActions{flex-wrap:wrap}
+.openRevisionBanner{
+  grid-template-columns:34px minmax(220px,1fr) minmax(240px,1.3fr) auto;
+  gap:12px;
+  align-items:center;
+  min-height:72px;
+  margin-bottom:10px;
+  padding:10px 12px;
+  border:1px solid #b9d9f8;
+  border-left:3px solid #2e90fa;
+  border-radius:8px;
+  background:#f5faff
+}
+.openRevisionIcon{
+  width:32px;height:32px;border-radius:7px;display:grid;place-items:center;background:#eaf4ff;color:#175cd3
+}
+.openRevisionIcon .lucide{width:16px;height:16px}
+.openRevisionSummary>b,.openRevisionSummary>small{display:block}
+.openRevisionSummary>b{font-size:11px;color:#24364b;margin:2px 0}
+.openRevisionSummary>small{font-size:9px;color:#667b91}
+.openRevisionReason{min-width:0}
+.openRevisionReason small,.openRevisionReason b{display:block}
+.openRevisionReason small{font-size:8px;color:#7c8da0;text-transform:uppercase;font-weight:800}
+.openRevisionReason b{font-size:10px;color:#344a60;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.openRevisionButtons{display:flex;align-items:center;gap:10px}
+
+.revisionOpenInline{
+  display:inline-flex!important;
+  align-items:center;
+  margin-left:5px!important;
+  padding:2px 5px;
+  border-radius:5px;
+  background:#eff8ff;
+  color:#175cd3!important;
+  font-size:8px!important;
+  font-style:normal;
+  font-weight:800
+}
+
+.revisionRequestBox{width:min(760px,96vw)}
+.revisionContextCard{
+  display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:9px;align-items:center;
+  min-height:58px;padding:9px 10px;margin-bottom:14px;border:1px solid var(--line);border-radius:7px;background:#fafbfc
+}
+.revisionContextCard>div b,.revisionContextCard>div span{display:block}
+.revisionContextCard>div b{font-size:11px;color:var(--ink)}
+.revisionContextCard>div span{font-size:9px;color:var(--muted);margin-top:2px}
+.revisionForm{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.revisionForm label{font-size:10px;color:#667085;font-weight:700}
+.revisionForm label>span{color:var(--red);font-weight:600}
+.revisionForm input,.revisionForm select,.revisionForm textarea{
+  width:100%;margin-top:5px;border:1px solid var(--line-strong);border-radius:7px;background:#fff;padding:0 9px;font-size:11px;color:var(--ink)
+}
+.revisionForm input,.revisionForm select{height:36px}
+.revisionForm textarea{min-height:90px;padding:9px;resize:vertical}
+.revisionForm .fullField{grid-column:1/-1}
+.revisionNotifyBlock{margin-top:14px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.revisionNotifyHead{display:flex;gap:8px;padding:10px 12px;background:#f8fafb;border-bottom:1px solid var(--line)}
+.revisionNotifyHead>.lucide{width:15px;height:15px;color:var(--brand);margin-top:1px}
+.revisionNotifyHead b,.revisionNotifyHead span{display:block}
+.revisionNotifyHead b{font-size:10px;color:var(--ink)}
+.revisionNotifyHead span{font-size:9px;color:var(--muted);margin-top:2px}
+.revisionNotifyBlock>label{
+  min-height:40px;display:grid;grid-template-columns:18px minmax(0,1fr) minmax(140px,.7fr);gap:8px;align-items:center;
+  padding:7px 12px;border-bottom:1px solid var(--line);font-size:10px;color:#475467
+}
+.revisionNotifyBlock>label:last-child{border-bottom:0}
+.revisionNotifyBlock>label input{accent-color:var(--brand)}
+.revisionNotifyBlock>label b{font-size:9px;color:#667085}
+.revisionRuleNote,.secureDeliveryNote{
+  display:flex;gap:8px;align-items:flex-start;margin-top:12px;padding:9px 10px;border-radius:7px;background:#f7fbfa;color:#5b716b;font-size:9px;line-height:1.5
+}
+.revisionRuleNote>.lucide,.secureDeliveryNote>.lucide{width:14px;height:14px;color:var(--brand);flex:0 0 auto;margin-top:1px}
+
+.secureDownloadBox{width:min(860px,96vw)}
+.secureFileSummary{
+  display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:10px;align-items:center;
+  min-height:66px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fafbfc
+}
+.secureFileIcon{width:36px;height:36px;border-radius:8px;background:#fff4e5;color:#b54708;display:grid;place-items:center}
+.secureFileIcon .lucide{width:17px;height:17px}
+.secureFileSummary>div b,.secureFileSummary>div span{display:block}
+.secureFileSummary>div b{font-size:11px;color:var(--ink)}
+.secureFileSummary>div span{font-size:9px;color:var(--muted);margin-top:2px}
+.secureDownloadSteps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.secureDownloadSteps>div{display:grid;grid-template-columns:24px 1fr;gap:7px;padding:10px;border:1px solid var(--line);border-radius:8px}
+.secureDownloadSteps>div>span{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand);font-size:9px;font-weight:800}
+.secureDownloadSteps b{font-size:10px;color:var(--ink)}
+.secureDownloadSteps p{margin:3px 0 0;font-size:9px;line-height:1.5;color:var(--muted)}
+
+.revisionHistoryPreview{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.revisionHistoryPreview .sectionTitleRow{padding:10px 12px;margin:0;border-bottom:1px solid var(--line);background:#fafbfc}
+.revisionHistoryPreview .sectionTitleRow h3{margin:0;font-size:11px}
+.revisionHistoryPreview .sectionTitleRow p{margin:2px 0 0;font-size:9px;color:var(--muted)}
+.revisionHistoryHead,.revisionHistoryTable>div{
+  display:grid;grid-template-columns:48px 86px minmax(220px,1.6fr) 140px 140px;gap:8px;align-items:center
+}
+.revisionHistoryHead{min-height:32px;padding:0 10px;background:#fbfcfd;color:var(--subtle);font-size:8px;font-weight:800;text-transform:uppercase}
+.revisionHistoryTable>div:not(.revisionHistoryHead){min-height:48px;padding:7px 10px;border-top:1px solid var(--line);font-size:9px;color:#475467}
+.revisionHistoryCurrent{background:#f5faff}
+.revisionHistoryCurrent span:first-child{color:#175cd3;font-weight:800}
+.secureDeliveryNote{background:#f5faff;color:#526a83}
+.secureDeliveryNote>.lucide{color:#175cd3}
+.secureDeliveryNote b,.secureDeliveryNote span{display:block}
+.secureDeliveryNote b{font-size:10px;color:#344a60}
+.secureDeliveryNote span{font-size:9px;margin-top:2px}
+
+.revisionTaskItem{background:#f8fbff!important}
+.revisionTaskItem.selected{background:#f2f8ff!important}
+
+@media(max-width:900px){
+  .openRevisionBanner{grid-template-columns:34px 1fr}
+  .openRevisionReason,.openRevisionButtons{grid-column:2}
+  .secureDownloadSteps{grid-template-columns:1fr}
+}
+@media(max-width:680px){
+  .revisionForm{grid-template-columns:1fr}
+  .revisionForm .fullField{grid-column:auto}
+  .revisionHistoryPreview{overflow:auto}
+  .revisionHistoryHead,.revisionHistoryTable>div{min-width:700px}
+}

@@ -8,7 +8,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-settings-profile1">
+<link rel="stylesheet" href="./styles.css?v=20260922-revision-workflow1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -214,7 +214,7 @@ body.navExpanded .railExpand span{display:inline!important}
                 <div><h2>Items requiring your action</h2><p>Prioritized by due date and workflow stage.</p></div>
                 <button class="btn link" onclick="showView('approvals')">View all</button>
               </div>
-              <div class="overviewWorkList">
+              <div class="overviewWorkList" id="overviewWorkList">
                 <button class="overviewWorkRow" onclick="showView('approvals')">
                   <span class="workType">Approval</span>
                   <div><b>Final Inspection Work Instruction</b><small>WI-PROD-021 · Rev 03 · Operations</small></div>
@@ -247,7 +247,7 @@ body.navExpanded .railExpand span{display:inline!important}
                 <div><h2>Recent controlled activity</h2><p>Latest governed changes in the workspace.</p></div>
                 <button class="btn link" onclick="showView('audit')">Audit trail</button>
               </div>
-              <div class="overviewActivityList">
+              <div class="overviewActivityList" id="overviewActivityList">
                 <div><span>10:16</span><i class="activityIcon success"><i data-lucide="check"></i></i><p><b>SOP-QA-001 Rev 05 released</b><small>Approval route AR-882 completed · System</small></p><span class="tag success">Released</span></div>
                 <div><span>09:41</span><i class="activityIcon"><i data-lucide="link-2"></i></i><p><b>Calibration certificate linked</b><small>CAL-CERT-2026-0084 · Ana Reyes</small></p><span class="tag neutral">Evidence</span></div>
                 <div><span>09:10</span><i class="activityIcon success"><i data-lucide="check"></i></i><p><b>WI-PROD-018 Rev 02 approved</b><small>Final approval · Maria Santos</small></p><span class="tag success">Approved</span></div>
@@ -510,7 +510,22 @@ body.navExpanded .railExpand span{display:inline!important}
               <h1 id="docTitle">Control of Nonconforming Outputs</h1>
               <div class="recordMeta"><b id="docCode">SOP-QA-014</b><span id="docRev">Rev 06</span><span id="docStatus" class="tag success">Effective</span></div>
             </div>
-            <div class="pageActions"><button class="btn secondary"><i data-lucide="download"></i>Download</button><button class="btn primary"><i data-lucide="git-branch"></i>Create revision</button></div>
+            <div class="pageActions documentRevisionActions">
+              <button class="btn secondary" data-toast-title="Controlled copy" data-toast-message="The current effective controlled copy is prepared as a read-only download."><i data-lucide="download"></i>Controlled copy</button>
+              <button class="btn secondary" onclick="openRevisionRequest('request')"><i data-lucide="message-square-plus"></i>Request revision</button>
+              <button class="btn primary" onclick="openRevisionRequest('start')"><i data-lucide="git-branch-plus"></i>Start revision</button>
+            </div>
+          </div>
+
+          <div class="openRevisionBanner" id="openRevisionBanner" style="display:none">
+            <div class="openRevisionIcon"><i data-lucide="git-branch"></i></div>
+            <div class="openRevisionSummary">
+              <span class="recordLabel">REVISION OPEN</span>
+              <b><span id="openRevisionNumber">Rev 04</span> is in progress</b>
+              <small><span id="openRevisionPic">PIC</span> · <span id="openRevisionStage">Draft preparation</span> · Due <span id="openRevisionDue">—</span></small>
+            </div>
+            <div class="openRevisionReason"><small>Change request</small><b id="openRevisionReason">—</b></div>
+            <div class="openRevisionButtons"><button class="btn secondary" onclick="openSecureRevisionDownload()"><i data-lucide="file-down"></i>Working copy</button><button class="btn link" onclick="showView('approvals')">View task</button></div>
           </div>
 
           <div class="documentDetailTabs" id="documentDetailTabs">
@@ -785,7 +800,7 @@ body.navExpanded .railExpand span{display:inline!important}
         <div class="pageHeader"><div><h1>My tasks</h1><p>Review, approve and acknowledge controlled changes assigned to you.</p></div><div class="pageActions"><button class="btn secondary">Route templates</button></div></div>
         <div class="taskWorkspace">
           <section class="taskQueue">
-            <div class="queueTabs"><button class="active">Assigned to me <b>9</b></button><button>Requested by me <b>4</b></button><button>All active <b>24</b></button></div>
+            <div class="queueTabs"><button class="active">Assigned to me <b id="assignedTaskCount">9</b></button><button>Requested by me <b id="requestedTaskCount">4</b></button><button>All active <b id="allActiveTaskCount">24</b></button></div><div id="revisionTaskQueue"></div>
             <button class="approvalItem selected"><div class="approvalTop"><span class="tag danger">Due today</span><small>Final approval</small></div><b>WI-PROD-021 · Rev 03</b><strong>Final Inspection Work Instruction</strong><span>Owner: Ana Reyes · Operations</span></button>
             <button class="approvalItem"><div class="approvalTop"><span class="tag warning">2 days</span><small>Final approval</small></div><b>SOP-QA-014 · Rev 06</b><strong>Control of Nonconforming Outputs</strong><span>Owner: Quality Department</span></button>
             <button class="approvalItem"><div class="approvalTop"><span class="tag neutral">5 days</span><small>Acknowledgement</small></div><b>POL-001 · Rev 05</b><strong>Quality Policy</strong><span>Owner: Executive Management</span></button>
@@ -1285,6 +1300,82 @@ body.navExpanded .railExpand span{display:inline!important}
   </main>
 </div>
 
+<div class="modal" id="revisionRequestModal">
+  <div class="modalBox revisionRequestBox">
+    <div class="modalHead">
+      <div><span class="eyebrow" id="revisionModeEyebrow">REVISION REQUEST</span><h2 id="revisionModalTitle">Request a document revision</h2><p id="revisionModalSubtitle">Describe what needs to change and assign the PIC who will prepare the next revision.</p></div>
+      <button class="iconBtn" onclick="closeRevisionRequest()" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+
+    <div class="revisionContextCard">
+      <span class="fileTypeIcon"><i data-lucide="file-text"></i></span>
+      <div><b id="revisionContextTitle">Controlled document</b><span><span id="revisionContextCode">—</span> · Current <span id="revisionContextRev">—</span> remains Effective</span></div>
+      <span class="tag success">Effective stays current</span>
+    </div>
+
+    <div class="revisionForm">
+      <label class="fullField">What needs to be revised? <span>Required</span><textarea id="revisionRequestReason" placeholder="Describe the required change, issue, customer requirement or improvement..."></textarea></label>
+      <label>Person in charge (PIC)
+        <select id="revisionPic">
+          <option>Maria Santos</option>
+          <option>Ana Reyes</option>
+          <option>Oscar Flores</option>
+          <option>Lea Garcia</option>
+          <option>Mika Torres</option>
+        </select>
+      </label>
+      <label>Target date<input id="revisionDueDate" type="date" value="2026-09-29"></label>
+      <label class="fullField">Supporting note / reference<input id="revisionReference" placeholder="e.g. Customer spec CS-204 Rev 8, audit finding, management request..."></label>
+    </div>
+
+    <div class="revisionNotifyBlock">
+      <div class="revisionNotifyHead"><i data-lucide="bell-ring"></i><div><b>Notify the existing document authorities</b><span>They are informed that a new revision has been opened; this does not make them the new approver automatically.</span></div></div>
+      <label><input type="checkbox" checked><span>Current document owner / manager</span><b id="notifyDocumentOwner">Document Owner</b></label>
+      <label><input type="checkbox" checked><span>Previous reviewer(s)</span><b>Department reviewer</b></label>
+      <label><input type="checkbox" checked><span>Previous approver(s)</span><b id="notifyPreviousApprover">Quality Manager</b></label>
+    </div>
+
+    <div class="revisionRuleNote"><i data-lucide="shield-check"></i><span>The current effective revision is never overwritten. iQMS creates a separate working revision and keeps the effective revision available until the new revision is approved and released.</span></div>
+
+    <div class="modalActions"><button class="btn secondary" onclick="closeRevisionRequest()">Cancel</button><span></span><button class="btn primary" id="revisionSubmitBtn" onclick="submitRevisionRequest()"><i data-lucide="send"></i>Create revision task</button></div>
+  </div>
+</div>
+
+<div class="modal" id="secureRevisionDownloadModal">
+  <div class="modalBox secureDownloadBox">
+    <div class="modalHead">
+      <div><span class="eyebrow">SECURE WORKING COPY</span><h2>Prepare editable revision copy</h2><p>The latest effective source is copied into a password-protected working file for the open revision.</p></div>
+      <button class="iconBtn" onclick="closeSecureRevisionDownload()" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+
+    <div class="secureFileSummary">
+      <span class="secureFileIcon"><i data-lucide="file-lock-2"></i></span>
+      <div><b id="secureDownloadFile">QMS-PRO-REC-001_Rev04_WORKING.docx</b><span id="secureDownloadMeta">Editable DOCX · Working revision</span></div>
+      <span class="tag warning">Working copy</span>
+    </div>
+
+    <div class="secureDownloadSteps">
+      <div><span>1</span><section><b>Use the latest effective source</b><p>iQMS generates the working copy from the current effective revision, not from an old local file.</p></section></div>
+      <div><span>2</span><section><b>Password is sent separately by email</b><p id="securePasswordEmail">A one-time file password will be sent to maria.santos@abc.com. The password is not displayed on this page.</p></section></div>
+      <div><span>3</span><section><b>Revision history is embedded in the editable copy</b><p id="revisionHistoryPlacement">For DOCX/PPTX, the revision-history table is placed after the cover/title page. For XLSX, it is a dedicated “Revision History” worksheet.</p></section></div>
+    </div>
+
+    <div class="revisionHistoryPreview">
+      <div class="sectionTitleRow"><div><h3>Revision history included in the working file</h3><p>Existing history is carried forward. The new row remains “In progress” until release.</p></div></div>
+      <div class="revisionHistoryTable">
+        <div class="revisionHistoryHead"><span>Rev</span><span>Date</span><span>Change summary</span><span>Reviewed by</span><span>Approved by</span></div>
+        <div><span>02</span><span>12 Mar 2026</span><span>Updated screening criteria and responsibilities.</span><span>Department Reviewer</span><span>Quality Manager</span></div>
+        <div><span>03</span><span>01 Sep 2026</span><span>Aligned process controls and retained-record requirements.</span><span>Department Reviewer</span><span>Quality Manager</span></div>
+        <div class="revisionHistoryCurrent"><span id="historyNewRev">04</span><span>In progress</span><span id="historyNewReason">Revision being prepared.</span><span>Pending</span><span>Pending</span></div>
+      </div>
+    </div>
+
+    <div class="secureDeliveryNote"><i data-lucide="mail-check"></i><div><b>Notifications</b><span>The PIC receives the revision task and password email. The previous manager/owner, reviewer(s) and approver(s) receive a revision-open notification.</span></div></div>
+
+    <div class="modalActions"><button class="btn secondary" onclick="closeSecureRevisionDownload()">Cancel</button><span></span><button class="btn primary" onclick="confirmSecureRevisionDownload()"><i data-lucide="mail"></i>Send password & prepare download</button></div>
+  </div>
+</div>
+
 <div class="modal" id="quickTypeModal">
   <div class="modalBox compactConfigModal">
     <div class="modalHead">
@@ -1758,6 +1849,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-settings-profile1"></script>
+<script src="./app.js?v=20260922-revision-workflow1"></script>
 </body>
 </html>

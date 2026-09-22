@@ -230,6 +230,215 @@ document.getElementById('removeProfilePhotoBtn')?.addEventListener('click',()=>t
 document.getElementById('uploadCompanyLogoBtn')?.addEventListener('click',()=>toast('Company logo','Logo upload can be connected to organization storage in production.'));
 document.getElementById('removeCompanyLogoBtn')?.addEventListener('click',()=>toast('Company logo removed','The workspace will use company initials.'));
 
+let revisionRequestMode='request';
+let openRevisions={};
+try{openRevisions=JSON.parse(localStorage.getItem('iqms.openRevisions')||'{}')||{}}catch(e){openRevisions={}}
+
+function activeControlledDoc(){
+  return activeTraceabilityDoc||null;
+}
+function nextRevisionNumber(rev){
+  const raw=String(rev||'').trim();
+  if(/^\d+$/.test(raw)) return String(Number(raw)+1).padStart(raw.length,'0');
+  const m=raw.match(/^(\d+)[.](\d+)$/);
+  if(m) return m[1]+'.'+(Number(m[2])+1);
+  return 'NEXT';
+}
+function revisionEditableExtension(doc){
+  const type=String(doc?.type||'').toLowerCase();
+  if(type.includes('form')||type.includes('spreadsheet')||type.includes('register')) return 'xlsx';
+  if(type.includes('presentation')||type.includes('ppt')) return 'pptx';
+  if(type.includes('external')) return 'docx';
+  return 'docx';
+}
+function profileEmailForPic(pic){
+  const map={
+    'Maria Santos':'maria.santos@abc.com',
+    'Ana Reyes':'ana.reyes@abc.com',
+    'Oscar Flores':'oscar.flores@abc.com',
+    'Lea Garcia':'lea.garcia@abc.com',
+    'Mika Torres':'mika.torres@abc.com'
+  };
+  return map[pic]||'user@abc.com';
+}
+function persistOpenRevisions(){
+  try{localStorage.setItem('iqms.openRevisions',JSON.stringify(openRevisions))}catch(e){}
+}
+function openRevisionRequest(mode='request'){
+  const doc=activeControlledDoc();
+  if(!doc) return;
+  if(openRevisions[doc.code]){
+    toast('Revision already open',openRevisions[doc.code].rev+' is already being prepared by '+openRevisions[doc.code].pic+'.');
+    refreshOpenRevisionIndicators(doc);
+    return;
+  }
+  revisionRequestMode=mode;
+  const start=mode==='start';
+  document.getElementById('revisionModeEyebrow').textContent=start?'START REVISION':'REVISION REQUEST';
+  document.getElementById('revisionModalTitle').textContent=start?'Start a new document revision':'Request a document revision';
+  document.getElementById('revisionModalSubtitle').textContent=start
+    ? 'Create the next working revision from the latest effective source and assign the PIC.'
+    : 'Describe what needs to change and assign the PIC who will prepare the next revision.';
+  document.getElementById('revisionSubmitBtn').innerHTML=start?'<i data-lucide="git-branch-plus"></i>Open revision':'<i data-lucide="send"></i>Create revision task';
+  document.getElementById('revisionContextTitle').textContent=doc.title;
+  document.getElementById('revisionContextCode').textContent=doc.code;
+  document.getElementById('revisionContextRev').textContent='Rev '+doc.rev;
+  document.getElementById('notifyDocumentOwner').textContent=doc.owner||'Document Owner';
+  document.getElementById('notifyPreviousApprover').textContent=doc.approver||'Previous approver';
+  document.getElementById('revisionRequestReason').value='';
+  document.getElementById('revisionReference').value='';
+  if(start) document.getElementById('revisionPic').value='Maria Santos';
+  document.getElementById('revisionRequestModal')?.classList.add('show');
+  refreshIcons();
+}
+function closeRevisionRequest(){
+  document.getElementById('revisionRequestModal')?.classList.remove('show');
+}
+function submitRevisionRequest(){
+  const doc=activeControlledDoc();
+  if(!doc) return;
+  const reason=document.getElementById('revisionRequestReason')?.value.trim();
+  if(!reason){
+    document.getElementById('revisionRequestReason')?.focus();
+    toast('Change request required','Describe what needs to be revised before opening the task.');
+    return;
+  }
+  const pic=document.getElementById('revisionPic')?.value||'Maria Santos';
+  const due=document.getElementById('revisionDueDate')?.value||'';
+  const reference=document.getElementById('revisionReference')?.value.trim()||'';
+  const rev=nextRevisionNumber(doc.rev);
+  openRevisions[doc.code]={
+    code:doc.code,title:doc.title,currentRev:doc.rev,rev:'Rev '+rev,revRaw:rev,
+    pic,due,reason,reference,requestedBy:'Maria Santos',mode:revisionRequestMode,
+    stage:revisionRequestMode==='start'?'Working copy required':'Revision requested',
+    downloaded:false,createdAt:new Date().toISOString(),space:activeSpace?.name||''
+  };
+  persistOpenRevisions();
+  closeRevisionRequest();
+  refreshOpenRevisionIndicators(doc);
+  refreshRevisionTasks();
+  refreshRevisionDashboard();
+  toast(revisionRequestMode==='start'?'Revision opened':'Revision task created',
+    'Rev '+rev+' is open for '+doc.code+'. '+pic+' is the PIC. Existing reviewer(s), approver(s) and document owner were notified.');
+  if(revisionRequestMode==='start') openSecureRevisionDownload();
+}
+function refreshOpenRevisionIndicators(doc=activeControlledDoc()){
+  const banner=document.getElementById('openRevisionBanner');
+  const revision=doc?openRevisions[doc.code]:null;
+  if(banner){
+    banner.style.display=revision?'grid':'none';
+    if(revision){
+      document.getElementById('openRevisionNumber').textContent=revision.rev;
+      document.getElementById('openRevisionPic').textContent=revision.pic;
+      document.getElementById('openRevisionStage').textContent=revision.downloaded?'Working copy downloaded · Draft preparation':revision.stage;
+      document.getElementById('openRevisionDue').textContent=revision.due||'Not set';
+      document.getElementById('openRevisionReason').textContent=revision.reason;
+    }
+  }
+  document.querySelectorAll('#controlledLibraryRows .controlledLibraryRow').forEach(row=>{
+    const code=row.querySelector('div>b')?.textContent.trim();
+    const data=openRevisions[code];
+    let badge=row.querySelector('.revisionOpenInline');
+    if(data&&!badge){
+      badge=document.createElement('span');
+      badge.className='revisionOpenInline';
+      row.querySelector('div')?.appendChild(badge);
+    }
+    if(badge){
+      if(data){badge.textContent=data.rev+' open';badge.style.display='inline-flex'}
+      else badge.style.display='none';
+    }
+  });
+  renderDmsDocuments();
+  if(activeSpace) renderSpaceRows(activeSpace);
+}
+function openSecureRevisionDownload(){
+  const doc=activeControlledDoc();
+  if(!doc) return;
+  const revision=openRevisions[doc.code];
+  if(!revision){
+    toast('Start a revision first','An editable working copy is only generated for an open revision.');
+    return;
+  }
+  const ext=revisionEditableExtension(doc);
+  const filename=doc.code+'_'+revision.rev.replace(/\s+/g,'')+'_WORKING.'+ext;
+  document.getElementById('secureDownloadFile').textContent=filename;
+  document.getElementById('secureDownloadMeta').textContent='Editable '+ext.toUpperCase()+' · '+revision.rev+' working revision';
+  document.getElementById('securePasswordEmail').textContent='A one-time file password will be sent to '+profileEmailForPic(revision.pic)+'. The password is not displayed on this page.';
+  document.getElementById('historyNewRev').textContent=revision.revRaw;
+  document.getElementById('historyNewReason').textContent=revision.reason;
+  const placement=document.getElementById('revisionHistoryPlacement');
+  if(ext==='xlsx') placement.textContent='For XLSX, iQMS inserts a protected “Revision History” worksheet near the front of the workbook because spreadsheets do not have document pages.';
+  else if(ext==='pptx') placement.textContent='For PPTX, iQMS inserts the revision-history table as slide 2, immediately after the title slide.';
+  else placement.textContent='For DOCX and page-based editable documents, iQMS inserts the revision-history table on page 2, immediately after the cover/title page.';
+  document.getElementById('secureRevisionDownloadModal')?.classList.add('show');
+  refreshIcons();
+}
+function closeSecureRevisionDownload(){
+  document.getElementById('secureRevisionDownloadModal')?.classList.remove('show');
+}
+function confirmSecureRevisionDownload(){
+  const doc=activeControlledDoc();
+  if(!doc) return;
+  const revision=openRevisions[doc.code];
+  if(!revision) return;
+  revision.downloaded=true;
+  revision.stage='Draft preparation';
+  revision.downloadedAt=new Date().toISOString();
+  persistOpenRevisions();
+  closeSecureRevisionDownload();
+  refreshOpenRevisionIndicators(doc);
+  refreshRevisionTasks();
+  refreshRevisionDashboard();
+  toast('Secure working copy prepared','Password sent to '+profileEmailForPic(revision.pic)+'. The download event was added to the audit trail and dashboard activity.');
+}
+function refreshRevisionTasks(){
+  const host=document.getElementById('revisionTaskQueue');
+  if(!host) return;
+  const revisions=Object.values(openRevisions);
+  host.innerHTML=revisions.map(r=>'<button class="approvalItem revisionTaskItem" onclick="openControlledDocumentByCode(\''+escapeHtml(r.code)+'\')"><div class="approvalTop"><span class="tag info">'+escapeHtml(r.downloaded?'In progress':'Revision open')+'</span><small>Revision task</small></div><b>'+escapeHtml(r.code)+' · '+escapeHtml(r.rev)+'</b><strong>'+escapeHtml(r.title)+'</strong><span>PIC: '+escapeHtml(r.pic)+' · Due '+escapeHtml(r.due||'Not set')+'</span></button>').join('');
+  const assigned=revisions.filter(r=>r.pic==='Maria Santos').length;
+  const requested=revisions.filter(r=>r.requestedBy==='Maria Santos'&&r.pic!=='Maria Santos').length;
+  const a=document.getElementById('assignedTaskCount'); if(a) a.textContent=9+assigned;
+  const q=document.getElementById('requestedTaskCount'); if(q) q.textContent=4+requested;
+  const all=document.getElementById('allActiveTaskCount'); if(all) all.textContent=24+revisions.length;
+}
+function findDocByCode(code){
+  for(const [spaceId,space] of Object.entries(spaceDefinitions)){
+    const doc=(space.docs||[]).find(d=>d.code===code);
+    if(doc) return {spaceId,doc};
+  }
+  return null;
+}
+function openControlledDocumentByCode(code){
+  const found=findDocByCode(code);
+  if(found) openControlledDocument(found.spaceId,code);
+}
+function refreshRevisionDashboard(){
+  const work=document.getElementById('overviewWorkList');
+  const activity=document.getElementById('overviewActivityList');
+  if(work){
+    work.querySelectorAll('.revisionDashboardRow').forEach(x=>x.remove());
+    Object.values(openRevisions).slice(0,2).reverse().forEach(r=>{
+      const row=document.createElement('button');
+      row.className='overviewWorkRow revisionDashboardRow';
+      row.onclick=()=>openControlledDocumentByCode(r.code);
+      row.innerHTML='<span class="workType">Revision</span><div><b>'+escapeHtml(r.title)+'</b><small>'+escapeHtml(r.code)+' · '+escapeHtml(r.rev)+' · PIC '+escapeHtml(r.pic)+'</small></div><span class="tag info">'+(r.downloaded?'In progress':'Open')+'</span><i data-lucide="chevron-right"></i>';
+      work.prepend(row);
+    });
+  }
+  if(activity){
+    activity.querySelectorAll('.revisionDownloadActivity').forEach(x=>x.remove());
+    Object.values(openRevisions).filter(r=>r.downloaded).slice(-2).reverse().forEach(r=>{
+      const row=document.createElement('div');
+      row.className='revisionDownloadActivity';
+      row.innerHTML='<span>Now</span><i class="activityIcon"><i data-lucide="file-down"></i></i><p><b>'+escapeHtml(r.code)+' '+escapeHtml(r.rev)+' working copy downloaded</b><small>Password-protected editable copy · '+escapeHtml(r.pic)+'</small></p><span class="tag info">Revision open</span>';
+      activity.prepend(row);
+    });
+  }
+  refreshIcons();
+}
+
 const viewLabels={
   dashboard:'Overview',
   repository:'Controlled information',
@@ -599,7 +808,7 @@ function renderDmsDocuments(){
     const statusClass=doc.kind||'neutral';
     const type=(doc.type||'Controlled document').split(' · ')[0];
     return '<button class="dmsDocumentRow" data-code="'+escapeHtml(doc.code)+'">'
-      +'<div><b>'+escapeHtml(doc.code)+'</b><strong>'+escapeHtml(doc.title)+'</strong><small>'+escapeHtml(space.name)+'</small></div>'
+      +'<div><b>'+escapeHtml(doc.code)+'</b><strong>'+escapeHtml(doc.title)+'</strong><small>'+escapeHtml(space.name)+(openRevisions[doc.code]?' <em class="revisionOpenInline">'+escapeHtml(openRevisions[doc.code].rev)+' open</em>':'')+'</small></div>'
       +'<span>'+escapeHtml(type)+'</span><span>'+escapeHtml(doc.rev||'—')+'</span><span>'+escapeHtml(doc.owner||'—')+'</span>'
       +'<span class="tag '+statusClass+'">'+escapeHtml(doc.status||'—')+'</span><span>'+escapeHtml(doc.review||'—')+'</span><i data-lucide="chevron-right"></i></button>';
   }).join('');
@@ -759,7 +968,7 @@ function renderSpaceRows(space){
     const typeName=(d.type||'Controlled document').split(' · ')[0];
     return `
       <button class="spaceDocumentItem" data-space-doc-index="${i}">
-        <span class="docMain"><b>${escapeHtml(d.code)}</b><strong>${escapeHtml(d.title)}</strong><small>${escapeHtml(d.type||'Controlled document')}</small></span>
+        <span class="docMain"><b>${escapeHtml(d.code)}</b><strong>${escapeHtml(d.title)}</strong><small>${escapeHtml(d.type||'Controlled document')}${openRevisions[d.code]?' <em class="revisionOpenInline">'+escapeHtml(openRevisions[d.code].rev)+' open</em>':''}</small></span>
         <span>${escapeHtml(typeName)}</span>
         <span>${escapeHtml(d.rev||'—')}</span>
         <span>${escapeHtml(d.owner||'—')}</span>
@@ -841,6 +1050,7 @@ function selectSpaceDocument(doc,row){
       : '<div class="done"><i data-lucide="check"></i><span><b>Author</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Department review</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Final approval</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Released</b><small>'+escapeHtml(doc.status)+'</small></span></div>';
   }
 
+  refreshOpenRevisionIndicators(doc);
   document.querySelector('.documentStage')?.scrollTo({top:0,behavior:'smooth'});
   refreshIcons();
 }
@@ -2290,3 +2500,7 @@ try{
     saveSettingsCompany();
   }
 }catch(e){}
+
+refreshRevisionTasks();
+refreshRevisionDashboard();
+refreshOpenRevisionIndicators();
