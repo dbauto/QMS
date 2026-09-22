@@ -640,3 +640,9 @@ body.navHidden .mainArea{margin-left:0}
   .profileButton>span:not(.avatar){display:none}
   .headerSearch.open input{width:min(210px,42vw)}
 }
+
+
+/* Final reference-shell alignment */
+.workspaceSwitch{display:none}
+.brandMark .lucide{width:17px;height:17px;stroke-width:2}
+body.navHidden .commandBar{padding-left:56px}
