@@ -2748,3 +2748,335 @@ body.navExpanded .navItem:hover{background:#172e47}
     border-bottom:0!important;
   }
 }
+
+
+/* ============================================================
+   iQMS visual calm pass
+   Principle: one surface per task. Use dividers and hierarchy
+   before cards. Cards are reserved for genuinely distinct objects.
+   ============================================================ */
+
+/* A slightly quieter working canvas */
+.pageBody{background:#f8f9fb}
+
+/* ---------- Overview: KPI strip + flat operational sections ---------- */
+#dashboard .systemBanner{
+  height:48px;
+  margin-bottom:10px;
+  padding:0 12px;
+  border:0;
+  border-left:3px solid #12b76a;
+  border-radius:0;
+  background:#f7fbfa;
+}
+#dashboard .systemStatus b{font-size:11px}
+#dashboard .systemStatus span{font-size:9px}
+
+#dashboard .metricGrid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:0;
+  margin:0 0 18px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:transparent;
+}
+#dashboard .metricCard{
+  min-height:82px;
+  padding:11px 16px;
+  border:0;
+  border-right:1px solid var(--line);
+  border-radius:0;
+  background:transparent;
+}
+#dashboard .metricCard:last-child{border-right:0}
+#dashboard .metricCard>span{font-size:9px}
+#dashboard .metricCard>b{font-size:22px;margin:4px 0 1px}
+#dashboard .metricCard small{font-size:8px}
+
+#dashboard .dashboardGrid,
+#dashboard .dashboardGrid.lower{
+  gap:28px;
+  margin-bottom:18px;
+}
+#dashboard .surface{
+  padding:12px 0 0;
+  border:0;
+  border-top:1px solid var(--line);
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+#dashboard .sectionHeader{margin-bottom:6px}
+#dashboard .sectionHeader h2{font-size:12px}
+#dashboard .sectionHeader p{font-size:8px}
+#dashboard .workTable,
+#dashboard .activityTable{margin:0}
+#dashboard .workRow{
+  min-height:52px;
+  padding:7px 0;
+}
+#dashboard .activityTable>div{
+  min-height:50px;
+  padding:6px 0;
+}
+#dashboard .reviewItem{padding:9px 0}
+#dashboard .lifecycleBars{padding-top:8px}
+
+/* ---------- Controlled information: spaces read like a directory ---------- */
+#repositoryHub .repositoryBrowseHeader{
+  margin-bottom:8px;
+}
+#repositoryHub .repositoryBrowseHeader h2{font-size:14px}
+#repositoryHub .repositoryBrowseHeader p{font-size:8px}
+#repositoryHub .spaceGroupLabel{
+  margin:16px 0 5px;
+  padding-bottom:6px;
+  border-bottom:1px solid var(--line);
+}
+#repositoryHub .spaceGroupLabel>span{font-size:8px}
+#repositoryHub .spaceGroupLabel>small{font-size:7px}
+
+#repositoryHub .documentSpaces,
+#repositoryHub .featuredSpaces{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:28px;
+  row-gap:0;
+  margin-bottom:2px;
+}
+#repositoryHub .spaceCard{
+  min-height:92px;
+  padding:12px 2px;
+  display:grid;
+  grid-template-columns:34px minmax(0,1fr) 18px;
+  grid-template-rows:auto auto auto;
+  grid-template-areas:
+    "icon title arrow"
+    "icon desc arrow"
+    "icon meta arrow";
+  column-gap:10px;
+  align-items:start;
+  border:0;
+  border-bottom:1px solid var(--line);
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  transform:none;
+}
+#repositoryHub .spaceCard:hover{
+  transform:none;
+  border-color:var(--line);
+  background:#f7f9fa;
+  box-shadow:none;
+}
+#repositoryHub .spaceIcon{
+  grid-area:icon;
+  width:30px;
+  height:30px;
+  margin:1px 0 0;
+  border-radius:7px;
+}
+#repositoryHub .spaceIcon .lucide{width:15px;height:15px}
+#repositoryHub .spaceArrow{
+  grid-area:arrow;
+  position:static;
+  align-self:center;
+  justify-self:end;
+}
+#repositoryHub .spaceCard>strong{
+  grid-area:title;
+  font-size:10px;
+  margin-top:1px;
+}
+#repositoryHub .spaceCard>p{
+  grid-area:desc;
+  margin:2px 0 5px;
+  font-size:8px;
+  line-height:1.45;
+}
+#repositoryHub .spaceMeta{
+  grid-area:meta;
+  margin:0;
+  font-size:7px;
+}
+#repositoryHub .createSpaceCard{
+  min-height:76px;
+  border:0;
+  border-bottom:1px dashed var(--line-strong);
+  background:transparent;
+}
+#repositoryHub .createSpaceCard:hover{background:#f7fbfa}
+#repositoryHub .spaceCreateLink{grid-area:meta;margin:0;font-size:8px}
+
+/* All-document and space-document lists are the operational surface. */
+.controlledLibrarySurface,
+.spaceDocumentListSurface{
+  box-shadow:none;
+  border-radius:7px;
+}
+
+/* ---------- Records & evidence: one workspace, not a wall of cards ---------- */
+#records .evidenceSummaryStrip{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  margin:0 0 12px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:transparent;
+}
+#records .evidenceSummaryStrip>div{
+  padding:10px 14px;
+  border:0;
+  border-right:1px solid var(--line);
+  border-radius:0;
+  background:transparent;
+}
+#records .evidenceSummaryStrip>div:last-child{border-right:0}
+#records .evidenceSummaryStrip span{font-size:8px}
+#records .evidenceSummaryStrip b{font-size:19px;margin:2px 0}
+#records .evidenceSummaryStrip small{font-size:7px}
+
+#records .recordsWorkspace{
+  border-radius:7px;
+  box-shadow:none;
+}
+#records .evidenceRow{min-height:62px}
+#records .evidenceInspector{
+  padding:14px 16px;
+  background:#fbfcfd;
+}
+#records .evidenceInspector .inspectorHeader{
+  padding-bottom:12px;
+  border-bottom:1px solid var(--line);
+}
+#records .evidenceInspector .inspectorHeader h2{
+  margin:3px 0 5px;
+  font-size:15px;
+}
+#records .evidenceInspector .resourceDetails{
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  margin-top:4px;
+  border-bottom:1px solid var(--line);
+}
+#records .evidenceInspector .resourceDetails>div{
+  padding:9px 8px 9px 0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+}
+#records .evidenceInspector .resourceDetails>div:nth-child(even){
+  padding-left:10px;
+  border-left:1px solid var(--line);
+}
+#records .evidenceInspector .detailSection{
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+}
+#records .evidenceInspector .detailSection h3{font-size:10px}
+
+/* Traceability in the record inspector becomes a simple timeline. */
+#records .traceChain{
+  position:relative;
+  gap:0;
+  margin-top:5px;
+}
+#records .traceChain:before{
+  content:"";
+  position:absolute;
+  left:8px;
+  top:18px;
+  bottom:18px;
+  width:1px;
+  background:#d7dde4;
+}
+#records .traceChain>.lucide{display:none}
+#records .traceChain button{
+  position:relative;
+  min-height:48px;
+  padding:7px 0 7px 24px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+}
+#records .traceChain button:before{
+  content:"";
+  position:absolute;
+  left:4px;
+  top:17px;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#fff;
+  border:2px solid #b8c2cd;
+  z-index:1;
+}
+#records .traceChain button.active{
+  background:transparent;
+  border:0;
+}
+#records .traceChain button.active:before{border-color:var(--brand);background:var(--brand-soft)}
+
+#records .evidenceInspector .linkedRecord{
+  margin:0;
+  padding:8px 0;
+  border:0;
+  border-bottom:1px solid var(--line);
+  border-radius:0;
+  background:transparent;
+}
+#records .evidenceInspector .linkedRecord:last-child{border-bottom:0}
+#records .evidenceInspector .linkedRecord:hover{background:transparent}
+#records .evidenceInspector .linkedRecord>span{
+  width:22px;
+  height:22px;
+  border-radius:5px;
+}
+
+/* ---------- My tasks: keep the split workspace, flatten inner callouts ---------- */
+#approvals .taskWorkspace{
+  border-radius:7px;
+  box-shadow:none;
+}
+#approvals .changeBox{
+  margin-top:14px;
+  padding:8px 0 8px 11px;
+  border:0;
+  border-left:2px solid var(--line-strong);
+  border-radius:0;
+  background:transparent;
+}
+#approvals .approvalDetail{padding:18px 20px}
+
+/* ---------- Audit & configuration pages: large surfaces, quiet chrome ---------- */
+#audit .tableSurface,
+#types .typeWorkspace,
+#users .surface,
+#settings .surface{
+  box-shadow:none;
+  border-radius:7px;
+}
+
+/* Responsive: retain the calm hierarchy instead of reverting to tiles. */
+@media(max-width:1120px){
+  #dashboard .metricGrid{grid-template-columns:repeat(3,1fr)}
+  #dashboard .metricCard:nth-child(3){border-right:0}
+  #dashboard .metricCard:nth-child(-n+3){border-bottom:1px solid var(--line)}
+  #repositoryHub .documentSpaces,
+  #repositoryHub .featuredSpaces{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+  #dashboard .metricGrid{grid-template-columns:1fr 1fr}
+  #dashboard .metricCard{border-bottom:1px solid var(--line)}
+  #dashboard .metricCard:nth-child(odd){border-right:1px solid var(--line)}
+  #dashboard .metricCard:nth-child(even){border-right:0}
+  #dashboard .metricCard:last-child{border-bottom:0}
+  #repositoryHub .documentSpaces,
+  #repositoryHub .featuredSpaces{grid-template-columns:1fr}
+  #records .evidenceSummaryStrip{grid-template-columns:1fr 1fr}
+  #records .evidenceSummaryStrip>div:nth-child(2){border-right:0}
+  #records .evidenceSummaryStrip>div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
