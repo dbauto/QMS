@@ -5,6 +5,7 @@ const navItems=[...document.querySelectorAll('.navItem[data-view]')];
 
 /* Collapsible navigation and workspace panels */
 const sidebarToggle=document.getElementById('sidebarToggle');
+const sidebarReveal=document.getElementById('sidebarReveal');
 function setMainSidebar(hidden){
   document.body.classList.toggle('navHidden',hidden);
   if(sidebarToggle){
@@ -19,6 +20,7 @@ let savedNav=false;
 try{savedNav=localStorage.getItem('nexus.navHidden')==='1'}catch(e){}
 setMainSidebar(savedNav);
 sidebarToggle?.addEventListener('click',()=>setMainSidebar(!document.body.classList.contains('navHidden')));
+sidebarReveal?.addEventListener('click',()=>setMainSidebar(false));
 
 function wirePanel(workspaceSelector,hideId,showId,className='inspectorHidden'){
   const workspace=document.querySelector(workspaceSelector);
@@ -33,6 +35,13 @@ wirePanel('.documentWorkspace','hideDocumentInspector','showDocumentInspector','
 wirePanel('.resourceWorkspace','hideResourceInspector','showResourceInspector','inspectorHidden');
 wirePanel('.typeWorkspace','hideTypeInspector','showTypeInspector','inspectorHidden');
 
+document.querySelectorAll('.navItem').forEach(item=>{
+  const label=[...item.querySelectorAll('span')].find(el=>!el.classList.contains('navIcon')&&!el.classList.contains('navMeta')&&!el.classList.contains('navBadge'));
+  if(label && !item.title) item.title=label.textContent.trim();
+});
+const workspaceSwitch=document.querySelector('.workspaceSwitch');
+if(workspaceSwitch) workspaceSwitch.title='ABC Manufacturing';
+
 document.addEventListener('keydown',e=>{
   if((e.ctrlKey||e.metaKey)&&e.key==='\\'){
     e.preventDefault();
@@ -41,14 +50,42 @@ document.addEventListener('keydown',e=>{
 });
 
 
+const viewLabels={
+  dashboard:'Overview',
+  repository:'Documents',
+  approvals:'My tasks',
+  register:'Document register',
+  audit:'Audit trail',
+  relationships:'Sources & evidence',
+  structure:'Repository structure',
+  types:'Document types',
+  ai:'QMS AI',
+  users:'Users & access',
+  settings:'Settings'
+};
+const breadcrumbCurrent=document.getElementById('breadcrumbCurrent');
+
 function showView(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   const target=document.getElementById(id);
   if(target) target.classList.add('active');
   navItems.forEach(item=>item.classList.toggle('active',item.dataset.view===id));
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent=viewLabels[id]||'Workspace';
   window.scrollTo({top:0,behavior:'smooth'});
 }
 navItems.forEach(item=>item.addEventListener('click',()=>showView(item.dataset.view)));
+
+const headerSearch=document.getElementById('headerSearch');
+const searchToggle=document.getElementById('searchToggle');
+searchToggle?.addEventListener('click',()=>{
+  const isOpen=headerSearch?.classList.toggle('open');
+  if(isOpen) setTimeout(()=>document.getElementById('globalSearch')?.focus(),80);
+});
+document.addEventListener('click',e=>{
+  if(headerSearch && !headerSearch.contains(e.target) && document.getElementById('globalSearch')?.value===''){
+    headerSearch.classList.remove('open');
+  }
+});
 
 function toast(title,message){
   document.querySelector('.toast')?.remove();
