@@ -8,7 +8,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-docviewer-fix1">
+<link rel="stylesheet" href="./styles.css?v=20260922-traceability1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -139,7 +139,7 @@ body.navExpanded .railExpand span{display:inline!important}
       <button class="navItem" data-view="audit"><span class="navIcon"><i data-lucide="history"></i></span><span>Audit trail</span></button>
 
       <div class="navGroup">Control</div>
-      <button class="navItem" data-view="relationships"><span class="navIcon"><i data-lucide="network"></i></span><span>Relationship map</span></button>
+      <button class="navItem" data-view="relationships"><span class="navIcon"><i data-lucide="waypoints"></i></span><span>Traceability</span></button>
       <button class="navItem" data-view="types"><span class="navIcon"><i data-lucide="file-cog"></i></span><span>Document types</span></button>
 
       <div class="navGroup">Intelligence</div>
@@ -393,7 +393,7 @@ body.navExpanded .railExpand span{display:inline!important}
           </div>
 
           <div class="documentDetailTabs">
-            <button class="active">Document</button><button onclick="showView('relationships')">Relationships</button><button data-toast-title="Revision history" data-toast-message="Revision history is preserved for this canonical document.">Revision history</button><button data-toast-title="Audit history" data-toast-message="Audit events for this resource are available in Audit trail.">Audit history</button>
+            <button class="active">Document</button><button onclick="openTraceabilityForDocument()">Traceability</button><button data-toast-title="Revision history" data-toast-message="Revision history is preserved for this canonical document.">Revision history</button><button data-toast-title="Audit history" data-toast-message="Audit events for this resource are available in Audit trail.">Audit history</button>
           </div>
 
           <div class="documentDetailWorkspace">
@@ -430,7 +430,7 @@ body.navExpanded .railExpand span{display:inline!important}
 
               <section class="reviewPanelSection"><div class="sectionTitleRow"><h3>Change reason</h3><span class="tag neutral">Rev <span id="changeReasonRev">06</span></span></div><p id="changeReasonText">Controlled revision retained with its documented change reason and approval history.</p></section>
 
-              <section class="reviewPanelSection"><div class="sectionTitleRow"><h3>Relationships</h3><button class="btn link" onclick="showView('relationships')">Open map</button></div>
+              <section class="reviewPanelSection"><div class="sectionTitleRow"><h3>Traceability</h3><button class="btn link" onclick="openTraceabilityForDocument()">View traceability</button></div>
                 <button class="reviewRelation"><i data-lucide="link-2"></i><div><b>WI-QA-003</b><span>Inspection Work Instruction</span></div><em>Current</em></button>
                 <button class="reviewRelation"><i data-lucide="paperclip"></i><div><b>23 records</b><span>Linked evidence</span></div><em>Evidence</em></button>
               </section>
@@ -537,51 +537,123 @@ body.navExpanded .railExpand span{display:inline!important}
 
       <div id="relationships" class="view">
         <div class="pageHeader">
-          <div><h1>Relationship map</h1><p>Trace how requirements, processes, controlled information, records and verification evidence connect.</p></div>
-          <div class="pageActions"><button class="btn primary" data-toast-title="Relationship editor" data-toast-message="Choose two canonical resources to create a governed relationship."><i data-lucide="link-2"></i>Add relationship</button></div>
+          <div>
+            <h1>Traceability</h1>
+            <p>See what a controlled document supports, what it produces, and how its implementation is verified.</p>
+          </div>
+          <div class="pageActions">
+            <button class="btn secondary" data-toast-title="Manage traceability links" data-toast-message="Add, remove or pin governed links between QMS resources."><i data-lucide="link-2"></i>Manage links</button>
+          </div>
         </div>
 
-        <div class="relationshipToolbar">
-          <div class="filterSearch"><span><i data-lucide="search"></i></span><input id="relationshipSearch" placeholder="Find a document, record, process or requirement..."></div>
-          <select id="relationshipFocus"><option>Recruitment Procedure</option><option>Control of Nonconforming Outputs</option><option>Supplier Control Procedure</option></select>
-          <select><option>Current relationships</option><option>Include historical revisions</option></select>
+        <div class="traceabilityToolbar">
+          <div class="filterSearch"><span><i data-lucide="search"></i></span><input id="relationshipSearch" placeholder="Find a controlled document..."></div>
+          <label class="traceFocusField"><span>Viewing traceability for</span>
+            <select id="relationshipFocus">
+              <option value="QMS-PRO-REC-001">Recruitment Procedure</option>
+              <option value="SOP-QA-014">Control of Nonconforming Outputs</option>
+              <option value="WI-PROD-021">Final Inspection Work Instruction</option>
+            </select>
+          </label>
+          <button class="btn secondary" id="traceMapToggle" onclick="toggleTraceabilityMap()"><i data-lucide="network"></i>Open visual map</button>
         </div>
 
-        <div class="relationshipWorkspaceV2">
-          <section class="relationshipCanvas">
-            <div class="relationshipCanvasHeader"><div><b>Trace view</b><span>Recruitment Procedure · current effective context</span></div><div class="graphLegend"><span><i class="legendDot requirement"></i>Requirement</span><span><i class="legendDot process"></i>Process</span><span><i class="legendDot document"></i>Controlled information</span><span><i class="legendDot evidence"></i>Evidence</span></div></div>
-            <div class="relationshipGraph">
-              <button class="graphNode requirement"><span>Requirement</span><b>ISO 9001 · 8.1</b><small>Operational planning and control</small></button>
-              <div class="graphConnector"><i data-lucide="arrow-right"></i><span>REQUIRED_BY</span></div>
-              <button class="graphNode process"><span>Process</span><b>Recruitment</b><small>Process owner · Recruitment Manager</small></button>
-              <div class="graphConnector"><i data-lucide="arrow-right"></i><span>IMPLEMENTS</span></div>
-              <button class="graphNode document selected"><span>Controlled information</span><b>QMS-PRO-REC-001</b><small>Recruitment Procedure · Rev 03</small></button>
-              <div class="graphConnector"><i data-lucide="arrow-right"></i><span>EVIDENCED_BY</span></div>
-              <button class="graphNode evidence"><span>Record / evidence</span><b>REC-SCR-2026-0918</b><small>Candidate Screening Record</small></button>
-              <div class="graphConnector"><i data-lucide="arrow-right"></i><span>USED_BY</span></div>
-              <button class="graphNode verification"><span>Verification</span><b>IA-2026-004</b><small>Internal Audit · Production Line 2</small></button>
+        <section class="traceabilityFocusCard">
+          <div class="traceabilityFocusIcon"><i data-lucide="file-check-2"></i></div>
+          <div class="traceabilityFocusIdentity">
+            <span class="recordLabel">CONTROLLED INFORMATION</span>
+            <h2 id="traceFocusTitle">Recruitment Procedure</h2>
+            <div class="recordMeta"><b id="traceFocusCode">QMS-PRO-REC-001</b><span id="traceFocusRev">Rev 03</span><span class="tag success" id="traceFocusStatus">Effective</span></div>
+          </div>
+          <div class="traceabilityFocusMeta">
+            <span><small>Primary space</small><b id="traceFocusSpace">Recruitment</b></span>
+            <span><small>Owner</small><b id="traceFocusOwner">Recruitment Manager</b></span>
+          </div>
+        </section>
 
-              <div class="graphBranch branchRisk"><span class="branchLine"></span><button class="graphNode compact risk"><span>Risk</span><b>Incomplete candidate documentation</b></button></div>
-              <div class="graphBranch branchForm"><span class="branchLine"></span><button class="graphNode compact document"><span>Related document</span><b>FORM-REC-006 · Candidate Evaluation</b></button></div>
-            </div>
-          </section>
-
-          <aside class="relationshipInspectorV2">
-            <div class="inspectorHeader compactInspector"><div><span class="recordLabel">Selected relationship</span><h2>Recruitment Procedure → Candidate Screening Record</h2><div class="recordMeta"><span class="tag info">EVIDENCED_BY</span><span>Active</span></div></div><button class="iconButton"><i data-lucide="ellipsis"></i></button></div>
-            <dl class="detailGrid resourceDetails">
-              <div><dt>Source</dt><dd>QMS-PRO-REC-001 · Rev 03</dd></div>
-              <div><dt>Target</dt><dd>REC-SCR-2026-0918</dd></div>
-              <div><dt>Revision binding</dt><dd>Follow current effective</dd></div>
-              <div><dt>Created by</dt><dd>Document Control</dd></div>
-            </dl>
-            <section class="detailSection"><h3>Relationship behavior</h3><p class="relationshipHelp">When a new revision becomes Effective, this relationship follows the current effective revision unless it is explicitly pinned to a historical revision.</p></section>
-            <section class="detailSection"><div class="sectionTitleRow"><h3>Related context</h3></div>
-              <button class="linkedRecord"><span><i data-lucide="landmark"></i></span><div><b>ISO 9001 · 8.1</b><small>Required by</small></div></button>
-              <button class="linkedRecord"><span><i data-lucide="workflow"></i></span><div><b>Recruitment</b><small>Applicable process</small></div></button>
-              <button class="linkedRecord"><span><i data-lucide="search-check"></i></span><div><b>IA-2026-004</b><small>Uses this evidence</small></div></button>
+        <div class="traceabilityWorkspace" id="traceabilitySummary">
+          <main class="traceabilitySections">
+            <section class="traceSection">
+              <div class="traceSectionHead"><span class="traceSectionIcon requirement"><i data-lucide="landmark"></i></span><div><h3>Requirements covered</h3><p>Clauses or obligations this controlled information helps satisfy.</p></div></div>
+              <div class="traceItems" id="traceRequirements">
+                <button class="traceItem"><div><b>ISO 9001 · 8.1</b><span>Operational planning and control</span></div><i data-lucide="chevron-right"></i></button>
+              </div>
             </section>
+
+            <section class="traceSection">
+              <div class="traceSectionHead"><span class="traceSectionIcon process"><i data-lucide="workflow"></i></span><div><h3>Process & responsibility</h3><p>Where the document is used and who is accountable for the process.</p></div></div>
+              <div class="traceItems" id="traceProcess">
+                <button class="traceItem"><div><b>Recruitment</b><span>Process owner · Recruitment Manager</span></div><i data-lucide="chevron-right"></i></button>
+              </div>
+            </section>
+
+            <section class="traceSection">
+              <div class="traceSectionHead"><span class="traceSectionIcon document"><i data-lucide="files"></i></span><div><h3>Forms & related controlled information</h3><p>Controlled resources used with this document.</p></div></div>
+              <div class="traceItems" id="traceRelatedDocs">
+                <button class="traceItem"><div><b>FORM-REC-006 · Candidate Evaluation Form</b><span>Controlled form · current effective revision</span></div><i data-lucide="chevron-right"></i></button>
+                <button class="traceItem"><div><b>SOP-REC-004 · Candidate Screening SOP</b><span>Supporting controlled information</span></div><i data-lucide="chevron-right"></i></button>
+              </div>
+            </section>
+
+            <section class="traceSection">
+              <div class="traceSectionHead"><span class="traceSectionIcon evidence"><i data-lucide="archive"></i></span><div><h3>Records & evidence produced</h3><p>Proof created when the process is carried out.</p></div></div>
+              <div class="traceItems" id="traceEvidence">
+                <button class="traceItem"><div><b>Candidate Screening Record</b><span>REC-SCR-2026-0918 · Retained evidence</span></div><i data-lucide="chevron-right"></i></button>
+                <button class="traceItem"><div><b>Candidate Interview Record</b><span>REC-INT-2026-442 · Retained evidence</span></div><i data-lucide="chevron-right"></i></button>
+              </div>
+            </section>
+
+            <section class="traceSection">
+              <div class="traceSectionHead"><span class="traceSectionIcon risk"><i data-lucide="triangle-alert"></i></span><div><h3>Risks & controls</h3><p>Known process risks that this document helps control.</p></div></div>
+              <div class="traceItems" id="traceRisks">
+                <button class="traceItem"><div><b>Incomplete candidate documentation</b><span>Recruitment process risk · control linked</span></div><i data-lucide="chevron-right"></i></button>
+              </div>
+            </section>
+
+            <section class="traceSection">
+              <div class="traceSectionHead"><span class="traceSectionIcon verification"><i data-lucide="search-check"></i></span><div><h3>Audits & verification</h3><p>Where implementation of this control has been checked.</p></div></div>
+              <div class="traceItems" id="traceAudits">
+                <button class="traceItem"><div><b>Internal Audit 2026</b><span>Verification evidence · closed</span></div><i data-lucide="chevron-right"></i></button>
+              </div>
+            </section>
+          </main>
+
+          <aside class="traceabilityPathPanel">
+            <div class="tracePathHeader"><span class="recordLabel">TRACEABILITY PATH</span><h3>From requirement to evidence</h3><p>This is the simplest audit trail for the selected controlled document.</p></div>
+            <div class="tracePath">
+              <div class="tracePathStep requirement"><span><i data-lucide="landmark"></i></span><div><small>Requirement</small><b id="tracePathRequirement">ISO 9001 · 8.1</b></div></div>
+              <i data-lucide="arrow-down"></i>
+              <div class="tracePathStep process"><span><i data-lucide="workflow"></i></span><div><small>Process</small><b id="tracePathProcess">Recruitment</b></div></div>
+              <i data-lucide="arrow-down"></i>
+              <div class="tracePathStep document"><span><i data-lucide="file-check-2"></i></span><div><small>Controlled information</small><b id="tracePathDocument">Recruitment Procedure</b></div></div>
+              <i data-lucide="arrow-down"></i>
+              <div class="tracePathStep evidence"><span><i data-lucide="archive"></i></span><div><small>Record / evidence</small><b id="tracePathEvidence">Candidate Screening Record</b></div></div>
+              <i data-lucide="arrow-down"></i>
+              <div class="tracePathStep verification"><span><i data-lucide="search-check"></i></span><div><small>Audit / verification</small><b id="tracePathAudit">Internal Audit 2026</b></div></div>
+            </div>
+            <div class="tracePathNote"><i data-lucide="info"></i><span>Historical revisions and exact link behavior remain available to Document Control, but normal users see the current effective QMS context.</span></div>
           </aside>
         </div>
+
+        <section class="traceMapPanel" id="traceabilityMapPanel" style="display:none">
+          <div class="traceMapHeader">
+            <div><span class="recordLabel">VISUAL MAP</span><h2>Full traceability map</h2><p>Use this when you need to inspect several connected resources at once.</p></div>
+            <button class="btn text" onclick="toggleTraceabilityMap(false)">Back to simple traceability</button>
+          </div>
+          <div class="relationshipGraph traceabilityGraph">
+            <button class="graphNode requirement"><span>Requirement</span><b id="traceMapRequirement">ISO 9001 · 8.1</b><small id="traceMapRequirementDetail">Operational planning and control</small></button>
+            <div class="graphConnector"><i data-lucide="arrow-right"></i></div>
+            <button class="graphNode process"><span>Process</span><b id="traceMapProcess">Recruitment</b><small id="traceMapProcessDetail">Process owner · Recruitment Manager</small></button>
+            <div class="graphConnector"><i data-lucide="arrow-right"></i></div>
+            <button class="graphNode document selected"><span>Controlled information</span><b id="traceMapDocumentCode">QMS-PRO-REC-001</b><small id="traceMapDocumentTitle">Recruitment Procedure · Rev 03</small></button>
+            <div class="graphConnector"><i data-lucide="arrow-right"></i></div>
+            <button class="graphNode evidence"><span>Record / evidence</span><b id="traceMapEvidenceCode">REC-SCR-2026-0918</b><small id="traceMapEvidenceTitle">Candidate Screening Record</small></button>
+            <div class="graphConnector"><i data-lucide="arrow-right"></i></div>
+            <button class="graphNode verification"><span>Verification</span><b id="traceMapAuditCode">IA-2026-004</b><small id="traceMapAuditTitle">Internal Audit 2026</small></button>
+            <div class="graphBranch branchRisk"><span class="branchLine"></span><button class="graphNode compact risk"><span>Risk</span><b id="traceMapRisk">Incomplete candidate documentation</b></button></div>
+            <div class="graphBranch branchForm"><span class="branchLine"></span><button class="graphNode compact document"><span>Related document</span><b id="traceMapRelated">FORM-REC-006 · Candidate Evaluation Form</b></button></div>
+          </div>
+        </section>
       </div>
 
       <div id="structure" class="view">
@@ -1131,6 +1203,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-hierarchy1"></script>
+<script src="./app.js?v=20260922-traceability1"></script>
 </body>
 </html>

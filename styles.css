@@ -2370,3 +2370,167 @@ body.navExpanded .navItem:hover{background:#172e47}
 @media(max-width:760px){
   #repositoryDocument .detailViewerCanvas .documentStage{padding:14px}
 }
+
+
+/* QMS-first Traceability: simple context first, visual graph optional */
+.traceabilityToolbar{
+  display:grid;
+  grid-template-columns:minmax(320px,1fr) 260px auto;
+  gap:8px;
+  align-items:end;
+  margin-bottom:10px;
+}
+.traceFocusField{font-size:8px;color:var(--muted);font-weight:700}
+.traceFocusField>span{display:block;margin-bottom:4px}
+.traceFocusField select{
+  width:100%;height:34px;border:1px solid var(--line-strong);border-radius:7px;background:#fff;padding:0 9px;font-size:9px
+}
+.traceabilityToolbar>.btn{height:34px;white-space:nowrap}
+
+.traceabilityFocusCard{
+  display:grid;
+  grid-template-columns:40px minmax(0,1fr) auto;
+  gap:10px;
+  align-items:center;
+  min-height:76px;
+  padding:12px 14px;
+  margin-bottom:10px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  box-shadow:var(--shadow);
+}
+.traceabilityFocusIcon{
+  width:36px;height:36px;border-radius:9px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center
+}
+.traceabilityFocusIcon .lucide{width:17px;height:17px}
+.traceabilityFocusIdentity h2{margin:2px 0 4px;font-size:15px;color:var(--ink)}
+.traceabilityFocusMeta{display:flex;gap:24px;padding-left:18px;border-left:1px solid var(--line)}
+.traceabilityFocusMeta span small,.traceabilityFocusMeta span b{display:block}
+.traceabilityFocusMeta span small{font-size:7px;text-transform:uppercase;letter-spacing:.04em;color:var(--subtle);font-weight:750}
+.traceabilityFocusMeta span b{font-size:9px;color:#344054;margin-top:2px}
+
+.traceabilityWorkspace{
+  display:grid;
+  grid-template-columns:minmax(620px,1fr) 320px;
+  gap:10px;
+  align-items:start;
+}
+.traceabilitySections{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.traceSection{
+  min-height:178px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  padding:12px;
+  box-shadow:var(--shadow);
+}
+.traceSectionHead{display:flex;gap:9px;align-items:flex-start;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.traceSectionIcon{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;flex:0 0 auto}
+.traceSectionIcon .lucide{width:15px;height:15px}
+.traceSectionIcon.requirement{background:#f4f0ff;color:#6941c6}
+.traceSectionIcon.process{background:#eff8ff;color:#175cd3}
+.traceSectionIcon.document{background:var(--brand-soft);color:var(--brand)}
+.traceSectionIcon.evidence{background:#ecfdf3;color:#067647}
+.traceSectionIcon.risk{background:#fef3f2;color:#b42318}
+.traceSectionIcon.verification{background:#fff6e7;color:#b54708}
+.traceSectionHead h3{margin:0;font-size:10px;color:var(--ink)}
+.traceSectionHead p{margin:2px 0 0;font-size:8px;line-height:1.4;color:var(--muted)}
+.traceItems{margin-top:5px}
+.traceItem{
+  width:100%;
+  min-height:44px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 16px;
+  gap:8px;
+  align-items:center;
+  border:0;
+  border-bottom:1px solid var(--line);
+  background:transparent;
+  padding:7px 2px;
+  text-align:left;
+}
+.traceItem:last-child{border-bottom:0}
+.traceItem:hover{background:#fafbfc}
+.traceItem b,.traceItem span{display:block}
+.traceItem b{font-size:9px;color:#344054}
+.traceItem span{font-size:7px;color:#98a2b3;margin-top:2px}
+.traceItem>.lucide{width:13px;height:13px;color:#98a2b3}
+
+.traceabilityPathPanel{
+  position:sticky;
+  top:72px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  padding:14px;
+  box-shadow:var(--shadow);
+}
+.tracePathHeader{padding-bottom:10px;border-bottom:1px solid var(--line)}
+.tracePathHeader h3{margin:3px 0 2px;font-size:12px;color:var(--ink)}
+.tracePathHeader p{margin:0;font-size:8px;color:var(--muted);line-height:1.45}
+.tracePath{padding:12px 0;display:flex;flex-direction:column;align-items:stretch}
+.tracePath>.lucide{width:14px;height:14px;color:#c5cbd3;align-self:center;margin:3px 0}
+.tracePathStep{
+  min-height:54px;
+  display:grid;
+  grid-template-columns:30px minmax(0,1fr);
+  gap:8px;
+  align-items:center;
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:8px;
+  background:#fff;
+}
+.tracePathStep>span{width:28px;height:28px;border-radius:7px;display:grid;place-items:center}
+.tracePathStep>span .lucide{width:14px;height:14px}
+.tracePathStep.requirement>span{background:#f4f0ff;color:#6941c6}
+.tracePathStep.process>span{background:#eff8ff;color:#175cd3}
+.tracePathStep.document>span{background:var(--brand-soft);color:var(--brand)}
+.tracePathStep.evidence>span{background:#ecfdf3;color:#067647}
+.tracePathStep.verification>span{background:#fff6e7;color:#b54708}
+.tracePathStep small,.tracePathStep b{display:block}
+.tracePathStep small{font-size:7px;color:var(--subtle);text-transform:uppercase;letter-spacing:.04em}
+.tracePathStep b{font-size:8px;color:#344054;margin-top:2px}
+.tracePathNote{display:flex;gap:7px;align-items:flex-start;padding-top:10px;border-top:1px solid var(--line);font-size:7px;color:var(--muted);line-height:1.45}
+.tracePathNote .lucide{width:13px;height:13px;flex:0 0 auto;color:#98a2b3}
+
+.traceMapPanel{
+  border:1px solid var(--line);
+  border-radius:10px;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:var(--shadow);
+}
+.traceMapHeader{
+  min-height:68px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:12px 14px;
+  border-bottom:1px solid var(--line);
+}
+.traceMapHeader h2{margin:2px 0;font-size:13px;color:var(--ink)}
+.traceMapHeader p{margin:0;font-size:8px;color:var(--muted)}
+.traceabilityGraph{min-height:500px;background:#fcfdfe}
+
+@media(max-width:1100px){
+  .traceabilityWorkspace{grid-template-columns:1fr}
+  .traceabilityPathPanel{position:static}
+}
+@media(max-width:850px){
+  .traceabilityToolbar{grid-template-columns:1fr 1fr}
+  .traceabilityToolbar .filterSearch{grid-column:1/-1}
+  .traceabilityFocusCard{grid-template-columns:40px 1fr}
+  .traceabilityFocusMeta{grid-column:1/-1;border-left:0;border-top:1px solid var(--line);padding:10px 0 0}
+  .traceabilitySections{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .traceabilityToolbar{grid-template-columns:1fr}
+  .traceabilityFocusMeta{flex-direction:column;gap:8px}
+}

@@ -59,13 +59,155 @@ const viewLabels={
   records:'Records & evidence',
   approvals:'My tasks',
   audit:'Audit trail',
-  relationships:'Relationship map',
+  relationships:'Traceability',
   structure:'Space administration',
   types:'Document types',
   ai:'QMS AI',
   users:'Users & access',
   settings:'Settings'
 };
+let activeTraceabilityDoc=null;
+
+const traceabilityProfiles={
+  'QMS-PRO-REC-001':{
+    title:'Recruitment Procedure',code:'QMS-PRO-REC-001',rev:'Rev 03',status:'Effective',space:'Recruitment',owner:'Recruitment Manager',
+    requirement:{code:'ISO 9001 · 8.1',detail:'Operational planning and control'},
+    process:{name:'Recruitment',detail:'Process owner · Recruitment Manager'},
+    related:[
+      ['FORM-REC-006 · Candidate Evaluation Form','Controlled form · current effective revision'],
+      ['SOP-REC-004 · Candidate Screening SOP','Supporting controlled information']
+    ],
+    evidence:[
+      ['Candidate Screening Record','REC-SCR-2026-0918 · Retained evidence'],
+      ['Candidate Interview Record','REC-INT-2026-442 · Retained evidence']
+    ],
+    risk:['Incomplete candidate documentation','Recruitment process risk · control linked'],
+    audit:['Internal Audit 2026','IA-2026-004 · Verification evidence · closed'],
+    mapEvidenceCode:'REC-SCR-2026-0918',mapEvidenceTitle:'Candidate Screening Record',mapAuditCode:'IA-2026-004',mapAuditTitle:'Internal Audit 2026'
+  },
+  'SOP-QA-014':{
+    title:'Control of Nonconforming Outputs',code:'SOP-QA-014',rev:'Rev 06',status:'Effective',space:'Quality Management',owner:'Quality Manager',
+    requirement:{code:'ISO 9001 · 8.7',detail:'Control of nonconforming outputs'},
+    process:{name:'Nonconformance Control',detail:'Process owner · Quality Manager'},
+    related:[
+      ['WI-QA-003 · Inspection Work Instruction','Supporting controlled information'],
+      ['FORM-QA-009 · Nonconformance Report','Controlled form · current effective revision']
+    ],
+    evidence:[
+      ['Nonconformance Report','NCR-2026-118 · Retained evidence'],
+      ['Disposition Record','NCR-DISP-2026-118 · Retained evidence']
+    ],
+    risk:['Uncontrolled nonconforming output','Quality risk · containment control linked'],
+    audit:['Internal Quality Audit 2026','IA-QA-2026-007 · Verification evidence · closed'],
+    mapEvidenceCode:'NCR-2026-118',mapEvidenceTitle:'Nonconformance Report',mapAuditCode:'IA-QA-2026-007',mapAuditTitle:'Internal Quality Audit 2026'
+  },
+  'WI-PROD-021':{
+    title:'Final Inspection Work Instruction',code:'WI-PROD-021',rev:'Rev 03',status:'In approval',space:'Operations',owner:'Ana Reyes',
+    requirement:{code:'ISO 9001 · 8.5',detail:'Production and service provision'},
+    process:{name:'Final Inspection',detail:'Process owner · Operations Supervisor'},
+    related:[
+      ['FORM-PROD-017 · Shift Start Verification Record','Related controlled form'],
+      ['EXT-STD-002 · Customer Quality Specification','Applicable external requirement']
+    ],
+    evidence:[
+      ['Final Inspection Record','INSP-2026-4421 · Retained evidence'],
+      ['Gauge Verification Record','GVR-2026-201 · Retained evidence']
+    ],
+    risk:['Product released without complete inspection','Operational risk · release control linked'],
+    audit:['Process Audit · Final Inspection','PA-2026-021 · Verification evidence'],
+    mapEvidenceCode:'INSP-2026-4421',mapEvidenceTitle:'Final Inspection Record',mapAuditCode:'PA-2026-021',mapAuditTitle:'Process Audit · Final Inspection'
+  }
+};
+
+function traceItemHtml(title,detail){
+  return '<button class="traceItem"><div><b>'+escapeHtml(title)+'</b><span>'+escapeHtml(detail||'')+'</span></div><i data-lucide="chevron-right"></i></button>';
+}
+
+function getTraceabilityProfile(doc){
+  if(doc?.code && traceabilityProfiles[doc.code]) return traceabilityProfiles[doc.code];
+  if(typeof doc==='string' && traceabilityProfiles[doc]) return traceabilityProfiles[doc];
+  if(doc?.code){
+    return {
+      title:doc.title||doc.code,code:doc.code,rev:doc.rev==='—'?'Current':'Rev '+(doc.rev||'—'),status:doc.status||'Current',
+      space:activeSpace?.name||'Primary space',owner:doc.owner||'Process owner',
+      requirement:{code:'Applicable QMS requirements',detail:'Open the requirement links for this document'},
+      process:{name:activeSpace?.name||'Applicable process',detail:'Process owner · '+(doc.owner||'Assigned owner')},
+      related:[['Related controlled information','No specific sample link configured in this prototype']],
+      evidence:[['Linked records & evidence','Open Records & evidence to see retained proof']],
+      risk:['Linked process risks','Open the risk links for this controlled information'],
+      audit:['Audit & verification history','Open Audit trail for verification history'],
+      mapEvidenceCode:'Records / evidence',mapEvidenceTitle:'Linked retained proof',mapAuditCode:'Audit',mapAuditTitle:'Verification history'
+    };
+  }
+  return traceabilityProfiles['QMS-PRO-REC-001'];
+}
+
+function renderTraceability(docOrCode){
+  const p=getTraceabilityProfile(docOrCode);
+  activeTraceabilityDoc=docOrCode && typeof docOrCode!=='string' ? docOrCode : activeTraceabilityDoc;
+
+  const set=(id,value)=>{const el=document.getElementById(id);if(el) el.textContent=value};
+  set('traceFocusTitle',p.title); set('traceFocusCode',p.code); set('traceFocusRev',p.rev); set('traceFocusStatus',p.status);
+  set('traceFocusSpace',p.space); set('traceFocusOwner',p.owner);
+  set('tracePathRequirement',p.requirement.code); set('tracePathProcess',p.process.name); set('tracePathDocument',p.title);
+  set('tracePathEvidence',p.evidence[0]?.[0]||'Linked evidence'); set('tracePathAudit',p.audit[0]||'Verification history');
+
+  const status=document.getElementById('traceFocusStatus');
+  if(status){
+    status.className='tag '+(p.status==='Effective'?'success':p.status==='In approval'?'info':'neutral');
+  }
+
+  const requirements=document.getElementById('traceRequirements');
+  if(requirements) requirements.innerHTML=traceItemHtml(p.requirement.code,p.requirement.detail);
+  const process=document.getElementById('traceProcess');
+  if(process) process.innerHTML=traceItemHtml(p.process.name,p.process.detail);
+  const related=document.getElementById('traceRelatedDocs');
+  if(related) related.innerHTML=p.related.map(x=>traceItemHtml(x[0],x[1])).join('');
+  const evidence=document.getElementById('traceEvidence');
+  if(evidence) evidence.innerHTML=p.evidence.map(x=>traceItemHtml(x[0],x[1])).join('');
+  const risks=document.getElementById('traceRisks');
+  if(risks) risks.innerHTML=traceItemHtml(p.risk[0],p.risk[1]);
+  const audits=document.getElementById('traceAudits');
+  if(audits) audits.innerHTML=traceItemHtml(p.audit[0],p.audit[1]);
+
+  set('traceMapRequirement',p.requirement.code); set('traceMapRequirementDetail',p.requirement.detail);
+  set('traceMapProcess',p.process.name); set('traceMapProcessDetail',p.process.detail);
+  set('traceMapDocumentCode',p.code); set('traceMapDocumentTitle',p.title+' · '+p.rev);
+  set('traceMapEvidenceCode',p.mapEvidenceCode); set('traceMapEvidenceTitle',p.mapEvidenceTitle);
+  set('traceMapAuditCode',p.mapAuditCode); set('traceMapAuditTitle',p.mapAuditTitle);
+  set('traceMapRisk',p.risk[0]); set('traceMapRelated',p.related[0]?.[0]||'Related controlled information');
+
+  const focus=document.getElementById('relationshipFocus');
+  if(focus && [...focus.options].some(o=>o.value===p.code)) focus.value=p.code;
+  refreshIcons();
+}
+
+function openTraceabilityForDocument(){
+  showView('relationships');
+  renderTraceability(activeTraceabilityDoc||'QMS-PRO-REC-001');
+}
+
+function toggleTraceabilityMap(force){
+  const summary=document.getElementById('traceabilitySummary');
+  const panel=document.getElementById('traceabilityMapPanel');
+  const button=document.getElementById('traceMapToggle');
+  if(!summary||!panel) return;
+  const open=typeof force==='boolean'?force:panel.style.display==='none';
+  summary.style.display=open?'none':'grid';
+  panel.style.display=open?'block':'none';
+  if(button) button.innerHTML=open?'<i data-lucide="rows-3"></i>Simple traceability':'<i data-lucide="network"></i>Open visual map';
+  refreshIcons();
+}
+
+document.getElementById('relationshipFocus')?.addEventListener('change',e=>renderTraceability(e.target.value));
+document.getElementById('relationshipSearch')?.addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase();
+  const focus=document.getElementById('relationshipFocus');
+  if(!focus||!q) return;
+  const option=[...focus.options].find(o=>o.textContent.toLowerCase().includes(q)||o.value.toLowerCase().includes(q));
+  if(option){focus.value=option.value;renderTraceability(option.value)}
+});
+
 const breadcrumbCurrent=document.getElementById('breadcrumbCurrent');
 
 function showView(id){
@@ -257,6 +399,7 @@ function renderSpaceRows(space){
 }
 
 function selectSpaceDocument(doc,row){
+  activeTraceabilityDoc=doc;
   document.querySelectorAll('#repositorySpace .spaceDocumentItem').forEach(x=>x.classList.remove('selected'));
   row?.classList.add('selected');
   const spaceView=document.getElementById('repositorySpace');
@@ -1650,3 +1793,5 @@ updateApprovalRouteSummary();
 
 
 /* iQMS build: 20260922-hierarchy1 */
+
+renderTraceability('QMS-PRO-REC-001');
