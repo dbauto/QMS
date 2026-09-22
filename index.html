@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260921-panels1">
+<link rel="stylesheet" href="./styles.css?v=20260922-shell2">
 </head>
 <body>
 <div class="appShell">
@@ -45,17 +45,26 @@
       <button class="navItem" data-view="settings"><span class="navIcon"><i data-lucide="settings"></i></span><span>Settings</span></button>
     </nav>
 
+    <button class="railCollapse" id="sidebarToggle" aria-label="Hide navigation" title="Hide navigation"><i data-lucide="panel-left-close"></i></button>
     <div class="sideStatus"><i></i><div><b>Protected workspace</b><span>MFA · RBAC · audit logging</span></div></div>
   </aside>
 
+  <button class="railReveal" id="sidebarReveal" aria-label="Show navigation" title="Show navigation"><i data-lucide="panel-left-open"></i></button>
   <main class="mainArea">
     <header class="commandBar">
-      <button class="iconButton shellToggle" id="sidebarToggle" aria-label="Hide navigation" title="Hide navigation"><i data-lucide="panel-left-close"></i></button>
-      <div class="commandSearch"><span><i data-lucide="search"></i></span><input id="globalSearch" placeholder="Search documents, records, evidence..."></div>
+      <div class="breadcrumb">
+        <i data-lucide="house"></i>
+        <span class="crumbSep">/</span>
+        <span>ABC Manufacturing</span>
+        <span class="crumbSep">/</span>
+        <b id="breadcrumbCurrent">Overview</b>
+      </div>
       <div class="commandActions">
-        <button class="btn subtle" onclick="showView('ai')"><i data-lucide="sparkles"></i>Ask QMS AI</button>
-        <button class="iconButton" aria-label="Help" title="Help"><i data-lucide="circle-help"></i></button>
-        <button class="iconButton notification" aria-label="Notifications" title="Notifications"><i data-lucide="bell"></i><i class="notificationCount">3</i></button>
+        <div class="headerSearch" id="headerSearch">
+          <button class="headerIconButton" id="searchToggle" aria-label="Search" title="Search"><i data-lucide="search"></i></button>
+          <input id="globalSearch" placeholder="Search documents, records, evidence...">
+        </div>
+        <button class="headerIconButton notification" aria-label="Notifications" title="Notifications"><i data-lucide="bell"></i><i class="notificationCount">3</i></button>
         <button class="profileButton"><span class="avatar">MS</span><span><b>Maria Santos</b><small>Quality Manager</small></span><span class="profileChevron"><i data-lucide="chevron-down"></i></span></button>
       </div>
     </header>
@@ -452,6 +461,6 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260921-panels1"></script>
+<script src="./app.js?v=20260922-shell2"></script>
 </body>
 </html>
