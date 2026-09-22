@@ -358,8 +358,6 @@ textarea.fieldInput{min-height:78px;resize:vertical}
 
 /* Collapsible navigation and side panels */
 .sideNav,.mainArea{transition:transform .2s ease,margin-left .2s ease}
-body.navHidden .sideNav{transform:translateX(-100%)}
-body.navHidden .mainArea{margin-left:0}
 .shellToggle{flex:0 0 auto}
 .inspectorHeaderActions{display:flex;gap:6px;align-items:center}
 .paneUtility{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;padding:0 2px}
@@ -397,9 +395,7 @@ body.navHidden .mainArea{margin-left:0}
   .documentWorkspace.structureHidden.inspectorHidden{grid-template-columns:1fr}
 }
 @media(max-width:780px){
-  body.navHidden .sideNav{transform:translateX(-100%)}
-  body.navHidden .mainArea{margin-left:0}
-  .documentWorkspace.inspectorHidden{grid-template-columns:1fr}
+      .documentWorkspace.inspectorHidden{grid-template-columns:1fr}
 }
 
 
@@ -497,38 +493,6 @@ body.navHidden .mainArea{margin-left:0}
   border:1px solid #0f1c2e;
 }
 .sideStatus{display:none}
-.railCollapse{
-  margin-top:auto;
-  width:40px;
-  height:40px;
-  border:0;
-  border-radius:8px;
-  background:transparent;
-  color:#90a0b4;
-  display:grid;
-  place-items:center;
-  padding:0;
-}
-.railCollapse:hover{background:rgba(255,255,255,.07);color:#fff}
-.railCollapse .lucide{width:17px;height:17px}
-.railReveal{
-  display:none;
-  position:fixed;
-  left:10px;
-  top:11px;
-  z-index:60;
-  width:34px;
-  height:34px;
-  border:1px solid var(--line);
-  border-radius:7px;
-  background:#fff;
-  color:#475467;
-  box-shadow:var(--shadow);
-  place-items:center;
-}
-.railReveal .lucide{width:16px;height:16px}
-body.navHidden .railReveal{display:grid}
-body.navHidden .mainArea{margin-left:0}
 
 /* Reference-style top header */
 .commandBar{
@@ -634,7 +598,7 @@ body.navHidden .mainArea{margin-left:0}
   .sideNav{width:54px;padding:12px 7px}
   .mainArea{margin-left:54px}
   .brand{width:40px}
-  .workspaceSwitch,.navItem,.railCollapse{width:38px;height:38px}
+  .workspaceSwitch,.navItem{width:38px;height:38px}
   .commandBar{padding:0 12px}
   .breadcrumb span:not(.crumbSep),.breadcrumb .crumbSep:first-of-type{display:none}
   .profileButton>span:not(.avatar){display:none}
@@ -645,18 +609,17 @@ body.navHidden .mainArea{margin-left:0}
 /* Final reference-shell alignment */
 .workspaceSwitch{display:none}
 .brandMark .lucide{width:17px;height:17px;stroke-width:2}
-body.navHidden .commandBar{padding-left:56px}
 
 
 /* Expandable application navigation */
 .railControls{margin-top:auto;width:100%;display:flex;flex-direction:column;align-items:center;gap:4px}
-.railExpand,.railCollapse{
+.railExpand{
   width:40px;height:40px;border:0;border-radius:8px;background:transparent;color:#90a0b4;
   display:flex;align-items:center;justify-content:center;padding:0
 }
-.railExpand:hover,.railCollapse:hover{background:rgba(255,255,255,.07);color:#fff}
-.railExpand span,.railCollapse span{display:none;font-size:10px}
-.railExpand .lucide,.railCollapse .lucide{width:17px;height:17px}
+.railExpand:hover{background:rgba(255,255,255,.07);color:#fff}
+.railExpand span{display:none;font-size:10px}
+.railExpand .lucide{width:17px;height:17px}
 
 body.navExpanded .sideNav{
   width:228px;
@@ -686,11 +649,11 @@ body.navExpanded .navBadge{
   border:0;border-radius:9px;background:#6a4308;color:#ffd58a
 }
 body.navExpanded .railControls{align-items:stretch}
-body.navExpanded .railExpand,body.navExpanded .railCollapse{
+body.navExpanded .railExpand{
   width:100%;height:34px;justify-content:flex-start;padding:0 9px;gap:9px
 }
-body.navExpanded .railExpand span,body.navExpanded .railCollapse span{display:inline}
-body.navExpanded .railExpand .lucide,body.navExpanded .railCollapse .lucide{flex:0 0 auto}
+body.navExpanded .railExpand span{display:inline}
+body.navExpanded .railExpand .lucide{flex:0 0 auto}
 
 @media(max-width:780px){
   body.navExpanded .sideNav{width:210px}
