@@ -6,6 +6,7 @@ const navItems=[...document.querySelectorAll('.navItem[data-view]')];
 /* Collapsible navigation and workspace panels */
 const sidebarToggle=document.getElementById('sidebarToggle');
 const sidebarReveal=document.getElementById('sidebarReveal');
+const sidebarModeToggle=document.getElementById('sidebarModeToggle');
 function setMainSidebar(hidden){
   document.body.classList.toggle('navHidden',hidden);
   if(sidebarToggle){
@@ -16,9 +17,28 @@ function setMainSidebar(hidden){
   try{localStorage.setItem('nexus.navHidden',hidden?'1':'0')}catch(e){}
   refreshIcons();
 }
+function setSidebarExpanded(expanded){
+  document.body.classList.toggle('navExpanded',expanded);
+  if(sidebarModeToggle){
+    sidebarModeToggle.innerHTML=expanded
+      ? '<i data-lucide="panel-left-close"></i><span>Collapse</span>'
+      : '<i data-lucide="panel-left-open"></i><span>Expand</span>';
+    sidebarModeToggle.title=expanded?'Collapse navigation':'Expand navigation';
+    sidebarModeToggle.setAttribute('aria-label',sidebarModeToggle.title);
+  }
+  try{localStorage.setItem('nexus.navExpanded',expanded?'1':'0')}catch(e){}
+  refreshIcons();
+}
+
 let savedNav=false;
-try{savedNav=localStorage.getItem('nexus.navHidden')==='1'}catch(e){}
+let savedExpanded=false;
+try{
+  savedNav=localStorage.getItem('nexus.navHidden')==='1';
+  savedExpanded=localStorage.getItem('nexus.navExpanded')==='1';
+}catch(e){}
+setSidebarExpanded(savedExpanded);
 setMainSidebar(savedNav);
+sidebarModeToggle?.addEventListener('click',()=>setSidebarExpanded(!document.body.classList.contains('navExpanded')));
 sidebarToggle?.addEventListener('click',()=>setMainSidebar(!document.body.classList.contains('navHidden')));
 sidebarReveal?.addEventListener('click',()=>setMainSidebar(false));
 
@@ -46,6 +66,10 @@ document.addEventListener('keydown',e=>{
   if((e.ctrlKey||e.metaKey)&&e.key==='\\'){
     e.preventDefault();
     setMainSidebar(!document.body.classList.contains('navHidden'));
+  }
+  if(e.altKey&&e.key==='\\'){
+    e.preventDefault();
+    setSidebarExpanded(!document.body.classList.contains('navExpanded'));
   }
 });
 
