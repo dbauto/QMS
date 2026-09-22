@@ -611,10 +611,63 @@ globalSearch?.addEventListener('input',()=>{
 let registrationStep=1;
 let registrationClass='controlled';
 
+function getSelectCode(selectId){
+  const select=document.getElementById(selectId);
+  const option=select?.selectedOptions?.[0];
+  return option?.dataset?.code||'GEN';
+}
+
+function nextControlledSequence(typeCode,spaceCode){
+  const prefix='QMS-'+typeCode+'-'+spaceCode+'-';
+  let max=0;
+  document.querySelectorAll('.controlledLibraryRow div b').forEach(el=>{
+    const id=(el.textContent||'').trim();
+    if(id.startsWith(prefix)){
+      const n=parseInt(id.slice(prefix.length),10);
+      if(Number.isFinite(n)) max=Math.max(max,n);
+    }
+  });
+  try{
+    const saved=JSON.parse(localStorage.getItem('nexus.registeredControlledIds')||'[]');
+    saved.forEach(id=>{
+      if(String(id).startsWith(prefix)){
+        const n=parseInt(String(id).slice(prefix.length),10);
+        if(Number.isFinite(n)) max=Math.max(max,n);
+      }
+    });
+  }catch(e){}
+  return String(max+1).padStart(3,'0');
+}
+
+function generateControlledDocumentId(){
+  const id=document.getElementById('regId');
+  if(!id) return '';
+  const typeCode=getSelectCode('regType');
+  const spaceCode=getSelectCode('regSpace');
+  const seq=nextControlledSequence(typeCode,spaceCode);
+  const generated='QMS-'+typeCode+'-'+spaceCode+'-'+seq;
+  id.value=generated;
+  const help=document.getElementById('regIdHelp');
+  if(help) help.textContent='Generated from '+typeCode+' document type + '+spaceCode+' space code + system sequence '+seq+'.';
+  updateRegistrationReview();
+  return generated;
+}
+
+function syncRegistrationSpaceFromContext(){
+  const select=document.getElementById('regSpace');
+  if(!select||!activeSpace?.name) return;
+  const match=[...select.options].find(option=>option.value===activeSpace.name);
+  if(match) select.value=match.value;
+}
+
 function openRegisterResource(kind='controlled'){
   registrationClass=kind==='record'?'record':'controlled';
   registrationStep=1;
   selectRegistrationClass(registrationClass,false);
+  if(registrationClass==='controlled'){
+    syncRegistrationSpaceFromContext();
+    generateControlledDocumentId();
+  }
   renderRegistration();
   document.getElementById('registerResourceModal')?.classList.add('show');
   refreshIcons();
@@ -716,14 +769,24 @@ document.querySelectorAll('.relationshipPick').forEach(btn=>btn.addEventListener
   if(icon && icon.dataset) icon.setAttribute('data-lucide',btn.classList.contains('selected')?'check':'plus');
   refreshIcons();
 }));
-['regTitle','regId','recTitle','recId'].forEach(id=>document.getElementById(id)?.addEventListener('input',updateRegistrationReview));
+['regTitle','recTitle','recId'].forEach(id=>document.getElementById(id)?.addEventListener('input',updateRegistrationReview));
+document.getElementById('regType')?.addEventListener('change',generateControlledDocumentId);
+document.getElementById('regSpace')?.addEventListener('change',generateControlledDocumentId);
 
 function finishResourceRegistration(){
   const controlled=registrationClass==='controlled';
   closeRegisterResource();
   if(controlled){
+    const generatedId=document.getElementById('regId')?.value;
+    if(generatedId){
+      try{
+        const saved=JSON.parse(localStorage.getItem('nexus.registeredControlledIds')||'[]');
+        if(!saved.includes(generatedId)) saved.push(generatedId);
+        localStorage.setItem('nexus.registeredControlledIds',JSON.stringify(saved));
+      }catch(e){}
+    }
     showView('repository');
-    toast('Controlled resource registered','A Draft revision was created in Controlled Information with QMS mapping, relationships and a snapshotted approval route.');
+    toast('Controlled resource registered',(generatedId||'The document')+' was created as a Draft in Controlled Information with QMS mapping, relationships and a snapshotted approval route.');
     setTimeout(()=>document.getElementById('controlledMasterPanel')?.scrollIntoView({behavior:'smooth',block:'start'}),120);
   }else{
     showView('records');
