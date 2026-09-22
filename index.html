@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-expand1">
+<link rel="stylesheet" href="./styles.css?v=20260922-expand2">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -45,6 +45,37 @@ body.navExpanded .brand{width:auto!important;height:auto!important;justify-conte
 body.navExpanded .brand>div:last-child{display:block!important}
 body.navExpanded .brand>div:last-child strong{display:block!important;color:#fff!important;font-size:14px!important}
 body.navExpanded .brand>div:last-child span{display:block!important;color:#73849a!important;font-size:9px!important}
+
+body.navExpanded .workspaceSwitch{
+  display:flex!important;
+  width:100%!important;
+  height:auto!important;
+  padding:9px 10px!important;
+  margin:0 0 12px!important;
+  justify-content:flex-start!important;
+  gap:9px!important;
+  border:1px solid rgba(255,255,255,.09)!important;
+  background:rgba(255,255,255,.04)!important;
+  border-radius:8px!important;
+}
+body.navExpanded .workspaceSwitch:hover{background:rgba(255,255,255,.07)!important}
+body.navExpanded .workspaceAvatar{
+  width:28px!important;height:28px!important;border-radius:7px!important;
+  background:#173758!important;color:#bcd6ff!important;display:grid!important;place-items:center!important
+}
+body.navExpanded .workspaceText{display:block!important;min-width:0!important;flex:1!important}
+body.navExpanded .workspaceText b{display:block!important;color:#fff!important;font-size:11px!important}
+body.navExpanded .workspaceText small{display:block!important;color:#7f91a7!important;font-size:9px!important;margin-top:1px!important}
+body.navExpanded .workspaceChevron{display:grid!important;place-items:center!important;color:#6f8197!important}
+body.navExpanded .sideStatus{
+  display:flex!important;margin-top:10px!important;border-top:1px solid rgba(255,255,255,.08)!important;
+  padding:12px 8px 2px!important;align-items:center!important;gap:8px!important
+}
+body.navExpanded .sideStatus>i{display:block!important;width:7px!important;height:7px!important;border-radius:50%!important;background:#12b76a!important;flex:0 0 auto!important}
+body.navExpanded .sideStatus>div{display:block!important}
+body.navExpanded .sideStatus b{display:block!important;color:#d8e1eb!important;font-size:9px!important}
+body.navExpanded .sideStatus span{display:block!important;color:#687b91!important;font-size:8px!important;margin-top:1px!important}
+
 body.navExpanded .primaryNav{align-items:stretch!important}
 body.navExpanded .navGroup{width:auto!important;height:auto!important;padding:12px 9px 5px!important;margin:0!important;overflow:visible!important;color:#61758d!important;background:transparent!important;font-size:8px!important;letter-spacing:.1em!important}
 body.navExpanded .navItem{width:100%!important;height:36px!important;padding:0 9px!important;justify-content:flex-start!important;gap:9px!important}
@@ -543,6 +574,6 @@ body.navHidden .commandBar{padding-left:56px!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-expand1"></script>
+<script src="./app.js?v=20260922-expand2"></script>
 </body>
 </html>
