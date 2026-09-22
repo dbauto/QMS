@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-auto-id1">
+<link rel="stylesheet" href="./styles.css?v=20260922-registration-config1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -647,7 +647,7 @@ body.navExpanded .railExpand span{display:inline!important}
       </div>
 
       <div id="types" class="view">
-        <div class="pageHeader"><div><h1>Document types</h1><p>Numbering, metadata, approval and review rules for each governed type.</p></div><div class="pageActions"><button class="btn primary">Add type</button></div></div>
+        <div class="pageHeader"><div><h1>Document types</h1><p>Numbering, metadata, approval and review rules for each governed type.</p></div><div class="pageActions"><button class="btn primary" onclick="openQuickTypeModal('admin')"><i data-lucide="plus"></i>Add type</button></div></div>
         <div class="typeWorkspace">
           <section class="typeTablePane">
             <div class="typePaneToolbar"><span>Configured types</span><button class="iconButton paneRestore" id="showTypeInspector" aria-label="Show type settings" title="Show type settings"><i data-lucide="panel-right-open"></i></button></div>
@@ -703,6 +703,44 @@ body.navExpanded .railExpand span{display:inline!important}
   </main>
 </div>
 
+<div class="modal" id="quickTypeModal">
+  <div class="modalBox compactConfigModal">
+    <div class="modalHead">
+      <div><span class="eyebrow">DOCUMENT TYPE</span><h2>Create document type</h2><p>Add a reusable type to the organization. Its code is used in future generated Document IDs.</p></div>
+      <button class="iconBtn" onclick="closeQuickTypeModal()" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <div class="quickConfigForm">
+      <label>Type name<input id="quickTypeName" class="fieldInput" placeholder="e.g. Inspection Standard"></label>
+      <div class="quickConfigGrid">
+        <label>Type code / prefix<input id="quickTypeCode" class="fieldInput" maxlength="8" placeholder="INS"></label>
+        <label>Default review cycle<select id="quickTypeReview" class="fieldInput"><option>12 months</option><option>24 months</option><option>36 months</option><option>No default</option></select></label>
+      </div>
+      <label>Default approval route<select id="quickTypeApproval" class="fieldInput"><option>Process Owner → Quality Manager</option><option>Department review → Quality Manager</option><option>Process Owner only</option><option>Executive approval</option><option>Document Control review</option></select></label>
+      <div class="numberingPreview"><span>Generated numbering</span><b id="quickTypePattern">QMS-INS-{SPACE}-{###}</b><small>Existing document IDs are never renamed if this type configuration changes later.</small></div>
+    </div>
+    <div class="modalActions"><button class="btn secondary" onclick="closeQuickTypeModal()">Cancel</button><span></span><button class="btn primary" onclick="saveQuickDocumentType()">Create type</button></div>
+  </div>
+</div>
+
+<div class="modal" id="quickSpaceModal">
+  <div class="modalBox compactConfigModal">
+    <div class="modalHead">
+      <div><span class="eyebrow">PRIMARY SPACE</span><h2>Create process space</h2><p>Create a new QMS workspace and use its code when generating controlled Document IDs.</p></div>
+      <button class="iconBtn" onclick="closeQuickSpaceModal()" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <div class="quickConfigForm">
+      <label>Space name<input id="quickSpaceName" class="fieldInput" placeholder="e.g. Maintenance & Calibration"></label>
+      <div class="quickConfigGrid">
+        <label>Space code<input id="quickSpaceCode" class="fieldInput" maxlength="10" placeholder="MNT"></label>
+        <label>Space type<select id="quickSpaceType" class="fieldInput"><option>Department / Function</option><option>Process</option><option>Project / Program</option><option>Records & Evidence</option><option>External Sources</option></select></label>
+      </div>
+      <label>Purpose<textarea id="quickSpacePurpose" class="fieldInput" placeholder="What controlled information belongs in this space?"></textarea></label>
+      <div class="numberingPreview"><span>Example Document ID</span><b id="quickSpacePattern">QMS-PRO-MNT-001</b><small>The space is a contextual view. Canonical resources are not duplicated.</small></div>
+    </div>
+    <div class="modalActions"><button class="btn secondary" onclick="closeQuickSpaceModal()">Cancel</button><span></span><button class="btn primary" onclick="saveQuickSpace()">Create space</button></div>
+  </div>
+</div>
+
 <div class="modal" id="registerResourceModal">
   <div class="modalBox wide registerResourceBox">
     <div class="modalHead">
@@ -733,19 +771,38 @@ body.navExpanded .railExpand span{display:inline!important}
       <h3 id="identityHeading">Document identity & control metadata</h3>
       <div class="formGrid registrationControlledFields">
         <label>Document title<input id="regTitle" value="Recruitment Procedure"></label>
+        <label>Primary Space
+          <select id="regSpace">
+            <option value="Recruitment" data-code="REC">Recruitment</option>
+            <option value="Quality Management" data-code="QA">Quality Management</option>
+            <option value="Operations" data-code="OPS">Operations</option>
+            <option value="Engineering" data-code="ENG">Engineering</option>
+            <option value="Purchasing & Supplier Quality" data-code="PUR">Purchasing & Supplier Quality</option>
+            <option value="People & Competence" data-code="HR">People & Competence</option>
+            <option value="External Standards & Customer Requirements" data-code="EXT">External Standards & Customer Requirements</option>
+            <option value="Records & Evidence" data-code="REC-EV">Records & Evidence</option>
+            <option value="Management System" data-code="MGT">Management System</option>
+            <option value="__create__">+ Create new space</option>
+          </select>
+          <small class="fieldHelp">Owning QMS workspace. Additional spaces can be linked later without duplicating the document.</small>
+        </label>
+        <label>Document Type
+          <select id="regType">
+            <option value="Procedure" data-code="PRO">Procedure</option>
+            <option value="Policy" data-code="POL">Policy</option>
+            <option value="Manual" data-code="MAN">Manual</option>
+            <option value="SOP" data-code="SOP">SOP</option>
+            <option value="Work Instruction" data-code="WI">Work Instruction</option>
+            <option value="Form / Template" data-code="FORM">Form / Template</option>
+            <option value="External Document" data-code="EXT">External Document</option>
+            <option value="__create__">+ Create new document type</option>
+          </select>
+          <small class="fieldHelp">Controls the type code and can supply default review and approval rules.</small>
+        </label>
         <label>Document ID <span class="generatedFieldLabel">System generated</span>
           <div class="generatedField"><input id="regId" value="QMS-PRO-REC-001" readonly aria-readonly="true"><i data-lucide="lock-keyhole"></i></div>
-          <small class="fieldHelp" id="regIdHelp">Generated from document type + assigned space code + next sequence.</small>
+          <small class="fieldHelp" id="regIdHelp">Generated from document type + primary space code + next sequence.</small>
         </label>
-        <label>Document type<select id="regType">
-          <option value="Procedure" data-code="PRO">Procedure</option>
-          <option value="Policy" data-code="POL">Policy</option>
-          <option value="Manual" data-code="MAN">Manual</option>
-          <option value="SOP" data-code="SOP">SOP</option>
-          <option value="Work Instruction" data-code="WI">Work Instruction</option>
-          <option value="Form / Template" data-code="FORM">Form / Template</option>
-          <option value="External Document" data-code="EXT">External Document</option>
-        </select></label>
         <label>Owner<select id="regOwner"><option>Recruitment Manager</option><option>Quality Manager</option><option>Document Control</option></select></label>
         <label>Revision / version<input id="regRev" value="03"></label>
         <label>Initial status<select id="regStatus"><option>Draft</option><option>In Review</option></select></label>
@@ -766,20 +823,11 @@ body.navExpanded .railExpand span{display:inline!important}
 
     <div class="registrationPage" style="display:none">
       <h3>Map it into the QMS</h3>
+      <div class="mappingInheritedCard">
+        <span>Primary Space</span><b id="regSpaceMappingLabel">Recruitment</b><small>Inherited from Identity. Change it there if this document belongs to a different owning space.</small>
+      </div>
       <div class="mappingGrid">
         <label>Applicable process<select id="regProcess"><option>Recruitment</option><option>Candidate Screening</option><option>Training</option><option>Procurement</option><option>Operations</option><option>Internal Audit</option></select></label>
-        <label>Process space<select id="regSpace">
-          <option value="Recruitment" data-code="REC">Recruitment</option>
-          <option value="Quality Management" data-code="QA">Quality Management</option>
-          <option value="Operations" data-code="OPS">Operations</option>
-          <option value="Engineering" data-code="ENG">Engineering</option>
-          <option value="Purchasing & Supplier Quality" data-code="PUR">Purchasing & Supplier Quality</option>
-          <option value="People & Competence" data-code="HR">People & Competence</option>
-          <option value="External Standards & Customer Requirements" data-code="EXT">External Standards & Customer Requirements</option>
-          <option value="Records & Evidence" data-code="REC-EV">Records & Evidence</option>
-          <option value="Management System" data-code="MGT">Management System</option>
-        </select>
-        <small class="fieldHelp">The assigned space supplies the space code used in the Document ID.</small></label>
         <label>ISO / HLS mapping<select id="regIso"><option>8.1 Operational planning and control</option><option>8.5 Production and service provision</option><option>7.2 Competence</option><option>7.5 Documented information</option><option>9.2 Internal audit</option></select></label>
         <label>Responsible person<select><option>Recruitment Manager</option><option>Quality Manager</option><option>Process Owner</option></select></label>
       </div>
@@ -934,6 +982,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-auto-id1"></script>
+<script src="./app.js?v=20260922-registration-config1"></script>
 </body>
 </html>
