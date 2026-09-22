@@ -757,6 +757,160 @@ body.navExpanded .navItem:hover{background:rgba(255,255,255,.09)!important}
 }
 
 
+/* Document types — compact registry and focused configuration panel */
+.typesPageHeader{align-items:flex-start!important;margin-bottom:18px!important}
+.typesPageHeader>div:first-child{min-width:0}
+.typesHeaderMeta{display:flex;align-items:center;gap:16px;margin-top:10px}
+.typesHeaderMeta span{display:inline-flex;align-items:center;gap:6px;color:#667085;font-size:10px;font-weight:600}
+.typesHeaderMeta .lucide{width:14px;height:14px;color:#278f7c}
+.typesPageHeader .pageActions{padding-top:18px}
+
+.typesAdminWorkspace{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 372px!important;
+  gap:14px!important;
+  align-items:start!important;
+  min-height:0!important;
+  overflow:visible!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+.typesAdminWorkspace .typeTablePane,
+.typesAdminWorkspace .typeInspector{
+  min-width:0;
+  background:#fff;
+  border:1px solid #e8e6ec;
+  border-radius:10px;
+  box-shadow:0 3px 12px rgba(32,28,45,.045);
+  overflow:hidden;
+}
+.typesAdminWorkspace .typeTablePane{border-right:1px solid #e8e6ec}
+.typesAdminWorkspace .typePaneToolbar{
+  display:flex!important;
+  min-height:60px;
+  padding:0 16px;
+  border-bottom:1px solid #eeecf2;
+  background:#fff;
+}
+.typesAdminWorkspace .typePaneToolbar>div{min-width:0}
+.typesAdminWorkspace .typePaneToolbar strong,
+.typesAdminWorkspace .typePaneToolbar small{display:block}
+.typesAdminWorkspace .typePaneToolbar strong{font-size:12px;color:#282530}
+.typesAdminWorkspace .typePaneToolbar small{margin-top:3px;font-size:9px;color:#898492}
+.typesAdminWorkspace:not(.inspectorHidden) #showTypeInspector{display:none!important}
+
+.typesAdminWorkspace .typeTableHeader,
+.typesAdminWorkspace .typeRow{
+  grid-template-columns:minmax(175px,1.35fr) 70px minmax(150px,1fr) minmax(160px,1.05fr) 68px 72px 70px;
+  gap:10px;
+  padding-left:16px;
+  padding-right:16px;
+}
+.typesAdminWorkspace .typeTableHeader{
+  height:38px;
+  background:#faf9fb;
+  border-bottom:1px solid #ece9f0;
+  color:#8b8794;
+  font-size:8px;
+  letter-spacing:.075em;
+}
+.typesAdminWorkspace .typeRow{
+  min-height:72px;
+  border-bottom:1px solid #efedf2;
+  transition:background .15s ease,box-shadow .15s ease;
+}
+.typesAdminWorkspace .typeRow:last-child{border-bottom:0}
+.typesAdminWorkspace .typeRow:hover{background:#fafcfb}
+.typesAdminWorkspace .typeRow.selected{
+  background:#f1faf7;
+  box-shadow:inset 4px 0 #269783;
+}
+.typesAdminWorkspace .typeRow div b{font-size:12px;line-height:1.25;color:#24212b}
+.typesAdminWorkspace .typeRow div small{font-size:9px;line-height:1.35;color:#85808d;margin-top:4px}
+.typesAdminWorkspace .typeRow>span:not(.tag){
+  min-width:0;
+  color:#514d59;
+  font-size:10px;
+  line-height:1.35;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.typesAdminWorkspace .typeRow>span:nth-child(2),
+.typesAdminWorkspace .typeRow>span:nth-child(3){font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:9px;color:#3f655e}
+.typesAdminWorkspace .typeRow>span:nth-child(5),
+.typesAdminWorkspace .typeRow>span:nth-child(6),
+.typesAdminWorkspace .typeTableHeader>span:nth-child(5),
+.typesAdminWorkspace .typeTableHeader>span:nth-child(6){text-align:center;font-variant-numeric:tabular-nums}
+.typesAdminWorkspace .typeRow>.tag{justify-self:start;min-width:56px;text-align:center}
+
+.typesAdminWorkspace .typeInspector{padding:0}
+.typesAdminWorkspace .typeInspector .inspectorHeader{padding:17px 18px 14px;border-bottom:1px solid #eeecf2;background:#fff}
+.typesAdminWorkspace .typeInspector .recordLabel{font-size:8px;letter-spacing:.09em;color:#898492}
+.typesAdminWorkspace .typeInspector h2{margin-top:5px;font-size:18px;letter-spacing:-.25px;color:#24212b}
+.typesAdminWorkspace .typeInspector .recordMeta{margin-top:7px;gap:7px;font-size:9px}
+.typesAdminWorkspace .typeInspector .inspectorHeaderActions{gap:5px}
+.typesAdminWorkspace .typeInspector .iconButton{border-color:#e5e1e9;background:#fff}
+.typesAdminWorkspace .typeInspectorHint{
+  margin:0;
+  padding:12px 18px;
+  border-bottom:1px solid #eeecf2;
+  background:#f8fbfa;
+  color:#6d6874;
+  font-size:9px;
+  line-height:1.5;
+}
+.typesAdminWorkspace .typeInspector .formSection{gap:12px;margin:0;padding:16px 18px 0}
+.typesAdminWorkspace .typeInspector .formSection+.formSection{padding-top:13px}
+.typesAdminWorkspace .typeInspector .formSection label{font-size:9px;color:#5f5a67;font-weight:700}
+.typesAdminWorkspace .typeInspector .formSection input,
+.typesAdminWorkspace .typeInspector .formSection select{
+  height:38px;
+  margin-top:6px;
+  border-color:#dcd8e2;
+  border-radius:7px;
+  color:#393640;
+  font-size:10px;
+  outline:0;
+}
+.typesAdminWorkspace .typeInspector .formSection input:focus,
+.typesAdminWorkspace .typeInspector .formSection select:focus{border-color:#55ad9c;box-shadow:0 0 0 3px rgba(38,151,131,.1)}
+.typesAdminWorkspace .typeInspector .detailSection{
+  margin:16px 18px 0;
+  padding:14px;
+  border:1px solid #ebe8ee;
+  border-radius:8px;
+  background:#faf9fb;
+}
+.typesAdminWorkspace .typeInspector .detailSection h3{margin:0 0 11px;font-size:11px;color:#302d36}
+.typesAdminWorkspace .typeInspector .checkRow{min-height:22px;margin:4px 0;color:#5b5662;font-size:10px}
+.typesAdminWorkspace .typeInspector .checkRow input{width:14px;height:14px;margin:0}
+.typesAdminWorkspace .typeInspector .inspectorFooter{margin:16px 18px 0;padding:14px 0 16px}
+.typesAdminWorkspace .typeInspector .inspectorFooter .btn{height:36px}
+
+.typesAdminWorkspace.inspectorHidden{grid-template-columns:1fr!important}
+.typesAdminWorkspace.inspectorHidden .typeInspector{display:none}
+.typesAdminWorkspace.inspectorHidden #showTypeInspector{display:grid!important}
+
+@media(max-width:1280px){
+  .typesAdminWorkspace{grid-template-columns:minmax(0,1fr) 340px!important}
+  .typesAdminWorkspace .typeTableHeader,
+  .typesAdminWorkspace .typeRow{grid-template-columns:minmax(160px,1.25fr) 62px minmax(135px,1fr) minmax(135px,1fr) 58px 62px 64px;gap:7px;padding-left:13px;padding-right:13px}
+}
+@media(max-width:1080px){
+  .typesAdminWorkspace{grid-template-columns:1fr!important}
+  .typesAdminWorkspace .typeInspector{display:block}
+}
+@media(max-width:780px){
+  .typesHeaderMeta{align-items:flex-start;flex-direction:column;gap:5px}
+  .typesPageHeader .pageActions{padding-top:0}
+  .typesAdminWorkspace .typeTablePane{overflow-x:auto}
+  .typesAdminWorkspace .typeTableHeader,
+  .typesAdminWorkspace .typeRow{min-width:790px}
+}
+
+
 /* Documents — QMS document-space landing */
 .repositoryPageHeader{margin-bottom:14px}
 .repositoryIntro{

@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="iqms-build" content="20260922-green-sidebar-brandfix1">
+<meta name="iqms-build" content="20260922-document-types-redesign1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-green-sidebar-brandfix1">
+<link rel="stylesheet" href="./styles.css?v=20260922-document-types-redesign1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -1026,10 +1026,10 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
       </div>
 
       <div id="types" class="view">
-        <div class="pageHeader"><div><h1>Document types</h1><p>Numbering, metadata, approval and review rules for each governed type.</p></div><div class="pageActions"><button class="btn primary" onclick="openQuickTypeModal('admin')"><i data-lucide="plus"></i>Add type</button></div></div>
-        <div class="typeWorkspace">
+        <div class="pageHeader typesPageHeader"><div><h1>Document types</h1><p>Define the numbering, approval and review controls applied to every governed document.</p><div class="typesHeaderMeta"><span><i data-lucide="layers-3"></i>5 active types</span><span><i data-lucide="files"></i>1,141 documents governed</span></div></div><div class="pageActions"><button class="btn primary" onclick="openQuickTypeModal('admin')"><i data-lucide="plus"></i>Add type</button></div></div>
+        <div class="typeWorkspace typesAdminWorkspace">
           <section class="typeTablePane">
-            <div class="typePaneToolbar"><span>Configured types</span><button class="iconButton paneRestore" id="showTypeInspector" aria-label="Show type settings" title="Show type settings"><i data-lucide="panel-right-open"></i></button></div>
+            <div class="typePaneToolbar"><div><strong>Configured types</strong><small>Select a type to review and update its controls.</small></div><button class="iconButton paneRestore" id="showTypeInspector" aria-label="Show type settings" title="Show type settings"><i data-lucide="panel-right-open"></i></button></div>
             <div class="typeTableHeader"><span>Type</span><span>Prefix</span><span>Numbering</span><span>Approval rule</span><span>Review</span><span>Documents</span><span>Status</span></div>
             <button class="typeRow selected" data-type="sop"><div><b>SOP / Procedure</b><small>Full revision control</small></div><span>SOP</span><span>SOP-{DEPT}-{###}</span><span>Dept review → Quality</span><span>12 mo</span><span>184</span><span class="tag success">Active</span></button>
             <button class="typeRow" data-type="wi"><div><b>Work Instruction</b><small>Operational instruction</small></div><span>WI</span><span>WI-{DEPT}-{###}</span><span>Dept approval</span><span>12 mo</span><span>326</span><span class="tag success">Active</span></button>
@@ -1039,6 +1039,7 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
           </section>
           <aside class="typeInspector">
             <div class="inspectorHeader compactInspector"><div><span class="recordLabel">Type configuration</span><h2 id="typeName">SOP / Procedure</h2><div class="recordMeta"><span class="tag success">Active</span><span id="typeCount">184 documents</span></div></div><div class="inspectorHeaderActions"><button class="iconButton" id="hideTypeInspector" aria-label="Hide type settings" title="Hide type settings"><i data-lucide="panel-right-close"></i></button><button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button></div></div>
+            <p class="typeInspectorHint">These defaults apply to new documents. Existing document identifiers remain unchanged.</p>
             <div class="formSection"><label>Prefix<input id="typePrefix" value="SOP"></label><label>Numbering format<input id="typeNumbering" value="SOP-{DEPT}-{###}"></label></div>
             <div class="formSection"><label>Default approval route<select id="typeApproval"><option>Department review → Quality approval</option></select></label><label>Default review cycle<select id="typeReview"><option>12 months</option><option>24 months</option></select></label></div>
             <section class="detailSection"><h3>Control requirements</h3><label class="checkRow"><input type="checkbox" checked> Revision history required</label><label class="checkRow"><input type="checkbox" checked> Change reason required</label><label class="checkRow"><input type="checkbox" checked> Approval before release</label><label class="checkRow"><input type="checkbox"> User acknowledgement required</label></section>
@@ -2046,6 +2047,6 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-green-sidebar-brandfix1"></script>
+<script src="./app.js?v=20260922-document-types-redesign1"></script>
 </body>
 </html>
