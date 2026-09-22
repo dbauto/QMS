@@ -696,3 +696,40 @@ body.navExpanded .railExpand .lucide,body.navExpanded .railCollapse .lucide{flex
   body.navExpanded .sideNav{width:210px}
   body.navExpanded .mainArea{margin-left:210px}
 }
+
+
+/* Expanded rail keeps the current dark shell, but exposes full navigation context */
+body.navExpanded .workspaceSwitch{
+  display:flex;
+  width:100%;
+  height:auto;
+  padding:9px 10px;
+  margin:0 0 12px;
+  justify-content:flex-start;
+  gap:9px;
+  border:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.04);
+  border-radius:8px;
+}
+body.navExpanded .workspaceSwitch:hover{background:rgba(255,255,255,.07)}
+body.navExpanded .workspaceAvatar{
+  width:28px;height:28px;border-radius:7px;background:#173758;color:#bcd6ff;display:grid;place-items:center
+}
+body.navExpanded .workspaceText{display:block;min-width:0;flex:1}
+body.navExpanded .workspaceText b{display:block;color:#fff;font-size:11px}
+body.navExpanded .workspaceText small{display:block;color:#7f91a7;font-size:9px;margin-top:1px}
+body.navExpanded .workspaceChevron{display:grid;place-items:center;color:#6f8197}
+body.navExpanded .sideStatus{
+  display:flex;
+  margin-top:10px;
+  border-top:1px solid rgba(255,255,255,.08);
+  padding:12px 8px 2px;
+  align-items:center;
+  gap:8px;
+}
+body.navExpanded .sideStatus>i{display:block;width:7px;height:7px;border-radius:50%;background:#12b76a;flex:0 0 auto}
+body.navExpanded .sideStatus>div{display:block}
+body.navExpanded .sideStatus b{display:block;color:#d8e1eb;font-size:9px}
+body.navExpanded .sideStatus span{display:block;color:#687b91;font-size:8px;margin-top:1px}
+body.navExpanded .navItem.active{background:#1d3854}
+body.navExpanded .navItem:hover{background:#172e47}
