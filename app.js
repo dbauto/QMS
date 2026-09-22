@@ -641,6 +641,7 @@ let registrationSourceMode='upload';
 let authoringMode='blank';
 let selectedAuthoringTemplate='Procedure Template';
 let selectedExistingResource={id:'SOP-QA-014',title:'Control of Nonconforming Outputs'};
+let lastNonEffectiveStatus='Draft';
 
 let quickTypeContext='registration';
 let lastValidRegType='Procedure';
@@ -875,6 +876,27 @@ function setRegistrationTypeLocked(locked){
   type.closest('label')?.classList.toggle('disabledField',!!locked);
 }
 
+function setEffectiveImportMode(enabled){
+  const status=document.getElementById('regStatus');
+  const statusHelp=document.getElementById('regStatusHelp');
+  document.querySelectorAll('.effectiveImportOnly').forEach(el=>el.style.display=enabled?'block':'none');
+
+  if(status){
+    if(enabled){
+      if(status.value!=='Effective') lastNonEffectiveStatus=status.value||'Draft';
+      status.value='Effective';
+      status.disabled=true;
+      status.closest('label')?.classList.add('disabledField');
+      if(statusHelp) statusHelp.textContent='Imported as the already-approved/current revision. No new approval route is created.';
+    }else{
+      status.disabled=false;
+      status.closest('label')?.classList.remove('disabledField');
+      if(status.value==='Effective') status.value=lastNonEffectiveStatus||'Draft';
+      if(statusHelp) statusHelp.textContent='New controlled information begins as Draft unless changed before submission.';
+    }
+  }
+}
+
 function configureSourceIntentForClass(){
   const controlled=registrationClass==='controlled';
   const heading=document.getElementById('sourceIntentHeading');
@@ -886,6 +908,7 @@ function configureSourceIntentForClass(){
   const existingTitle=document.getElementById('sourceExistingTitle');
   const existingText=document.getElementById('sourceExistingText');
   const externalCard=document.querySelector('.externalIntent');
+  const effectiveCard=document.querySelector('[data-source-mode="effective"]');
   const authoring=document.querySelector('.controlledAuthoringOptions');
   const recordNoFile=document.querySelector('.recordNoFileOptions');
   const uploadPanelTitle=document.getElementById('uploadPanelTitle');
@@ -901,6 +924,7 @@ function configureSourceIntentForClass(){
     if(existingTitle) existingTitle.textContent='Add an existing Nexus document';
     if(existingText) existingText.textContent='The resource already exists. Add it to a space without creating a duplicate.';
     if(externalCard) externalCard.style.display='grid';
+    if(effectiveCard) effectiveCard.style.display='grid';
     if(authoring) authoring.style.display='block';
     if(recordNoFile) recordNoFile.style.display='none';
     if(uploadPanelTitle) uploadPanelTitle.textContent='Drop the document file here';
@@ -915,17 +939,19 @@ function configureSourceIntentForClass(){
     if(existingTitle) existingTitle.textContent='Add existing evidence to this context';
     if(existingText) existingText.textContent='The record already exists in Nexus. Link it without creating a duplicate.';
     if(externalCard) externalCard.style.display='none';
+    if(effectiveCard) effectiveCard.style.display='none';
     if(authoring) authoring.style.display='none';
     if(recordNoFile) recordNoFile.style.display='block';
     if(uploadPanelTitle) uploadPanelTitle.textContent='Drop the evidence file here';
     if(hint) hint.textContent='PDF, XLSX, image or certificate · Example: Candidate_Screening_Record_0918.pdf';
-    if(registrationSourceMode==='external') registrationSourceMode='upload';
+    if(registrationSourceMode==='external'||registrationSourceMode==='effective') registrationSourceMode='upload';
   }
 }
 
 function selectRegistrationSource(mode){
-  if(registrationClass==='record' && mode==='external') mode='upload';
+  if(registrationClass==='record' && (mode==='external'||mode==='effective')) mode='upload';
   registrationSourceMode=mode;
+  setEffectiveImportMode(registrationClass==='controlled' && mode==='effective');
   document.querySelectorAll('.sourceIntentCard').forEach(card=>card.classList.toggle('selected',card.dataset.sourceMode===mode));
   document.querySelectorAll('.sourceIntentPanel').forEach(panel=>panel.classList.remove('active'));
   const panel=document.getElementById('sourcePanel'+mode.charAt(0).toUpperCase()+mode.slice(1));
@@ -980,6 +1006,7 @@ function openRegisterResource(kind='controlled'){
   refreshRegistrationOptions();
   refreshExistingTargetSpaces();
   registrationSourceMode='upload';
+  setEffectiveImportMode(false);
   authoringMode='blank';
   selectedAuthoringTemplate='Procedure Template';
   selectRegistrationClass(registrationClass,false);
@@ -1041,7 +1068,7 @@ function renderRegistration(){
     const step=i+1;
     el.classList.toggle('active',step===effectiveStep);
     el.classList.toggle('done',step<effectiveStep);
-    if(el.classList.contains('controlledOnly')) el.style.display=controlled?'block':'none';
+    if(el.classList.contains('controlledOnly')) el.style.display=(controlled && registrationSourceMode!=='effective')?'block':'none';
   });
   const prev=document.getElementById('registerPrev');
   const next=document.getElementById('registerNext');
@@ -1069,7 +1096,7 @@ function validateApprovalRoute(){
 }
 
 function moveRegistration(delta){
-  if(delta>0 && registrationClass==='controlled' && registrationStep===6 && registrationSourceMode!=='existing' && !validateApprovalRoute()) return;
+  if(delta>0 && registrationClass==='controlled' && registrationStep===6 && !['existing','effective'].includes(registrationSourceMode) && !validateApprovalRoute()) return;
 
   let next=registrationStep+delta;
 
@@ -1079,7 +1106,7 @@ function moveRegistration(delta){
     if(delta<0 && registrationStep===7) next=2;
   }
 
-  if(registrationClass==='record'){
+  if(registrationClass==='record' || registrationSourceMode==='effective'){
     if(delta>0 && next===6) next=7;
     if(delta<0 && next===6) next=5;
   }
@@ -1126,11 +1153,22 @@ function updateRegistrationReview(){
     if(reviewIdentity) reviewIdentity.textContent=id+' · '+title;
     if(reviewProcess) reviewProcess.textContent=document.getElementById('regProcess')?.value||document.getElementById('regSpace')?.value||'—';
     if(reviewIso) reviewIso.textContent=document.getElementById('regIso')?.value||'—';
-    if(reviewApprovalRoute) reviewApprovalRoute.textContent=approvalRouteSnapshotText()||'Configured for this revision';
-    if(reviewState) reviewState.textContent=registrationSourceMode==='create'?(authoringMode==='template'?'Draft created from '+selectedAuthoringTemplate:'Blank controlled draft created'):(registrationSourceMode==='external'?'External document draft created':'Draft revision created');
-    if(reviewDetail) reviewDetail.textContent=registrationSourceMode==='external'?'Nexus will track the external source version, review date and internal relationships.':('Approval route is snapshotted. The document is not Effective until final approval.');
-    if(confirmTitle) confirmTitle.textContent='Create controlled draft?';
-    if(confirmText) confirmText.textContent='The canonical resource, relationships and approval workflow will be created together.';
+
+    if(registrationSourceMode==='effective'){
+      if(reviewApprovalRoute) reviewApprovalRoute.textContent='No new approval route · legacy/current effective import';
+      if(reviewState) reviewState.textContent='Registered as Effective';
+      if(reviewDetail) reviewDetail.textContent='The current approved revision is onboarded directly. Nexus records the registration and source control details in the audit trail without creating approval tasks.';
+      if(confirmTitle) confirmTitle.textContent='Register this current effective document?';
+      if(confirmText) confirmText.textContent='Nexus will register the current revision as Effective and preserve its original effective date, review date and source references.';
+      if(confirmButton) confirmButton.textContent='Register effective document';
+    }else{
+      if(reviewApprovalRoute) reviewApprovalRoute.textContent=approvalRouteSnapshotText()||'Configured for this revision';
+      if(reviewState) reviewState.textContent=registrationSourceMode==='create'?(authoringMode==='template'?'Draft created from '+selectedAuthoringTemplate:'Blank controlled draft created'):(registrationSourceMode==='external'?'External document draft created':'Draft revision created');
+      if(reviewDetail) reviewDetail.textContent=registrationSourceMode==='external'?'Nexus will track the external source version, review date and internal relationships.':'Approval route is snapshotted. The document is not Effective until final approval.';
+      if(confirmTitle) confirmTitle.textContent='Create controlled draft?';
+      if(confirmText) confirmText.textContent='The canonical resource, relationships and approval workflow will be created together.';
+      if(confirmButton) confirmButton.textContent='Register resource';
+    }
     if(mapping) mapping.textContent=title;
   }else{
     const id=document.getElementById('recId')?.value||'REC-SCR-2026-0918';
@@ -1170,6 +1208,10 @@ document.querySelectorAll('.relationshipPick').forEach(btn=>btn.addEventListener
   refreshIcons();
 }));
 ['regTitle','recTitle','recId'].forEach(id=>document.getElementById(id)?.addEventListener('input',updateRegistrationReview));
+
+document.getElementById('regStatus')?.addEventListener('change',e=>{
+  if(e.target.value!=='Effective') lastNonEffectiveStatus=e.target.value;
+});
 
 document.getElementById('regType')?.addEventListener('change',e=>{
   if(e.target.value==='__create__'){
@@ -1393,7 +1435,12 @@ function finishResourceRegistration(){
       }catch(e){}
     }
     showView('repository');
-    toast('Controlled resource registered',(generatedId||'The document')+' was created as a Draft. Approval route snapshot: '+approvalRouteSnapshotText());
+    if(registrationSourceMode==='effective'){
+      const legacy=document.getElementById('legacyDocId')?.value.trim();
+      toast('Effective document registered',(generatedId||'The document')+' was registered as Effective'+(legacy?' · legacy ID '+legacy:'')+'. No approval tasks were created.');
+    }else{
+      toast('Controlled resource registered',(generatedId||'The document')+' was created as a Draft. Approval route snapshot: '+approvalRouteSnapshotText());
+    }
     setTimeout(()=>document.getElementById('controlledMasterPanel')?.scrollIntoView({behavior:'smooth',block:'start'}),120);
   }else{
     showView('records');
