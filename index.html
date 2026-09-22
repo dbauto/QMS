@@ -795,17 +795,22 @@ body.navExpanded .railExpand span{display:inline!important}
       </div>
 
       <div class="sourceIntentPanel" id="sourcePanelCreate">
-        <div class="authoringChoice">
-          <button class="authoringOption selected" data-authoring-mode="blank" onclick="selectAuthoringMode('blank')"><span><i data-lucide="file"></i></span><div><b>Blank document</b><small>Start with an empty controlled draft.</small></div><i data-lucide="check"></i></button>
-          <button class="authoringOption" data-authoring-mode="template" onclick="selectAuthoringMode('template')"><span><i data-lucide="layout-template"></i></span><div><b>Use an authoring template</b><small>Start with a standard document structure.</small></div><i data-lucide="check"></i></button>
-        </div>
-        <div class="templatePicker" id="authoringTemplatePicker" style="display:none">
-          <div class="templatePickerHead"><div><b>Choose an authoring template</b><span>This only provides a starting structure. It is not the same as the QMS “Form / Template” document type.</span></div></div>
-          <div class="templateCards">
-            <button class="templateCard selected" data-template="Procedure Template"><i data-lucide="file-text"></i><div><b>Procedure Template</b><span>Purpose · Scope · Responsibilities · Procedure · Records · References</span></div><i data-lucide="check"></i></button>
-            <button class="templateCard" data-template="SOP Template"><i data-lucide="list-checks"></i><div><b>SOP Template</b><span>Purpose · Prerequisites · Steps · Controls · Records</span></div><i data-lucide="check"></i></button>
-            <button class="templateCard" data-template="Work Instruction Template"><i data-lucide="clipboard-list"></i><div><b>Work Instruction Template</b><span>Task · Tools · Safety · Detailed steps · Verification</span></div><i data-lucide="check"></i></button>
+        <div class="controlledAuthoringOptions">
+          <div class="authoringChoice">
+            <button class="authoringOption selected" data-authoring-mode="blank" onclick="selectAuthoringMode('blank')"><span><i data-lucide="file"></i></span><div><b>Blank document</b><small>Start with an empty controlled draft.</small></div><i data-lucide="check"></i></button>
+            <button class="authoringOption" data-authoring-mode="template" onclick="selectAuthoringMode('template')"><span><i data-lucide="layout-template"></i></span><div><b>Use an authoring template</b><small>Start with a standard document structure.</small></div><i data-lucide="check"></i></button>
           </div>
+          <div class="templatePicker" id="authoringTemplatePicker" style="display:none">
+            <div class="templatePickerHead"><div><b>Choose an authoring template</b><span>This only provides a starting structure. It is not the same as the QMS “Form / Template” document type.</span></div></div>
+            <div class="templateCards">
+              <button class="templateCard selected" data-template="Procedure Template"><i data-lucide="file-text"></i><div><b>Procedure Template</b><span>Purpose · Scope · Responsibilities · Procedure · Records · References</span></div><i data-lucide="check"></i></button>
+              <button class="templateCard" data-template="SOP Template"><i data-lucide="list-checks"></i><div><b>SOP Template</b><span>Purpose · Prerequisites · Steps · Controls · Records</span></div><i data-lucide="check"></i></button>
+              <button class="templateCard" data-template="Work Instruction Template"><i data-lucide="clipboard-list"></i><div><b>Work Instruction Template</b><span>Task · Tools · Safety · Detailed steps · Verification</span></div><i data-lucide="check"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="recordNoFileOptions" style="display:none">
+          <div class="noFileRecordCard"><span><i data-lucide="clipboard-plus"></i></span><div><b>Register a record entry without a file</b><p>Use this when the evidence is primarily metadata or comes from another system. You can attach files or relationships later.</p><small>Examples: KPI result, system record, completion record, management-review action.</small></div></div>
         </div>
       </div>
 
