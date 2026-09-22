@@ -3844,3 +3844,204 @@ body.navExpanded .navMeta{
   .accessToolbar{grid-template-columns:1fr}
   .roleOptionList{grid-template-columns:1fr}
 }
+
+
+/* Settings — profile, company and QMS administration */
+.settingsWorkspace{
+  min-height:640px;
+  display:grid;
+  grid-template-columns:238px minmax(0,1fr);
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:#fff;
+  overflow:hidden;
+  box-shadow:var(--shadow)
+}
+.settingsNav{
+  padding:14px 10px;
+  background:#fafbfc;
+  border-right:1px solid var(--line)
+}
+.settingsNavGroup{margin-bottom:18px}
+.settingsNavGroup>span{
+  display:block;
+  padding:0 8px 6px;
+  color:var(--subtle);
+  font-size:9px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.05em
+}
+.settingsNavGroup button{
+  width:100%;
+  min-height:54px;
+  display:grid;
+  grid-template-columns:24px minmax(0,1fr);
+  gap:8px;
+  align-items:center;
+  padding:7px 9px;
+  border:0;
+  border-radius:7px;
+  background:transparent;
+  text-align:left;
+  color:#667085
+}
+.settingsNavGroup button:hover{background:#f2f4f7}
+.settingsNavGroup button.active{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(16,24,40,.06)}
+.settingsNavGroup button>.lucide{width:16px;height:16px;color:#7c8795}
+.settingsNavGroup button.active>.lucide{color:var(--brand)}
+.settingsNavGroup b,.settingsNavGroup small{display:block}
+.settingsNavGroup b{font-size:11px}
+.settingsNavGroup small{font-size:9px;color:var(--subtle);margin-top:2px}
+
+.settingsContent{min-width:0;padding:0 22px 24px}
+.settingsPanel{display:none}
+.settingsPanel.active{display:block}
+.settingsPanelHeader{
+  min-height:88px;
+  display:flex;
+  align-items:center;
+  border-bottom:1px solid var(--line);
+  margin-bottom:18px
+}
+.settingsPanelHeader h2{margin:3px 0 2px;font-size:18px;color:var(--ink)}
+.settingsPanelHeader p{margin:0;font-size:11px;color:var(--muted)}
+
+.profileIdentityRow,.companyIdentityRow{
+  min-height:92px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding-bottom:18px;
+  margin-bottom:18px;
+  border-bottom:1px solid var(--line)
+}
+.profilePhoto,.companyLogoPreview{
+  width:64px;height:64px;border-radius:50%;
+  display:grid;place-items:center;
+  background:#eef2f6;color:#475467;
+  font-size:18px;font-weight:800;
+  flex:0 0 auto
+}
+.companyLogoPreview{border-radius:12px;background:var(--brand-soft);color:var(--brand)}
+.profileIdentityRow>div:last-child>b,.profileIdentityRow>div:last-child>span,
+.companyIdentityRow>div:last-child>b,.companyIdentityRow>div:last-child>span{display:block}
+.profileIdentityRow>div:last-child>b,.companyIdentityRow>div:last-child>b{font-size:12px;color:var(--ink)}
+.profileIdentityRow>div:last-child>span,.companyIdentityRow>div:last-child>span{font-size:10px;color:var(--muted);margin-top:2px}
+.inlineActions{display:flex;align-items:center;gap:10px;margin-top:8px}
+
+.settingsFormGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px 18px;
+  max-width:980px
+}
+.settingsFormGrid label{
+  color:#667085;
+  font-size:10px;
+  font-weight:700
+}
+.settingsFormGrid input,.settingsFormGrid select,.settingsFormGrid textarea{
+  display:block;
+  width:100%;
+  min-height:38px;
+  margin-top:5px;
+  border:1px solid var(--line-strong);
+  border-radius:7px;
+  background:#fff;
+  padding:0 10px;
+  font-size:11px;
+  color:var(--ink)
+}
+.settingsFormGrid textarea{min-height:82px;padding:9px 10px;resize:vertical}
+.fullWidthField{grid-column:1/-1}
+
+.profileAccessSummary{
+  margin-top:22px;
+  border-top:1px solid var(--line);
+  padding-top:16px
+}
+.profileAccessIntro{
+  min-height:54px;
+  display:grid;
+  grid-template-columns:24px minmax(0,1fr) auto;
+  gap:10px;
+  align-items:center;
+  padding:10px 12px;
+  border-radius:7px;
+  background:#f8fcfb
+}
+.profileAccessIntro>.lucide{width:16px;height:16px;color:var(--brand)}
+.profileAccessIntro b,.profileAccessIntro span{display:block}
+.profileAccessIntro b{font-size:11px;color:#2d4c45}
+.profileAccessIntro span{font-size:9px;color:#6d807b;margin-top:2px}
+.profileAccessRows{
+  display:grid;
+  grid-template-columns:1fr 1.4fr 1fr;
+  gap:0;
+  margin-top:10px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line)
+}
+.profileAccessRows>div{padding:12px 14px;border-right:1px solid var(--line)}
+.profileAccessRows>div:last-child{border-right:0}
+.profileAccessRows>div>span:first-child{
+  display:block;font-size:9px;color:var(--subtle);text-transform:uppercase;font-weight:800;margin-bottom:6px
+}
+.profileAccessRows b{font-size:11px;color:#344054}
+.profileAccessRows>div>div{display:flex;gap:5px;flex-wrap:wrap}
+
+.companyProfileNote{
+  max-width:980px;
+  display:flex;gap:8px;align-items:flex-start;
+  margin-top:18px;padding:10px 12px;border-radius:7px;background:#f8fafb;
+  color:var(--muted);font-size:9px;line-height:1.5
+}
+.companyProfileNote>.lucide{width:14px;height:14px;flex:0 0 auto;margin-top:1px}
+
+.settingsRows{max-width:980px}
+.settingsRowDetailed{
+  min-height:66px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:11px 0;
+  border-bottom:1px solid var(--line)
+}
+.settingsRowDetailed:first-child{border-top:1px solid var(--line)}
+.settingsRowDetailed>div{min-width:0}
+.settingsRowDetailed b,.settingsRowDetailed span{display:block}
+.settingsRowDetailed b{font-size:11px;color:var(--ink)}
+.settingsRowDetailed div span{font-size:9px;color:var(--muted);margin-top:2px}
+.settingsRowDetailed select,.settingsRowDetailed input{
+  min-width:160px;height:34px;border:1px solid var(--line-strong);border-radius:7px;background:#fff;padding:0 8px;font-size:10px
+}
+.settingsRowDetailed .toggle{
+  flex:0 0 auto;
+  border:0;
+  cursor:pointer
+}
+.settingsSubsection{margin-bottom:28px}
+.settingsSubsection h3{margin:0 0 8px;font-size:12px;color:var(--ink)}
+
+@media(max-width:900px){
+  .settingsWorkspace{grid-template-columns:1fr}
+  .settingsNav{
+    display:flex;gap:6px;overflow:auto;
+    border-right:0;border-bottom:1px solid var(--line)
+  }
+  .settingsNavGroup{display:flex;gap:6px;margin:0}
+  .settingsNavGroup>span{display:none}
+  .settingsNavGroup button{min-width:155px}
+}
+@media(max-width:680px){
+  .settingsContent{padding:0 14px 18px}
+  .settingsFormGrid{grid-template-columns:1fr}
+  .fullWidthField{grid-column:auto}
+  .profileAccessRows{grid-template-columns:1fr}
+  .profileAccessRows>div{border-right:0;border-bottom:1px solid var(--line)}
+  .profileAccessRows>div:last-child{border-bottom:0}
+  .profileAccessIntro{grid-template-columns:24px 1fr}
+  .profileAccessIntro .btn{grid-column:1/-1;justify-self:start}
+}

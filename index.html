@@ -8,7 +8,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-access-matrix1">
+<link rel="stylesheet" href="./styles.css?v=20260922-settings-profile1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -125,8 +125,8 @@ body.navExpanded .railExpand span{display:inline!important}
     </div>
 
     <button class="workspaceSwitch">
-      <span class="workspaceAvatar">AM</span>
-      <span class="workspaceText"><b>ABC Manufacturing</b><small>Production workspace</small></span>
+      <span class="workspaceAvatar" id="workspaceAvatar">AM</span>
+      <span class="workspaceText"><b id="workspaceCompanyName">ABC Manufacturing</b><small id="workspaceDisplayName">Production workspace</small></span>
       <span class="workspaceChevron"><i data-lucide="chevron-down"></i></span>
     </button>
 
@@ -172,7 +172,7 @@ body.navExpanded .railExpand span{display:inline!important}
           <input id="globalSearch" placeholder="Search documents, records, evidence...">
         </div>
         <button class="headerIconButton notification" aria-label="Notifications" title="Notifications"><i data-lucide="bell"></i><i class="notificationCount">3</i></button>
-        <button class="profileButton"><span class="avatar">MS</span><span><b>Maria Santos</b><small>Quality Manager</small></span><span class="profileChevron"><i data-lucide="chevron-down"></i></span></button>
+        <button class="profileButton" onclick="openSettingsTab('profile')" title="My profile"><span class="avatar" id="headerProfileAvatar">MS</span><span><b id="headerProfileName">Maria Santos</b><small id="headerProfileTitle">Quality Manager</small></span><span class="profileChevron"><i data-lucide="chevron-down"></i></span></button>
       </div>
     </header>
 
@@ -1164,10 +1164,121 @@ body.navExpanded .railExpand span{display:inline!important}
       </div>
 
       <div id="settings" class="view">
-        <div class="pageHeader"><div><h1>Organization settings</h1><p>Document-control, security and governance defaults for this workspace.</p></div><div class="pageActions"><button class="btn primary">Save changes</button></div></div>
-        <div class="settingsGrid">
-          <section class="surface"><div class="sectionHeader"><div><h2>Document control</h2></div></div><div class="settingRow"><div><b>Default review cycle</b><span>Used when a document type has no override</span></div><select><option>12 months</option><option>24 months</option></select></div><div class="settingRow"><div><b>Obsolete retention</b><span>Minimum retention for historical revisions</span></div><select><option>7 years</option></select></div><div class="settingRow"><div><b>Require change reason</b><span>Mandatory on every new revision</span></div><span class="toggle on"></span></div></section>
-          <section class="surface"><div class="sectionHeader"><div><h2>Security</h2></div></div><div class="settingRow"><div><b>Multi-factor authentication</b><span>Required for licensed users</span></div><span class="toggle on"></span></div><div class="settingRow"><div><b>Signed file URLs</b><span>Time-limited document downloads</span></div><span class="toggle on"></span></div><div class="settingRow"><div><b>Audit deletion</b><span>Append-only event history</span></div><span class="tag danger">Prohibited</span></div></section>
+        <div class="pageHeader settingsPageHeader">
+          <div>
+            <h1>Settings</h1>
+            <p>Manage your profile, company identity and workspace-wide QMS defaults.</p>
+          </div>
+          <div class="pageActions"><button class="btn primary" id="saveSettingsBtn"><i data-lucide="save"></i>Save changes</button></div>
+        </div>
+
+        <div class="settingsWorkspace">
+          <aside class="settingsNav">
+            <div class="settingsNavGroup"><span>Account</span>
+              <button class="active" data-settings-tab="profile"><i data-lucide="user-round"></i><div><b>My profile</b><small>Name, role and preferences</small></div></button>
+            </div>
+            <div class="settingsNavGroup"><span>Organization</span>
+              <button data-settings-tab="company"><i data-lucide="building-2"></i><div><b>Company profile</b><small>Identity and workspace details</small></div></button>
+              <button data-settings-tab="qms"><i data-lucide="file-cog"></i><div><b>QMS defaults</b><small>Document-control defaults</small></div></button>
+              <button data-settings-tab="security"><i data-lucide="shield-check"></i><div><b>Security & notifications</b><small>Protection and alerts</small></div></button>
+            </div>
+          </aside>
+
+          <main class="settingsContent">
+            <section class="settingsPanel active" data-settings-panel="profile">
+              <div class="settingsPanelHeader">
+                <div><span class="recordLabel">ACCOUNT</span><h2>My profile</h2><p>This information appears in approvals, audit history and user assignments.</p></div>
+              </div>
+
+              <div class="profileIdentityRow">
+                <div class="profilePhoto" id="settingsProfileAvatar">MS</div>
+                <div><b>Profile photo</b><span>Used in assignments and approval activity.</span><div class="inlineActions"><button class="btn secondary" id="changeProfilePhotoBtn">Change photo</button><button class="btn text" id="removeProfilePhotoBtn">Remove</button></div></div>
+              </div>
+
+              <div class="settingsFormGrid">
+                <label>Full name<input id="profileFullName" value="Maria Santos"></label>
+                <label>Job title<input id="profileJobTitle" value="Quality Manager"></label>
+                <label>Department<select id="profileDepartment"><option selected>Quality</option><option>Operations</option><option>Recruitment</option><option>Purchasing</option><option>Engineering</option><option>IT</option></select></label>
+                <label>Work email<input id="profileEmail" type="email" value="maria.santos@abc.com"></label>
+                <label>Phone<input id="profilePhone" value="+63 917 555 0128"></label>
+                <label>Timezone<select id="profileTimezone"><option selected>Asia/Manila (UTC+8)</option><option>Asia/Singapore (UTC+8)</option><option>Australia/Sydney</option><option>America/New_York</option></select></label>
+                <label>Language<select id="profileLanguage"><option selected>English</option><option>Filipino</option></select></label>
+              </div>
+
+              <div class="profileAccessSummary">
+                <div class="profileAccessIntro"><i data-lucide="shield-check"></i><div><b>QMS access is managed separately</b><span>You can update your profile here, but you cannot grant yourself approval or administrative authority.</span></div><button class="btn secondary" onclick="showView('users')">Open Users & access</button></div>
+                <div class="profileAccessRows">
+                  <div><span>User type</span><b>Quality Manager</b></div>
+                  <div><span>QMS roles</span><div><span class="rolePill approve">Approver</span><span class="rolePill">Document Owner</span></div></div>
+                  <div><span>Access scope</span><b>All QMS</b></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="settingsPanel" data-settings-panel="company">
+              <div class="settingsPanelHeader">
+                <div><span class="recordLabel">ORGANIZATION</span><h2>Company profile</h2><p>Company information shown throughout the workspace and on generated QMS outputs.</p></div>
+              </div>
+
+              <div class="companyIdentityRow">
+                <div class="companyLogoPreview" id="companyLogoPreview">AM</div>
+                <div><b>Company logo</b><span>Shown in the workspace and available for controlled-document templates.</span><div class="inlineActions"><button class="btn secondary" id="uploadCompanyLogoBtn">Upload logo</button><button class="btn text" id="removeCompanyLogoBtn">Remove</button></div></div>
+              </div>
+
+              <div class="settingsFormGrid">
+                <label>Company display name<input id="companyDisplayName" value="ABC Manufacturing"></label>
+                <label>Legal / registered name<input id="companyLegalName" value="ABC Manufacturing Corporation"></label>
+                <label>Workspace name<input id="companyWorkspaceName" value="Production workspace"></label>
+                <label>Organization code<input id="companyCode" value="ABC-MFG"></label>
+                <label>Industry<select id="companyIndustry"><option selected>Manufacturing</option><option>Healthcare</option><option>Professional Services</option><option>Logistics</option><option>Construction</option><option>Other</option></select></label>
+                <label>Website<input id="companyWebsite" value="https://www.abcmfg.example"></label>
+                <label>Primary QMS contact<input id="companyQmsContact" value="Maria Santos"></label>
+                <label>Default timezone<select id="companyTimezone"><option selected>Asia/Manila (UTC+8)</option><option>Asia/Singapore (UTC+8)</option><option>Australia/Sydney</option><option>America/New_York</option></select></label>
+                <label class="fullWidthField">Business address<textarea id="companyAddress">Bulacan, Philippines</textarea></label>
+              </div>
+
+              <div class="companyProfileNote"><i data-lucide="info"></i><span>Company profile details identify the organization in iQMS. Certification claims are not created automatically and should only be entered where the organization can substantiate them.</span></div>
+            </section>
+
+            <section class="settingsPanel" data-settings-panel="qms">
+              <div class="settingsPanelHeader">
+                <div><span class="recordLabel">QMS DEFAULTS</span><h2>Document-control defaults</h2><p>Fallback rules used when a document type or workflow has no specific override.</p></div>
+              </div>
+
+              <div class="settingsRows">
+                <div class="settingsRowDetailed"><div><b>Default review cycle</b><span>Used when the document type does not define its own review cycle.</span></div><select><option selected>12 months</option><option>24 months</option><option>36 months</option></select></div>
+                <div class="settingsRowDetailed"><div><b>Historical revision retention</b><span>Minimum retention for obsolete controlled-document revisions.</span></div><select><option selected>7 years</option><option>10 years</option><option>Permanent</option></select></div>
+                <div class="settingsRowDetailed"><div><b>Require revision change reason</b><span>Authors must record why every controlled revision was created.</span></div><button class="toggle on" type="button" aria-label="Toggle revision change reason"></button></div>
+                <div class="settingsRowDetailed"><div><b>Review reminders</b><span>Notify owners before the next review date.</span></div><select><option selected>30 days before</option><option>14 days before</option><option>60 days before</option></select></div>
+                <div class="settingsRowDetailed"><div><b>Default controlled-information prefix</b><span>Used by numbering patterns unless a document type overrides it.</span></div><input value="QMS"></div>
+              </div>
+            </section>
+
+            <section class="settingsPanel" data-settings-panel="security">
+              <div class="settingsPanelHeader">
+                <div><span class="recordLabel">SECURITY & NOTIFICATIONS</span><h2>Protection and alerts</h2><p>Workspace security controls and your default notification behavior.</p></div>
+              </div>
+
+              <div class="settingsSubsection">
+                <h3>Workspace security</h3>
+                <div class="settingsRows">
+                  <div class="settingsRowDetailed"><div><b>Multi-factor authentication</b><span>Require MFA for licensed users.</span></div><button class="toggle on" type="button"></button></div>
+                  <div class="settingsRowDetailed"><div><b>Signed file URLs</b><span>Use time-limited links for controlled downloads.</span></div><button class="toggle on" type="button"></button></div>
+                  <div class="settingsRowDetailed"><div><b>Audit deletion</b><span>The audit trail is append-only.</span></div><span class="tag danger">Prohibited</span></div>
+                </div>
+              </div>
+
+              <div class="settingsSubsection">
+                <h3>My notifications</h3>
+                <div class="settingsRows">
+                  <div class="settingsRowDetailed"><div><b>Approval assignments</b><span>Notify me when I am assigned to review or approve a revision.</span></div><button class="toggle on" type="button"></button></div>
+                  <div class="settingsRowDetailed"><div><b>Review due reminders</b><span>Notify me about documents I own that are approaching review.</span></div><button class="toggle on" type="button"></button></div>
+                  <div class="settingsRowDetailed"><div><b>Evidence retention reminders</b><span>Notify me when records I own are approaching retention/disposition dates.</span></div><button class="toggle" type="button"></button></div>
+                  <div class="settingsRowDetailed"><div><b>Digest frequency</b><span>Summary of non-urgent QMS activity.</span></div><select><option selected>Daily</option><option>Weekly</option><option>Off</option></select></div>
+                </div>
+              </div>
+            </section>
+          </main>
         </div>
       </div>
     </section>
@@ -1647,6 +1758,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-access-matrix1"></script>
+<script src="./app.js?v=20260922-settings-profile1"></script>
 </body>
 </html>

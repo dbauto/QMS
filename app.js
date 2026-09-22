@@ -146,6 +146,90 @@ document.getElementById('saveAccessChanges')?.addEventListener('click',()=>toast
 document.getElementById('inviteUserBtn')?.addEventListener('click',()=>toast('Invite user','User invitation setup will collect email, user type, QMS roles and initial access scope.'));
 document.getElementById('accessProfilesBtn')?.addEventListener('click',()=>toast('Access profiles','Profiles can provide safe defaults, while individual permissions and scopes remain configurable.'));
 
+let activeSettingsTab='profile';
+
+function openSettingsTab(tab='profile'){
+  showView('settings');
+  activeSettingsTab=tab;
+  document.querySelectorAll('[data-settings-tab]').forEach(button=>button.classList.toggle('active',button.dataset.settingsTab===tab));
+  document.querySelectorAll('[data-settings-panel]').forEach(panel=>panel.classList.toggle('active',panel.dataset.settingsPanel===tab));
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent=tab==='profile'?'Settings / My profile':tab==='company'?'Settings / Company profile':tab==='qms'?'Settings / QMS defaults':'Settings / Security & notifications';
+  refreshIcons();
+}
+
+document.querySelectorAll('[data-settings-tab]').forEach(button=>button.addEventListener('click',()=>openSettingsTab(button.dataset.settingsTab)));
+
+document.querySelectorAll('#settings .toggle').forEach(toggle=>toggle.addEventListener('click',()=>{
+  toggle.classList.toggle('on');
+}));
+
+function initialsFromName(name){
+  return String(name||'').trim().split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'U';
+}
+
+function saveSettingsProfile(){
+  const name=document.getElementById('profileFullName')?.value.trim()||'Maria Santos';
+  const title=document.getElementById('profileJobTitle')?.value.trim()||'Quality Manager';
+  const initials=initialsFromName(name);
+  const headerName=document.getElementById('headerProfileName');
+  const headerTitle=document.getElementById('headerProfileTitle');
+  const headerAvatar=document.getElementById('headerProfileAvatar');
+  const settingsAvatar=document.getElementById('settingsProfileAvatar');
+  if(headerName) headerName.textContent=name;
+  if(headerTitle) headerTitle.textContent=title;
+  if(headerAvatar) headerAvatar.textContent=initials;
+  if(settingsAvatar) settingsAvatar.textContent=initials;
+  try{
+    localStorage.setItem('iqms.profile',JSON.stringify({
+      name,title,
+      department:document.getElementById('profileDepartment')?.value,
+      email:document.getElementById('profileEmail')?.value,
+      phone:document.getElementById('profilePhone')?.value,
+      timezone:document.getElementById('profileTimezone')?.value,
+      language:document.getElementById('profileLanguage')?.value
+    }));
+  }catch(e){}
+}
+
+function saveSettingsCompany(){
+  const name=document.getElementById('companyDisplayName')?.value.trim()||'ABC Manufacturing';
+  const workspace=document.getElementById('companyWorkspaceName')?.value.trim()||'Production workspace';
+  const initials=initialsFromName(name);
+  const companyName=document.getElementById('workspaceCompanyName');
+  const workspaceName=document.getElementById('workspaceDisplayName');
+  const avatar=document.getElementById('workspaceAvatar');
+  const logo=document.getElementById('companyLogoPreview');
+  if(companyName) companyName.textContent=name;
+  if(workspaceName) workspaceName.textContent=workspace;
+  if(avatar) avatar.textContent=initials;
+  if(logo) logo.textContent=initials;
+  const ws=document.querySelector('.workspaceSwitch');
+  if(ws) ws.title=name;
+  try{
+    localStorage.setItem('iqms.company',JSON.stringify({
+      name,
+      legalName:document.getElementById('companyLegalName')?.value,
+      workspace,
+      code:document.getElementById('companyCode')?.value,
+      industry:document.getElementById('companyIndustry')?.value,
+      website:document.getElementById('companyWebsite')?.value,
+      qmsContact:document.getElementById('companyQmsContact')?.value,
+      timezone:document.getElementById('companyTimezone')?.value,
+      address:document.getElementById('companyAddress')?.value
+    }));
+  }catch(e){}
+}
+
+document.getElementById('saveSettingsBtn')?.addEventListener('click',()=>{
+  saveSettingsProfile();
+  saveSettingsCompany();
+  toast('Settings saved','Profile, company and QMS settings were saved for this prototype.');
+});
+document.getElementById('changeProfilePhotoBtn')?.addEventListener('click',()=>toast('Profile photo','Photo upload can be connected to the user identity service in production.'));
+document.getElementById('removeProfilePhotoBtn')?.addEventListener('click',()=>toast('Profile photo removed','The profile will use your initials.'));
+document.getElementById('uploadCompanyLogoBtn')?.addEventListener('click',()=>toast('Company logo','Logo upload can be connected to organization storage in production.'));
+document.getElementById('removeCompanyLogoBtn')?.addEventListener('click',()=>toast('Company logo removed','The workspace will use company initials.'));
+
 const viewLabels={
   dashboard:'Overview',
   repository:'Controlled information',
@@ -2179,3 +2263,30 @@ renderTraceability('QMS-PRO-REC-001');
 renderDmsSpace('quality');
 
 selectAccessUser('maria',document.querySelector('.accessUserRow[data-user-id="maria"]'));
+
+try{
+  const p=JSON.parse(localStorage.getItem('iqms.profile')||'null');
+  if(p){
+    if(document.getElementById('profileFullName')) document.getElementById('profileFullName').value=p.name||'';
+    if(document.getElementById('profileJobTitle')) document.getElementById('profileJobTitle').value=p.title||'';
+    if(document.getElementById('profileDepartment')) document.getElementById('profileDepartment').value=p.department||'Quality';
+    if(document.getElementById('profileEmail')) document.getElementById('profileEmail').value=p.email||'';
+    if(document.getElementById('profilePhone')) document.getElementById('profilePhone').value=p.phone||'';
+    if(document.getElementById('profileTimezone')) document.getElementById('profileTimezone').value=p.timezone||'Asia/Manila (UTC+8)';
+    if(document.getElementById('profileLanguage')) document.getElementById('profileLanguage').value=p.language||'English';
+    saveSettingsProfile();
+  }
+  const co=JSON.parse(localStorage.getItem('iqms.company')||'null');
+  if(co){
+    if(document.getElementById('companyDisplayName')) document.getElementById('companyDisplayName').value=co.name||'';
+    if(document.getElementById('companyLegalName')) document.getElementById('companyLegalName').value=co.legalName||'';
+    if(document.getElementById('companyWorkspaceName')) document.getElementById('companyWorkspaceName').value=co.workspace||'';
+    if(document.getElementById('companyCode')) document.getElementById('companyCode').value=co.code||'';
+    if(document.getElementById('companyIndustry')) document.getElementById('companyIndustry').value=co.industry||'Manufacturing';
+    if(document.getElementById('companyWebsite')) document.getElementById('companyWebsite').value=co.website||'';
+    if(document.getElementById('companyQmsContact')) document.getElementById('companyQmsContact').value=co.qmsContact||'';
+    if(document.getElementById('companyTimezone')) document.getElementById('companyTimezone').value=co.timezone||'Asia/Manila (UTC+8)';
+    if(document.getElementById('companyAddress')) document.getElementById('companyAddress').value=co.address||'';
+    saveSettingsCompany();
+  }
+}catch(e){}
