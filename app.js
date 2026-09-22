@@ -1595,3 +1595,6 @@ configureSourceIntentForClass();
 selectRegistrationSource('upload');
 
 updateApprovalRouteSummary();
+
+
+/* iQMS build: 20260922-ia-stable2 */
