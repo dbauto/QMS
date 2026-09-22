@@ -1894,3 +1894,305 @@ body.navExpanded .navItem:hover{background:#172e47}
 @media(max-width:650px){
   .sourceIntentGrid{grid-template-columns:1fr}
 }
+
+
+/* Information architecture cleanup — each destination owns one job */
+
+/* Controlled information = the canonical document register, nothing else */
+.controlledLibrarySurface{
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.controlledLibraryTop{
+  min-height:54px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:0 12px;
+  border-bottom:1px solid var(--line);
+}
+.controlledStatusTabs{
+  display:flex;
+  align-items:stretch;
+  min-width:0;
+  height:54px;
+  overflow:auto;
+}
+.controlledStatusTabs button{
+  position:relative;
+  height:54px;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  padding:0 12px;
+  font-size:9px;
+  font-weight:650;
+  white-space:nowrap;
+}
+.controlledStatusTabs button:hover{color:var(--ink)}
+.controlledStatusTabs button.active{color:var(--brand)}
+.controlledStatusTabs button.active:after{
+  content:"";
+  position:absolute;
+  left:10px;
+  right:10px;
+  bottom:0;
+  height:2px;
+  border-radius:2px 2px 0 0;
+  background:var(--brand);
+}
+.controlledStatusTabs b{
+  margin-left:4px;
+  color:inherit;
+  font-size:8px;
+  font-weight:700;
+}
+.controlledLibraryContext{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex:0 0 auto;
+}
+.controlledLibraryContext>span{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  color:var(--subtle);
+  font-size:8px;
+  white-space:nowrap;
+}
+.controlledLibraryContext .lucide{width:12px;height:12px}
+.controlledLibraryToolbar.compact{
+  grid-template-columns:minmax(300px,1fr) 165px 190px 34px;
+  padding:10px 12px;
+  border-bottom:1px solid var(--line);
+}
+.controlledLibraryToolbar.compact .iconButton{width:34px;height:34px}
+.controlledLibraryFooter{
+  min-height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:0 12px;
+  background:var(--surface-subtle);
+  color:var(--subtle);
+  font-size:8px;
+}
+.controlledLibraryFooter>div{display:flex;gap:12px}
+.controlledLibraryFooter .btn{font-size:8px}
+.controlledLibraryRow{transition:background .12s ease}
+.controlledLibraryRow:focus-visible{position:relative;z-index:1}
+
+/* Spaces & structure owns contextual workspaces and browse hierarchy */
+.structureTabs{
+  display:flex;
+  gap:4px;
+  margin-bottom:12px;
+  border-bottom:1px solid var(--line);
+}
+.structureTabs button{
+  height:38px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  border:0;
+  border-bottom:2px solid transparent;
+  background:transparent;
+  color:var(--muted);
+  padding:0 10px;
+  font-size:10px;
+  font-weight:650;
+}
+.structureTabs button:hover{color:var(--ink)}
+.structureTabs button.active{color:var(--brand);border-bottom-color:var(--brand)}
+.structureTabs .lucide{width:14px;height:14px}
+.structureTabPanel{display:none}
+.structureTabPanel.active{display:block}
+.structurePanelIntro{
+  min-height:44px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:10px;
+}
+.structurePanelIntro h2{margin:0;color:var(--ink);font-size:14px}
+.structurePanelIntro p{margin:3px 0 0;color:var(--muted);font-size:9px}
+.structurePanelIntro>span{
+  color:var(--subtle);
+  font-size:8px;
+  padding-top:3px;
+  white-space:nowrap;
+}
+#structure .documentSpaces{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+#structure .spaceCard{
+  min-height:158px;
+  padding:14px;
+  box-shadow:none;
+}
+#structure .spaceCard:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+#structure .spaceIcon{width:34px;height:34px;margin-bottom:12px}
+#structure .spaceCard>p{margin:4px 0 10px;font-size:9px;line-height:1.45}
+#structure .spaceMeta{font-size:8px}
+.structureSettingsGrid .surface{box-shadow:none}
+.structureLevel .lucide{width:14px;height:14px;color:var(--subtle)}
+
+/* Relationship map owns relationships — no duplicate evidence/resource register */
+.relationshipToolbar{
+  min-height:50px;
+  display:grid;
+  grid-template-columns:minmax(320px,1fr) 220px 190px;
+  gap:8px;
+  align-items:center;
+  margin-bottom:10px;
+}
+.relationshipToolbar select{
+  height:34px;
+  border:1px solid var(--line-strong);
+  border-radius:7px;
+  background:#fff;
+  padding:0 8px;
+  font-size:9px;
+}
+.relationshipWorkspaceV2{
+  display:grid;
+  grid-template-columns:minmax(720px,1fr) 340px;
+  min-height:590px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.relationshipCanvas{
+  min-width:0;
+  border-right:1px solid var(--line);
+  background:#fcfdfe;
+}
+.relationshipCanvasHeader{
+  min-height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 14px;
+  border-bottom:1px solid var(--line);
+  background:#fff;
+}
+.relationshipCanvasHeader b,.relationshipCanvasHeader span{display:block}
+.relationshipCanvasHeader b{font-size:10px;color:var(--ink)}
+.relationshipCanvasHeader>div:first-child>span{font-size:8px;color:var(--subtle);margin-top:2px}
+.graphLegend{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.graphLegend>span{display:flex;align-items:center;gap:4px;font-size:7px;color:var(--muted)}
+.legendDot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.legendDot.requirement{background:#7f56d9}
+.legendDot.process{background:#175cd3}
+.legendDot.document{background:var(--brand)}
+.legendDot.evidence{background:#067647}
+
+.relationshipGraph{
+  position:relative;
+  min-height:530px;
+  display:grid;
+  grid-template-columns:minmax(118px,1fr) 62px minmax(118px,1fr) 62px minmax(140px,1.08fr) 62px minmax(135px,1fr) 62px minmax(130px,1fr);
+  align-items:center;
+  gap:4px;
+  padding:48px 28px 120px;
+  overflow:auto;
+}
+.graphNode{
+  min-height:92px;
+  border:1px solid var(--line-strong);
+  border-radius:9px;
+  background:#fff;
+  padding:10px;
+  text-align:left;
+  box-shadow:0 1px 2px rgba(16,24,40,.03);
+}
+.graphNode:hover{border-color:#aeb9c5}
+.graphNode.selected{border-color:#79b9ae;box-shadow:0 0 0 2px #e3f3ef}
+.graphNode>span,.graphNode>b,.graphNode>small{display:block}
+.graphNode>span{
+  margin-bottom:5px;
+  color:var(--subtle);
+  font-size:7px;
+  font-weight:750;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+.graphNode>b{color:var(--ink);font-size:9px;line-height:1.35}
+.graphNode>small{margin-top:3px;color:var(--muted);font-size:7px;line-height:1.4}
+.graphNode.requirement{border-top:3px solid #7f56d9}
+.graphNode.process{border-top:3px solid #175cd3}
+.graphNode.document{border-top:3px solid var(--brand)}
+.graphNode.evidence{border-top:3px solid #067647}
+.graphNode.verification{border-top:3px solid #b54708}
+.graphNode.risk{border-top:3px solid #d92d20}
+.graphNode.compact{min-height:64px}
+.graphConnector{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  color:#98a2b3;
+}
+.graphConnector .lucide{width:17px;height:17px}
+.graphConnector span{
+  max-width:60px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  color:#98a2b3;
+  font-size:6px;
+  font-weight:700;
+  letter-spacing:.03em;
+  text-align:center;
+}
+.graphBranch{
+  position:absolute;
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  width:260px;
+}
+.graphBranch .branchLine{
+  width:38px;
+  height:1px;
+  margin-top:31px;
+  background:#cfd7df;
+}
+.branchRisk{left:47%;bottom:34px}
+.branchForm{left:63%;bottom:34px}
+.relationshipInspectorV2{padding:14px;overflow:auto}
+.relationshipHelp{margin:7px 0 0;font-size:8px;line-height:1.55;color:var(--muted)}
+
+/* Deprecated landing concepts no longer belong on Controlled Information */
+.repositoryIntro,.masterLibraryGrid,.spaceSectionHead{display:none!important}
+
+@media(max-width:1180px){
+  .relationshipWorkspaceV2{grid-template-columns:1fr}
+  .relationshipCanvas{border-right:0;border-bottom:1px solid var(--line)}
+  .relationshipInspectorV2{min-height:320px}
+  #structure .documentSpaces{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .controlledLibraryToolbar.compact{grid-template-columns:1fr 1fr}
+  .controlledLibraryToolbar.compact .filterSearch{grid-column:1/-1}
+  .controlledLibraryContext{display:none}
+  .relationshipToolbar{grid-template-columns:1fr 1fr}
+  .relationshipToolbar .filterSearch{grid-column:1/-1}
+  #structure .documentSpaces{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .controlledLibraryTop{align-items:flex-start;flex-direction:column;padding:0 10px 8px}
+  .controlledStatusTabs{width:100%}
+  .controlledLibraryToolbar.compact{grid-template-columns:1fr}
+  .relationshipToolbar{grid-template-columns:1fr}
+  .relationshipGraph{min-width:900px}
+  #structure .documentSpaces{grid-template-columns:1fr}
+}
