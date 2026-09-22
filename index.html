@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-intent-flow1">
+<link rel="stylesheet" href="./styles.css?v=20260922-approval-route1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -932,12 +932,104 @@ body.navExpanded .railExpand span{display:inline!important}
     </div>
 
     <div class="registrationPage controlledGovernancePage" style="display:none">
-      <h3>Governance for this revision</h3>
-      <div class="governanceGrid">
-        <section><span class="eyebrow">APPROVAL ROUTE</span><div class="routeBuilder compactRoute"><div class="routeBox done"><span>1</span><div><b>Owner</b><small>Recruitment Manager</small></div></div><i class="routeArrow"><i data-lucide="arrow-right"></i></i><div class="routeBox"><span>2</span><div><b>Process review</b><small>Operations Manager</small></div></div><i class="routeArrow"><i data-lucide="arrow-right"></i></i><div class="routeBox"><span>3</span><div><b>Final approval</b><small>Quality Manager</small></div></div></div></section>
-        <section><span class="eyebrow">CONTROL SETTINGS</span><label class="checkRow"><input type="checkbox" checked> Change reason required</label><label class="checkRow"><input type="checkbox" checked> Obsolete prior revision on release</label><label class="checkRow"><input type="checkbox" checked> Review reminder enabled</label><label class="checkRow"><input type="checkbox"> User acknowledgement required</label></section>
-        <section><span class="eyebrow">ACCESS</span><label class="fieldLabel">View<select class="fieldInput"><option>Company internal</option><option>Restricted departments</option></select></label><label class="fieldLabel">Edit<select class="fieldInput"><option>Owner + Document Control</option></select></label></section>
+      <div class="registrationPageIntro governanceIntro">
+        <div><h3>Governance for this revision</h3><p>Configure who reviews, who approves, and how each stage must be completed before release.</p></div>
+        <span class="singleChoiceBadge"><i data-lucide="git-pull-request"></i>Revision route snapshot</span>
       </div>
+
+      <section class="approvalRouteConfigurator">
+        <div class="routeConfigHeader">
+          <div><span class="eyebrow">APPROVAL ROUTE</span><h4>Review & approval stages</h4><p>The route below is snapshotted when this revision is submitted. Later configuration changes will not alter its history.</p></div>
+          <div class="routePresetControl">
+            <label>Route preset
+              <select id="approvalRoutePreset" onchange="applyApprovalRoutePreset(this.value)">
+                <option value="type-default">Document type default</option>
+                <option value="quality-controlled">Quality controlled</option>
+                <option value="department-quality">Department + Quality</option>
+                <option value="custom">Custom route</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="approvalStages" id="approvalStages">
+          <section class="approvalStage" data-stage-id="review-1" data-stage-kind="review">
+            <div class="stageHeader">
+              <div class="stageOrder">1</div>
+              <div class="stageTitle"><span class="stageKind review">Review</span><div><b>Review stage</b><small>Reviewers check content and return comments before approval.</small></div></div>
+              <div class="stageActions">
+                <button class="iconButton" type="button" onclick="moveApprovalStage(this,-1)" title="Move up"><i data-lucide="arrow-up"></i></button>
+                <button class="iconButton" type="button" onclick="moveApprovalStage(this,1)" title="Move down"><i data-lucide="arrow-down"></i></button>
+                <button class="iconButton dangerIcon" type="button" onclick="removeApprovalStage(this)" title="Remove stage"><i data-lucide="trash-2"></i></button>
+              </div>
+            </div>
+            <div class="stageBody">
+              <label>Completion rule
+                <select class="stageRule">
+                  <option value="all">All reviewers must complete</option>
+                  <option value="any">Any one reviewer can complete</option>
+                </select>
+              </label>
+              <div class="participantBlock">
+                <div class="participantHeader"><span>Reviewers</span><small>1 or more people</small></div>
+                <div class="participantChips" data-role="reviewer">
+                  <span class="participantChip"><span class="participantAvatar">AR</span><span><b>Ana Reyes</b><small>QA Supervisor</small></span><button type="button" onclick="removeRouteParticipant(this)" aria-label="Remove reviewer"><i data-lucide="x"></i></button></span>
+                  <span class="participantChip"><span class="participantAvatar">OF</span><span><b>Oscar Flores</b><small>Operations Manager</small></span><button type="button" onclick="removeRouteParticipant(this)" aria-label="Remove reviewer"><i data-lucide="x"></i></button></span>
+                </div>
+                <div class="participantAddRow">
+                  <select class="participantPicker reviewerPicker"><option value="">Select reviewer...</option><option>Ana Reyes|QA Supervisor</option><option>Oscar Flores|Operations Manager</option><option>John Cruz|Purchasing Manager</option><option>Lea Garcia|Process Owner</option><option>Maria Santos|Quality Manager</option><option>Document Control|Document Controller</option></select>
+                  <button class="btn secondary" type="button" onclick="addRouteParticipant(this,'reviewer')"><i data-lucide="user-plus"></i>Add reviewer</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="approvalStage" data-stage-id="approve-1" data-stage-kind="approve">
+            <div class="stageHeader">
+              <div class="stageOrder">2</div>
+              <div class="stageTitle"><span class="stageKind approve">Approval</span><div><b>Approval stage</b><small>Approvers authorize this revision before it can be released.</small></div></div>
+              <div class="stageActions">
+                <button class="iconButton" type="button" onclick="moveApprovalStage(this,-1)" title="Move up"><i data-lucide="arrow-up"></i></button>
+                <button class="iconButton" type="button" onclick="moveApprovalStage(this,1)" title="Move down"><i data-lucide="arrow-down"></i></button>
+                <button class="iconButton dangerIcon" type="button" onclick="removeApprovalStage(this)" title="Remove stage"><i data-lucide="trash-2"></i></button>
+              </div>
+            </div>
+            <div class="stageBody">
+              <label>Completion rule
+                <select class="stageRule">
+                  <option value="all">All approvers must approve</option>
+                  <option value="any">Any one approver can approve</option>
+                </select>
+              </label>
+              <div class="participantBlock">
+                <div class="participantHeader"><span>Approvers</span><small>1 or more people</small></div>
+                <div class="participantChips" data-role="approver">
+                  <span class="participantChip"><span class="participantAvatar">MS</span><span><b>Maria Santos</b><small>Quality Manager</small></span><button type="button" onclick="removeRouteParticipant(this)" aria-label="Remove approver"><i data-lucide="x"></i></button></span>
+                  <span class="participantChip"><span class="participantAvatar">LG</span><span><b>Lea Garcia</b><small>Process Owner</small></span><button type="button" onclick="removeRouteParticipant(this)" aria-label="Remove approver"><i data-lucide="x"></i></button></span>
+                </div>
+                <div class="participantAddRow">
+                  <select class="participantPicker approverPicker"><option value="">Select approver...</option><option>Maria Santos|Quality Manager</option><option>Lea Garcia|Process Owner</option><option>Oscar Flores|Operations Manager</option><option>John Cruz|Purchasing Manager</option><option>Document Control|Document Controller</option></select>
+                  <button class="btn secondary" type="button" onclick="addRouteParticipant(this,'approver')"><i data-lucide="user-plus"></i>Add approver</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="addStageBar">
+          <button class="btn secondary" type="button" onclick="addApprovalStage('review')"><i data-lucide="plus"></i>Add review stage</button>
+          <button class="btn secondary" type="button" onclick="addApprovalStage('approve')"><i data-lucide="plus"></i>Add approval stage</button>
+          <span></span>
+          <div class="routeSummary" id="routeSummary"><i data-lucide="route"></i><span>2 stages · 2 reviewers · 2 approvers</span></div>
+        </div>
+      </section>
+
+      <div class="governanceSettingsGrid">
+        <section><span class="eyebrow">CONTROL SETTINGS</span><label class="checkRow"><input type="checkbox" checked> Change reason required</label><label class="checkRow"><input type="checkbox" checked> Obsolete prior revision on release</label><label class="checkRow"><input type="checkbox" checked> Review reminder enabled</label><label class="checkRow"><input type="checkbox"> User acknowledgement required</label></section>
+        <section><span class="eyebrow">ACCESS</span><label class="fieldLabel">View<select class="fieldInput"><option>Company internal</option><option>Restricted departments</option></select></label><label class="fieldLabel">Edit<select class="fieldInput"><option>Owner + Document Control</option><option>Owner + Reviewers + Document Control</option></select></label></section>
+        <section><span class="eyebrow">RELEASE</span><label class="fieldLabel">Release authority<select class="fieldInput"><option>System after final approval</option><option>Document Control after final approval</option><option>Quality Manager after final approval</option></select></label><label class="checkRow"><input type="checkbox" checked> Notify reviewers and approvers</label></section>
+      </div>
+
       <label class="fieldLabel">Revision / change reason</label><textarea class="fieldInput">Initial registration in NexusQMS controlled information library.</textarea>
     </div>
 
@@ -1068,6 +1160,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-intent-flow1"></script>
+<script src="./app.js?v=20260922-approval-route1"></script>
 </body>
 </html>
