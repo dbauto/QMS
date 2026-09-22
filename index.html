@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-expand2">
+<link rel="stylesheet" href="./styles.css?v=20260922-expand3">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -83,12 +83,8 @@ body.navExpanded .navItem>span:not(.navIcon):not(.navBadge):not(.navMeta){displa
 body.navExpanded .navMeta{display:inline!important;margin-left:auto!important;color:#73849a!important;font-size:9px!important}
 body.navExpanded .navBadge{position:static!important;margin-left:auto!important;width:auto!important;min-width:18px!important;height:17px!important;padding:0 5px!important;font-size:9px!important;border:0!important;border-radius:9px!important;background:#6a4308!important;color:#ffd58a!important}
 body.navExpanded .railControls{align-items:stretch!important}
-body.navExpanded .railExpand,body.navExpanded .railCollapse{width:100%!important;height:34px!important;justify-content:flex-start!important;padding:0 9px!important;gap:9px!important}
-body.navExpanded .railExpand span,body.navExpanded .railCollapse span{display:inline!important}
-body.navHidden .sideNav{transform:translateX(-100%)!important}
-body.navHidden .mainArea{margin-left:0!important}
-body.navHidden .railReveal{display:grid!important}
-body.navHidden .commandBar{padding-left:56px!important}
+body.navExpanded .railExpand{width:100%!important;height:34px!important;justify-content:flex-start!important;padding:0 9px!important;gap:9px!important}
+body.navExpanded .railExpand span{display:inline!important}
 .commandBar{height:56px!important;background:#fff!important;border-bottom:1px solid #edf0f3!important;position:sticky!important;top:0!important;z-index:20!important;display:flex!important;align-items:center!important;gap:12px!important;padding:0 20px!important;backdrop-filter:none!important}
 .breadcrumb{min-width:0!important;display:flex!important;align-items:center!important;gap:8px!important;color:#8a94a3!important;font-size:11px!important;white-space:nowrap!important}
 .breadcrumb>.lucide{width:13px!important;height:13px!important}
@@ -157,12 +153,10 @@ body.navHidden .commandBar{padding-left:56px!important}
 
     <div class="railControls">
       <button class="railExpand" id="sidebarModeToggle" aria-label="Expand navigation" title="Expand navigation"><i data-lucide="panel-left-open"></i><span>Expand</span></button>
-      <button class="railCollapse" id="sidebarToggle" aria-label="Hide navigation" title="Hide navigation"><i data-lucide="panel-left-close"></i><span>Hide</span></button>
     </div>
     <div class="sideStatus"><i></i><div><b>Protected workspace</b><span>MFA · RBAC · audit logging</span></div></div>
   </aside>
 
-  <button class="railReveal" id="sidebarReveal" aria-label="Show navigation" title="Show navigation"><i data-lucide="panel-left-open"></i></button>
   <main class="mainArea">
     <header class="commandBar">
       <div class="breadcrumb">
@@ -574,6 +568,6 @@ body.navHidden .commandBar{padding-left:56px!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-expand2"></script>
+<script src="./app.js?v=20260922-expand3"></script>
 </body>
 </html>
