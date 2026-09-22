@@ -58,10 +58,9 @@ const viewLabels={
   repository:'Controlled information',
   records:'Records & evidence',
   approvals:'My tasks',
-  register:'Document register',
   audit:'Audit trail',
   relationships:'Relationship map',
-  structure:'Repository structure',
+  structure:'Spaces & structure',
   types:'Document types',
   ai:'QMS AI',
   users:'Users & access',
@@ -116,15 +115,39 @@ function openMasterLibrary(kind){
     showView('records');
   }
 }
-document.getElementById('controlledSearch')?.addEventListener('input',e=>{
-  const q=e.target.value.trim().toLowerCase();
-  document.querySelectorAll('.controlledLibraryRow').forEach(row=>{
-    row.style.display=!q||row.textContent.toLowerCase().includes(q)?'grid':'none';
+let controlledStatusFilter='all';
+function applyControlledLibraryFilters(){
+  const q=(document.getElementById('controlledSearch')?.value||'').trim().toLowerCase();
+  const type=document.getElementById('controlledTypeFilter')?.value||'all';
+  const space=document.getElementById('controlledSpaceFilter')?.value||'all';
+  document.querySelectorAll('#controlledLibraryRows .controlledLibraryRow').forEach(row=>{
+    const matchesSearch=!q||row.textContent.toLowerCase().includes(q);
+    const matchesType=type==='all'||row.dataset.type===type;
+    const matchesSpace=space==='all'||row.dataset.space===space;
+    const matchesStatus=controlledStatusFilter==='all'||row.dataset.status===controlledStatusFilter;
+    row.style.display=matchesSearch&&matchesType&&matchesSpace&&matchesStatus?'grid':'none';
   });
-});
+}
+document.getElementById('controlledSearch')?.addEventListener('input',applyControlledLibraryFilters);
+document.getElementById('controlledTypeFilter')?.addEventListener('change',applyControlledLibraryFilters);
+document.getElementById('controlledSpaceFilter')?.addEventListener('change',applyControlledLibraryFilters);
+document.querySelectorAll('#controlledStatusTabs button').forEach(button=>button.addEventListener('click',()=>{
+  document.querySelectorAll('#controlledStatusTabs button').forEach(x=>x.classList.remove('active'));
+  button.classList.add('active');
+  controlledStatusFilter=button.dataset.controlledStatus||'all';
+  applyControlledLibraryFilters();
+}));
 
 /* QMS document spaces */
 const spaceDefinitions={
+  recruitment:{
+    name:'Recruitment',path:'Recruitment / Controlled Information',count:118,
+    docs:[
+      {code:'QMS-PRO-REC-001',title:'Recruitment Procedure',type:'Procedure · Recruitment',rev:'03',owner:'Recruitment Manager',status:'Effective',kind:'success',review:'01 Sep 2027',approver:'Quality Manager',effective:'01 Sep 2026',purpose:'Defines recruitment planning, candidate screening, interview, selection and retained recruitment-record controls.'},
+      {code:'SOP-REC-004',title:'Candidate Screening SOP',type:'SOP · Recruitment',rev:'04',owner:'Recruitment Manager',status:'Effective',kind:'success',review:'15 Aug 2027',approver:'Quality Manager',effective:'15 Aug 2026',purpose:'Defines the controlled screening workflow, decision criteria and evidence required before candidate endorsement.'},
+      {code:'FORM-REC-006',title:'Candidate Evaluation Form',type:'Form · Recruitment',rev:'02',owner:'Recruitment',status:'Effective',kind:'success',review:'10 Jul 2027',approver:'Recruitment Manager',effective:'10 Jul 2026',purpose:'Controlled master used to record candidate evaluation and interview outcomes.'}
+    ]
+  },
   quality:{
     name:'Quality Management',path:'Quality / Procedures',count:486,
     docs:[
@@ -284,6 +307,7 @@ let activeSpace=null;
 function openDocumentSpace(spaceId,override=null){
   const base=override||spaceDefinitions[spaceId];
   if(!base) return;
+  if(!document.getElementById('repository')?.classList.contains('active')) showView('repository');
   activeSpace=base;
   document.getElementById('repositoryHub').style.display='none';
   document.getElementById('repositorySpace').style.display='block';
@@ -291,17 +315,35 @@ function openDocumentSpace(spaceId,override=null){
   document.getElementById('spaceDetailCount').textContent=base.count||0;
   document.getElementById('spaceDetailPath').textContent=base.path||base.name;
   renderSpaceRows(base);
-  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Documents / '+base.name;
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information / '+base.name;
   window.scrollTo({top:0,behavior:'smooth'});
 }
+function openControlledDocument(spaceId,documentCode){
+  const base=spaceDefinitions[spaceId];
+  if(!base) return;
+  openDocumentSpace(spaceId);
+  const index=(base.docs||[]).findIndex(doc=>doc.code===documentCode);
+  if(index<0) return;
+  const row=document.querySelector('#spaceDocumentRows .spaceDocumentItem[data-space-doc-index="'+index+'"]');
+  const doc=base.docs[index];
+  if(doc) selectSpaceDocument(doc,row);
+}
+
 function closeDocumentSpace(){
   const hub=document.getElementById('repositoryHub');
   const detail=document.getElementById('repositorySpace');
   if(hub) hub.style.display='block';
   if(detail) detail.style.display='none';
   activeSpace=null;
-  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Documents';
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information';
 }
+
+document.querySelectorAll('#structureTabs [data-structure-tab]').forEach(button=>button.addEventListener('click',()=>{
+  const tab=button.dataset.structureTab;
+  document.querySelectorAll('#structureTabs [data-structure-tab]').forEach(x=>x.classList.toggle('active',x===button));
+  document.querySelectorAll('[data-structure-panel]').forEach(panel=>panel.classList.toggle('active',panel.dataset.structurePanel===tab));
+  refreshIcons();
+}));
 
 const spacesHost=document.getElementById('documentSpaces');
 spacesHost?.addEventListener('click',e=>{
