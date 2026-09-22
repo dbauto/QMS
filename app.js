@@ -110,6 +110,7 @@ document.querySelectorAll('[data-toast-title]').forEach(button=>{
 function openMasterLibrary(kind){
   if(kind==='controlled'){
     showView('repository');
+    setRepositoryPanel('all');
     setTimeout(()=>document.getElementById('controlledMasterPanel')?.scrollIntoView({behavior:'smooth',block:'start'}),120);
   }else if(kind==='record'){
     showView('records');
