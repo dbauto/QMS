@@ -995,6 +995,10 @@ function openRegisterResource(kind='controlled'){
     generateControlledDocumentId();
   }
   renderRegistration();
+  if(registrationClass==='controlled'){
+    const preset=document.getElementById('approvalRoutePreset');
+    if(preset){preset.value='type-default';applyApprovalRoutePreset('type-default');}
+  }
   document.getElementById('registerResourceModal')?.classList.add('show');
   refreshIcons();
 }
@@ -1174,6 +1178,175 @@ document.getElementById('quickSpaceCode')?.addEventListener('input',e=>{
   updateQuickSpacePattern();
 });
 
+
+const approvalPeople={
+  reviewers:[
+    ['Ana Reyes','QA Supervisor'],
+    ['Oscar Flores','Operations Manager'],
+    ['John Cruz','Purchasing Manager'],
+    ['Lea Garcia','Process Owner'],
+    ['Maria Santos','Quality Manager'],
+    ['Document Control','Document Controller']
+  ],
+  approvers:[
+    ['Maria Santos','Quality Manager'],
+    ['Lea Garcia','Process Owner'],
+    ['Oscar Flores','Operations Manager'],
+    ['John Cruz','Purchasing Manager'],
+    ['Document Control','Document Controller']
+  ]
+};
+
+function participantInitials(name){
+  return String(name||'').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'U';
+}
+
+function participantChipHtml(name,title){
+  return '<span class="participantChip"><span class="participantAvatar">'+escapeHtml(participantInitials(name))+'</span><span><b>'+escapeHtml(name)+'</b><small>'+escapeHtml(title)+'</small></span><button type="button" onclick="removeRouteParticipant(this)" aria-label="Remove participant"><i data-lucide="x"></i></button></span>';
+}
+
+function participantOptionsHtml(role){
+  const list=role==='approver'?approvalPeople.approvers:approvalPeople.reviewers;
+  return '<option value="">Select '+(role==='approver'?'approver':'reviewer')+'...</option>'+list.map(([n,t])=>'<option>'+escapeHtml(n)+'|'+escapeHtml(t)+'</option>').join('');
+}
+
+function approvalStageHtml(kind,participants=[]){
+  const review=kind==='review';
+  const role=review?'reviewer':'approver';
+  const label=review?'Review':'Approval';
+  const description=review?'Reviewers check content and return comments before approval.':'Approvers authorize this revision before it can be released.';
+  const ruleAll=review?'All reviewers must complete':'All approvers must approve';
+  const ruleAny=review?'Any one reviewer can complete':'Any one approver can approve';
+  return '<section class="approvalStage" data-stage-kind="'+kind+'">'
+    +'<div class="stageHeader"><div class="stageOrder">1</div><div class="stageTitle"><span class="stageKind '+kind+'">'+label+'</span><div><b>'+label+' stage</b><small>'+description+'</small></div></div>'
+    +'<div class="stageActions"><button class="iconButton" type="button" onclick="moveApprovalStage(this,-1)" title="Move up"><i data-lucide="arrow-up"></i></button><button class="iconButton" type="button" onclick="moveApprovalStage(this,1)" title="Move down"><i data-lucide="arrow-down"></i></button><button class="iconButton dangerIcon" type="button" onclick="removeApprovalStage(this)" title="Remove stage"><i data-lucide="trash-2"></i></button></div></div>'
+    +'<div class="stageBody"><label>Completion rule<select class="stageRule"><option value="all">'+ruleAll+'</option><option value="any">'+ruleAny+'</option></select></label>'
+    +'<div class="participantBlock"><div class="participantHeader"><span>'+(review?'Reviewers':'Approvers')+'</span><small>1 or more people</small></div>'
+    +'<div class="participantChips" data-role="'+role+'">'+participants.map(p=>participantChipHtml(p[0],p[1])).join('')+'</div>'
+    +'<div class="participantAddRow"><select class="participantPicker '+role+'Picker">'+participantOptionsHtml(role)+'</select><button class="btn secondary" type="button" onclick="addRouteParticipant(this,\''+role+'\')"><i data-lucide="user-plus"></i>Add '+role+'</button></div></div></div></section>';
+}
+
+function renumberApprovalStages(){
+  document.querySelectorAll('#approvalStages .approvalStage').forEach((stage,i)=>{
+    const order=stage.querySelector('.stageOrder');
+    if(order) order.textContent=String(i+1);
+  });
+  updateApprovalRouteSummary();
+  refreshIcons();
+}
+
+function updateApprovalRouteSummary(){
+  const stages=[...document.querySelectorAll('#approvalStages .approvalStage')];
+  const reviewers=document.querySelectorAll('#approvalStages .participantChips[data-role="reviewer"] .participantChip').length;
+  const approvers=document.querySelectorAll('#approvalStages .participantChips[data-role="approver"] .participantChip').length;
+  const summary=document.querySelector('#routeSummary span');
+  if(summary) summary.textContent=stages.length+' stage'+(stages.length===1?'':'s')+' · '+reviewers+' reviewer'+(reviewers===1?'':'s')+' · '+approvers+' approver'+(approvers===1?'':'s');
+}
+
+function addRouteParticipant(button,role){
+  const row=button.closest('.participantAddRow');
+  const select=row?.querySelector('.participantPicker');
+  const chips=row?.previousElementSibling;
+  const value=select?.value||'';
+  if(!value||!chips) return;
+  const [name,title='']=value.split('|');
+  const exists=[...chips.querySelectorAll('.participantChip b')].some(el=>el.textContent.trim()===name.trim());
+  if(exists){
+    toast('Already added',name+' is already included in this stage.');
+    return;
+  }
+  chips.insertAdjacentHTML('beforeend',participantChipHtml(name,title));
+  select.value='';
+  document.getElementById('approvalRoutePreset').value='custom';
+  updateApprovalRouteSummary();
+  refreshIcons();
+}
+
+function removeRouteParticipant(button){
+  const chip=button.closest('.participantChip');
+  const stage=button.closest('.approvalStage');
+  chip?.remove();
+  document.getElementById('approvalRoutePreset').value='custom';
+  updateApprovalRouteSummary();
+  const remaining=stage?.querySelectorAll('.participantChip').length||0;
+  if(remaining===0) toast('Stage needs a participant','Add at least one '+(stage?.dataset.stageKind==='approve'?'approver':'reviewer')+' before submitting the revision.');
+}
+
+function addApprovalStage(kind){
+  const host=document.getElementById('approvalStages');
+  if(!host) return;
+  host.insertAdjacentHTML('beforeend',approvalStageHtml(kind,[]));
+  document.getElementById('approvalRoutePreset').value='custom';
+  renumberApprovalStages();
+}
+
+function removeApprovalStage(button){
+  const host=document.getElementById('approvalStages');
+  const stage=button.closest('.approvalStage');
+  if(!host||!stage) return;
+  const kind=stage.dataset.stageKind;
+  const sameKind=host.querySelectorAll('.approvalStage[data-stage-kind="'+kind+'"]').length;
+  if(kind==='approve' && sameKind<=1){
+    toast('Approval stage required','A controlled document must keep at least one approval stage.');
+    return;
+  }
+  stage.remove();
+  document.getElementById('approvalRoutePreset').value='custom';
+  renumberApprovalStages();
+}
+
+function moveApprovalStage(button,direction){
+  const stage=button.closest('.approvalStage');
+  if(!stage) return;
+  if(direction<0 && stage.previousElementSibling) stage.parentElement.insertBefore(stage,stage.previousElementSibling);
+  if(direction>0 && stage.nextElementSibling) stage.parentElement.insertBefore(stage.nextElementSibling,stage);
+  document.getElementById('approvalRoutePreset').value='custom';
+  renumberApprovalStages();
+}
+
+function applyApprovalRoutePreset(value){
+  if(value==='custom') return;
+  const host=document.getElementById('approvalStages');
+  if(!host) return;
+  let stages=[];
+  if(value==='quality-controlled'){
+    stages=[
+      {kind:'review',people:[['Ana Reyes','QA Supervisor'],['Oscar Flores','Operations Manager']]},
+      {kind:'approve',people:[['Maria Santos','Quality Manager'],['Lea Garcia','Process Owner']]}
+    ];
+  }else if(value==='department-quality'){
+    stages=[
+      {kind:'review',people:[['Oscar Flores','Operations Manager'],['John Cruz','Purchasing Manager']]},
+      {kind:'approve',people:[['Maria Santos','Quality Manager']]}
+    ];
+  }else{
+    stages=[
+      {kind:'review',people:[['Lea Garcia','Process Owner']]},
+      {kind:'approve',people:[['Maria Santos','Quality Manager']]}
+    ];
+  }
+  host.innerHTML=stages.map(s=>approvalStageHtml(s.kind,s.people)).join('');
+  renumberApprovalStages();
+}
+
+function approvalRouteSnapshotText(){
+  const stages=[...document.querySelectorAll('#approvalStages .approvalStage')];
+  return stages.map((stage,i)=>{
+    const kind=stage.dataset.stageKind==='approve'?'Approval':'Review';
+    const rule=stage.querySelector('.stageRule')?.value==='any'?'any one':'all';
+    const people=[...stage.querySelectorAll('.participantChip b')].map(x=>x.textContent.trim());
+    return (i+1)+'. '+kind+' ('+rule+'): '+people.join(', ');
+  }).join(' | ');
+}
+
+document.getElementById('approvalStages')?.addEventListener('change',e=>{
+  if(e.target.classList.contains('stageRule')){
+    const preset=document.getElementById('approvalRoutePreset');
+    if(preset) preset.value='custom';
+    updateApprovalRouteSummary();
+  }
+});
+
 function finishResourceRegistration(){
   const controlled=registrationClass==='controlled';
 
@@ -1197,7 +1370,7 @@ function finishResourceRegistration(){
       }catch(e){}
     }
     showView('repository');
-    toast('Controlled resource registered',(generatedId||'The document')+' was created as a Draft in Controlled Information with QMS mapping, relationships and a snapshotted approval route.');
+    toast('Controlled resource registered',(generatedId||'The document')+' was created as a Draft. Approval route snapshot: '+approvalRouteSnapshotText());
     setTimeout(()=>document.getElementById('controlledMasterPanel')?.scrollIntoView({behavior:'smooth',block:'start'}),120);
   }else{
     showView('records');
@@ -1308,3 +1481,5 @@ const initialExisting=document.querySelector('.existingResourceItem.selected');
 if(initialExisting) selectExistingResource(initialExisting);
 configureSourceIntentForClass();
 selectRegistrationSource('upload');
+
+updateApprovalRouteSummary();
