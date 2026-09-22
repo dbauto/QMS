@@ -8,7 +8,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-revision-visible2">
+<link rel="stylesheet" href="./styles.css?v=20260922-revision-distinct3">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -528,10 +528,21 @@ body.navExpanded .railExpand span{display:inline!important}
             <div class="openRevisionButtons"><button class="btn secondary" onclick="openSecureRevisionDownload()"><i data-lucide="file-down"></i>Working copy</button><button class="btn link" onclick="showView('approvals')">View task</button></div>
           </div>
 
+          <div class="revisionRequestBanner" id="revisionRequestBanner" style="display:none">
+            <div class="revisionRequestIcon"><i data-lucide="message-square-warning"></i></div>
+            <div class="revisionRequestSummary">
+              <span class="recordLabel">REVISION REQUESTED</span>
+              <b>A change has been requested, but no new revision exists yet</b>
+              <small>PIC: <span id="pendingRevisionPic">—</span> · Due <span id="pendingRevisionDue">—</span></small>
+            </div>
+            <div class="revisionRequestReason"><small>Requested change</small><b id="pendingRevisionReason">—</b></div>
+            <div class="revisionRequestButtons"><button class="btn primary" onclick="openRevisionRequest('start')"><i data-lucide="git-branch-plus"></i>Start revision</button><button class="btn link" onclick="showView('approvals')">View task</button></div>
+          </div>
+
           <div class="documentDetailTabs" id="documentDetailTabs">
-            <button class="active" data-doc-tab="document" onclick="setDocumentDetailTab('document')">Document</button>
-            <button data-doc-tab="traceability" onclick="setDocumentDetailTab('traceability')">Traceability</button>
-            <button data-doc-tab="revision" onclick="setDocumentDetailTab('revision')">Revision history</button>
+            <button type="button" class="active" data-doc-tab="document">Document</button>
+            <button type="button" data-doc-tab="traceability">Traceability</button>
+            <button type="button" data-doc-tab="revision">Revision history</button>
             <button data-toast-title="Audit history" data-toast-message="Audit events for this resource are available in Audit trail.">Audit history</button>
           </div>
 
@@ -1345,6 +1356,11 @@ body.navExpanded .railExpand span{display:inline!important}
       <span class="tag success">Effective stays current</span>
     </div>
 
+    <div class="revisionModeOutcome request" id="revisionModeOutcome">
+      <span id="revisionOutcomeIcon"><i data-lucide="clipboard-list"></i></span>
+      <div><b id="revisionOutcomeTitle">This creates a request only</b><p id="revisionOutcomeText">The PIC receives a task. No revision number is created and no editable working copy can be downloaded until the PIC starts the revision.</p></div>
+    </div>
+
     <div class="revisionForm">
       <label class="fullField">What needs to be revised? <span>Required</span><textarea id="revisionRequestReason" placeholder="Describe the required change, issue, customer requirement or improvement..."></textarea></label>
       <label>Person in charge (PIC)
@@ -1361,13 +1377,13 @@ body.navExpanded .railExpand span{display:inline!important}
     </div>
 
     <div class="revisionNotifyBlock">
-      <div class="revisionNotifyHead"><i data-lucide="bell-ring"></i><div><b>Notify the existing document authorities</b><span>They are informed that a new revision has been opened; this does not make them the new approver automatically.</span></div></div>
+      <div class="revisionNotifyHead"><i data-lucide="bell-ring"></i><div><b id="revisionNotifyTitle">Notify the relevant people</b><span id="revisionNotifyCopy">The PIC receives the request, and existing document authorities can be informed for visibility.</span></div></div>
       <label><input type="checkbox" checked><span>Current document owner / manager</span><b id="notifyDocumentOwner">Document Owner</b></label>
       <label><input type="checkbox" checked><span>Previous reviewer(s)</span><b>Department reviewer</b></label>
       <label><input type="checkbox" checked><span>Previous approver(s)</span><b id="notifyPreviousApprover">Quality Manager</b></label>
     </div>
 
-    <div class="revisionRuleNote"><i data-lucide="shield-check"></i><span>The current effective revision is never overwritten. iQMS creates a separate working revision and keeps the effective revision available until the new revision is approved and released.</span></div>
+    <div class="revisionRuleNote"><i data-lucide="shield-check"></i><span id="revisionRuleText">A revision request does not alter the effective document. The next revision is created only when an authorized PIC starts the revision.</span></div>
 
     <div class="modalActions"><button class="btn secondary" onclick="closeRevisionRequest()">Cancel</button><span></span><button class="btn primary" id="revisionSubmitBtn" onclick="submitRevisionRequest()"><i data-lucide="send"></i>Create revision task</button></div>
   </div>
@@ -1881,6 +1897,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-revision-visible2"></script>
+<script src="./app.js?v=20260922-revision-distinct3"></script>
 </body>
 </html>

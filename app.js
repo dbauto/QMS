@@ -232,7 +232,10 @@ document.getElementById('removeCompanyLogoBtn')?.addEventListener('click',()=>to
 
 let revisionRequestMode='request';
 let openRevisions={};
+let revisionRequests={};
 try{openRevisions=JSON.parse(localStorage.getItem('iqms.openRevisions')||'{}')||{}}catch(e){openRevisions={}}
+try{revisionRequests=JSON.parse(localStorage.getItem('iqms.revisionRequests')||'{}')||{}}catch(e){revisionRequests={}}
+
 if(!Object.keys(openRevisions).length){
   openRevisions['QMS-PRO-REC-001']={
     code:'QMS-PRO-REC-001',
@@ -245,7 +248,7 @@ if(!Object.keys(openRevisions).length){
     reason:'Update candidate screening criteria and interview evidence requirements.',
     reference:'Management review action MR-2026-17',
     requestedBy:'Maria Santos',
-    mode:'request',
+    mode:'start',
     stage:'Draft preparation',
     downloaded:true,
     createdAt:'2026-09-22T09:18:00+08:00',
@@ -253,6 +256,21 @@ if(!Object.keys(openRevisions).length){
     space:'Recruitment'
   };
   try{localStorage.setItem('iqms.openRevisions',JSON.stringify(openRevisions))}catch(e){}
+}
+if(!Object.keys(revisionRequests).length && !openRevisions['SOP-QA-014']){
+  revisionRequests['SOP-QA-014']={
+    code:'SOP-QA-014',
+    title:'Control of Nonconforming Outputs',
+    pic:'Ana Reyes',
+    due:'2026-09-30',
+    reason:'Clarify segregation and disposition steps for nonconforming outputs.',
+    reference:'Internal audit follow-up IA-QA-2026-007',
+    requestedBy:'Maria Santos',
+    requestedAt:'2026-09-22T10:05:00+08:00',
+    space:'Quality Management',
+    stage:'Awaiting PIC to start revision'
+  };
+  try{localStorage.setItem('iqms.revisionRequests',JSON.stringify(revisionRequests))}catch(e){}
 }
 
 function activeControlledDoc(){
@@ -285,30 +303,79 @@ function profileEmailForPic(pic){
 function persistOpenRevisions(){
   try{localStorage.setItem('iqms.openRevisions',JSON.stringify(openRevisions))}catch(e){}
 }
+function persistRevisionRequests(){
+  try{localStorage.setItem('iqms.revisionRequests',JSON.stringify(revisionRequests))}catch(e){}
+}
+function revisionStateBadge(code){
+  if(openRevisions[code]) return '<em class="revisionOpenInline">'+escapeHtml(openRevisions[code].rev)+' open</em>';
+  if(revisionRequests[code]) return '<em class="revisionRequestInline">Revision requested</em>';
+  return '';
+}
 function openRevisionRequest(mode='request'){
   const doc=activeControlledDoc();
   if(!doc) return;
-  if(openRevisions[doc.code]){
-    toast('Revision already open',openRevisions[doc.code].rev+' is already being prepared by '+openRevisions[doc.code].pic+'.');
+
+  const existingOpen=openRevisions[doc.code];
+  const existingRequest=revisionRequests[doc.code];
+
+  if(existingOpen){
+    toast('Revision already open',existingOpen.rev+' is already being prepared by '+existingOpen.pic+'.');
+    setDocumentDetailTab('revision');
     refreshOpenRevisionIndicators(doc);
     return;
   }
+  if(mode==='request' && existingRequest){
+    toast('Revision request already pending','The request is assigned to '+existingRequest.pic+'. The PIC must start the revision before a working copy is created.');
+    refreshOpenRevisionIndicators(doc);
+    return;
+  }
+
   revisionRequestMode=mode;
   const start=mode==='start';
+  const nextRev=nextRevisionNumber(doc.rev);
+
   document.getElementById('revisionModeEyebrow').textContent=start?'START REVISION':'REVISION REQUEST';
-  document.getElementById('revisionModalTitle').textContent=start?'Start a new document revision':'Request a document revision';
+  document.getElementById('revisionModalTitle').textContent=start?'Start '+('Rev '+nextRev):'Request a document revision';
   document.getElementById('revisionModalSubtitle').textContent=start
-    ? 'Create the next working revision from the latest effective source and assign the PIC.'
-    : 'Describe what needs to change and assign the PIC who will prepare the next revision.';
-  document.getElementById('revisionSubmitBtn').innerHTML=start?'<i data-lucide="git-branch-plus"></i>Open revision':'<i data-lucide="send"></i>Create revision task';
+    ? 'This immediately opens the next working revision and enables the secure editable working-copy flow.'
+    : 'This creates a task for the PIC only. It does not create the next revision yet.';
+
+  const outcome=document.getElementById('revisionModeOutcome');
+  if(outcome) outcome.className='revisionModeOutcome '+(start?'start':'request');
+  const outcomeIcon=document.getElementById('revisionOutcomeIcon');
+  if(outcomeIcon) outcomeIcon.innerHTML=start?'<i data-lucide="git-branch-plus"></i>':'<i data-lucide="clipboard-list"></i>';
+  document.getElementById('revisionOutcomeTitle').textContent=start
+    ? 'This opens Rev '+nextRev+' now'
+    : 'This creates a request only';
+  document.getElementById('revisionOutcomeText').textContent=start
+    ? 'iQMS creates Rev '+nextRev+' as a separate working revision, keeps Rev '+doc.rev+' effective, then offers the PIC the password-protected editable working copy.'
+    : 'The PIC receives a task. No revision number is created and no editable working copy can be downloaded until the PIC starts the revision.';
+
+  document.getElementById('revisionNotifyTitle').textContent=start
+    ? 'Notify people that the revision is now open'
+    : 'Notify people about the requested change';
+  document.getElementById('revisionNotifyCopy').textContent=start
+    ? 'The PIC, previous manager/owner, reviewer(s) and approver(s) are informed that a working revision has opened.'
+    : 'The PIC receives the action task. Existing manager/owner, reviewer(s) and approver(s) can be informed that a change was requested.';
+  document.getElementById('revisionRuleText').textContent=start
+    ? 'The current effective revision is never overwritten. Rev '+nextRev+' is a separate working revision until review, approval and release.'
+    : 'A revision request does not alter the effective document. The next revision is created only when an authorized PIC starts the revision.';
+
+  document.getElementById('revisionSubmitBtn').innerHTML=start
+    ? '<i data-lucide="git-branch-plus"></i>Open Rev '+nextRev
+    : '<i data-lucide="send"></i>Send revision request';
+
   document.getElementById('revisionContextTitle').textContent=doc.title;
   document.getElementById('revisionContextCode').textContent=doc.code;
   document.getElementById('revisionContextRev').textContent='Rev '+doc.rev;
   document.getElementById('notifyDocumentOwner').textContent=doc.owner||'Document Owner';
   document.getElementById('notifyPreviousApprover').textContent=doc.approver||'Previous approver';
-  document.getElementById('revisionRequestReason').value='';
-  document.getElementById('revisionReference').value='';
-  if(start) document.getElementById('revisionPic').value='Maria Santos';
+
+  document.getElementById('revisionRequestReason').value=existingRequest?.reason||'';
+  document.getElementById('revisionReference').value=existingRequest?.reference||'';
+  document.getElementById('revisionDueDate').value=existingRequest?.due||'2026-09-29';
+  document.getElementById('revisionPic').value=existingRequest?.pic||(start?'Maria Santos':'Ana Reyes');
+
   document.getElementById('revisionRequestModal')?.classList.add('show');
   refreshIcons();
 }
@@ -318,53 +385,92 @@ function closeRevisionRequest(){
 function submitRevisionRequest(){
   const doc=activeControlledDoc();
   if(!doc) return;
+
   const reason=document.getElementById('revisionRequestReason')?.value.trim();
   if(!reason){
     document.getElementById('revisionRequestReason')?.focus();
-    toast('Change request required','Describe what needs to be revised before opening the task.');
+    toast('Change request required','Describe what needs to be revised before continuing.');
     return;
   }
+
   const pic=document.getElementById('revisionPic')?.value||'Maria Santos';
   const due=document.getElementById('revisionDueDate')?.value||'';
   const reference=document.getElementById('revisionReference')?.value.trim()||'';
+
+  if(revisionRequestMode==='request'){
+    revisionRequests[doc.code]={
+      code:doc.code,title:doc.title,pic,due,reason,reference,
+      requestedBy:'Maria Santos',requestedAt:new Date().toISOString(),
+      space:activeSpace?.name||'',stage:'Awaiting PIC to start revision'
+    };
+    persistRevisionRequests();
+    closeRevisionRequest();
+    refreshOpenRevisionIndicators(doc);
+    renderDocumentRevisionHistory(doc);
+    refreshRevisionTasks();
+    refreshRevisionDashboard();
+    toast('Revision request sent',
+      pic+' received a task for '+doc.code+'. No new revision number or editable working copy exists yet.');
+    return;
+  }
+
+  const pending=revisionRequests[doc.code];
   const rev=nextRevisionNumber(doc.rev);
   openRevisions[doc.code]={
     code:doc.code,title:doc.title,currentRev:doc.rev,rev:'Rev '+rev,revRaw:rev,
-    pic,due,reason,reference,requestedBy:'Maria Santos',mode:revisionRequestMode,
-    stage:revisionRequestMode==='start'?'Working copy required':'Revision requested',
-    downloaded:false,createdAt:new Date().toISOString(),space:activeSpace?.name||''
+    pic,due,reason,reference,
+    requestedBy:pending?.requestedBy||'Maria Santos',
+    mode:'start',stage:'Working copy required',downloaded:false,
+    createdAt:new Date().toISOString(),space:activeSpace?.name||''
   };
+  if(pending) delete revisionRequests[doc.code];
   persistOpenRevisions();
+  persistRevisionRequests();
   closeRevisionRequest();
   refreshOpenRevisionIndicators(doc);
   renderDocumentRevisionHistory(doc);
   refreshRevisionTasks();
   refreshRevisionDashboard();
-  toast(revisionRequestMode==='start'?'Revision opened':'Revision task created',
-    'Rev '+rev+' is open for '+doc.code+'. '+pic+' is the PIC. Existing reviewer(s), approver(s) and document owner were notified.');
-  if(revisionRequestMode==='start') openSecureRevisionDownload();
+  toast('Revision opened',
+    'Rev '+rev+' is now open for '+doc.code+'. Rev '+doc.rev+' remains effective until the new revision is approved and released.');
+  openSecureRevisionDownload();
 }
 function renderDocumentRevisionHistory(doc=activeControlledDoc()){
-  if(!doc) return;
+  if(!doc||typeof doc!=='object') return;
   const revision=openRevisions[doc.code];
+  const request=revisionRequests[doc.code];
   const current='Rev '+(doc.rev||'—');
   const set=(id,value)=>{const el=document.getElementById(id);if(el) el.textContent=value};
+
   set('docRevisionHistoryTitle',doc.title+' · revision history');
   set('revisionCurrentEffective',current);
   set('revisionCurrentEffectiveDate',(doc.effective&&doc.effective!=='—')?'Effective '+doc.effective:'Current effective revision');
-  set('revisionOpenState',revision?revision.rev+' · '+(revision.downloaded?'Draft preparation':revision.stage):'No open revision');
-  set('revisionOpenPicState',revision?'PIC: '+revision.pic:'No working revision in progress');
+
+  if(revision){
+    set('revisionOpenState',revision.rev+' · '+(revision.downloaded?'Draft preparation':revision.stage));
+    set('revisionOpenPicState','PIC: '+revision.pic);
+  }else if(request){
+    set('revisionOpenState','Revision requested · no revision number yet');
+    set('revisionOpenPicState','Assigned PIC: '+request.pic+' · awaiting start');
+  }else{
+    set('revisionOpenState','No open revision');
+    set('revisionOpenPicState','No working revision in progress');
+  }
+
   set('docHistoryOpenRev',revision?revision.revRaw:'—');
   set('docHistoryOpenStage',revision?(revision.downloaded?'Draft preparation':revision.stage):'No open revision');
-  set('docHistoryOpenReason',revision?revision.reason:'No open revision for this document.');
+  set('docHistoryOpenReason',revision?revision.reason:'No working revision exists yet.');
   const row=document.getElementById('documentRevisionOpenRow');
   if(row) row.style.display=revision?'grid':'none';
 }
 function refreshOpenRevisionIndicators(doc=activeControlledDoc()){
-  const banner=document.getElementById('openRevisionBanner');
-  const revision=doc?openRevisions[doc.code]:null;
-  if(banner){
-    banner.style.display=revision?'grid':'none';
+  const openBanner=document.getElementById('openRevisionBanner');
+  const requestBanner=document.getElementById('revisionRequestBanner');
+  const revision=doc&&typeof doc==='object'?openRevisions[doc.code]:null;
+  const request=doc&&typeof doc==='object'?revisionRequests[doc.code]:null;
+
+  if(openBanner){
+    openBanner.style.display=revision?'grid':'none';
     if(revision){
       document.getElementById('openRevisionNumber').textContent=revision.rev;
       document.getElementById('openRevisionPic').textContent=revision.pic;
@@ -373,20 +479,32 @@ function refreshOpenRevisionIndicators(doc=activeControlledDoc()){
       document.getElementById('openRevisionReason').textContent=revision.reason;
     }
   }
+  if(requestBanner){
+    requestBanner.style.display=!revision&&request?'grid':'none';
+    if(!revision&&request){
+      document.getElementById('pendingRevisionPic').textContent=request.pic;
+      document.getElementById('pendingRevisionDue').textContent=request.due||'Not set';
+      document.getElementById('pendingRevisionReason').textContent=request.reason;
+    }
+  }
+
   document.querySelectorAll('#controlledLibraryRows .controlledLibraryRow').forEach(row=>{
     const code=row.querySelector('div>b')?.textContent.trim();
-    const data=openRevisions[code];
-    let badge=row.querySelector('.revisionOpenInline');
-    if(data&&!badge){
+    const open=openRevisions[code];
+    const pending=revisionRequests[code];
+    let badge=row.querySelector('.revisionOpenInline,.revisionRequestInline');
+    if((open||pending)&&!badge){
       badge=document.createElement('span');
-      badge.className='revisionOpenInline';
       row.querySelector('div')?.appendChild(badge);
     }
     if(badge){
-      if(data){badge.textContent=data.rev+' open';badge.style.display='inline-flex'}
+      badge.className=open?'revisionOpenInline':'revisionRequestInline';
+      if(open){badge.textContent=open.rev+' open';badge.style.display='inline-flex'}
+      else if(pending){badge.textContent='Revision requested';badge.style.display='inline-flex'}
       else badge.style.display='none';
     }
   });
+
   renderDmsDocuments();
   if(activeSpace) renderSpaceRows(activeSpace);
 }
@@ -426,6 +544,7 @@ function confirmSecureRevisionDownload(){
   persistOpenRevisions();
   closeSecureRevisionDownload();
   refreshOpenRevisionIndicators(doc);
+  renderDocumentRevisionHistory(doc);
   refreshRevisionTasks();
   refreshRevisionDashboard();
   toast('Secure working copy prepared','Password sent to '+profileEmailForPic(revision.pic)+'. The download event was added to the audit trail and dashboard activity.');
@@ -434,12 +553,28 @@ function refreshRevisionTasks(){
   const host=document.getElementById('revisionTaskQueue');
   if(!host) return;
   const revisions=Object.values(openRevisions);
-  host.innerHTML=revisions.map(r=>'<button class="approvalItem revisionTaskItem" onclick="openControlledDocumentByCode(\''+escapeHtml(r.code)+'\')"><div class="approvalTop"><span class="tag info">'+escapeHtml(r.downloaded?'In progress':'Revision open')+'</span><small>Revision task</small></div><b>'+escapeHtml(r.code)+' · '+escapeHtml(r.rev)+'</b><strong>'+escapeHtml(r.title)+'</strong><span>PIC: '+escapeHtml(r.pic)+' · Due '+escapeHtml(r.due||'Not set')+'</span></button>').join('');
-  const assigned=revisions.filter(r=>r.pic==='Maria Santos').length;
-  const requested=revisions.filter(r=>r.requestedBy==='Maria Santos'&&r.pic!=='Maria Santos').length;
+  const requests=Object.values(revisionRequests);
+
+  const requestRows=requests.map(r=>
+    '<button class="approvalItem revisionRequestTaskItem" onclick="openControlledDocumentByCode(\''+escapeHtml(r.code)+'\')">'
+    +'<div class="approvalTop"><span class="tag warning">Revision requested</span><small>Action for PIC</small></div>'
+    +'<b>'+escapeHtml(r.code)+'</b><strong>'+escapeHtml(r.title)+'</strong>'
+    +'<span>PIC: '+escapeHtml(r.pic)+' · No revision number yet · Due '+escapeHtml(r.due||'Not set')+'</span></button>'
+  ).join('');
+
+  const revisionRows=revisions.map(r=>
+    '<button class="approvalItem revisionTaskItem" onclick="openControlledDocumentByCode(\''+escapeHtml(r.code)+'\')">'
+    +'<div class="approvalTop"><span class="tag info">'+escapeHtml(r.downloaded?'In progress':'Revision open')+'</span><small>Working revision</small></div>'
+    +'<b>'+escapeHtml(r.code)+' · '+escapeHtml(r.rev)+'</b><strong>'+escapeHtml(r.title)+'</strong>'
+    +'<span>PIC: '+escapeHtml(r.pic)+' · Due '+escapeHtml(r.due||'Not set')+'</span></button>'
+  ).join('');
+
+  host.innerHTML=requestRows+revisionRows;
+  const assigned=[...requests,...revisions].filter(r=>r.pic==='Maria Santos').length;
+  const requested=requests.filter(r=>r.requestedBy==='Maria Santos'&&r.pic!=='Maria Santos').length;
   const a=document.getElementById('assignedTaskCount'); if(a) a.textContent=9+assigned;
   const q=document.getElementById('requestedTaskCount'); if(q) q.textContent=4+requested;
-  const all=document.getElementById('allActiveTaskCount'); if(all) all.textContent=24+revisions.length;
+  const all=document.getElementById('allActiveTaskCount'); if(all) all.textContent=24+requests.length+revisions.length;
 }
 function findDocByCode(code){
   for(const [spaceId,space] of Object.entries(spaceDefinitions)){
@@ -456,12 +591,21 @@ function refreshRevisionDashboard(){
   const work=document.getElementById('overviewWorkList');
   const activity=document.getElementById('overviewActivityList');
   if(work){
-    work.querySelectorAll('.revisionDashboardRow').forEach(x=>x.remove());
+    work.querySelectorAll('.revisionDashboardRow,.revisionRequestDashboardRow').forEach(x=>x.remove());
+
     Object.values(openRevisions).slice(0,2).reverse().forEach(r=>{
       const row=document.createElement('button');
       row.className='overviewWorkRow revisionDashboardRow';
       row.onclick=()=>openControlledDocumentByCode(r.code);
       row.innerHTML='<span class="workType">Revision</span><div><b>'+escapeHtml(r.title)+'</b><small>'+escapeHtml(r.code)+' · '+escapeHtml(r.rev)+' · PIC '+escapeHtml(r.pic)+'</small></div><span class="tag info">'+(r.downloaded?'In progress':'Open')+'</span><i data-lucide="chevron-right"></i>';
+      work.prepend(row);
+    });
+
+    Object.values(revisionRequests).slice(0,2).reverse().forEach(r=>{
+      const row=document.createElement('button');
+      row.className='overviewWorkRow revisionRequestDashboardRow';
+      row.onclick=()=>openControlledDocumentByCode(r.code);
+      row.innerHTML='<span class="workType">Change request</span><div><b>'+escapeHtml(r.title)+'</b><small>'+escapeHtml(r.code)+' · Assigned PIC '+escapeHtml(r.pic)+' · No revision number yet</small></div><span class="tag warning">Requested</span><i data-lucide="chevron-right"></i>';
       work.prepend(row);
     });
   }
@@ -670,6 +814,13 @@ function openTraceabilityForDocument(){
   setDocumentDetailTab('traceability');
 }
 
+document.getElementById('documentDetailTabs')?.addEventListener('click',e=>{
+  const button=e.target.closest('button[data-doc-tab]');
+  if(!button) return;
+  e.preventDefault();
+  setDocumentDetailTab(button.dataset.docTab);
+});
+
 function toggleDocumentTraceabilityMap(force){
   const summary=document.getElementById('documentTraceabilitySummary');
   const map=document.getElementById('documentTraceabilityMap');
@@ -849,7 +1000,7 @@ function renderDmsDocuments(){
     const statusClass=doc.kind||'neutral';
     const type=(doc.type||'Controlled document').split(' · ')[0];
     return '<button class="dmsDocumentRow" data-code="'+escapeHtml(doc.code)+'">'
-      +'<div><b>'+escapeHtml(doc.code)+'</b><strong>'+escapeHtml(doc.title)+'</strong><small>'+escapeHtml(space.name)+(openRevisions[doc.code]?' <em class="revisionOpenInline">'+escapeHtml(openRevisions[doc.code].rev)+' open</em>':'')+'</small></div>'
+      +'<div><b>'+escapeHtml(doc.code)+'</b><strong>'+escapeHtml(doc.title)+'</strong><small>'+escapeHtml(space.name)+(revisionStateBadge(doc.code)?' '+revisionStateBadge(doc.code):'')+'</small></div>'
       +'<span>'+escapeHtml(type)+'</span><span>'+escapeHtml(doc.rev||'—')+'</span><span>'+escapeHtml(doc.owner||'—')+'</span>'
       +'<span class="tag '+statusClass+'">'+escapeHtml(doc.status||'—')+'</span><span>'+escapeHtml(doc.review||'—')+'</span><i data-lucide="chevron-right"></i></button>';
   }).join('');
@@ -1009,7 +1160,7 @@ function renderSpaceRows(space){
     const typeName=(d.type||'Controlled document').split(' · ')[0];
     return `
       <button class="spaceDocumentItem" data-space-doc-index="${i}">
-        <span class="docMain"><b>${escapeHtml(d.code)}</b><strong>${escapeHtml(d.title)}</strong><small>${escapeHtml(d.type||'Controlled document')}${openRevisions[d.code]?' <em class="revisionOpenInline">'+escapeHtml(openRevisions[d.code].rev)+' open</em>':''}</small></span>
+        <span class="docMain"><b>${escapeHtml(d.code)}</b><strong>${escapeHtml(d.title)}</strong><small>${escapeHtml(d.type||'Controlled document')}${revisionStateBadge(d.code)?' '+revisionStateBadge(d.code):''}</small></span>
         <span>${escapeHtml(typeName)}</span>
         <span>${escapeHtml(d.rev||'—')}</span>
         <span>${escapeHtml(d.owner||'—')}</span>

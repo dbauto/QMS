@@ -4255,3 +4255,77 @@ body.navExpanded .navMeta{
   .revisionHistoryDownloadNote{grid-template-columns:28px 1fr}
   .revisionHistoryDownloadNote .btn{grid-column:2;justify-self:start}
 }
+
+
+/* Request revision and Start revision are intentionally different states */
+.documentDetailTabs button{cursor:pointer;position:relative;z-index:2}
+.documentDetailTabs button[data-doc-tab="revision"]{pointer-events:auto}
+
+.revisionRequestBanner{
+  grid-template-columns:34px minmax(240px,1fr) minmax(240px,1.2fr) auto;
+  gap:12px;
+  align-items:center;
+  min-height:72px;
+  margin-bottom:10px;
+  padding:10px 12px;
+  border:1px solid #fedf89;
+  border-left:3px solid #f79009;
+  border-radius:8px;
+  background:#fffcf5
+}
+.revisionRequestIcon{
+  width:32px;height:32px;border-radius:7px;display:grid;place-items:center;background:#fff4e5;color:#b54708
+}
+.revisionRequestIcon .lucide{width:16px;height:16px}
+.revisionRequestSummary>b,.revisionRequestSummary>small{display:block}
+.revisionRequestSummary>b{font-size:11px;color:#563c16;margin:2px 0}
+.revisionRequestSummary>small{font-size:9px;color:#7a684c}
+.revisionRequestReason{min-width:0}
+.revisionRequestReason small,.revisionRequestReason b{display:block}
+.revisionRequestReason small{font-size:8px;color:#8a7654;text-transform:uppercase;font-weight:800}
+.revisionRequestReason b{font-size:10px;color:#5f4c2d;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.revisionRequestButtons{display:flex;align-items:center;gap:10px}
+.revisionRequestInline{
+  display:inline-flex!important;
+  align-items:center;
+  margin-left:5px!important;
+  padding:2px 5px;
+  border-radius:5px;
+  background:#fff4e5;
+  color:#b54708!important;
+  font-size:8px!important;
+  font-style:normal;
+  font-weight:800
+}
+.revisionRequestTaskItem{background:#fffdf8!important}
+
+.revisionModeOutcome{
+  display:grid;
+  grid-template-columns:34px minmax(0,1fr);
+  gap:9px;
+  align-items:start;
+  margin:0 0 14px;
+  padding:10px 11px;
+  border:1px solid var(--line);
+  border-radius:8px
+}
+.revisionModeOutcome>span{
+  width:32px;height:32px;border-radius:7px;display:grid;place-items:center
+}
+.revisionModeOutcome>span .lucide{width:16px;height:16px}
+.revisionModeOutcome b,.revisionModeOutcome p{display:block}
+.revisionModeOutcome b{font-size:11px;margin:1px 0 2px}
+.revisionModeOutcome p{margin:0;font-size:9px;line-height:1.5}
+.revisionModeOutcome.request{background:#fffcf5;border-color:#fedf89}
+.revisionModeOutcome.request>span{background:#fff4e5;color:#b54708}
+.revisionModeOutcome.request b{color:#6a4714}
+.revisionModeOutcome.request p{color:#7f6b4a}
+.revisionModeOutcome.start{background:#f5faff;border-color:#b9d9f8}
+.revisionModeOutcome.start>span{background:#eaf4ff;color:#175cd3}
+.revisionModeOutcome.start b{color:#244a73}
+.revisionModeOutcome.start p{color:#5f7892}
+
+@media(max-width:900px){
+  .revisionRequestBanner{grid-template-columns:34px 1fr}
+  .revisionRequestReason,.revisionRequestButtons{grid-column:2}
+}
