@@ -2341,3 +2341,32 @@ body.navExpanded .navItem:hover{background:#172e47}
 
 #repositoryHub .featuredSpaces{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:850px){#repositoryHub .featuredSpaces{grid-template-columns:1fr}}
+
+
+/* Document detail viewer: this layout has no thumbnail rail, so the page owns the full canvas width. */
+#repositoryDocument .detailViewerCanvas{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  min-height:600px;
+  overflow:auto;
+  background:#eef1f4;
+}
+#repositoryDocument .detailViewerCanvas .documentStage{
+  grid-column:1;
+  width:100%;
+  min-width:0;
+  min-height:600px;
+  overflow:auto;
+  padding:24px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+}
+#repositoryDocument .detailViewerCanvas .controlledPreviewPage{
+  width:min(720px,100%);
+  max-width:720px;
+  flex:0 0 auto;
+}
+@media(max-width:760px){
+  #repositoryDocument .detailViewerCanvas .documentStage{padding:14px}
+}
