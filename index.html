@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-approval-route1">
+<link rel="stylesheet" href="./styles.css?v=20260922-effective-import1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -773,6 +773,11 @@ body.navExpanded .railExpand span{display:inline!important}
           <div><b id="sourceUploadTitle">Upload a new document</b><p id="sourceUploadText">I already have the file and want to register it in NexusQMS.</p></div>
           <i class="sourceChoiceCheck" data-lucide="check"></i>
         </button>
+        <button class="sourceIntentCard" data-source-mode="effective" onclick="selectRegistrationSource('effective')">
+          <span class="sourceIntentIcon"><i data-lucide="badge-check"></i></span>
+          <div><b>Register an existing effective document</b><p>It was already approved and effective before Nexus. Register the current revision without a new approval workflow.</p></div>
+          <i class="sourceChoiceCheck" data-lucide="check"></i>
+        </button>
         <button class="sourceIntentCard" data-source-mode="create" onclick="selectRegistrationSource('create')">
           <span class="sourceIntentIcon"><i data-lucide="file-plus-2"></i></span>
           <div><b id="sourceCreateTitle">Create a new document</b><p id="sourceCreateText">I do not have the file yet. Start blank or from an authoring template.</p></div>
@@ -792,6 +797,15 @@ body.navExpanded .railExpand span{display:inline!important}
 
       <div class="sourceIntentPanel active" id="sourcePanelUpload">
         <div class="dropzone registrationDropzone"><div class="uploadIcon"><i data-lucide="upload"></i></div><b id="uploadPanelTitle">Drop the document file here</b><span id="registerDropHint">PDF, DOCX, XLSX or image · Example: Recruitment_Procedure_Rev3.docx</span><button class="btn secondary"><i data-lucide="folder-open"></i>Browse file</button></div>
+      </div>
+
+      <div class="sourceIntentPanel" id="sourcePanelEffective">
+        <div class="existingEffectiveNotice">
+          <i data-lucide="badge-check"></i>
+          <div><b>No new approval is required</b><span>Use this for a document that is already the approved/current revision in the client's existing QMS. Nexus records it as Effective and creates an onboarding audit event instead of sending it through review and approval again.</span></div>
+        </div>
+        <div class="dropzone registrationDropzone effectiveUpload"><div class="uploadIcon"><i data-lucide="upload"></i></div><b>Upload the current effective file</b><span>Upload the approved/current copy being brought into NexusQMS.</span><button class="btn secondary"><i data-lucide="folder-open"></i>Browse file</button></div>
+        <div class="effectiveImportRule"><i data-lucide="shield-check"></i><div><b>What Nexus will preserve</b><span>Current revision, original effective date, next review date, source/legacy document reference and who registered it.</span></div></div>
       </div>
 
       <div class="sourceIntentPanel" id="sourcePanelCreate">
@@ -891,9 +905,11 @@ body.navExpanded .railExpand span{display:inline!important}
         </label>
         <label>Owner<select id="regOwner"><option>Recruitment Manager</option><option>Quality Manager</option><option>Document Control</option></select></label>
         <label>Revision / version<input id="regRev" value="03"></label>
-        <label>Initial status<select id="regStatus"><option>Draft</option><option>In Review</option></select></label>
+        <label>Initial status<select id="regStatus"><option>Draft</option><option>In Review</option><option>Effective</option></select><small class="fieldHelp" id="regStatusHelp">New controlled information begins as Draft.</small></label>
         <label>Planned effective date<input id="regEffective" type="date" value="2026-09-01"></label>
         <label>Review date<input id="regReview" type="date" value="2027-09-01"></label>
+        <label class="effectiveImportOnly" style="display:none">Existing / legacy document ID<input id="legacyDocId" placeholder="e.g. HR-PRO-012"></label>
+        <label class="effectiveImportOnly" style="display:none">Source approval / release reference<input id="legacyApprovalRef" placeholder="Optional · e.g. signed approval sheet, legacy workflow ID"></label>
       </div>
       <div class="formGrid registrationRecordFields" style="display:none">
         <label>Record / evidence title<input id="recTitle" value="Candidate Screening Record"></label>
@@ -1160,6 +1176,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-approval-route1"></script>
+<script src="./app.js?v=20260922-effective-import1"></script>
 </body>
 </html>
