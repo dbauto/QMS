@@ -8,7 +8,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-dms-tabs2">
+<link rel="stylesheet" href="./styles.css?v=20260922-records-dms1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -649,63 +649,135 @@ body.navExpanded .railExpand span{display:inline!important}
       </div>
 
       <div id="records" class="view">
-        <div class="pageHeader">
-          <div><h1>Records & evidence</h1><p>Shared proof library for process outputs, completed records, certificates, KPI evidence, audits and management-review evidence.</p></div>
-          <div class="pageActions"><button class="btn secondary"><i data-lucide="link-2"></i>Link existing</button><button class="btn primary" onclick="openRegisterResource('record')"><i data-lucide="plus"></i>Register record / evidence</button></div>
-        </div>
+        <div id="recordsHub">
+          <div class="pageHeader recordsPageHeader">
+            <div><h1>Records & evidence</h1><p>Find retained proof by process, then open a record only when you need its detail or traceability.</p></div>
+            <div class="pageActions"><button class="btn secondary"><i data-lucide="link-2"></i>Link existing</button><button class="btn primary" onclick="openRegisterResource('record')"><i data-lucide="plus"></i>Register record / evidence</button></div>
+          </div>
 
-        <div class="evidenceSummaryStrip">
-          <div><span>Evidence items</span><b>8,942</b><small>Across 1,106 canonical resources</small></div>
-          <div><span>Linked to process</span><b>8,719</b><small>97.5% traceable</small></div>
-          <div><span>Retention due</span><b>18</b><small>Next 30 days</small></div>
-          <div><span>Unlinked</span><b>4</b><small>Needs classification</small></div>
-        </div>
-
-        <div class="recordsWorkspace">
-          <section class="recordsTablePane">
-            <div class="filterBar embedded recordsFilters">
-              <div class="filterSearch"><span><i data-lucide="search"></i></span><input id="recordsSearch" placeholder="Search records, evidence, certificate..."></div>
-              <select><option>All record types</option><option>Process record</option><option>Completed form</option><option>Audit evidence</option><option>Certificate</option><option>KPI record</option><option>Management review</option></select>
-              <select><option>All processes</option><option>Recruitment</option><option>Operations</option><option>Training</option><option>Procurement</option></select>
-              <select><option>All link states</option><option>Linked</option><option>Unlinked</option></select>
-            </div>
-            <div class="evidenceTableHead"><span>Record / evidence</span><span>Process</span><span>Related controlled info</span><span>Record date</span><span>Status</span></div>
-            <button class="evidenceRow selected" data-evidence="screening">
-              <div><b>REC-SCR-2026-0918</b><strong>Candidate Screening Record — Batch 0918</strong><small>Completed form · Recruitment</small></div><span>Recruitment</span><span>QMS-PRO-REC-001</span><span>18 Sep 2026</span><span class="tag success">Retained</span>
-            </button>
-            <button class="evidenceRow" data-evidence="interview">
-              <div><b>REC-INT-2026-442</b><strong>Candidate Interview Record — A. Santos</strong><small>Interview record · Recruitment</small></div><span>Recruitment</span><span>SOP-REC-004</span><span>17 Sep 2026</span><span class="tag success">Retained</span>
-            </button>
-            <button class="evidenceRow" data-evidence="cal">
-              <div><b>CAL-CERT-2026-0084</b><strong>Calibration Certificate — DMM-14</strong><small>Certificate · Metrology</small></div><span>Operations</span><span>WI-QA-003</span><span>18 Sep 2026</span><span class="tag success">Current</span>
-            </button>
-            <button class="evidenceRow" data-evidence="audit">
-              <div><b>IA-2026-004</b><strong>Internal Audit — Production Line 2</strong><small>Audit evidence · Quality</small></div><span>Internal Audit</span><span>SOP-QA-005</span><span>12 Sep 2026</span><span class="tag success">Closed</span>
-            </button>
-            <button class="evidenceRow" data-evidence="orphan">
-              <div><b>REC-2026-114</b><strong>Receiving Inspection Attachment</strong><small>Evidence · Warehouse</small></div><span>Unclassified</span><span>—</span><span>20 Sep 2026</span><span class="tag warning">Unlinked</span>
-            </button>
-          </section>
-
-          <aside class="evidenceInspector">
-            <div class="inspectorHeader compactInspector"><div><span class="recordLabel" id="evidenceType">Completed form</span><h2 id="evidenceTitle">Candidate Screening Record — Batch 0918</h2><div class="recordMeta"><b id="evidenceCode">REC-SCR-2026-0918</b><span id="evidenceStatus" class="tag success">Retained</span></div></div><button class="iconButton"><i data-lucide="ellipsis"></i></button></div>
-            <dl class="detailGrid resourceDetails">
-              <div><dt>Record date</dt><dd id="evidenceDate">18 Sep 2026</dd></div><div><dt>Owner</dt><dd id="evidenceOwner">Recruitment</dd></div>
-              <div><dt>Retention</dt><dd id="evidenceRetention">5 years</dd></div><div><dt>Access</dt><dd id="evidenceAccess">Recruitment + Quality</dd></div>
-            </dl>
-            <section class="detailSection"><h3>Traceability</h3>
-              <div class="traceChain">
-                <button><span>Process</span><b id="traceProcess">Recruitment</b></button><i data-lucide="arrow-down"></i>
-                <button><span>Controlled information</span><b id="traceDocument">QMS-PRO-REC-001 · Recruitment Procedure</b></button><i data-lucide="arrow-down"></i>
-                <button class="active"><span>Record / evidence</span><b id="traceEvidence">Candidate Screening Record</b></button><i data-lucide="arrow-down"></i>
-                <button><span>Audit / verification</span><b id="traceAudit">Internal Audit 2026</b></button>
+          <div class="recordsDmsWorkspace">
+            <aside class="recordsProcessRail">
+              <div class="recordsRailHeader"><div><span class="recordLabel">BROWSE BY PROCESS</span><h2>Evidence areas</h2></div></div>
+              <div class="recordsRailSearch"><i data-lucide="search"></i><input id="recordsProcessSearch" placeholder="Find a process..."></div>
+              <div class="recordsProcessTabs" id="recordsProcessTabs">
+                <button class="active" data-record-process="all"><span class="recordsRailIcon"><i data-lucide="archive"></i></span><span><b>All evidence</b><small>8,942 items</small></span><i data-lucide="chevron-right"></i></button>
+                <button data-record-process="Recruitment"><span class="recordsRailIcon toneTeal"><i data-lucide="user-round-search"></i></span><span><b>Recruitment</b><small>1,248 items</small></span><i data-lucide="chevron-right"></i></button>
+                <button data-record-process="Operations"><span class="recordsRailIcon toneBlue"><i data-lucide="workflow"></i></span><span><b>Operations</b><small>2,104 items</small></span><i data-lucide="chevron-right"></i></button>
+                <button data-record-process="Quality"><span class="recordsRailIcon toneIndigo"><i data-lucide="shield-check"></i></span><span><b>Quality</b><small>1,536 items</small></span><i data-lucide="chevron-right"></i></button>
+                <button data-record-process="Internal Audit"><span class="recordsRailIcon toneAmber"><i data-lucide="search-check"></i></span><span><b>Internal audit</b><small>322 items</small></span><i data-lucide="chevron-right"></i></button>
+                <button data-record-process="Unclassified"><span class="recordsRailIcon toneRose"><i data-lucide="circle-help"></i></span><span><b>Unclassified</b><small>4 need attention</small></span><i data-lucide="chevron-right"></i></button>
               </div>
+            </aside>
+
+            <section class="recordsLibraryPane">
+              <header class="recordsLibraryHeader">
+                <div><span class="recordLabel">RECORDS & EVIDENCE</span><h2 id="recordsLibraryTitle">All evidence</h2><p id="recordsLibrarySubtitle">Canonical retained proof across all QMS processes.</p></div>
+                <div class="recordsLibraryStats">
+                  <span><b>97.5%</b><small>Traceable</small></span>
+                  <span><b>18</b><small>Retention due</small></span>
+                  <span><b>4</b><small>Unlinked</small></span>
+                </div>
+              </header>
+
+              <div class="recordsLibraryTabs" id="recordsLibraryTabs">
+                <button class="active" data-records-tab="all">All records</button>
+                <button data-records-tab="retained">Retained</button>
+                <button data-records-tab="current">Current</button>
+                <button data-records-tab="unlinked">Needs attention <span>4</span></button>
+              </div>
+
+              <div class="recordsLibraryToolbar">
+                <div class="filterSearch"><span><i data-lucide="search"></i></span><input id="recordsSearch" placeholder="Search record ID, title, owner or controlled information..."></div>
+                <select id="recordTypeFilter"><option value="all">All record types</option><option>Completed form</option><option>Interview record</option><option>Certificate</option><option>Audit evidence</option><option>Evidence</option></select>
+                <button class="iconButton" title="More filters"><i data-lucide="sliders-horizontal"></i></button>
+              </div>
+
+              <div class="recordsLibraryHead"><span>Record / evidence</span><span>Process</span><span>Related controlled info</span><span>Record date</span><span>Status</span><span></span></div>
+              <div class="recordsLibraryRows" id="recordsLibraryRows">
+                <button class="evidenceRow" data-evidence="screening" data-process="Recruitment" data-type="Completed form" data-status="retained">
+                  <div><b>REC-SCR-2026-0918</b><strong>Candidate Screening Record — Batch 0918</strong><small>Completed form · Recruitment</small></div><span>Recruitment</span><span>QMS-PRO-REC-001</span><span>18 Sep 2026</span><span class="tag success">Retained</span><i data-lucide="chevron-right"></i>
+                </button>
+                <button class="evidenceRow" data-evidence="interview" data-process="Recruitment" data-type="Interview record" data-status="retained">
+                  <div><b>REC-INT-2026-442</b><strong>Candidate Interview Record — A. Santos</strong><small>Interview record · Recruitment</small></div><span>Recruitment</span><span>SOP-REC-004</span><span>17 Sep 2026</span><span class="tag success">Retained</span><i data-lucide="chevron-right"></i>
+                </button>
+                <button class="evidenceRow" data-evidence="cal" data-process="Operations" data-type="Certificate" data-status="current">
+                  <div><b>CAL-CERT-2026-0084</b><strong>Calibration Certificate — DMM-14</strong><small>Certificate · Metrology</small></div><span>Operations</span><span>WI-QA-003</span><span>18 Sep 2026</span><span class="tag success">Current</span><i data-lucide="chevron-right"></i>
+                </button>
+                <button class="evidenceRow" data-evidence="audit" data-process="Internal Audit" data-type="Audit evidence" data-status="retained">
+                  <div><b>IA-2026-004</b><strong>Internal Audit — Production Line 2</strong><small>Audit evidence · Quality</small></div><span>Internal Audit</span><span>SOP-QA-005</span><span>12 Sep 2026</span><span class="tag success">Closed</span><i data-lucide="chevron-right"></i>
+                </button>
+                <button class="evidenceRow" data-evidence="orphan" data-process="Unclassified" data-type="Evidence" data-status="unlinked">
+                  <div><b>REC-2026-114</b><strong>Receiving Inspection Attachment</strong><small>Evidence · Warehouse</small></div><span>Unclassified</span><span>—</span><span>20 Sep 2026</span><span class="tag warning">Unlinked</span><i data-lucide="chevron-right"></i>
+                </button>
+              </div>
+
+              <div class="recordsLibraryEmpty" id="recordsLibraryEmpty" style="display:none"><i data-lucide="file-search"></i><b>No matching evidence</b><span>Change the process, status or search filter.</span></div>
+              <footer class="recordsLibraryFooter"><span>Showing 5 sample records from the current evidence view</span><div><button class="btn text" disabled>Previous</button><button class="btn text">Next</button></div></footer>
             </section>
-            <section class="detailSection"><div class="sectionTitleRow"><h3>Used as evidence by</h3><button class="btn link">Manage links</button></div>
-              <button class="linkedRecord"><span><i data-lucide="clipboard-check"></i></span><div><b>ISO 9001 · 8.5</b><small>Operational control evidence</small></div></button>
-              <button class="linkedRecord"><span><i data-lucide="search-check"></i></span><div><b>IA-2026-004</b><small>Internal audit evidence package</small></div></button>
-            </section>
-          </aside>
+          </div>
+        </div>
+
+        <div id="recordDetail" class="recordDetail" style="display:none">
+          <div class="levelHeader recordLevelHeader">
+            <button class="backButton" onclick="closeEvidenceDetail()" aria-label="Back to records and evidence"><i data-lucide="arrow-left"></i></button>
+            <div class="levelHeaderTitle">
+              <span class="levelPath">Records & evidence <i data-lucide="chevron-right"></i> <span id="recordDetailProcess">Recruitment</span> <i data-lucide="chevron-right"></i> <b id="recordDetailCode">REC-SCR-2026-0918</b></span>
+              <h1 id="recordDetailTitle">Candidate Screening Record — Batch 0918</h1>
+              <div class="recordMeta"><b id="recordDetailCodeMeta">REC-SCR-2026-0918</b><span id="recordDetailType">Completed form</span><span id="recordDetailStatus" class="tag success">Retained</span></div>
+            </div>
+            <div class="pageActions"><button class="btn secondary"><i data-lucide="download"></i>Download</button><button class="btn secondary"><i data-lucide="link-2"></i>Manage links</button></div>
+          </div>
+
+          <div class="documentDetailTabs recordDetailTabs" id="recordDetailTabs">
+            <button class="active" data-record-tab="record" onclick="setRecordDetailTab('record')">Record</button>
+            <button data-record-tab="traceability" onclick="setRecordDetailTab('traceability')">Traceability</button>
+            <button data-record-tab="retention" onclick="setRecordDetailTab('retention')">Retention & access</button>
+            <button data-record-tab="activity" onclick="setRecordDetailTab('activity')">Activity</button>
+          </div>
+
+          <div class="recordDetailPanel active" data-record-panel="record">
+            <div class="recordDetailWorkspace">
+              <main class="recordPrimaryPane">
+                <div class="recordFileHeader"><span class="fileTypeIcon"><i data-lucide="file-check-2"></i></span><div><b id="recordFileName">REC-SCR-2026-0918.pdf</b><span>Retained evidence · controlled access</span></div><button class="iconButton"><i data-lucide="ellipsis"></i></button></div>
+                <div class="recordPreview">
+                  <div class="recordPreviewIcon"><i data-lucide="file-check-2"></i></div>
+                  <div><span class="recordLabel">RETAINED RECORD</span><h2 id="recordPreviewTitle">Candidate Screening Record</h2><p>This prototype represents the retained evidence file or system-generated record associated with this canonical evidence entry.</p></div>
+                </div>
+              </main>
+              <aside class="recordInfoPane">
+                <span class="recordLabel">RECORD INFORMATION</span>
+                <dl class="recordInfoList">
+                  <div><dt>Record date</dt><dd id="evidenceDate">18 Sep 2026</dd></div>
+                  <div><dt>Owner / custodian</dt><dd id="evidenceOwner">Recruitment</dd></div>
+                  <div><dt>Retention</dt><dd id="evidenceRetention">5 years</dd></div>
+                  <div><dt>Access</dt><dd id="evidenceAccess">Recruitment + Quality</dd></div>
+                  <div><dt>Process</dt><dd id="recordInfoProcess">Recruitment</dd></div>
+                  <div><dt>Controlled information</dt><dd id="recordInfoDocument">QMS-PRO-REC-001 · Recruitment Procedure</dd></div>
+                </dl>
+              </aside>
+            </div>
+          </div>
+
+          <div class="recordDetailPanel" data-record-panel="traceability">
+            <div class="recordTraceability">
+              <div class="recordTraceabilityIntro"><div><span class="recordLabel">TRACEABILITY</span><h2 id="recordTraceabilityTitle">Candidate Screening Record</h2><p>See where this evidence came from and where it is used.</p></div></div>
+              <div class="recordTracePath">
+                <div><span class="traceSectionIcon process"><i data-lucide="workflow"></i></span><small>Process</small><b id="traceProcess">Recruitment</b></div><i data-lucide="arrow-right"></i>
+                <div><span class="traceSectionIcon document"><i data-lucide="file-check-2"></i></span><small>Controlled information</small><b id="traceDocument">QMS-PRO-REC-001 · Recruitment Procedure</b></div><i data-lucide="arrow-right"></i>
+                <div class="active"><span class="traceSectionIcon evidence"><i data-lucide="archive"></i></span><small>Record / evidence</small><b id="traceEvidence">Candidate Screening Record</b></div><i data-lucide="arrow-right"></i>
+                <div><span class="traceSectionIcon verification"><i data-lucide="search-check"></i></span><small>Audit / verification</small><b id="traceAudit">Internal Audit 2026</b></div>
+              </div>
+              <section class="recordUsedBy"><div class="sectionTitleRow"><div><h3>Used as evidence by</h3><p>Other QMS controls that reference this retained record.</p></div><button class="btn link">Manage links</button></div><div class="recordLinkRows"><button><i data-lucide="clipboard-check"></i><span><b>ISO 9001 · 8.5</b><small>Operational control evidence</small></span><i data-lucide="chevron-right"></i></button><button><i data-lucide="search-check"></i><span><b>IA-2026-004</b><small>Internal audit evidence package</small></span><i data-lucide="chevron-right"></i></button></div></section>
+            </div>
+          </div>
+
+          <div class="recordDetailPanel" data-record-panel="retention">
+            <div class="recordSimplePanel"><span class="recordLabel">RETENTION & ACCESS</span><h2>Lifecycle controls</h2><div class="recordControlRows"><div><span>Retention period</span><b id="retentionPanelPeriod">5 years</b></div><div><span>Access class</span><b id="retentionPanelAccess">Recruitment + Quality</b></div><div><span>Disposition</span><b>Retain until scheduled disposition</b></div><div><span>Integrity</span><b>Audit logged · immutable history</b></div></div></div>
+          </div>
+
+          <div class="recordDetailPanel" data-record-panel="activity">
+            <div class="recordSimplePanel"><span class="recordLabel">ACTIVITY</span><h2>Record history</h2><div class="recordActivityRows"><div><span>18 Sep 2026 · 09:42</span><b>Record registered</b><small>Recruitment · source captured</small></div><div><span>18 Sep 2026 · 09:44</span><b>Linked to controlled information</b><small>QMS-PRO-REC-001</small></div><div><span>19 Sep 2026 · 11:20</span><b>Included in audit evidence package</b><small>IA-2026-004</small></div></div></div>
+          </div>
         </div>
       </div>
 
@@ -1408,6 +1480,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-dms-tabs2"></script>
+<script src="./app.js?v=20260922-records-dms1"></script>
 </body>
 </html>

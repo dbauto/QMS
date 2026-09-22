@@ -997,29 +997,102 @@ const evidenceItems={
   audit:{type:'Audit evidence',title:'Internal Audit — Production Line 2',code:'IA-2026-004',status:'Closed',kind:'success',date:'12 Sep 2026',owner:'Quality',retention:'7 years',access:'Quality + Auditors',process:'Internal Audit',document:'SOP-QA-005 · Internal Audit Procedure',audit:'Audit Program 2026'},
   orphan:{type:'Evidence',title:'Receiving Inspection Attachment',code:'REC-2026-114',status:'Unlinked',kind:'warning',date:'20 Sep 2026',owner:'Warehouse',retention:'Pending classification',access:'Warehouse + Quality',process:'Unclassified',document:'Not linked',audit:'Not linked'}
 };
-function selectEvidence(key,row){
+let activeEvidenceProcess='all';
+let activeEvidenceStatus='all';
+let activeEvidenceKey='screening';
+
+function recordProcessCopy(process){
+  return {
+    all:['All evidence','Canonical retained proof across all QMS processes.'],
+    Recruitment:['Recruitment evidence','Completed recruitment forms, interview records and retained hiring evidence.'],
+    Operations:['Operations evidence','Certificates, inspections and retained operational proof.'],
+    Quality:['Quality evidence','Quality-system records and verification evidence.'],
+    'Internal Audit':['Internal audit evidence','Audit records, evidence packages and verification history.'],
+    Unclassified:['Unclassified evidence','Items that still need process or controlled-information links.']
+  }[process]||[process+' evidence','Retained proof for this QMS process.'];
+}
+function applyEvidenceFilters(){
+  const q=(document.getElementById('recordsSearch')?.value||'').trim().toLowerCase();
+  const type=document.getElementById('recordTypeFilter')?.value||'all';
+  let visible=0;
+  document.querySelectorAll('#recordsLibraryRows .evidenceRow').forEach(row=>{
+    const matchProcess=activeEvidenceProcess==='all'||row.dataset.process===activeEvidenceProcess;
+    const matchStatus=activeEvidenceStatus==='all'||row.dataset.status===activeEvidenceStatus;
+    const matchType=type==='all'||row.dataset.type===type;
+    const matchSearch=!q||row.textContent.toLowerCase().includes(q);
+    const show=matchProcess&&matchStatus&&matchType&&matchSearch;
+    row.style.display=show?'grid':'none';
+    if(show) visible++;
+  });
+  const empty=document.getElementById('recordsLibraryEmpty');
+  if(empty) empty.style.display=visible?'none':'grid';
+}
+function setEvidenceProcess(process){
+  activeEvidenceProcess=process;
+  document.querySelectorAll('#recordsProcessTabs [data-record-process]').forEach(button=>button.classList.toggle('active',button.dataset.recordProcess===process));
+  const copy=recordProcessCopy(process);
+  const title=document.getElementById('recordsLibraryTitle');
+  const subtitle=document.getElementById('recordsLibrarySubtitle');
+  if(title) title.textContent=copy[0];
+  if(subtitle) subtitle.textContent=copy[1];
+  applyEvidenceFilters();
+}
+function openEvidenceDetail(key){
   const d=evidenceItems[key];
   if(!d) return;
-  document.querySelectorAll('.evidenceRow').forEach(x=>x.classList.remove('selected'));
-  row?.classList.add('selected');
-  document.getElementById('evidenceType').textContent=d.type;
-  document.getElementById('evidenceTitle').textContent=d.title;
-  document.getElementById('evidenceCode').textContent=d.code;
-  setTag(document.getElementById('evidenceStatus'),d.status,d.kind);
-  document.getElementById('evidenceDate').textContent=d.date;
-  document.getElementById('evidenceOwner').textContent=d.owner;
-  document.getElementById('evidenceRetention').textContent=d.retention;
-  document.getElementById('evidenceAccess').textContent=d.access;
-  document.getElementById('traceProcess').textContent=d.process;
-  document.getElementById('traceDocument').textContent=d.document;
-  document.getElementById('traceEvidence').textContent=d.title.replace(/ — .*/,'');
-  document.getElementById('traceAudit').textContent=d.audit;
+  activeEvidenceKey=key;
+  const hub=document.getElementById('recordsHub');
+  const detail=document.getElementById('recordDetail');
+  if(hub) hub.style.display='none';
+  if(detail) detail.style.display='block';
+
+  const set=(id,value)=>{const el=document.getElementById(id);if(el) el.textContent=value};
+  set('recordDetailProcess',d.process); set('recordDetailCode',d.code); set('recordDetailTitle',d.title);
+  set('recordDetailCodeMeta',d.code); set('recordDetailType',d.type); set('recordFileName',d.code+'.pdf');
+  set('recordPreviewTitle',d.title.replace(/ — .*/,'')); set('evidenceDate',d.date); set('evidenceOwner',d.owner);
+  set('evidenceRetention',d.retention); set('evidenceAccess',d.access); set('recordInfoProcess',d.process);
+  set('recordInfoDocument',d.document); set('traceProcess',d.process); set('traceDocument',d.document);
+  set('traceEvidence',d.title.replace(/ — .*/,'')); set('traceAudit',d.audit);
+  set('recordTraceabilityTitle',d.title.replace(/ — .*/,'')); set('retentionPanelPeriod',d.retention); set('retentionPanelAccess',d.access);
+  setTag(document.getElementById('recordDetailStatus'),d.status,d.kind);
+  setRecordDetailTab('record');
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Records & evidence / '+d.process+' / '+d.code;
+  window.scrollTo({top:0,behavior:'smooth'});
+  refreshIcons();
 }
-document.querySelectorAll('.evidenceRow').forEach(row=>row.addEventListener('click',()=>selectEvidence(row.dataset.evidence,row)));
-document.getElementById('recordsSearch')?.addEventListener('input',e=>{
-  const q=e.target.value.trim().toLowerCase();
-  document.querySelectorAll('.evidenceRow').forEach(row=>row.style.display=!q||row.textContent.toLowerCase().includes(q)?'grid':'none');
+function closeEvidenceDetail(){
+  const hub=document.getElementById('recordsHub');
+  const detail=document.getElementById('recordDetail');
+  if(detail) detail.style.display='none';
+  if(hub) hub.style.display='block';
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Records & evidence';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function setRecordDetailTab(tab='record'){
+  document.querySelectorAll('#recordDetailTabs [data-record-tab]').forEach(button=>button.classList.toggle('active',button.dataset.recordTab===tab));
+  document.querySelectorAll('#recordDetail [data-record-panel]').forEach(panel=>panel.classList.toggle('active',panel.dataset.recordPanel===tab));
+  refreshIcons();
+}
+document.getElementById('recordsLibraryRows')?.addEventListener('click',e=>{
+  const row=e.target.closest('.evidenceRow[data-evidence]');
+  if(row) openEvidenceDetail(row.dataset.evidence);
 });
+document.getElementById('recordsProcessTabs')?.addEventListener('click',e=>{
+  const button=e.target.closest('[data-record-process]');
+  if(button) setEvidenceProcess(button.dataset.recordProcess);
+});
+document.getElementById('recordsProcessSearch')?.addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase();
+  document.querySelectorAll('#recordsProcessTabs [data-record-process]').forEach(button=>button.style.display=!q||button.textContent.toLowerCase().includes(q)?'grid':'none');
+});
+document.getElementById('recordsSearch')?.addEventListener('input',applyEvidenceFilters);
+document.getElementById('recordTypeFilter')?.addEventListener('change',applyEvidenceFilters);
+document.querySelectorAll('#recordsLibraryTabs [data-records-tab]').forEach(button=>button.addEventListener('click',()=>{
+  document.querySelectorAll('#recordsLibraryTabs [data-records-tab]').forEach(x=>x.classList.remove('active'));
+  button.classList.add('active');
+  activeEvidenceStatus=button.dataset.recordsTab||'all';
+  applyEvidenceFilters();
+}));
 
 /* Document type configuration */
 const typeConfigs={

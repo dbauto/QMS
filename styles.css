@@ -3364,3 +3364,191 @@ html,body{background:var(--bg)}
   .dmsSpaceActions{width:100%;justify-content:flex-end}
   .dmsContextTabs{overflow:auto}
 }
+
+
+/* ============================================================
+   Records & Evidence — process-first DMS workspace
+   List first; record detail opens contextually instead of living
+   permanently in a narrow inspector.
+   ============================================================ */
+.recordsDmsWorkspace{
+  min-height:650px;
+  display:grid;
+  grid-template-columns:238px minmax(0,1fr);
+  border:1px solid #ebe8ef;
+  border-radius:9px;
+  background:#fff;
+  overflow:hidden;
+  box-shadow:0 6px 24px rgba(29,27,37,.035);
+}
+.recordsProcessRail{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  background:#faf9fc;
+  border-right:1px solid #ebe8ef;
+}
+.recordsRailHeader{padding:14px 12px 8px}
+.recordsRailHeader h2{margin:2px 0 0;font-size:12px;color:#2b2832}
+.recordsRailSearch{
+  height:34px;margin:0 10px 8px;display:flex;align-items:center;gap:7px;padding:0 9px;
+  border:1px solid #e7e4eb;border-radius:6px;background:#fff
+}
+.recordsRailSearch .lucide{width:12px;height:12px;color:#aaa5b2}
+.recordsRailSearch input{width:100%;border:0;outline:0;background:transparent;font-size:9px}
+.recordsProcessTabs{display:flex;flex-direction:column;gap:2px;padding:3px 8px 10px}
+.recordsProcessTabs>button{
+  width:100%;min-height:52px;display:grid;grid-template-columns:30px minmax(0,1fr) 14px;gap:8px;align-items:center;
+  padding:7px 8px;border:0;border-radius:6px;background:transparent;text-align:left;color:#5d5867
+}
+.recordsProcessTabs>button:hover{background:#f2f0f5}
+.recordsProcessTabs>button.active{background:#fff;box-shadow:0 1px 4px rgba(29,27,37,.06);color:#27242d}
+.recordsRailIcon{width:28px;height:28px;border-radius:7px;background:#f0eef4;color:#77717f;display:grid;place-items:center}
+.recordsRailIcon .lucide{width:14px;height:14px}
+.recordsProcessTabs b,.recordsProcessTabs small{display:block}
+.recordsProcessTabs b{font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recordsProcessTabs small{font-size:7px;color:#aaa5b2;margin-top:2px}
+.recordsProcessTabs>button>.lucide{width:12px;height:12px;color:#b7b2bd}
+
+.recordsLibraryPane{min-width:0;background:#fff}
+.recordsLibraryHeader{
+  min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:12px 16px;border-bottom:1px solid #efedf2
+}
+.recordsLibraryHeader h2{margin:2px 0 2px;font-size:15px;color:#24212a}
+.recordsLibraryHeader p{margin:0;font-size:8px;color:#9994a1}
+.recordsLibraryStats{display:flex}
+.recordsLibraryStats>span{min-width:84px;padding:0 12px;border-left:1px solid #efedf2}
+.recordsLibraryStats b,.recordsLibraryStats small{display:block}
+.recordsLibraryStats b{font-size:13px;color:#2d2a33}
+.recordsLibraryStats small{font-size:7px;color:#aaa5b2;margin-top:1px}
+
+.recordsLibraryTabs{
+  height:44px;padding:0 14px;display:flex;align-items:center;gap:22px;border-bottom:1px solid #efedf2
+}
+.recordsLibraryTabs button{
+  position:relative;height:44px;border:0;background:transparent;padding:0;color:#8c8794;font-size:9px;font-weight:700
+}
+.recordsLibraryTabs button.active{color:#2e2a34}
+.recordsLibraryTabs button.active:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:#63c6b1}
+.recordsLibraryTabs span{margin-left:4px;padding:2px 5px;border-radius:8px;background:#fff4e5;color:#b54708;font-size:7px}
+
+.recordsLibraryToolbar{
+  min-height:52px;display:grid;grid-template-columns:minmax(260px,1fr) 180px 32px;gap:8px;align-items:center;
+  padding:9px 14px;border-bottom:1px solid #efedf2;background:#fbfafc
+}
+.recordsLibraryToolbar select{height:34px;border:1px solid #e3e0e8;border-radius:6px;background:#fff;padding:0 8px;font-size:9px}
+.recordsLibraryHead,.recordsLibraryRows .evidenceRow{
+  display:grid;grid-template-columns:minmax(280px,1.55fr) 110px 150px 96px 82px 16px;gap:8px;align-items:center
+}
+.recordsLibraryHead{
+  min-height:32px;padding:0 14px;border-bottom:1px solid #efedf2;color:#aaa5b2;font-size:7px;font-weight:800;text-transform:uppercase
+}
+.recordsLibraryRows .evidenceRow{
+  min-height:66px;padding:8px 14px;border-bottom:1px solid #f0eef3;box-shadow:none
+}
+.recordsLibraryRows .evidenceRow.selected{background:#fff;box-shadow:none}
+.recordsLibraryRows .evidenceRow:hover{background:#fcfbfd}
+.recordsLibraryRows .evidenceRow>.lucide{width:12px;height:12px;color:#b6b2bd}
+.recordsLibraryEmpty{min-height:260px;place-items:center;text-align:center;padding:30px;color:#9994a1}
+.recordsLibraryEmpty .lucide{width:24px;height:24px}
+.recordsLibraryEmpty b,.recordsLibraryEmpty span{display:block}
+.recordsLibraryEmpty b{margin-top:6px;font-size:10px;color:#4d4855}
+.recordsLibraryEmpty span{font-size:8px}
+.recordsLibraryFooter{
+  min-height:42px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:0 14px;border-top:1px solid #efedf2;background:#fbfafc;color:#aaa5b2;font-size:7px
+}
+.recordsLibraryFooter>div{display:flex;gap:10px}
+
+/* Record detail is contextual, like controlled-document detail. */
+.recordDetail{min-height:650px}
+.recordDetailPanel{display:none}
+.recordDetailPanel.active{display:block}
+.recordDetailWorkspace{
+  display:grid;grid-template-columns:minmax(600px,1fr) 320px;min-height:570px;
+  border:1px solid #ebe8ef;border-radius:9px;background:#fff;overflow:hidden;box-shadow:0 6px 24px rgba(29,27,37,.035)
+}
+.recordPrimaryPane{border-right:1px solid #efedf2;background:#f6f5f8;min-width:0}
+.recordFileHeader{
+  height:58px;padding:0 14px;display:grid;grid-template-columns:30px minmax(0,1fr) 30px;gap:8px;align-items:center;
+  border-bottom:1px solid #e7e4eb;background:#fff
+}
+.recordFileHeader b,.recordFileHeader span{display:block}
+.recordFileHeader b{font-size:9px;color:#2e2a34}
+.recordFileHeader span{font-size:7px;color:#aaa5b2;margin-top:2px}
+.recordPreview{
+  max-width:700px;min-height:380px;margin:32px auto;padding:44px;
+  display:flex;align-items:flex-start;gap:16px;border:1px solid #e7e4eb;background:#fff;box-shadow:0 6px 22px rgba(29,27,37,.05)
+}
+.recordPreviewIcon{width:42px;height:42px;border-radius:9px;background:#e7f6f2;color:#168675;display:grid;place-items:center;flex:0 0 auto}
+.recordPreviewIcon .lucide{width:20px;height:20px}
+.recordPreview h2{margin:4px 0 6px;font-size:17px;color:#27242d}
+.recordPreview p{margin:0;max-width:520px;font-size:9px;line-height:1.6;color:#827d8a}
+.recordInfoPane{padding:16px}
+.recordInfoList{margin:10px 0 0}
+.recordInfoList>div{display:grid;grid-template-columns:125px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid #efedf2}
+.recordInfoList dt{font-size:7px;text-transform:uppercase;color:#aaa5b2;font-weight:700}
+.recordInfoList dd{margin:0;font-size:9px;color:#312d37;font-weight:600}
+
+.recordTraceability,.recordSimplePanel{
+  border:1px solid #ebe8ef;border-radius:9px;background:#fff;box-shadow:0 6px 24px rgba(29,27,37,.035);padding:18px
+}
+.recordTraceabilityIntro{padding-bottom:14px;border-bottom:1px solid #efedf2}
+.recordTraceabilityIntro h2,.recordSimplePanel h2{margin:3px 0 3px;font-size:14px;color:#27242d}
+.recordTraceabilityIntro p{margin:0;font-size:8px;color:#9994a1}
+.recordTracePath{
+  min-height:180px;display:grid;grid-template-columns:minmax(140px,1fr) 32px minmax(160px,1.15fr) 32px minmax(150px,1fr) 32px minmax(145px,1fr);
+  gap:6px;align-items:center;padding:28px 10px
+}
+.recordTracePath>div{
+  min-height:92px;padding:12px;border:1px solid #e9e6ed;border-radius:8px;background:#fff
+}
+.recordTracePath>div.active{border-color:#9fd5ca;background:#f8fcfb}
+.recordTracePath>div>small,.recordTracePath>div>b{display:block}
+.recordTracePath>div>small{font-size:7px;text-transform:uppercase;color:#aaa5b2;margin:7px 0 3px}
+.recordTracePath>div>b{font-size:9px;color:#2f2b35;line-height:1.4}
+.recordTracePath>.lucide{width:15px;height:15px;color:#c2bec7;justify-self:center}
+.recordUsedBy{border-top:1px solid #efedf2;padding-top:14px}
+.recordUsedBy .sectionTitleRow p{margin:2px 0 0;font-size:8px;color:#9994a1}
+.recordLinkRows button{
+  width:100%;min-height:52px;display:grid;grid-template-columns:22px minmax(0,1fr) 14px;gap:8px;align-items:center;
+  padding:8px 0;border:0;border-bottom:1px solid #efedf2;background:transparent;text-align:left
+}
+.recordLinkRows button>.lucide{width:14px;height:14px;color:#7f7a88}
+.recordLinkRows b,.recordLinkRows small{display:block}
+.recordLinkRows b{font-size:9px;color:#302c36}
+.recordLinkRows small{font-size:7px;color:#9e99a5;margin-top:2px}
+.recordControlRows{margin-top:12px}
+.recordControlRows>div{display:grid;grid-template-columns:180px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid #efedf2}
+.recordControlRows span{font-size:8px;color:#9994a1}
+.recordControlRows b{font-size:9px;color:#302c36}
+.recordActivityRows{margin-top:12px}
+.recordActivityRows>div{display:grid;grid-template-columns:150px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid #efedf2}
+.recordActivityRows span{font-size:8px;color:#9994a1}
+.recordActivityRows b,.recordActivityRows small{display:block}
+.recordActivityRows b{font-size:9px;color:#302c36}
+.recordActivityRows small{font-size:7px;color:#9e99a5;margin-top:2px}
+
+@media(max-width:1100px){
+  .recordsDmsWorkspace{grid-template-columns:210px minmax(0,1fr)}
+  .recordsLibraryStats{display:none}
+  .recordDetailWorkspace{grid-template-columns:1fr}
+  .recordPrimaryPane{border-right:0;border-bottom:1px solid #efedf2}
+}
+@media(max-width:860px){
+  .recordsDmsWorkspace{grid-template-columns:1fr}
+  .recordsProcessRail{border-right:0;border-bottom:1px solid #ebe8ef}
+  .recordsProcessTabs{display:grid;grid-template-columns:repeat(2,1fr)}
+  .recordsLibraryToolbar{grid-template-columns:1fr}
+  .recordsLibraryHead,.recordsLibraryRows .evidenceRow{grid-template-columns:minmax(240px,1fr) 100px 80px 16px}
+  .recordsLibraryHead span:nth-child(3),.recordsLibraryHead span:nth-child(4),
+  .recordsLibraryRows .evidenceRow>span:nth-child(3),.recordsLibraryRows .evidenceRow>span:nth-child(4){display:none}
+  .recordTracePath{grid-template-columns:1fr}
+  .recordTracePath>.lucide{transform:rotate(90deg)}
+}
+@media(max-width:620px){
+  .recordsProcessTabs{grid-template-columns:1fr}
+  .recordPreview{margin:16px;padding:24px}
+  .recordInfoList>div,.recordControlRows>div,.recordActivityRows>div{grid-template-columns:1fr}
+}
