@@ -640,10 +640,14 @@ body.navExpanded .navGroup{
   background:transparent;font-size:8px;letter-spacing:.1em;text-transform:uppercase;font-weight:700
 }
 body.navExpanded .navItem{
-  width:100%;height:36px;padding:0 9px;justify-content:flex-start;gap:9px
+  width:100%;height:36px;padding:0 9px;justify-content:flex-start;gap:9px;font-size:10px;line-height:1
 }
-body.navExpanded .navItem>span:not(.navIcon):not(.navBadge):not(.navMeta){display:inline}
-body.navExpanded .navMeta{display:inline;margin-left:auto;color:#73849a;font-size:9px}
+body.navExpanded .navItem>span:not(.navIcon):not(.navBadge):not(.navMeta){
+  display:block;white-space:nowrap;overflow:visible;line-height:1
+}
+body.navExpanded .navMeta{
+  display:inline;margin-left:auto;color:#73849a;font-size:8px;white-space:nowrap;flex:0 0 auto
+}
 body.navExpanded .navBadge{
   position:static;margin-left:auto;width:auto;min-width:18px;height:17px;padding:0 5px;font-size:9px;
   border:0;border-radius:9px;background:#6a4308;color:#ffd58a
