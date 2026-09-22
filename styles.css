@@ -401,3 +401,242 @@ body.navHidden .mainArea{margin-left:0}
   body.navHidden .mainArea{margin-left:0}
   .documentWorkspace.inspectorHidden{grid-template-columns:1fr}
 }
+
+
+/* 2026-09-22 shell refinement — compact enterprise rail + breadcrumb header */
+.sideNav{
+  width:58px;
+  background:#0f1c2e;
+  border-right:0;
+  padding:14px 8px 12px;
+  overflow:visible;
+  align-items:center;
+}
+.mainArea{margin-left:58px}
+.brand{
+  width:42px;
+  height:42px;
+  padding:0;
+  margin:0 0 14px;
+  justify-content:center;
+}
+.brandMark{
+  width:30px;
+  height:30px;
+  border-radius:9px;
+  background:#0f5bd7;
+  color:#fff;
+  box-shadow:none;
+}
+.brand>div:last-child{display:none}
+.workspaceSwitch{
+  width:40px;
+  height:40px;
+  padding:0;
+  margin:0 0 12px;
+  justify-content:center;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.04);
+  border-radius:8px;
+}
+.workspaceSwitch:hover{background:rgba(255,255,255,.08)}
+.workspaceAvatar{
+  width:24px;
+  height:24px;
+  border-radius:6px;
+  background:#173758;
+  color:#bcd6ff;
+}
+.workspaceText,.workspaceChevron{display:none}
+.primaryNav{
+  width:100%;
+  gap:4px;
+  align-items:center;
+}
+.navGroup{
+  width:30px;
+  height:1px;
+  padding:0;
+  margin:8px 0 5px;
+  overflow:hidden;
+  color:transparent;
+  background:rgba(255,255,255,.08);
+  font-size:0;
+}
+.navItem{
+  width:40px;
+  height:40px;
+  padding:0;
+  justify-content:center;
+  border-radius:8px;
+  color:#90a0b4;
+  position:relative;
+}
+.navItem:hover{background:rgba(255,255,255,.07);color:#fff}
+.navItem.active{
+  background:#1f3855;
+  color:#fff;
+  box-shadow:none;
+}
+.navIcon{width:auto;color:inherit}
+.navItem.active .navIcon{color:#fff}
+.navIcon .lucide{width:17px;height:17px;stroke-width:1.8}
+.navItem>span:not(.navIcon):not(.navBadge):not(.navMeta){display:none}
+.navMeta{display:none}
+.navBadge{
+  position:absolute;
+  right:2px;
+  top:2px;
+  min-width:7px;
+  width:7px;
+  height:7px;
+  padding:0;
+  font-size:0;
+  border-radius:50%;
+  background:#f79009;
+  border:1px solid #0f1c2e;
+}
+.sideStatus{display:none}
+.railCollapse{
+  margin-top:auto;
+  width:40px;
+  height:40px;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  color:#90a0b4;
+  display:grid;
+  place-items:center;
+  padding:0;
+}
+.railCollapse:hover{background:rgba(255,255,255,.07);color:#fff}
+.railCollapse .lucide{width:17px;height:17px}
+.railReveal{
+  display:none;
+  position:fixed;
+  left:10px;
+  top:11px;
+  z-index:60;
+  width:34px;
+  height:34px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:#fff;
+  color:#475467;
+  box-shadow:var(--shadow);
+  place-items:center;
+}
+.railReveal .lucide{width:16px;height:16px}
+body.navHidden .railReveal{display:grid}
+body.navHidden .mainArea{margin-left:0}
+
+/* Reference-style top header */
+.commandBar{
+  height:56px;
+  background:#fff;
+  border-bottom:1px solid #edf0f3;
+  padding:0 20px;
+  gap:12px;
+  backdrop-filter:none;
+}
+.breadcrumb{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#8a94a3;
+  font-size:11px;
+  white-space:nowrap;
+}
+.breadcrumb>.lucide{width:13px;height:13px;stroke-width:1.8}
+.breadcrumb b{
+  color:#5e6876;
+  font-weight:500;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.crumbSep{color:#c2c8d0}
+.commandActions{gap:5px}
+.headerIconButton{
+  width:34px;
+  height:34px;
+  border:0;
+  border-radius:7px;
+  background:transparent;
+  color:#667085;
+  display:grid;
+  place-items:center;
+  position:relative;
+  padding:0;
+}
+.headerIconButton:hover{background:#f5f7fa;color:#344054}
+.headerIconButton>.lucide{width:16px;height:16px}
+.headerSearch{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  height:36px;
+}
+.headerSearch input{
+  width:0;
+  opacity:0;
+  border:0;
+  padding:0;
+  pointer-events:none;
+  transition:width .18s ease,opacity .15s ease,padding .18s ease;
+  font-size:11px;
+  background:#fff;
+}
+.headerSearch.open{
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding-right:8px;
+  background:#fff;
+}
+.headerSearch.open .headerIconButton{background:transparent}
+.headerSearch.open input{
+  width:240px;
+  opacity:1;
+  pointer-events:auto;
+  padding:0 6px 0 2px;
+  outline:0;
+}
+.profileButton{
+  border-left:0;
+  padding:3px 2px 3px 8px;
+  margin-left:2px;
+  gap:7px;
+}
+.profileButton:hover{background:#f8fafb;border-radius:8px}
+.profileButton .avatar{
+  width:30px;
+  height:30px;
+  background:#e9eef5;
+  color:#44546a;
+}
+.profileButton b{font-size:10px;font-weight:600}
+.profileButton small{font-size:8px}
+.profileChevron .lucide{width:12px;height:12px}
+.notificationCount{
+  right:-2px!important;
+  top:-2px!important;
+  min-width:14px!important;
+  height:14px!important;
+  font-size:8px!important;
+  border:2px solid #fff;
+}
+
+/* Keep the content feeling attached to the compact shell */
+.pageBody{padding:26px 24px 40px}
+.pageHeader{margin-bottom:20px}
+
+@media(max-width:780px){
+  .sideNav{width:54px;padding:12px 7px}
+  .mainArea{margin-left:54px}
+  .brand{width:40px}
+  .workspaceSwitch,.navItem,.railCollapse{width:38px;height:38px}
+  .commandBar{padding:0 12px}
+  .breadcrumb span:not(.crumbSep),.breadcrumb .crumbSep:first-of-type{display:none}
+  .profileButton>span:not(.avatar){display:none}
+  .headerSearch.open input{width:min(210px,42vw)}
+}
