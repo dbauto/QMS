@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="iqms-build" content="20260922-green-hover-sidebar1">
+<meta name="iqms-build" content="20260922-green-sidebar-brandfix1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-green-hover-sidebar1">
+<link rel="stylesheet" href="./styles.css?v=20260922-green-sidebar-brandfix1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
 .sideNav{position:fixed!important;left:0!important;top:0!important;bottom:0!important;width:58px!important;background:#083d35!important;border-right:0!important;padding:14px 8px 12px!important;display:flex!important;flex-direction:column!important;align-items:center!important;z-index:30!important;overflow:visible!important;transition:width .18s ease,box-shadow .18s ease!important}
 .mainArea{margin-left:58px!important;min-height:100vh!important;transition:margin-left .18s ease!important}
 .brand{position:relative!important;width:42px!important;height:42px!important;padding:0!important;margin:0 0 14px!important;display:flex!important;align-items:center!important;justify-content:center!important}
-.brand>div:last-child{display:none!important}
+.brandText{display:none!important}
 .brandMark{width:30px!important;height:30px!important;border-radius:9px!important;background:#19a68f!important;color:#fff!important;display:grid!important;place-items:center!important}
 .brandMark .lucide{width:17px!important;height:17px!important}
 .workspaceSwitch{display:none!important}
@@ -49,9 +49,9 @@ body.navExpanded .mainArea{margin-left:58px!important}
 body.navPinned .mainArea{margin-left:228px!important}
 body.navExpanded .brand{width:auto!important;height:auto!important;justify-content:flex-start!important;padding:0 42px 0 6px!important;margin:0 0 14px!important;gap:10px!important}
 body.navExpanded .sidebarPin{display:grid!important}
-body.navExpanded .brand>div:last-child{display:block!important}
-body.navExpanded .brand>div:last-child strong{display:block!important;color:#fff!important;font-size:14px!important}
-body.navExpanded .brand>div:last-child span{display:block!important;color:#89b1a9!important;font-size:9px!important}
+body.navExpanded .brandText{display:block!important;min-width:0!important}
+body.navExpanded .brandText strong{display:block!important;color:#fff!important;font-size:14px!important}
+body.navExpanded .brandText span{display:block!important;color:#89b1a9!important;font-size:9px!important}
 
 body.navExpanded .workspaceSwitch{
   display:flex!important;
@@ -127,7 +127,7 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
   <aside class="sideNav">
     <div class="brand">
       <div class="brandMark" title="iQMS"><i data-lucide="shield-check"></i></div>
-      <div><strong>iQMS</strong><span>Quality Management</span></div>
+      <div class="brandText"><strong>iQMS</strong><span>Quality Management</span></div>
       <button class="sidebarPin" id="sidebarPin" aria-label="Pin sidebar" aria-pressed="false" title="Pin sidebar"><i data-lucide="pin"></i></button>
     </div>
 
@@ -2046,6 +2046,6 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-green-hover-sidebar1"></script>
+<script src="./app.js?v=20260922-green-sidebar-brandfix1"></script>
 </body>
 </html>
