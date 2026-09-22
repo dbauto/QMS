@@ -279,6 +279,24 @@ body.navExpanded .railExpand span{display:inline!important}
             </button>
           </div>
 
+          <section class="controlledMasterPanel" id="controlledMasterPanel">
+            <div class="sectionHeader">
+              <div><h2>Controlled Information master library</h2><p>Primary source for policies, manuals, procedures, SOPs, work instructions, forms, templates and external documents.</p></div>
+              <div class="pageActions"><button class="btn secondary"><i data-lucide="list-filter"></i>Filters</button><button class="btn primary" onclick="openRegisterResource('controlled')"><i data-lucide="plus"></i>Register</button></div>
+            </div>
+            <div class="controlledLibraryToolbar">
+              <div class="filterSearch"><span><i data-lucide="search"></i></span><input id="controlledSearch" placeholder="Search document ID, title, owner..."></div>
+              <select><option>All document types</option><option>Policy</option><option>Manual</option><option>Procedure</option><option>SOP</option><option>Work Instruction</option><option>Form / Template</option><option>External Document</option></select>
+              <select><option>All processes</option><option>Recruitment</option><option>Operations</option><option>Training</option><option>Procurement</option></select>
+              <select><option>All statuses</option><option>Effective</option><option>Draft</option><option>In approval</option><option>Review due</option></select>
+            </div>
+            <div class="controlledLibraryHead"><span>Document</span><span>Type</span><span>Process</span><span>Rev</span><span>Owner</span><span>Status</span><span>Next review</span></div>
+            <button class="controlledLibraryRow" onclick="openDocumentSpace('quality')"><div><b>QMS-PRO-REC-001</b><strong>Recruitment Procedure</strong><small>ISO 8.1 · 8.5</small></div><span>Procedure</span><span>Recruitment</span><span>03</span><span>Recruitment Manager</span><span class="tag success">Effective</span><span>01 Sep 2027</span></button>
+            <button class="controlledLibraryRow" onclick="openDocumentSpace('quality')"><div><b>SOP-QA-014</b><strong>Control of Nonconforming Outputs</strong><small>ISO 8.7</small></div><span>SOP</span><span>Quality</span><span>06</span><span>Quality Manager</span><span class="tag success">Effective</span><span>15 Sep 2027</span></button>
+            <button class="controlledLibraryRow" onclick="openDocumentSpace('operations')"><div><b>WI-PROD-021</b><strong>Final Inspection Work Instruction</strong><small>ISO 8.5</small></div><span>Work Instruction</span><span>Operations</span><span>03</span><span>Ana Reyes</span><span class="tag info">In approval</span><span>—</span></button>
+            <button class="controlledLibraryRow" onclick="openDocumentSpace('purchasing')"><div><b>SOP-PUR-012</b><strong>Supplier Control Procedure</strong><small>ISO 8.4</small></div><span>Procedure</span><span>Procurement</span><span>05</span><span>John Cruz</span><span class="tag warning">Review due</span><span>28 Sep 2026</span></button>
+          </section>
+
           <div class="spaceSectionHead">
             <div><h2>Process & working spaces</h2><p>Contextual views that bring together controlled information, records, requirements and workflow for a process or function.</p></div>
             <div class="spaceViewActions"><button class="iconButton active" title="Grid view"><i data-lucide="layout-grid"></i></button><button class="iconButton" title="List view"><i data-lucide="list"></i></button></div>
