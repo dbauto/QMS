@@ -1050,7 +1050,27 @@ function renderRegistration(){
   updateRegistrationReview();
   refreshIcons();
 }
+function validateApprovalRoute(){
+  const stages=[...document.querySelectorAll('#approvalStages .approvalStage')];
+  const approvalStages=stages.filter(stage=>stage.dataset.stageKind==='approve');
+  if(!approvalStages.length){
+    toast('Approval stage required','Add at least one approval stage before continuing.');
+    return false;
+  }
+  for(const stage of stages){
+    const count=stage.querySelectorAll('.participantChip').length;
+    if(count<1){
+      const label=stage.dataset.stageKind==='approve'?'approver':'reviewer';
+      toast('Incomplete approval route','Each '+stage.dataset.stageKind+' stage needs at least one '+label+'.');
+      return false;
+    }
+  }
+  return true;
+}
+
 function moveRegistration(delta){
+  if(delta>0 && registrationClass==='controlled' && registrationStep===6 && registrationSourceMode!=='existing' && !validateApprovalRoute()) return;
+
   let next=registrationStep+delta;
 
   // Existing Nexus resources are not re-registered. Step 2 goes directly to Review.
@@ -1075,6 +1095,7 @@ function updateRegistrationReview(){
   const reviewProcess=document.getElementById('reviewProcess');
   const reviewIso=document.getElementById('reviewIso');
   const reviewState=document.getElementById('reviewNextState');
+  const reviewApprovalRoute=document.getElementById('reviewApprovalRoute');
   const reviewDetail=document.getElementById('reviewNextStateDetail');
   const confirmTitle=document.getElementById('registerConfirmTitle');
   const confirmText=document.getElementById('registerConfirmText');
@@ -1105,6 +1126,7 @@ function updateRegistrationReview(){
     if(reviewIdentity) reviewIdentity.textContent=id+' · '+title;
     if(reviewProcess) reviewProcess.textContent=document.getElementById('regProcess')?.value||document.getElementById('regSpace')?.value||'—';
     if(reviewIso) reviewIso.textContent=document.getElementById('regIso')?.value||'—';
+    if(reviewApprovalRoute) reviewApprovalRoute.textContent=approvalRouteSnapshotText()||'Configured for this revision';
     if(reviewState) reviewState.textContent=registrationSourceMode==='create'?(authoringMode==='template'?'Draft created from '+selectedAuthoringTemplate:'Blank controlled draft created'):(registrationSourceMode==='external'?'External document draft created':'Draft revision created');
     if(reviewDetail) reviewDetail.textContent=registrationSourceMode==='external'?'Nexus will track the external source version, review date and internal relationships.':('Approval route is snapshotted. The document is not Effective until final approval.');
     if(confirmTitle) confirmTitle.textContent='Create controlled draft?';
@@ -1117,6 +1139,7 @@ function updateRegistrationReview(){
     if(reviewIdentity) reviewIdentity.textContent=id+' · '+title;
     if(reviewProcess) reviewProcess.textContent=document.getElementById('regProcess')?.value||'—';
     if(reviewIso) reviewIso.textContent='Retention + traceability';
+    if(reviewApprovalRoute) reviewApprovalRoute.textContent='Not applicable';
     if(reviewState) reviewState.textContent='Retained record registered';
     if(reviewDetail) reviewDetail.textContent='Retention, access and traceability are applied. No approval lifecycle is forced unless configured for this record type.';
     if(confirmTitle) confirmTitle.textContent='Register record / evidence?';
