@@ -1838,3 +1838,55 @@ body.navExpanded .navItem:hover{background:#172e47}
   .addStageBar>span{display:none}
   .routeSummary{grid-column:1/-1;justify-self:start}
 }
+
+
+/* Existing effective document onboarding */
+.sourceIntentGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.existingEffectiveNotice{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  border:1px solid #cfe6dc;
+  border-radius:8px;
+  background:#f5fbf8;
+  padding:11px 12px;
+  margin-bottom:10px;
+}
+.existingEffectiveNotice>.lucide{
+  width:16px;
+  height:16px;
+  color:#067647;
+  margin-top:1px;
+  flex:0 0 auto;
+}
+.existingEffectiveNotice b,
+.existingEffectiveNotice span{display:block}
+.existingEffectiveNotice b{font-size:9px;color:#245744}
+.existingEffectiveNotice span{font-size:8px;color:#61756e;line-height:1.5;margin-top:2px}
+.effectiveUpload{min-height:135px}
+.effectiveImportRule{
+  display:flex;
+  gap:9px;
+  align-items:flex-start;
+  border-top:1px solid var(--line);
+  margin-top:10px;
+  padding-top:10px;
+}
+.effectiveImportRule>.lucide{
+  width:15px;
+  height:15px;
+  color:#667085;
+  margin-top:1px;
+  flex:0 0 auto;
+}
+.effectiveImportRule b,
+.effectiveImportRule span{display:block}
+.effectiveImportRule b{font-size:9px;color:#344054}
+.effectiveImportRule span{font-size:8px;color:#98a2b3;line-height:1.45;margin-top:2px}
+
+@media(max-width:900px){
+  .sourceIntentGrid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:650px){
+  .sourceIntentGrid{grid-template-columns:1fr}
+}
