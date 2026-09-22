@@ -73,7 +73,8 @@ function showView(id){
   const target=document.getElementById(id);
   if(target) target.classList.add('active');
   navItems.forEach(item=>item.classList.toggle('active',item.dataset.view===id));
-  if(breadcrumbCurrent) breadcrumbCurrent.textContent=viewLabels[id]||'Workspace';
+  if(id==='repository') closeDocumentSpace();
+  if(breadcrumbCurrent && id!=='repository') breadcrumbCurrent.textContent=viewLabels[id]||'Workspace';
   window.scrollTo({top:0,behavior:'smooth'});
 }
 navItems.forEach(item=>item.addEventListener('click',()=>showView(item.dataset.view)));
@@ -103,6 +104,205 @@ function toast(title,message){
 document.querySelectorAll('[data-toast-title]').forEach(button=>{
   button.addEventListener('click',()=>toast(button.dataset.toastTitle,button.dataset.toastMessage||'Action recorded in this prototype.'));
 });
+
+
+/* QMS document spaces */
+const spaceDefinitions={
+  quality:{
+    name:'Quality Management',path:'Quality / Procedures',count:486,
+    docs:[
+      {code:'SOP-QA-014',title:'Control of Nonconforming Outputs',type:'SOP · Quality',rev:'06',owner:'M. Santos',status:'Effective',kind:'success',review:'15 Sep 2027',approver:'Quality Manager',effective:'15 Sep 2026',purpose:'Defines controls for identifying, segregating, reviewing and dispositioning nonconforming outputs.'},
+      {code:'SOP-QA-005',title:'Internal Audit Procedure',type:'SOP · Quality',rev:'04',owner:'A. Reyes',status:'Review due',kind:'warning',review:'03 Oct 2026',approver:'Quality Manager',effective:'03 Oct 2025',purpose:'Defines planning, execution, reporting and follow-up requirements for the internal audit program.'},
+      {code:'SOP-QA-001',title:'Document Control Procedure',type:'SOP · Quality',rev:'05',owner:'M. Santos',status:'Effective',kind:'success',review:'20 Sep 2027',approver:'Quality Manager',effective:'20 Sep 2026',purpose:'Defines document creation, review, approval, release, revision, distribution and obsolete-document controls.'},
+      {code:'SOP-QA-020',title:'Corrective Action Procedure',type:'SOP · Quality',rev:'03',owner:'J. Dela Cruz',status:'Draft',kind:'neutral',review:'—',approver:'Quality Manager',effective:'Not effective',purpose:'Defines investigation, root-cause analysis, corrective action, verification and closure requirements.'}
+    ]
+  },
+  operations:{
+    name:'Operations',path:'Operations / Controlled Documents',count:368,
+    docs:[
+      {code:'WI-PROD-021',title:'Final Inspection Work Instruction',type:'Work Instruction · Operations',rev:'03',owner:'A. Reyes',status:'In approval',kind:'info',review:'—',approver:'Quality Manager',effective:'Not effective',purpose:'Defines final inspection activities, acceptance criteria and required inspection records.'},
+      {code:'SOP-PROD-009',title:'Production Line Release Procedure',type:'SOP · Operations',rev:'05',owner:'R. Flores',status:'Effective',kind:'success',review:'08 May 2027',approver:'Operations Manager',effective:'08 May 2026',purpose:'Defines authorization and release controls before production lines enter active operation.'},
+      {code:'FORM-PROD-017',title:'Shift Start Verification Record',type:'Form · Operations',rev:'02',owner:'Production Control',status:'Effective',kind:'success',review:'21 Jun 2027',approver:'Operations Manager',effective:'21 Jun 2026',purpose:'Controlled master used to record shift-start equipment, material and process verification.'}
+    ]
+  },
+  engineering:{
+    name:'Engineering',path:'Engineering / Controlled Documents',count:271,
+    docs:[
+      {code:'SPEC-ENG-042',title:'Assembly Torque Specification',type:'Specification · Engineering',rev:'08',owner:'P. Lim',status:'Effective',kind:'success',review:'12 Feb 2027',approver:'Engineering Manager',effective:'12 Feb 2026',purpose:'Defines approved torque requirements and verification criteria for controlled assembly operations.'},
+      {code:'ECN-2026-118',title:'Gauge Fixture Design Change',type:'Engineering Change · Engineering',rev:'01',owner:'K. Tan',status:'In review',kind:'info',review:'—',approver:'Engineering Manager',effective:'Not effective',purpose:'Records the proposed controlled change to the production gauge fixture design.'},
+      {code:'DWG-ENG-114',title:'Inspection Fixture Drawing',type:'Drawing · Engineering',rev:'C',owner:'Design Engineering',status:'Effective',kind:'success',review:'04 Apr 2027',approver:'Engineering Manager',effective:'04 Apr 2026',purpose:'Controlled engineering drawing for the inspection fixture used in final verification.'}
+    ]
+  },
+  purchasing:{
+    name:'Purchasing & Supplier Quality',path:'Purchasing / Supplier Quality',count:144,
+    docs:[
+      {code:'SOP-PUR-012',title:'Supplier Control Procedure',type:'SOP · Purchasing',rev:'05',owner:'J. Cruz',status:'Review due',kind:'warning',review:'28 Sep 2026',approver:'Quality Manager',effective:'28 Sep 2025',purpose:'Defines supplier qualification, monitoring, evaluation and approved-source controls.'},
+      {code:'SUP-EVAL-2026-031',title:'Supplier Evaluation — Alpha Metals',type:'Quality Record · Purchasing',rev:'—',owner:'Purchasing',status:'Current',kind:'success',review:'02 Sep 2027',approver:'Purchasing Manager',effective:'02 Sep 2026',purpose:'Retained supplier-performance evaluation record for Alpha Metals.'},
+      {code:'FORM-PUR-006',title:'Supplier Corrective Action Request',type:'Form · Purchasing',rev:'04',owner:'Supplier Quality',status:'Effective',kind:'success',review:'14 Mar 2027',approver:'Quality Manager',effective:'14 Mar 2026',purpose:'Controlled master used to request and track supplier corrective actions.'}
+    ]
+  },
+  hr:{
+    name:'People & Competence',path:'Human Resources / Competence',count:93,
+    docs:[
+      {code:'SOP-HR-003',title:'Training and Competence Management',type:'SOP · Human Resources',rev:'04',owner:'HR',status:'Review due',kind:'warning',review:'10 Oct 2026',approver:'HR Manager',effective:'10 Oct 2025',purpose:'Defines competence requirements, training assignment, completion and effectiveness review.'},
+      {code:'FORM-HR-011',title:'Training Effectiveness Assessment',type:'Form · Human Resources',rev:'02',owner:'HR',status:'Effective',kind:'success',review:'17 Jul 2027',approver:'HR Manager',effective:'17 Jul 2026',purpose:'Controlled form used to assess the effectiveness of completed training.'}
+    ]
+  },
+  external:{
+    name:'External Standards & Customer Requirements',path:'External Documents / Standards',count:203,
+    docs:[
+      {code:'EXT-STD-002',title:'Customer Quality Specification',type:'External Document · Quality',rev:'2026.2',owner:'Document Control',status:'Current',kind:'success',review:'01 Feb 2027',approver:'Document Control',effective:'05 Sep 2026',purpose:'Externally controlled customer specification tracked for source, revision and applicability.'},
+      {code:'ISO-9001',title:'ISO 9001 Quality Management Systems',type:'External Standard',rev:'Current',owner:'Document Control',status:'Tracked',kind:'info',review:'15 Jan 2027',approver:'Document Control',effective:'Source controlled',purpose:'External reference standard maintained with currency tracking and linked internal controls.'}
+    ]
+  },
+  records:{
+    name:'Records & Evidence',path:'Records & Evidence',count:161,
+    docs:[
+      {code:'IA-2026-004',title:'Internal Audit — Production Line 2',type:'Audit Record · Quality',rev:'—',owner:'Quality',status:'Closed',kind:'success',review:'Retained',approver:'Quality Manager',effective:'12 Sep 2026',purpose:'Retained audit record containing findings, evidence and closure traceability.'},
+      {code:'CAL-CERT-2026-0084',title:'Calibration Certificate — DMM-14',type:'Certificate · Metrology',rev:'—',owner:'Metrology',status:'Current',kind:'success',review:'18 Sep 2027',approver:'Metrology',effective:'18 Sep 2026',purpose:'Calibration evidence linked to equipment, audit and maintenance records.'}
+    ]
+  },
+  management:{
+    name:'Management System',path:'Management / System Documents',count:66,
+    docs:[
+      {code:'POL-001',title:'Quality Policy',type:'Policy · Management',rev:'05',owner:'Executive Management',status:'Effective',kind:'success',review:'01 Jan 2028',approver:'Managing Director',effective:'01 Jan 2026',purpose:'Defines the organization-wide commitment and direction for the quality management system.'},
+      {code:'MR-2026-Q3',title:'Management Review — Q3 2026',type:'Management Record',rev:'—',owner:'Quality Manager',status:'Current',kind:'success',review:'Retained',approver:'Managing Director',effective:'15 Sep 2026',purpose:'Retained management-review inputs, decisions, actions and follow-up evidence.'}
+    ]
+  }
+};
+
+function escapeHtml(value=''){
+  return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+}
+
+function renderSpaceRows(space){
+  const host=document.getElementById('spaceDocumentRows');
+  const empty=document.getElementById('spaceEmptyState');
+  const workspace=document.querySelector('#repositorySpace .documentWorkspace');
+  if(!host||!empty) return;
+  const docs=space.docs||[];
+  host.innerHTML=docs.map((d,i)=>`
+    <button class="documentRow ${i===0?'selected':''}" data-space-doc-index="${i}">
+      <div><b>${escapeHtml(d.code)}</b><strong>${escapeHtml(d.title)}</strong><small>${escapeHtml(d.type)}</small></div>
+      <span>${escapeHtml(d.rev)}</span><span>${escapeHtml(d.owner)}</span><span class="tag ${escapeHtml(d.kind)}">${escapeHtml(d.status)}</span><span>${escapeHtml(d.review)}</span>
+    </button>`).join('');
+  host.style.display=docs.length?'block':'none';
+  empty.style.display=docs.length?'none':'block';
+  workspace?.classList.toggle('inspectorHidden',!docs.length);
+  if(docs[0]) selectSpaceDocument(docs[0],host.querySelector('.documentRow'));
+  refreshIcons();
+}
+
+function selectSpaceDocument(doc,row){
+  document.querySelectorAll('#repositorySpace .documentRow').forEach(x=>x.classList.remove('selected'));
+  row?.classList.add('selected');
+  const title=document.getElementById('docTitle');
+  if(!title) return;
+  title.textContent=doc.title;
+  document.getElementById('docCode').textContent=doc.code;
+  document.getElementById('docRev').textContent=doc.rev==='—'?'Record':('Rev '+doc.rev);
+  setTag(document.getElementById('docStatus'),doc.status,doc.kind);
+  document.getElementById('docOwner').textContent=doc.owner;
+  document.getElementById('docApprover').textContent=doc.approver||'—';
+  document.getElementById('docEffective').textContent=doc.effective||'—';
+  document.getElementById('docReview').textContent=doc.review||'—';
+  document.getElementById('docPurpose').textContent=doc.purpose||'No purpose statement has been added yet.';
+}
+
+let activeSpace=null;
+function openDocumentSpace(spaceId,override=null){
+  const base=override||spaceDefinitions[spaceId];
+  if(!base) return;
+  activeSpace=base;
+  document.getElementById('repositoryHub').style.display='none';
+  document.getElementById('repositorySpace').style.display='block';
+  document.getElementById('spaceDetailName').textContent=base.name;
+  document.getElementById('spaceDetailCount').textContent=base.count||0;
+  document.getElementById('spaceDetailPath').textContent=base.path||base.name;
+  document.getElementById('spaceListTitle').textContent=base.path||base.name;
+  renderSpaceRows(base);
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Documents / '+base.name;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function closeDocumentSpace(){
+  const hub=document.getElementById('repositoryHub');
+  const detail=document.getElementById('repositorySpace');
+  if(hub) hub.style.display='block';
+  if(detail) detail.style.display='none';
+  activeSpace=null;
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Documents';
+}
+
+const spacesHost=document.getElementById('documentSpaces');
+spacesHost?.addEventListener('click',e=>{
+  const card=e.target.closest('.spaceCard[data-space-id]');
+  if(!card) return;
+  openDocumentSpace(card.dataset.spaceId);
+});
+
+document.getElementById('spaceDocumentRows')?.addEventListener('click',e=>{
+  const row=e.target.closest('.documentRow[data-space-doc-index]');
+  if(!row||!activeSpace) return;
+  const doc=activeSpace.docs?.[Number(row.dataset.spaceDocIndex)];
+  if(doc) selectSpaceDocument(doc,row);
+});
+
+function openSpaceModal(){
+  const modal=document.getElementById('spaceModal');
+  if(!modal) return;
+  modal.classList.add('show');
+  setTimeout(()=>document.getElementById('newSpaceName')?.focus(),60);
+  refreshIcons();
+}
+function closeSpaceModal(){document.getElementById('spaceModal')?.classList.remove('show')}
+
+function loadCustomSpaces(){
+  try{return JSON.parse(localStorage.getItem('nexus.customSpaces')||'[]')}catch(e){return[]}
+}
+function saveCustomSpaces(spaces){
+  try{localStorage.setItem('nexus.customSpaces',JSON.stringify(spaces))}catch(e){}
+}
+function renderCustomSpaceCard(space){
+  if(!spacesHost||document.querySelector('[data-space-id="'+space.id+'"]')) return;
+  const createCard=spacesHost.querySelector('.createSpaceCard');
+  const card=document.createElement('button');
+  card.className='spaceCard customSpaceCard';
+  card.dataset.spaceId=space.id;
+  card.innerHTML=`
+    <span class="spaceIcon toneSlate"><i data-lucide="folder-kanban"></i></span>
+    <span class="spaceArrow"><i data-lucide="arrow-up-right"></i></span>
+    <strong>${escapeHtml(space.name)}</strong>
+    <p>${escapeHtml(space.purpose||'Custom controlled-document space.')}</p>
+    <span class="spaceMeta"><b>0</b> resources · ${escapeHtml(space.type||'Custom space')}</span>`;
+  spacesHost.insertBefore(card,createCard);
+  spaceDefinitions[space.id]={...space,docs:space.docs||[],count:space.count||0,path:space.path||space.name};
+  refreshIcons();
+}
+loadCustomSpaces().forEach(renderCustomSpaceCard);
+
+function createDocumentSpace(){
+  const name=document.getElementById('newSpaceName')?.value.trim();
+  if(!name){
+    document.getElementById('newSpaceName')?.focus();
+    toast('Space name required','Give the document space a name before creating it.');
+    return;
+  }
+  const code=(document.getElementById('newSpaceCode')?.value.trim()||name.slice(0,3)).toUpperCase();
+  const type=document.getElementById('newSpaceType')?.value||'Department / Function';
+  const purpose=document.getElementById('newSpacePurpose')?.value.trim()||'Custom controlled-document space.';
+  const owner=document.getElementById('newSpaceOwner')?.value||'Quality Department';
+  const view=document.getElementById('newSpaceView')?.value||'Controlled documents';
+  const id='custom-'+Date.now();
+  const space={id,name,code,type,purpose,owner,view,count:0,path:name,docs:[]};
+  const saved=loadCustomSpaces();
+  saved.push(space);
+  saveCustomSpaces(saved);
+  renderCustomSpaceCard(space);
+  closeSpaceModal();
+  ['newSpaceName','newSpaceCode','newSpacePurpose'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  toast('Document space created',name+' is ready. Add controlled documents or link existing canonical resources.');
+  openDocumentSpace(id,space);
+}
 
 /* Document workspace */
 const documents={
@@ -350,11 +550,12 @@ document.querySelectorAll('.modal').forEach(modal=>{
     if(e.target===modal){
       if(modal.id==='builder') closeBuilder();
       if(modal.id==='manualRepo') closeManualRepo();
+      if(modal.id==='spaceModal') closeSpaceModal();
     }
   });
 });
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeBuilder();closeManualRepo()}
+  if(e.key==='Escape'){closeBuilder();closeManualRepo();closeSpaceModal()}
 });
 
 document.addEventListener('DOMContentLoaded',refreshIcons);
