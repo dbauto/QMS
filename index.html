@@ -8,7 +8,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-revision-workflow1">
+<link rel="stylesheet" href="./styles.css?v=20260922-revision-visible2">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -190,7 +190,7 @@ body.navExpanded .railExpand span{display:inline!important}
         </div>
 
         <div class="overviewHealth">
-          <div><span class="statusDot good"></span><b>Document control is operating normally</b><span>7 overdue reviews · 9 approval tasks need attention</span></div>
+          <div><span class="statusDot warn"></span><b>1 controlled revision is open</b><span>Recruitment Procedure Rev 04 · working copy downloaded · PIC Ana Reyes</span></div>
           <button class="btn link" onclick="showView('approvals')">Review tasks</button>
         </div>
 
@@ -531,7 +531,7 @@ body.navExpanded .railExpand span{display:inline!important}
           <div class="documentDetailTabs" id="documentDetailTabs">
             <button class="active" data-doc-tab="document" onclick="setDocumentDetailTab('document')">Document</button>
             <button data-doc-tab="traceability" onclick="setDocumentDetailTab('traceability')">Traceability</button>
-            <button data-toast-title="Revision history" data-toast-message="Revision history is preserved for this canonical document.">Revision history</button>
+            <button data-doc-tab="revision" onclick="setDocumentDetailTab('revision')">Revision history</button>
             <button data-toast-title="Audit history" data-toast-message="Audit events for this resource are available in Audit trail.">Audit history</button>
           </div>
 
@@ -657,6 +657,38 @@ body.navExpanded .railExpand span{display:inline!important}
                 <button class="graphNode evidence"><span>Record / evidence</span><b id="docTraceMapEvidenceCode">—</b><small id="docTraceMapEvidenceTitle">—</small></button>
                 <div class="graphConnector"><i data-lucide="arrow-right"></i></div>
                 <button class="graphNode verification"><span>Verification</span><b id="docTraceMapAuditCode">—</b><small id="docTraceMapAuditTitle">—</small></button>
+              </div>
+            </section>
+          </div>
+
+          <div class="documentDetailPanel" data-doc-panel="revision">
+            <section class="documentRevisionHistoryPanel">
+              <div class="revisionHistoryHeader">
+                <div>
+                  <span class="recordLabel">REVISION HISTORY</span>
+                  <h2 id="docRevisionHistoryTitle">Document revision history</h2>
+                  <p>Released revisions are immutable. An open revision appears separately until it is approved and released.</p>
+                </div>
+                <button class="btn secondary" onclick="openRevisionRequest('start')"><i data-lucide="git-branch-plus"></i>Start revision</button>
+              </div>
+
+              <div class="revisionStateSummary">
+                <div><span>Current effective</span><b id="revisionCurrentEffective">Rev 03</b><small id="revisionCurrentEffectiveDate">Effective 01 Sep 2026</small></div>
+                <div><span>Open revision</span><b id="revisionOpenState">Rev 04 · Draft preparation</b><small id="revisionOpenPicState">PIC: Ana Reyes</small></div>
+              </div>
+
+              <div class="documentRevisionTable">
+                <div class="documentRevisionTableHead"><span>Rev</span><span>Status / date</span><span>Change summary</span><span>Reviewed by</span><span>Approved by</span></div>
+                <div><span>01</span><span>12 Jan 2026</span><span>Initial controlled release.</span><span>Department Reviewer</span><span>Quality Manager</span></div>
+                <div><span>02</span><span>12 Mar 2026</span><span>Updated responsibilities and process controls.</span><span>Department Reviewer</span><span>Quality Manager</span></div>
+                <div id="revisionEffectiveHistoryRow"><span>03</span><span>01 Sep 2026</span><span>Aligned retained records and supporting controls.</span><span>Department Reviewer</span><span>Quality Manager</span></div>
+                <div class="documentRevisionOpenRow" id="documentRevisionOpenRow"><span id="docHistoryOpenRev">04</span><span><b>In progress</b><small id="docHistoryOpenStage">Draft preparation</small></span><span id="docHistoryOpenReason">Update candidate screening criteria and interview evidence requirements.</span><span>Pending</span><span>Pending</span></div>
+              </div>
+
+              <div class="revisionHistoryDownloadNote">
+                <i data-lucide="file-lock-2"></i>
+                <div><b>The editable working copy carries this revision history with it.</b><span>DOCX: page 2 · PPTX: slide 2 · XLSX: protected “Revision History” worksheet.</span></div>
+                <button class="btn secondary" onclick="openSecureRevisionDownload()"><i data-lucide="file-down"></i>Prepare working copy</button>
               </div>
             </section>
           </div>
@@ -1849,6 +1881,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-revision-workflow1"></script>
+<script src="./app.js?v=20260922-revision-visible2"></script>
 </body>
 </html>

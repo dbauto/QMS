@@ -233,6 +233,27 @@ document.getElementById('removeCompanyLogoBtn')?.addEventListener('click',()=>to
 let revisionRequestMode='request';
 let openRevisions={};
 try{openRevisions=JSON.parse(localStorage.getItem('iqms.openRevisions')||'{}')||{}}catch(e){openRevisions={}}
+if(!Object.keys(openRevisions).length){
+  openRevisions['QMS-PRO-REC-001']={
+    code:'QMS-PRO-REC-001',
+    title:'Recruitment Procedure',
+    currentRev:'03',
+    rev:'Rev 04',
+    revRaw:'04',
+    pic:'Ana Reyes',
+    due:'2026-09-29',
+    reason:'Update candidate screening criteria and interview evidence requirements.',
+    reference:'Management review action MR-2026-17',
+    requestedBy:'Maria Santos',
+    mode:'request',
+    stage:'Draft preparation',
+    downloaded:true,
+    createdAt:'2026-09-22T09:18:00+08:00',
+    downloadedAt:'2026-09-22T09:26:00+08:00',
+    space:'Recruitment'
+  };
+  try{localStorage.setItem('iqms.openRevisions',JSON.stringify(openRevisions))}catch(e){}
+}
 
 function activeControlledDoc(){
   return activeTraceabilityDoc||null;
@@ -316,11 +337,28 @@ function submitRevisionRequest(){
   persistOpenRevisions();
   closeRevisionRequest();
   refreshOpenRevisionIndicators(doc);
+  renderDocumentRevisionHistory(doc);
   refreshRevisionTasks();
   refreshRevisionDashboard();
   toast(revisionRequestMode==='start'?'Revision opened':'Revision task created',
     'Rev '+rev+' is open for '+doc.code+'. '+pic+' is the PIC. Existing reviewer(s), approver(s) and document owner were notified.');
   if(revisionRequestMode==='start') openSecureRevisionDownload();
+}
+function renderDocumentRevisionHistory(doc=activeControlledDoc()){
+  if(!doc) return;
+  const revision=openRevisions[doc.code];
+  const current='Rev '+(doc.rev||'—');
+  const set=(id,value)=>{const el=document.getElementById(id);if(el) el.textContent=value};
+  set('docRevisionHistoryTitle',doc.title+' · revision history');
+  set('revisionCurrentEffective',current);
+  set('revisionCurrentEffectiveDate',(doc.effective&&doc.effective!=='—')?'Effective '+doc.effective:'Current effective revision');
+  set('revisionOpenState',revision?revision.rev+' · '+(revision.downloaded?'Draft preparation':revision.stage):'No open revision');
+  set('revisionOpenPicState',revision?'PIC: '+revision.pic:'No working revision in progress');
+  set('docHistoryOpenRev',revision?revision.revRaw:'—');
+  set('docHistoryOpenStage',revision?(revision.downloaded?'Draft preparation':revision.stage):'No open revision');
+  set('docHistoryOpenReason',revision?revision.reason:'No open revision for this document.');
+  const row=document.getElementById('documentRevisionOpenRow');
+  if(row) row.style.display=revision?'grid':'none';
 }
 function refreshOpenRevisionIndicators(doc=activeControlledDoc()){
   const banner=document.getElementById('openRevisionBanner');
@@ -612,6 +650,9 @@ function setDocumentDetailTab(tab='document'){
   document.querySelectorAll('#repositoryDocument [data-doc-panel]').forEach(panel=>{
     panel.classList.toggle('active',panel.dataset.docPanel===tab);
   });
+  if(tab==='revision'){
+    renderDocumentRevisionHistory(activeTraceabilityDoc||'QMS-PRO-REC-001');
+  }
   if(tab==='traceability'){
     renderDocumentTraceability(activeTraceabilityDoc||'QMS-PRO-REC-001');
     const map=document.getElementById('documentTraceabilityMap');
@@ -1051,6 +1092,7 @@ function selectSpaceDocument(doc,row){
   }
 
   refreshOpenRevisionIndicators(doc);
+  renderDocumentRevisionHistory(doc);
   document.querySelector('.documentStage')?.scrollTo({top:0,behavior:'smooth'});
   refreshIcons();
 }

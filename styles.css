@@ -4169,3 +4169,89 @@ body.navExpanded .navMeta{
   .revisionHistoryPreview{overflow:auto}
   .revisionHistoryHead,.revisionHistoryTable>div{min-width:700px}
 }
+
+
+/* Visible revision-history workspace */
+.documentRevisionHistoryPanel{
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:#fff;
+  box-shadow:var(--shadow);
+  overflow:hidden
+}
+.revisionHistoryHeader{
+  min-height:82px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:14px 16px;
+  border-bottom:1px solid var(--line)
+}
+.revisionHistoryHeader h2{margin:3px 0 2px;font-size:17px;color:var(--ink)}
+.revisionHistoryHeader p{margin:0;font-size:10px;color:var(--muted)}
+.revisionStateSummary{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border-bottom:1px solid var(--line);
+  background:#fafbfc
+}
+.revisionStateSummary>div{padding:12px 16px}
+.revisionStateSummary>div+div{border-left:1px solid var(--line)}
+.revisionStateSummary span,.revisionStateSummary b,.revisionStateSummary small{display:block}
+.revisionStateSummary span{font-size:9px;color:var(--subtle);text-transform:uppercase;font-weight:800}
+.revisionStateSummary b{margin-top:3px;font-size:13px;color:var(--ink)}
+.revisionStateSummary small{margin-top:2px;font-size:9px;color:var(--muted)}
+
+.documentRevisionTableHead,.documentRevisionTable>div{
+  display:grid;
+  grid-template-columns:64px 130px minmax(260px,1.6fr) 150px 150px;
+  gap:10px;
+  align-items:center
+}
+.documentRevisionTableHead{
+  min-height:36px;
+  padding:0 16px;
+  background:#fbfcfd;
+  color:var(--subtle);
+  font-size:9px;
+  font-weight:800;
+  text-transform:uppercase
+}
+.documentRevisionTable>div:not(.documentRevisionTableHead){
+  min-height:58px;
+  padding:9px 16px;
+  border-top:1px solid var(--line);
+  color:#475467;
+  font-size:10px
+}
+.documentRevisionTable>div span{min-width:0}
+.documentRevisionOpenRow{background:#f5faff}
+.documentRevisionOpenRow>span:first-child{color:#175cd3;font-weight:800}
+.documentRevisionOpenRow b,.documentRevisionOpenRow small{display:block}
+.documentRevisionOpenRow b{font-size:10px;color:#175cd3}
+.documentRevisionOpenRow small{font-size:9px;color:#667085;margin-top:2px}
+
+.revisionHistoryDownloadNote{
+  min-height:68px;
+  display:grid;
+  grid-template-columns:28px minmax(0,1fr) auto;
+  gap:10px;
+  align-items:center;
+  padding:11px 16px;
+  border-top:1px solid var(--line);
+  background:#f8fcfb
+}
+.revisionHistoryDownloadNote>.lucide{width:18px;height:18px;color:var(--brand)}
+.revisionHistoryDownloadNote b,.revisionHistoryDownloadNote span{display:block}
+.revisionHistoryDownloadNote b{font-size:10px;color:#2e4b45}
+.revisionHistoryDownloadNote span{margin-top:2px;font-size:9px;color:#6e817c}
+
+@media(max-width:800px){
+  .documentRevisionTable{overflow:auto}
+  .documentRevisionTableHead,.documentRevisionTable>div{min-width:780px}
+  .revisionStateSummary{grid-template-columns:1fr}
+  .revisionStateSummary>div+div{border-left:0;border-top:1px solid var(--line)}
+  .revisionHistoryDownloadNote{grid-template-columns:28px 1fr}
+  .revisionHistoryDownloadNote .btn{grid-column:2;justify-self:start}
+}
