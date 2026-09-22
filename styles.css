@@ -696,3 +696,115 @@ body.navExpanded .sideStatus b{display:block;color:#d8e1eb;font-size:9px}
 body.navExpanded .sideStatus span{display:block;color:#687b91;font-size:8px;margin-top:1px}
 body.navExpanded .navItem.active{background:#1d3854}
 body.navExpanded .navItem:hover{background:#172e47}
+
+
+/* Documents — QMS document-space landing */
+.repositoryPageHeader{margin-bottom:14px}
+.repositoryIntro{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:linear-gradient(120deg,#f8fbff 0%,#f5faf8 100%);
+  padding:22px 24px;
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(360px,.75fr);
+  gap:28px;
+  align-items:center;
+  margin-bottom:22px;
+}
+.repositoryIntro h2{margin:4px 0 7px;color:var(--ink);font-size:21px;letter-spacing:-.35px}
+.repositoryIntro p{margin:0;color:var(--muted);font-size:11px;line-height:1.65;max-width:760px}
+.repositoryStats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.repositoryStats>div{border-left:1px solid #dfe6ec;padding-left:14px}
+.repositoryStats b,.repositoryStats span{display:block}
+.repositoryStats b{font-size:22px;color:var(--ink);letter-spacing:-.4px}
+.repositoryStats span{font-size:9px;color:var(--muted);margin-top:2px}
+.spaceSectionHead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:10px}
+.spaceSectionHead h2{margin:0;color:var(--ink);font-size:15px}
+.spaceSectionHead p{margin:3px 0 0;color:var(--muted);font-size:10px}
+.spaceViewActions{display:flex;gap:5px}
+.spaceViewActions .iconButton.active{background:#f2f6f9;color:var(--ink);border-color:#d8dee5}
+.documentSpaces{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.spaceCard{
+  position:relative;
+  min-height:190px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  padding:16px;
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  box-shadow:var(--shadow);
+  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;
+}
+.spaceCard:hover{transform:translateY(-2px);border-color:#c9d2db;box-shadow:0 7px 20px rgba(16,24,40,.08)}
+.spaceIcon{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;margin-bottom:18px}
+.spaceIcon .lucide{width:18px;height:18px;stroke-width:1.8}
+.toneBlue{background:#edf4ff;color:#315ea8}.toneTeal{background:#eaf8f5;color:#167567}.toneViolet{background:#f1efff;color:#6254b7}.toneAmber{background:#fff6e7;color:#9a6700}
+.toneRose{background:#fff0f4;color:#b54768}.toneSlate{background:#eef1f5;color:#4e5f73}.toneGreen{background:#edf8ef;color:#287a45}.toneIndigo{background:#eef2ff;color:#4757a7}
+.spaceArrow{position:absolute;right:14px;top:14px;color:#98a2b3}
+.spaceArrow .lucide{width:15px;height:15px}
+.spaceCard>strong{font-size:12px;color:var(--ink);font-weight:700}
+.spaceCard>p{font-size:10px;color:var(--muted);line-height:1.55;margin:5px 0 14px}
+.spaceMeta{margin-top:auto;font-size:9px;color:#7a8696}
+.spaceMeta b{color:#475467;font-weight:700}
+.createSpaceCard{border-style:dashed;background:#fbfcfd}
+.createSpaceCard:hover{background:#f8fbfa;border-color:#8ebbb3}
+.createIcon{background:#eef7f5;color:var(--brand)}
+.spaceCreateLink{display:inline-flex;align-items:center;gap:5px;margin-top:auto;color:var(--brand);font-size:10px;font-weight:650}
+.spaceCreateLink .lucide{width:13px;height:13px}
+
+/* Document-space detail */
+.repositorySpace{min-height:600px}
+.spaceDetailHeader{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;margin-bottom:14px}
+.backButton{width:34px;height:34px;border:1px solid var(--line-strong);border-radius:7px;background:#fff;display:grid;place-items:center;color:#475467}
+.backButton:hover{background:#f8fafb}
+.backButton .lucide{width:15px;height:15px}
+.spaceDetailTitle h1{margin:2px 0 1px;color:var(--ink);font-size:22px;letter-spacing:-.35px}
+.spaceDetailTitle p{margin:0;color:var(--muted);font-size:9px}
+.spaceToolbar{
+  min-height:44px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:6px 8px 6px 12px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px
+}
+.spacePath{display:flex;align-items:center;gap:7px;color:#667085;font-size:10px}
+.spacePath .lucide{width:14px;height:14px;color:#98a2b3}
+.spaceToolbarActions{display:flex;gap:6px}
+.spaceEmptyState{padding:54px 22px;text-align:center;border-top:1px solid var(--line)}
+.spaceEmptyState>span{width:42px;height:42px;border-radius:10px;background:#f2f4f7;color:#667085;display:grid;place-items:center;margin:0 auto 10px}
+.spaceEmptyState>span .lucide{width:18px;height:18px}
+.spaceEmptyState h3{margin:0;color:var(--ink);font-size:13px}
+.spaceEmptyState p{margin:5px auto 12px;color:var(--muted);font-size:10px;max-width:420px}
+.spaceEmptyState>div{display:flex;gap:7px;justify-content:center}
+.spaceDocumentRows{display:block}
+
+/* Create document-space modal */
+.spaceModalBox{width:min(660px,95vw)}
+.spaceForm{display:flex;flex-direction:column;gap:11px}
+.spaceForm>label,.spaceFormGrid>label{font-size:9px;color:#667085;font-weight:650}
+.spaceForm .fieldInput{display:block;margin-top:4px}
+.spaceForm textarea.fieldInput{min-height:82px}
+.spaceFormGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.spaceGovernanceNote{
+  display:flex;align-items:flex-start;gap:9px;border:1px solid #d7e9e4;background:#f7fbfa;border-radius:8px;padding:11px
+}
+.spaceGovernanceNote>.lucide{width:15px;height:15px;color:var(--brand);margin-top:1px}
+.spaceGovernanceNote b,.spaceGovernanceNote span{display:block}
+.spaceGovernanceNote b{font-size:10px;color:#27433e}
+.spaceGovernanceNote span{font-size:9px;color:#60706d;line-height:1.5;margin-top:2px}
+
+@media(max-width:1280px){
+  .documentSpaces{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .repositoryIntro{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+  .documentSpaces{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .repositoryStats{max-width:520px}
+  .spaceDetailHeader{grid-template-columns:auto 1fr}.spaceDetailHeader .pageActions{grid-column:2}
+}
+@media(max-width:620px){
+  .documentSpaces{grid-template-columns:1fr}
+  .repositoryStats{grid-template-columns:1fr}
+  .repositoryStats>div{border-left:0;border-top:1px solid #dfe6ec;padding:8px 0 0}
+  .spaceFormGrid{grid-template-columns:1fr}
+}
