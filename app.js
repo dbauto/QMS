@@ -46,10 +46,6 @@ const workspaceSwitch=document.querySelector('.workspaceSwitch');
 if(workspaceSwitch) workspaceSwitch.title='ABC Manufacturing';
 
 document.addEventListener('keydown',e=>{
-  if((e.ctrlKey||e.metaKey)&&e.key==='\\'){
-    e.preventDefault();
-    setMainSidebar(!document.body.classList.contains('navHidden'));
-  }
   if(e.altKey&&e.key==='\\'){
     e.preventDefault();
     setSidebarExpanded(!document.body.classList.contains('navExpanded'));
