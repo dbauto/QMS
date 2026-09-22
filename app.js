@@ -60,7 +60,7 @@ const viewLabels={
   approvals:'My tasks',
   audit:'Audit trail',
   relationships:'Relationship map',
-  structure:'Spaces & structure',
+  structure:'Space administration',
   types:'Document types',
   ai:'QMS AI',
   users:'Users & access',
@@ -73,7 +73,7 @@ function showView(id){
   const target=document.getElementById(id);
   if(target) target.classList.add('active');
   navItems.forEach(item=>item.classList.toggle('active',item.dataset.view===id));
-  if(id==='repository') closeDocumentSpace();
+  if(id==='repository') resetControlledInformation();
   if(breadcrumbCurrent && id!=='repository') breadcrumbCurrent.textContent=viewLabels[id]||'Workspace';
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -116,6 +116,21 @@ function openMasterLibrary(kind){
   }
 }
 let controlledStatusFilter='all';
+
+function setRepositoryPanel(panel='spaces'){
+  document.querySelectorAll('#repositoryBrowseTabs [data-repository-tab]').forEach(button=>{
+    button.classList.toggle('active',button.dataset.repositoryTab===panel);
+  });
+  document.querySelectorAll('#repositoryHub [data-repository-panel]').forEach(section=>{
+    section.classList.toggle('active',section.dataset.repositoryPanel===panel);
+  });
+  refreshIcons();
+}
+
+document.querySelectorAll('#repositoryBrowseTabs [data-repository-tab]').forEach(button=>{
+  button.addEventListener('click',()=>setRepositoryPanel(button.dataset.repositoryTab));
+});
+
 function applyControlledLibraryFilters(){
   const q=(document.getElementById('controlledSearch')?.value||'').trim().toLowerCase();
   const type=document.getElementById('controlledTypeFilter')?.value||'all';
@@ -220,22 +235,22 @@ function renderSpaceRows(space){
   const empty=document.getElementById('spaceEmptyState');
   if(!host||!empty) return;
   const docs=space.docs||[];
-  host.innerHTML=docs.map((d,i)=>`
-    <button class="spaceDocumentItem ${i===0?'selected':''}" data-space-doc-index="${i}">
-      <span class="docMain">
-        <b>${escapeHtml(d.code)}</b>
-        <strong>${escapeHtml(d.title)}</strong>
-        <small>${escapeHtml(d.type)}</small>
-      </span>
-      <span class="docSide">
+  host.innerHTML=docs.map((d,i)=>{
+    const typeName=(d.type||'Controlled document').split(' · ')[0];
+    return `
+      <button class="spaceDocumentItem" data-space-doc-index="${i}">
+        <span class="docMain"><b>${escapeHtml(d.code)}</b><strong>${escapeHtml(d.title)}</strong><small>${escapeHtml(d.type||'Controlled document')}</small></span>
+        <span>${escapeHtml(typeName)}</span>
+        <span>${escapeHtml(d.rev||'—')}</span>
+        <span>${escapeHtml(d.owner||'—')}</span>
         <span class="tag ${escapeHtml(d.kind)}">${escapeHtml(d.status)}</span>
-        <span>${d.review==='—'?'No review date':escapeHtml(d.review)}</span>
-      </span>
-    </button>`).join('');
+        <span>${d.review==='—'?'—':escapeHtml(d.review||'—')}</span>
+        <span class="rowChevron"><i data-lucide="chevron-right"></i></span>
+      </button>`;
+  }).join('');
   host.style.display=docs.length?'block':'none';
   empty.style.display=docs.length?'none':'block';
-  if(docs[0]) selectSpaceDocument(docs[0],host.querySelector('.spaceDocumentItem'));
-  const count=document.getElementById('spaceTabDocCount');
+  const count=document.getElementById('spaceSummaryAll');
   if(count) count.textContent=space.count||docs.length;
   refreshIcons();
 }
@@ -243,6 +258,10 @@ function renderSpaceRows(space){
 function selectSpaceDocument(doc,row){
   document.querySelectorAll('#repositorySpace .spaceDocumentItem').forEach(x=>x.classList.remove('selected'));
   row?.classList.add('selected');
+  const spaceView=document.getElementById('repositorySpace');
+  const docView=document.getElementById('repositoryDocument');
+  if(spaceView) spaceView.style.display='none';
+  if(docView) docView.style.display='block';
 
   const title=document.getElementById('docTitle');
   if(!title) return;
@@ -252,6 +271,11 @@ function selectSpaceDocument(doc,row){
 
   title.textContent=doc.title;
   document.getElementById('docCode').textContent=doc.code;
+  const codeHeader=document.getElementById('docCodeHeader');
+  const spaceBreadcrumb=document.getElementById('docSpaceBreadcrumb');
+  if(codeHeader) codeHeader.textContent=doc.code;
+  if(spaceBreadcrumb) spaceBreadcrumb.textContent=activeSpace?.name||'Primary space';
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information / '+(activeSpace?.name||'Space')+' / '+doc.code;
   document.getElementById('docRev').textContent=normalizedRev;
   setTag(document.getElementById('docStatus'),doc.status,doc.kind);
   document.getElementById('docOwner').textContent=doc.owner;
@@ -287,7 +311,7 @@ function selectSpaceDocument(doc,row){
   const decision=document.getElementById('approvalDecision');
   if(decision) decision.style.display=doc.status==='In approval'?'block':'none';
 
-  const workflow=document.querySelector('#repositorySpace .reviewWorkflow');
+  const workflow=document.querySelector('#repositoryDocument .reviewWorkflow');
   if(workflow){
     workflow.innerHTML=isWorkflow && doc.status!=='Effective'
       ? '<div class="done"><i data-lucide="check"></i><span><b>Author</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Department review</b><small>Completed</small></span></div><div class="active"><i data-lucide="clock-3"></i><span><b>Final approval</b><small>Waiting for decision</small></span></div><div><i data-lucide="circle"></i><span><b>Release</b><small>Blocked</small></span></div>'
@@ -304,20 +328,40 @@ function prototypeDecision(result){
 }
 
 let activeSpace=null;
+
+function resetControlledInformation(){
+  const hub=document.getElementById('repositoryHub');
+  const space=document.getElementById('repositorySpace');
+  const doc=document.getElementById('repositoryDocument');
+  if(hub) hub.style.display='block';
+  if(space) space.style.display='none';
+  if(doc) doc.style.display='none';
+  activeSpace=null;
+  setRepositoryPanel('spaces');
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information';
+}
+
 function openDocumentSpace(spaceId,override=null){
   const base=override||spaceDefinitions[spaceId];
   if(!base) return;
   if(!document.getElementById('repository')?.classList.contains('active')) showView('repository');
   activeSpace=base;
-  document.getElementById('repositoryHub').style.display='none';
-  document.getElementById('repositorySpace').style.display='block';
+  const hub=document.getElementById('repositoryHub');
+  const space=document.getElementById('repositorySpace');
+  const doc=document.getElementById('repositoryDocument');
+  if(hub) hub.style.display='none';
+  if(doc) doc.style.display='none';
+  if(space) space.style.display='block';
   document.getElementById('spaceDetailName').textContent=base.name;
+  const listTitle=document.getElementById('spaceListTitle');
+  if(listTitle) listTitle.textContent=base.name;
   document.getElementById('spaceDetailCount').textContent=base.count||0;
   document.getElementById('spaceDetailPath').textContent=base.path||base.name;
   renderSpaceRows(base);
   if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information / '+base.name;
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
 function openControlledDocument(spaceId,documentCode){
   const base=spaceDefinitions[spaceId];
   if(!base) return;
@@ -329,24 +373,30 @@ function openControlledDocument(spaceId,documentCode){
   if(doc) selectSpaceDocument(doc,row);
 }
 
-function closeDocumentSpace(){
-  const hub=document.getElementById('repositoryHub');
-  const detail=document.getElementById('repositorySpace');
-  if(hub) hub.style.display='block';
-  if(detail) detail.style.display='none';
-  activeSpace=null;
-  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information';
+function closeDocumentDetail(){
+  const space=document.getElementById('repositorySpace');
+  const doc=document.getElementById('repositoryDocument');
+  if(doc) doc.style.display='none';
+  if(space) space.style.display='block';
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information / '+(activeSpace?.name||'Space');
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-document.querySelectorAll('#structureTabs [data-structure-tab]').forEach(button=>button.addEventListener('click',()=>{
-  const tab=button.dataset.structureTab;
-  document.querySelectorAll('#structureTabs [data-structure-tab]').forEach(x=>x.classList.toggle('active',x===button));
-  document.querySelectorAll('[data-structure-panel]').forEach(panel=>panel.classList.toggle('active',panel.dataset.structurePanel===tab));
-  refreshIcons();
-}));
+function closeDocumentSpace(){
+  const hub=document.getElementById('repositoryHub');
+  const space=document.getElementById('repositorySpace');
+  const doc=document.getElementById('repositoryDocument');
+  if(hub) hub.style.display='block';
+  if(space) space.style.display='none';
+  if(doc) doc.style.display='none';
+  activeSpace=null;
+  setRepositoryPanel('spaces');
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
 const spacesHost=document.getElementById('documentSpaces');
-spacesHost?.addEventListener('click',e=>{
+document.getElementById('repositoryHub')?.addEventListener('click',e=>{
   const card=e.target.closest('.spaceCard[data-space-id]');
   if(!card) return;
   openDocumentSpace(card.dataset.spaceId);
@@ -1597,4 +1647,5 @@ selectRegistrationSource('upload');
 updateApprovalRouteSummary();
 
 
-/* iQMS build: 20260922-ia-stable2 */
+
+/* iQMS build: 20260922-hierarchy1 */

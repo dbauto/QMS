@@ -2199,3 +2199,142 @@ body.navExpanded .navItem:hover{background:#172e47}
 
 
 /* iQMS build: 20260922-ia-stable2 */
+
+
+/* Hierarchical QMS navigation — general to specific */
+.repositoryHierarchyBar{
+  min-height:64px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 14px;
+  margin-bottom:10px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:#fff;
+}
+.repositoryHierarchyBar>.lucide{width:14px;height:14px;color:#c3cbd4;flex:0 0 auto}
+.hierarchyStep{display:grid;grid-template-columns:24px auto;grid-template-rows:auto auto;column-gap:8px;align-items:center;min-width:145px}
+.hierarchyStep>i{grid-row:1/3;width:24px;height:24px;border-radius:50%;background:#f2f4f7;color:#667085;display:grid;place-items:center;font-style:normal;font-size:8px;font-weight:800}
+.hierarchyStep>b{font-size:9px;color:#667085}
+.hierarchyStep>small{font-size:7px;color:#98a2b3}
+.hierarchyStep.active>i{background:var(--brand);color:#fff}
+.hierarchyStep.active>b{color:var(--ink)}
+
+.repositoryModeTabs{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:14px;
+}
+.repositoryModeTabs button{
+  height:38px;border:0;border-bottom:2px solid transparent;background:transparent;padding:0 10px;
+  display:flex;align-items:center;gap:6px;color:var(--muted);font-size:9px;font-weight:700
+}
+.repositoryModeTabs button:hover{color:var(--ink)}
+.repositoryModeTabs button.active{color:var(--brand);border-bottom-color:var(--brand)}
+.repositoryModeTabs .lucide{width:14px;height:14px}
+.repositoryPanel{display:none}
+.repositoryPanel.active{display:block}
+
+.repositoryBrowseHeader{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px
+}
+.repositoryBrowseHeader h2{margin:0;color:var(--ink);font-size:15px}
+.repositoryBrowseHeader p{margin:4px 0 0;color:var(--muted);font-size:9px;line-height:1.55;max-width:760px}
+.spaceCountLabel{display:flex;align-items:baseline;gap:5px;white-space:nowrap;color:var(--subtle)}
+.spaceCountLabel b{font-size:16px;color:var(--ink)}
+.spaceCountLabel span{font-size:8px}
+.spaceGroupLabel{display:flex;align-items:baseline;gap:8px;margin:14px 0 8px}
+.spaceGroupLabel>span{font-size:9px;text-transform:uppercase;letter-spacing:.06em;font-weight:800;color:#667085}
+.spaceGroupLabel>small{font-size:8px;color:#98a2b3}
+.featuredSpaces{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:16px}
+#repositoryHub .documentSpaces{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#repositoryHub .spaceCard{min-height:145px;padding:14px;box-shadow:none}
+#repositoryHub .spaceCard:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+#repositoryHub .spaceIcon{width:34px;height:34px;margin-bottom:12px}
+#repositoryHub .spaceCard>p{font-size:9px;line-height:1.45;margin:4px 0 10px}
+#repositoryHub .spaceMeta{font-size:8px}
+.allDocsHint{display:flex;align-items:center;gap:5px;color:var(--subtle);font-size:8px}
+.allDocsHint .lucide{width:12px;height:12px}
+
+/* Level 2 — a space contains its document list */
+.levelHeader{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;margin-bottom:12px}
+.levelHeaderTitle{min-width:0}
+.levelHeaderTitle h1{margin:3px 0 2px;color:var(--ink);font-size:22px;letter-spacing:-.3px}
+.levelHeaderTitle p{margin:0;color:var(--muted);font-size:9px}
+.levelPath{display:flex;align-items:center;gap:5px;color:#98a2b3;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.levelPath .lucide{width:10px;height:10px}
+.levelPath b{color:#667085}
+.spaceListSummary{display:flex;gap:18px;align-items:center;min-height:45px;padding:0 12px;margin-bottom:10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.spaceListSummary span{font-size:8px;color:var(--muted);display:flex;align-items:baseline;gap:5px}
+.spaceListSummary b{font-size:13px;color:var(--ink)}
+.spaceDocumentListSurface{border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:var(--shadow);overflow:hidden}
+.spaceListToolbar{min-height:52px;display:grid;grid-template-columns:minmax(300px,1fr) auto;align-items:center;gap:12px;padding:8px 12px;border-bottom:1px solid var(--line)}
+.spaceListToolbar .libraryFilterTabs{border:0;margin:0;padding:0;display:flex;gap:3px}
+.spaceListToolbar .libraryFilterTabs button{height:30px;padding:0 9px;border:0;border-radius:6px;background:transparent;color:var(--muted);font-size:8px;font-weight:700}
+.spaceListToolbar .libraryFilterTabs button.active{background:var(--brand-soft);color:var(--brand)}
+.spaceDocumentTableHead,.spaceDocumentItem{
+  display:grid;grid-template-columns:minmax(260px,1.6fr) 125px 58px 130px 92px 100px 24px;gap:8px;align-items:center
+}
+.spaceDocumentTableHead{min-height:31px;padding:0 12px;background:#fafbfc;border-bottom:1px solid var(--line);font-size:7px;text-transform:uppercase;letter-spacing:.05em;color:#98a2b3;font-weight:800}
+.spaceDocumentItem{width:100%;min-height:66px;padding:8px 12px;border:0;border-bottom:1px solid var(--line);background:#fff;text-align:left}
+.spaceDocumentItem:hover{background:#fbfcfd}
+.spaceDocumentItem:last-child{border-bottom:0}
+.spaceDocumentItem .docMain b,.spaceDocumentItem .docMain strong,.spaceDocumentItem .docMain small{display:block}
+.spaceDocumentItem .docMain b{font-size:8px;color:var(--brand)}
+.spaceDocumentItem .docMain strong{font-size:10px;color:var(--ink);margin-top:1px}
+.spaceDocumentItem .docMain small{font-size:7px;color:#98a2b3;margin-top:2px}
+.spaceDocumentItem>span:not(.tag):not(.docMain):not(.rowChevron){font-size:8px;color:#475467}
+.rowChevron{color:#98a2b3;display:grid;place-items:center}
+.rowChevron .lucide{width:13px;height:13px}
+
+/* Level 3 — focus on one controlled document */
+.repositoryDocument{min-height:650px}
+.documentLevelHeader{margin-bottom:10px}
+.documentDetailTabs{display:flex;align-items:center;gap:3px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.documentDetailTabs button{height:36px;border:0;border-bottom:2px solid transparent;background:transparent;padding:0 10px;color:var(--muted);font-size:8px;font-weight:700}
+.documentDetailTabs button.active{color:var(--brand);border-bottom-color:var(--brand)}
+.documentDetailWorkspace{display:grid;grid-template-columns:minmax(640px,1fr) 340px;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:var(--shadow);overflow:hidden;min-height:650px}
+.documentDetailWorkspace .documentViewerPane{border-right:1px solid var(--line);min-width:0}
+.documentDetailWorkspace .documentReviewPane{padding:14px;overflow:auto}
+.detailViewerCanvas{min-height:600px}
+.detailSectionTitle{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+
+/* Space administration is deliberately configuration-oriented, not a browse destination */
+.adminNotice{display:flex;gap:9px;align-items:flex-start;border:1px solid #d9e7e3;background:#f7fbfa;border-radius:8px;padding:10px 12px;margin-bottom:10px}
+.adminNotice>.lucide{width:14px;height:14px;color:var(--brand);margin-top:1px}
+.adminNotice b,.adminNotice span{display:block}
+.adminNotice b{font-size:9px;color:#29443f}
+.adminNotice span{font-size:8px;color:#667b76;margin-top:2px}
+.spaceAdminSurface{border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:var(--shadow);overflow:hidden}
+.spaceAdminHead,.spaceAdminRow{display:grid;grid-template-columns:minmax(200px,1.35fr) 64px minmax(180px,1fr) 72px 130px 75px 32px;gap:8px;align-items:center}
+.spaceAdminHead{height:32px;padding:0 12px;background:#fafbfc;border-bottom:1px solid var(--line);font-size:7px;text-transform:uppercase;color:#98a2b3;font-weight:800}
+.spaceAdminRow{min-height:58px;padding:8px 12px;border-bottom:1px solid var(--line)}
+.spaceAdminRow:last-child{border-bottom:0}
+.spaceAdminRow>div{display:flex;align-items:center;gap:8px}
+.spaceAdminRow>div>.lucide{width:14px;height:14px;color:#667085}
+.spaceAdminRow>div>b{font-size:9px;color:var(--ink)}
+.spaceAdminRow>span:not(.tag){font-size:8px;color:#475467}
+
+@media(max-width:1100px){
+  #repositoryHub .documentSpaces{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .documentDetailWorkspace{grid-template-columns:1fr}
+  .documentDetailWorkspace .documentViewerPane{border-right:0;border-bottom:1px solid var(--line)}
+}
+@media(max-width:850px){
+  .repositoryHierarchyBar{overflow:auto}
+  .spaceDocumentTableHead,.spaceDocumentItem{grid-template-columns:minmax(230px,1.4fr) 100px 54px 90px 90px}
+  .spaceDocumentTableHead span:nth-child(4),.spaceDocumentTableHead span:nth-child(6),.spaceDocumentItem>span:nth-child(4),.spaceDocumentItem>span:nth-child(6){display:none}
+  .spaceListToolbar{grid-template-columns:1fr}
+}
+@media(max-width:650px){
+  #repositoryHub .documentSpaces,.featuredSpaces{grid-template-columns:1fr}
+  .repositoryBrowseHeader,.levelHeader{grid-template-columns:1fr}
+  .levelHeader .backButton{grid-row:1}
+  .repositoryHierarchyBar{display:none}
+}
+
+
+/* iQMS build: 20260922-hierarchy1 */

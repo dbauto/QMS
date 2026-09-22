@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="iqms-build" content="20260922-ia-stable2">
+<meta name="iqms-build" content="20260922-hierarchy1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-ia-stable2">
+<link rel="stylesheet" href="./styles.css?v=20260922-hierarchy1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -140,7 +140,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
       <div class="navGroup">Control</div>
       <button class="navItem" data-view="relationships"><span class="navIcon"><i data-lucide="network"></i></span><span>Relationship map</span></button>
-      <button class="navItem" data-view="structure"><span class="navIcon"><i data-lucide="folder-tree"></i></span><span>Spaces & structure</span></button>
       <button class="navItem" data-view="types"><span class="navIcon"><i data-lucide="file-cog"></i></span><span>Document types</span></button>
 
       <div class="navGroup">Intelligence</div>
@@ -245,135 +244,173 @@ body.navExpanded .railExpand span{display:inline!important}
           <div class="pageHeader repositoryPageHeader">
             <div>
               <h1>Controlled information</h1>
-              <p>Canonical register for policies, manuals, procedures, SOPs, work instructions, forms, templates and controlled external documents.</p>
+              <p>Browse from QMS area to document. Use All documents only when you need a cross-system search.</p>
             </div>
             <div class="pageActions">
-              <button class="btn secondary" data-toast-title="Register export ready" data-toast-message="The controlled-information register is ready to export."><i data-lucide="download"></i>Export register</button>
+              <button class="btn secondary" onclick="showView('structure')"><i data-lucide="settings-2"></i>Manage spaces</button>
               <button class="btn primary" onclick="openRegisterResource('controlled')"><i data-lucide="file-plus-2"></i>Register document</button>
             </div>
           </div>
 
-          <section class="controlledLibrarySurface" id="controlledMasterPanel">
-            <div class="controlledLibraryTop">
-              <div class="controlledStatusTabs" id="controlledStatusTabs" aria-label="Controlled document status filters">
-                <button class="active" data-controlled-status="all">All <b>1,428</b></button>
-                <button data-controlled-status="effective">Effective <b>1,236</b></button>
-                <button data-controlled-status="workflow">In workflow <b>137</b></button>
-                <button data-controlled-status="review due">Review due <b>7</b></button>
-                <button data-controlled-status="obsolete">Obsolete <b>55</b></button>
+          <div class="repositoryHierarchyBar" aria-label="Controlled information hierarchy">
+            <span class="hierarchyStep active"><i>1</i><b>Primary space</b><small>Choose the QMS area</small></span>
+            <i data-lucide="chevron-right"></i>
+            <span class="hierarchyStep"><i>2</i><b>Documents</b><small>Browse that space</small></span>
+            <i data-lucide="chevron-right"></i>
+            <span class="hierarchyStep"><i>3</i><b>Document</b><small>Open the controlled item</small></span>
+          </div>
+
+          <div class="repositoryModeTabs" id="repositoryBrowseTabs">
+            <button class="active" data-repository-tab="spaces"><i data-lucide="layout-grid"></i>Browse by space</button>
+            <button data-repository-tab="all"><i data-lucide="list"></i>All documents</button>
+          </div>
+
+          <section class="repositoryPanel active" data-repository-panel="spaces">
+            <div class="repositoryBrowseHeader">
+              <div><h2>Choose a primary space</h2><p>Spaces reflect how people work in the QMS. They are views of the same canonical controlled information — not duplicate storage folders.</p></div>
+              <div class="spaceCountLabel"><b>8</b><span>configured spaces</span></div>
+            </div>
+
+            <div class="spaceGroupLabel"><span>Management system</span><small>System-level governance and quality controls</small></div>
+            <div class="documentSpaces featuredSpaces">
+              <button class="spaceCard" data-space-id="management" data-space-name="Management System" data-space-path="Management / System Documents" data-space-count="66">
+                <span class="spaceIcon toneIndigo"><i data-lucide="landmark"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
+                <strong>Management System</strong><p>Quality policy, objectives and system-level governance documents.</p><span class="spaceMeta"><b>66</b> resources · <b>6</b> approvals</span>
+              </button>
+              <button class="spaceCard" data-space-id="quality" data-space-name="Quality Management" data-space-path="Quality / Procedures" data-space-count="486">
+                <span class="spaceIcon toneBlue"><i data-lucide="shield-check"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
+                <strong>Quality Management</strong><p>Policies, procedures, audits, NCR controls and quality-system documents.</p><span class="spaceMeta"><b>486</b> resources · <b>7</b> reviews due</span>
+              </button>
+            </div>
+
+            <div class="spaceGroupLabel"><span>Operational & support processes</span><small>Controlled information used by functions and process owners</small></div>
+            <div class="documentSpaces" id="documentSpaces">
+              <button class="spaceCard" data-space-id="recruitment" data-space-name="Recruitment" data-space-path="Recruitment / Controlled Information" data-space-count="118">
+                <span class="spaceIcon toneTeal"><i data-lucide="user-round-search"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
+                <strong>Recruitment</strong><p>Recruitment procedures, screening controls, interview guidance and controlled forms.</p><span class="spaceMeta"><b>118</b> resources · <b>6</b> linked records</span>
+              </button>
+              <button class="spaceCard" data-space-id="operations" data-space-name="Operations" data-space-path="Operations / Controlled Documents" data-space-count="368">
+                <span class="spaceIcon toneTeal"><i data-lucide="workflow"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
+                <strong>Operations</strong><p>Production procedures, work instructions and shop-floor forms.</p><span class="spaceMeta"><b>368</b> resources · <b>4</b> pending</span>
+              </button>
+              <button class="spaceCard" data-space-id="engineering" data-space-name="Engineering" data-space-path="Engineering / Controlled Documents" data-space-count="271">
+                <span class="spaceIcon toneViolet"><i data-lucide="drafting-compass"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
+                <strong>Engineering</strong><p>Specifications, drawings, technical standards and engineering changes.</p><span class="spaceMeta"><b>271</b> resources · <b>12</b> linked standards</span>
+              </button>
+              <button class="spaceCard" data-space-id="purchasing" data-space-name="Purchasing & Supplier Quality" data-space-path="Purchasing / Supplier Quality" data-space-count="144">
+                <span class="spaceIcon toneAmber"><i data-lucide="handshake"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
+                <strong>Purchasing & Supplier Quality</strong><p>Supplier controls, approved-source documents and purchasing requirements.</p><span class="spaceMeta"><b>144</b> resources · <b>19</b> supplier links</span>
+              </button>
+              <button class="spaceCard" data-space-id="hr" data-space-name="People & Competence" data-space-path="Human Resources / Competence" data-space-count="93">
+                <span class="spaceIcon toneRose"><i data-lucide="users"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
+                <strong>People & Competence</strong><p>Training procedures, role requirements and competency controls.</p><span class="spaceMeta"><b>93</b> resources · <b>18</b> training links</span>
+              </button>
+              <button class="spaceCard" data-space-id="external" data-space-name="External Standards & Customer Requirements" data-space-path="External Documents / Standards" data-space-count="203">
+                <span class="spaceIcon toneSlate"><i data-lucide="book-open-check"></i></span><span class="spaceArrow"><i data-lucide="arrow-right"></i></span>
+                <strong>External Standards</strong><p>Standards, regulations and customer-controlled specifications.</p><span class="spaceMeta"><b>203</b> resources · <b>9</b> currency checks</span>
+              </button>
+              <button class="spaceCard createSpaceCard" onclick="openSpaceModal()">
+                <span class="spaceIcon createIcon"><i data-lucide="plus"></i></span>
+                <strong>Create process space</strong><p>Add another contextual QMS area without creating another storage location.</p><span class="spaceCreateLink">Configure space <i data-lucide="arrow-right"></i></span>
+              </button>
+            </div>
+          </section>
+
+          <section class="repositoryPanel" data-repository-panel="all">
+            <section class="controlledLibrarySurface" id="controlledMasterPanel">
+              <div class="controlledLibraryTop">
+                <div class="controlledStatusTabs" id="controlledStatusTabs" aria-label="Controlled document status filters">
+                  <button class="active" data-controlled-status="all">All <b>1,428</b></button>
+                  <button data-controlled-status="effective">Effective <b>1,236</b></button>
+                  <button data-controlled-status="workflow">In workflow <b>137</b></button>
+                  <button data-controlled-status="review due">Review due <b>7</b></button>
+                  <button data-controlled-status="obsolete">Obsolete <b>55</b></button>
+                </div>
+                <span class="allDocsHint"><i data-lucide="search"></i>Cross-space register</span>
               </div>
-              <div class="controlledLibraryContext">
-                <span><i data-lucide="database"></i>Canonical library</span>
-                <button class="btn link" onclick="showView('structure')">Manage spaces</button>
+              <div class="controlledLibraryToolbar compact">
+                <div class="filterSearch"><span><i data-lucide="search"></i></span><input id="controlledSearch" placeholder="Search document ID, title or owner..."></div>
+                <select id="controlledTypeFilter"><option value="all">All document types</option><option>Policy</option><option>Manual</option><option>Procedure</option><option>SOP</option><option>Work Instruction</option><option>Form / Template</option><option>External Document</option></select>
+                <select id="controlledSpaceFilter"><option value="all">All primary spaces</option><option>Recruitment</option><option>Quality Management</option><option>Operations</option><option>Engineering</option><option>Purchasing & Supplier Quality</option><option>People & Competence</option><option>External Standards</option><option>Management System</option></select>
+                <button class="iconButton" title="More filters"><i data-lucide="sliders-horizontal"></i></button>
               </div>
-            </div>
-
-            <div class="controlledLibraryToolbar compact">
-              <div class="filterSearch"><span><i data-lucide="search"></i></span><input id="controlledSearch" placeholder="Search document ID, title or owner..."></div>
-              <select id="controlledTypeFilter">
-                <option value="all">All document types</option>
-                <option>Policy</option><option>Manual</option><option>Procedure</option><option>SOP</option><option>Work Instruction</option><option>Form / Template</option><option>External Document</option>
-              </select>
-              <select id="controlledSpaceFilter">
-                <option value="all">All primary spaces</option>
-                <option>Recruitment</option><option>Quality Management</option><option>Operations</option><option>Engineering</option><option>Purchasing & Supplier Quality</option><option>People & Competence</option><option>External Standards</option><option>Management System</option>
-              </select>
-              <button class="iconButton" title="More filters"><i data-lucide="sliders-horizontal"></i></button>
-            </div>
-
-            <div class="controlledLibraryHead"><span>Document</span><span>Type</span><span>Primary space</span><span>Rev</span><span>Owner</span><span>Status</span><span>Next review</span></div>
-            <div id="controlledLibraryRows">
-              <button class="controlledLibraryRow" data-type="Procedure" data-space="Recruitment" data-status="effective" onclick="openControlledDocument('recruitment','QMS-PRO-REC-001')"><div><b>QMS-PRO-REC-001</b><strong>Recruitment Procedure</strong><small>ISO 8.1 · 8.5</small></div><span>Procedure</span><span>Recruitment</span><span>03</span><span>Recruitment Manager</span><span class="tag success">Effective</span><span>01 Sep 2027</span></button>
-              <button class="controlledLibraryRow" data-type="SOP" data-space="Quality Management" data-status="effective" onclick="openControlledDocument('quality','SOP-QA-014')"><div><b>SOP-QA-014</b><strong>Control of Nonconforming Outputs</strong><small>ISO 8.7</small></div><span>SOP</span><span>Quality Management</span><span>06</span><span>Quality Manager</span><span class="tag success">Effective</span><span>15 Sep 2027</span></button>
-              <button class="controlledLibraryRow" data-type="Work Instruction" data-space="Operations" data-status="workflow" onclick="openControlledDocument('operations','WI-PROD-021')"><div><b>WI-PROD-021</b><strong>Final Inspection Work Instruction</strong><small>ISO 8.5</small></div><span>Work Instruction</span><span>Operations</span><span>03</span><span>Ana Reyes</span><span class="tag info">In approval</span><span>—</span></button>
-              <button class="controlledLibraryRow" data-type="Procedure" data-space="Purchasing & Supplier Quality" data-status="review due" onclick="openControlledDocument('purchasing','SOP-PUR-012')"><div><b>SOP-PUR-012</b><strong>Supplier Control Procedure</strong><small>ISO 8.4</small></div><span>Procedure</span><span>Purchasing & Supplier Quality</span><span>05</span><span>John Cruz</span><span class="tag warning">Review due</span><span>28 Sep 2026</span></button>
-              <button class="controlledLibraryRow" data-type="External Document" data-space="External Standards" data-status="effective" onclick="openControlledDocument('external','EXT-STD-002')"><div><b>EXT-STD-002</b><strong>Customer Quality Specification</strong><small>External source · currency tracked</small></div><span>External Document</span><span>External Standards</span><span>2026.2</span><span>Document Control</span><span class="tag success">Current</span><span>01 Feb 2027</span></button>
-              <button class="controlledLibraryRow" data-type="Policy" data-space="Management System" data-status="effective" onclick="openControlledDocument('management','POL-001')"><div><b>POL-001</b><strong>Quality Policy</strong><small>ISO 5.2</small></div><span>Policy</span><span>Management System</span><span>05</span><span>Executive Management</span><span class="tag success">Effective</span><span>01 Jan 2028</span></button>
-            </div>
-
-            <div class="controlledLibraryFooter">
-              <span>Showing 6 sample documents of 1,428 controlled resources</span>
-              <div><button class="btn text" disabled>Previous</button><button class="btn text">Next</button></div>
-            </div>
+              <div class="controlledLibraryHead"><span>Document</span><span>Type</span><span>Primary space</span><span>Rev</span><span>Owner</span><span>Status</span><span>Next review</span></div>
+              <div id="controlledLibraryRows">
+                <button class="controlledLibraryRow" data-type="Procedure" data-space="Recruitment" data-status="effective" onclick="openControlledDocument('recruitment','QMS-PRO-REC-001')"><div><b>QMS-PRO-REC-001</b><strong>Recruitment Procedure</strong><small>ISO 8.1 · 8.5</small></div><span>Procedure</span><span>Recruitment</span><span>03</span><span>Recruitment Manager</span><span class="tag success">Effective</span><span>01 Sep 2027</span></button>
+                <button class="controlledLibraryRow" data-type="SOP" data-space="Quality Management" data-status="effective" onclick="openControlledDocument('quality','SOP-QA-014')"><div><b>SOP-QA-014</b><strong>Control of Nonconforming Outputs</strong><small>ISO 8.7</small></div><span>SOP</span><span>Quality Management</span><span>06</span><span>Quality Manager</span><span class="tag success">Effective</span><span>15 Sep 2027</span></button>
+                <button class="controlledLibraryRow" data-type="Work Instruction" data-space="Operations" data-status="workflow" onclick="openControlledDocument('operations','WI-PROD-021')"><div><b>WI-PROD-021</b><strong>Final Inspection Work Instruction</strong><small>ISO 8.5</small></div><span>Work Instruction</span><span>Operations</span><span>03</span><span>Ana Reyes</span><span class="tag info">In approval</span><span>—</span></button>
+                <button class="controlledLibraryRow" data-type="Procedure" data-space="Purchasing & Supplier Quality" data-status="review due" onclick="openControlledDocument('purchasing','SOP-PUR-012')"><div><b>SOP-PUR-012</b><strong>Supplier Control Procedure</strong><small>ISO 8.4</small></div><span>Procedure</span><span>Purchasing & Supplier Quality</span><span>05</span><span>John Cruz</span><span class="tag warning">Review due</span><span>28 Sep 2026</span></button>
+                <button class="controlledLibraryRow" data-type="External Document" data-space="External Standards" data-status="effective" onclick="openControlledDocument('external','EXT-STD-002')"><div><b>EXT-STD-002</b><strong>Customer Quality Specification</strong><small>External source · currency tracked</small></div><span>External Document</span><span>External Standards</span><span>2026.2</span><span>Document Control</span><span class="tag success">Current</span><span>01 Feb 2027</span></button>
+                <button class="controlledLibraryRow" data-type="Policy" data-space="Management System" data-status="effective" onclick="openControlledDocument('management','POL-001')"><div><b>POL-001</b><strong>Quality Policy</strong><small>ISO 5.2</small></div><span>Policy</span><span>Management System</span><span>05</span><span>Executive Management</span><span class="tag success">Effective</span><span>01 Jan 2028</span></button>
+              </div>
+              <div class="controlledLibraryFooter"><span>Showing 6 sample documents of 1,428 controlled resources</span><div><button class="btn text" disabled>Previous</button><button class="btn text">Next</button></div></div>
+            </section>
           </section>
         </div>
 
         <div id="repositorySpace" class="repositorySpace" style="display:none">
-          <div class="spaceDetailHeader">
-            <button class="backButton" onclick="closeDocumentSpace()" aria-label="Back to document spaces"><i data-lucide="arrow-left"></i></button>
-            <div class="spaceDetailTitle">
-              <span class="eyebrow">DOCUMENT SPACE</span>
-              <h1 id="spaceDetailName">Quality Management</h1>
-              <p><span id="spaceDetailCount">486</span> resources · canonical resources remain centrally governed</p>
+          <div class="levelHeader">
+            <button class="backButton" onclick="closeDocumentSpace()" aria-label="Back to controlled information"><i data-lucide="arrow-left"></i></button>
+            <div class="levelHeaderTitle">
+              <span class="levelPath">Controlled information <i data-lucide="chevron-right"></i> <b id="spaceDetailName">Quality Management</b></span>
+              <h1 id="spaceListTitle">Quality Management</h1>
+              <p><span id="spaceDetailCount">486</span> controlled resources · <span id="spaceDetailPath">Quality / Procedures</span></p>
             </div>
-            <div class="pageActions">
-              <button class="btn secondary"><i data-lucide="settings-2"></i>Space settings</button>
-              <button class="btn primary" onclick="openRegisterResource('controlled')"><i data-lucide="file-plus-2"></i>Register document</button>
-            </div>
+            <div class="pageActions"><button class="btn primary" onclick="openRegisterResource('controlled')"><i data-lucide="file-plus-2"></i>Register in this space</button></div>
           </div>
 
-          <div class="spaceTabs">
-            <button class="active" data-space-tab="documents"><i data-lucide="files"></i>Documents <span id="spaceTabDocCount">486</span></button>
-            <button data-space-tab="records"><i data-lucide="archive"></i>Records & evidence</button>
-            <button data-space-tab="requirements"><i data-lucide="landmark"></i>Related requirements</button>
-            <button data-space-tab="approvals"><i data-lucide="clipboard-check"></i>Approvals</button>
-            <button data-space-tab="activity"><i data-lucide="history"></i>Activity</button>
+          <div class="spaceListSummary">
+            <span><b id="spaceSummaryAll">486</b>All documents</span>
+            <span><b>472</b>Effective</span>
+            <span><b>7</b>Review due</span>
+            <span><b>7</b>In workflow</span>
           </div>
 
-          <div class="spaceWorkspace">
-            <aside class="spaceLibraryPane">
-              <div class="libraryHeader">
-                <div><b>Controlled resources</b><span id="spaceDetailPath">Quality / Procedures</span></div>
-                <button class="iconButton" title="More actions"><i data-lucide="ellipsis"></i></button>
-              </div>
-              <div class="libraryTools">
-                <div class="paneSearch"><span><i data-lucide="search"></i></span><input id="spaceDocSearch" placeholder="Search this space"></div>
-                <button class="iconButton" title="Filter"><i data-lucide="list-filter"></i></button>
-              </div>
-              <div class="libraryFilterTabs">
-                <button class="active">All</button><button>Effective</button><button>In workflow</button><button>Due</button>
-              </div>
-              <div class="spaceDocumentRows" id="spaceDocumentRows"></div>
-              <div class="spaceEmptyState" id="spaceEmptyState" style="display:none">
-                <span><i data-lucide="folder-open"></i></span>
-                <h3>This space is ready</h3>
-                <p>Add a controlled document, link an existing canonical resource, or upload files for classification.</p>
-                <div><button class="btn primary" onclick="openRegisterResource('controlled')">Register controlled document</button></div>
-              </div>
-            </aside>
+          <section class="spaceDocumentListSurface">
+            <div class="spaceListToolbar">
+              <div class="filterSearch"><span><i data-lucide="search"></i></span><input id="spaceDocSearch" placeholder="Search this space..."></div>
+              <div class="libraryFilterTabs"><button class="active">All</button><button>Effective</button><button>In workflow</button><button>Due</button></div>
+            </div>
+            <div class="spaceDocumentTableHead"><span>Document</span><span>Type</span><span>Rev</span><span>Owner</span><span>Status</span><span>Next review</span><span></span></div>
+            <div class="spaceDocumentRows" id="spaceDocumentRows"></div>
+            <div class="spaceEmptyState" id="spaceEmptyState" style="display:none">
+              <span><i data-lucide="folder-open"></i></span><h3>No controlled information yet</h3>
+              <p>Register a document or link an existing canonical resource to this primary space.</p>
+              <div><button class="btn primary" onclick="openRegisterResource('controlled')">Register controlled document</button></div>
+            </div>
+          </section>
+        </div>
 
+        <div id="repositoryDocument" class="repositoryDocument" style="display:none">
+          <div class="levelHeader documentLevelHeader">
+            <button class="backButton" onclick="closeDocumentDetail()" aria-label="Back to space"><i data-lucide="arrow-left"></i></button>
+            <div class="levelHeaderTitle">
+              <span class="levelPath">Controlled information <i data-lucide="chevron-right"></i> <span id="docSpaceBreadcrumb">Quality Management</span> <i data-lucide="chevron-right"></i> <b id="docCodeHeader">SOP-QA-014</b></span>
+              <h1 id="docTitle">Control of Nonconforming Outputs</h1>
+              <div class="recordMeta"><b id="docCode">SOP-QA-014</b><span id="docRev">Rev 06</span><span id="docStatus" class="tag success">Effective</span></div>
+            </div>
+            <div class="pageActions"><button class="btn secondary"><i data-lucide="download"></i>Download</button><button class="btn primary"><i data-lucide="git-branch"></i>Create revision</button></div>
+          </div>
+
+          <div class="documentDetailTabs">
+            <button class="active">Document</button><button onclick="showView('relationships')">Relationships</button><button data-toast-title="Revision history" data-toast-message="Revision history is preserved for this canonical document.">Revision history</button><button data-toast-title="Audit history" data-toast-message="Audit events for this resource are available in Audit trail.">Audit history</button>
+          </div>
+
+          <div class="documentDetailWorkspace">
             <section class="documentViewerPane">
               <div class="viewerToolbar">
                 <div class="viewerIdentity"><span class="fileTypeIcon"><i data-lucide="file-text"></i></span><div><b id="viewerFileName">SOP-QA-014.pdf</b><span id="viewerFileMeta">Controlled document · Rev 06</span></div></div>
-                <div class="viewerTools">
-                  <button class="viewerTool"><i data-lucide="zoom-out"></i></button>
-                  <span class="zoomLabel">100%</span>
-                  <button class="viewerTool"><i data-lucide="zoom-in"></i></button>
-                  <span class="viewerDivider"></span>
-                  <button class="viewerTool" title="Open full screen"><i data-lucide="maximize-2"></i></button>
-                  <button class="viewerTool" title="Download"><i data-lucide="download"></i></button>
-                </div>
+                <div class="viewerTools"><button class="viewerTool"><i data-lucide="zoom-out"></i></button><span class="zoomLabel">100%</span><button class="viewerTool"><i data-lucide="zoom-in"></i></button><span class="viewerDivider"></span><button class="viewerTool"><i data-lucide="maximize-2"></i></button></div>
               </div>
-              <div class="viewerCanvas">
-                <div class="pageNavigator">
-                  <button class="pageThumb active"><span>1</span><div class="miniPage"><i></i><i></i><i></i><i></i></div></button>
-                  <button class="pageThumb"><span>2</span><div class="miniPage"><i></i><i></i><i></i></div></button>
-                  <button class="pageThumb"><span>3</span><div class="miniPage"><i></i><i></i><i></i><i></i><i></i></div></button>
-                </div>
+              <div class="viewerCanvas detailViewerCanvas">
                 <div class="documentStage">
                   <article class="controlledPreviewPage">
-                    <header class="previewDocHeader">
-                      <div class="previewOrg"><span class="previewLogo">AM</span><div><b>ABC Manufacturing</b><small>Quality Management System</small></div></div>
-                      <div class="previewControl"><span>CONTROLLED DOCUMENT</span><b id="previewDocCode">SOP-QA-014</b></div>
-                    </header>
-                    <section class="previewTitleBlock">
-                      <div><span id="previewDocType">STANDARD OPERATING PROCEDURE</span><h2 id="previewDocTitle">Control of Nonconforming Outputs</h2></div>
-                      <dl><div><dt>Revision</dt><dd id="previewDocRev">06</dd></div><div><dt>Status</dt><dd id="previewDocStatus">Effective</dd></div><div><dt>Effective date</dt><dd id="previewEffective">15 Sep 2026</dd></div></dl>
-                    </section>
+                    <header class="previewDocHeader"><div class="previewOrg"><span class="previewLogo">AM</span><div><b>ABC Manufacturing</b><small>Quality Management System</small></div></div><div class="previewControl"><span>CONTROLLED DOCUMENT</span><b id="previewDocCode">SOP-QA-014</b></div></header>
+                    <section class="previewTitleBlock"><div><span id="previewDocType">STANDARD OPERATING PROCEDURE</span><h2 id="previewDocTitle">Control of Nonconforming Outputs</h2></div><dl><div><dt>Revision</dt><dd id="previewDocRev">06</dd></div><div><dt>Status</dt><dd id="previewDocStatus">Effective</dd></div><div><dt>Effective date</dt><dd id="previewEffective">15 Sep 2026</dd></div></dl></section>
                     <section class="previewSection"><h3>1. Purpose</h3><p id="previewPurpose">Defines controls for identifying, segregating, reviewing and dispositioning nonconforming outputs.</p></section>
-                    <section class="previewSection"><h3>2. Scope</h3><p>This controlled document applies to personnel and activities within the assigned process space. Users must verify the current effective revision before use.</p></section>
+                    <section class="previewSection"><h3>2. Scope</h3><p>This controlled document applies to personnel and activities within the assigned process space.</p></section>
                     <section class="previewSection"><h3>3. Responsibilities</h3><table><tbody><tr><th>Process Owner</th><td id="previewOwner">Quality Department</td></tr><tr><th>Approver</th><td id="previewApprover">Quality Manager</td></tr><tr><th>Document Control</th><td>Maintains revision, release, distribution and obsolete-copy controls.</td></tr></tbody></table></section>
-                    <section class="previewSection"><h3>4. Controlled Procedure</h3><ol><li>Confirm the applicable document and effective revision.</li><li>Perform the activity using approved forms, work instructions and referenced sources.</li><li>Retain generated evidence according to the configured retention requirement.</li><li>Escalate exceptions through the assigned quality workflow.</li></ol></section>
+                    <section class="previewSection"><h3>4. Controlled Procedure</h3><ol><li>Confirm the applicable document and effective revision.</li><li>Perform the activity using approved forms and work instructions.</li><li>Retain generated evidence according to the configured retention requirement.</li></ol></section>
                     <footer class="previewFooter"><span id="previewFooterCode">SOP-QA-014 · Rev 06</span><span>Controlled copy — verify current revision in iQMS</span><span>Page 1 of 3</span></footer>
                   </article>
                 </div>
@@ -381,16 +418,7 @@ body.navExpanded .railExpand span{display:inline!important}
             </section>
 
             <aside class="documentReviewPane">
-              <div class="reviewPaneHeader">
-                <div><span class="recordLabel">DOCUMENT DETAILS</span><h2 id="docTitle">Control of Nonconforming Outputs</h2><div class="recordMeta"><b id="docCode">SOP-QA-014</b><span id="docRev">Rev 06</span><span id="docStatus" class="tag success">Effective</span></div></div>
-                <button class="iconButton" title="More actions"><i data-lucide="ellipsis"></i></button>
-              </div>
-
-              <div class="reviewActionRow">
-                <button class="btn secondary"><i data-lucide="download"></i>Download</button>
-                <button class="btn secondary"><i data-lucide="git-branch"></i>Create revision</button>
-              </div>
-
+              <div class="detailSectionTitle"><span class="recordLabel">CONTROL INFORMATION</span><button class="iconButton"><i data-lucide="ellipsis"></i></button></div>
               <dl class="reviewDetails">
                 <div><dt>Owner</dt><dd id="docOwner">Quality Department</dd></div>
                 <div><dt>Approver</dt><dd id="docApprover">Quality Manager</dd></div>
@@ -400,32 +428,16 @@ body.navExpanded .railExpand span{display:inline!important}
                 <div><dt>Resource ID</dt><dd id="detailResourceId">RES-DOC-014</dd></div>
               </dl>
 
-              <section class="reviewPanelSection">
-                <div class="sectionTitleRow"><h3>Change reason</h3><span class="tag neutral">Rev <span id="changeReasonRev">06</span></span></div>
-                <p id="changeReasonText">Updated controls and responsibilities for disposition of nonconforming outputs.</p>
-              </section>
+              <section class="reviewPanelSection"><div class="sectionTitleRow"><h3>Change reason</h3><span class="tag neutral">Rev <span id="changeReasonRev">06</span></span></div><p id="changeReasonText">Controlled revision retained with its documented change reason and approval history.</p></section>
 
-              <section class="reviewPanelSection">
-                <div class="sectionTitleRow"><h3>Relationships</h3><button class="btn link">Manage</button></div>
+              <section class="reviewPanelSection"><div class="sectionTitleRow"><h3>Relationships</h3><button class="btn link" onclick="showView('relationships')">Open map</button></div>
                 <button class="reviewRelation"><i data-lucide="link-2"></i><div><b>WI-QA-003</b><span>Inspection Work Instruction</span></div><em>Current</em></button>
-                <button class="reviewRelation"><i data-lucide="link-2"></i><div><b>FORM-QA-011</b><span>NCR Form</span></div><em>Current</em></button>
                 <button class="reviewRelation"><i data-lucide="paperclip"></i><div><b>23 records</b><span>Linked evidence</span></div><em>Evidence</em></button>
               </section>
 
-              <section class="reviewPanelSection">
-                <h3>Workflow</h3>
-                <div class="reviewWorkflow">
-                  <div class="done"><i data-lucide="check"></i><span><b>Author</b><small>Completed</small></span></div>
-                  <div class="done"><i data-lucide="check"></i><span><b>Department review</b><small>Completed</small></span></div>
-                  <div class="done"><i data-lucide="check"></i><span><b>Final approval</b><small>Completed</small></span></div>
-                  <div class="done"><i data-lucide="check"></i><span><b>Released</b><small>Effective</small></span></div>
-                </div>
-              </section>
+              <section class="reviewPanelSection"><h3>Workflow</h3><div class="reviewWorkflow"></div></section>
 
-              <div class="approvalDecision" id="approvalDecision" style="display:none">
-                <label>Decision comment<textarea id="approvalDecisionComment" placeholder="Add a reason or comment for the audit trail..."></textarea></label>
-                <div><button class="btn dangerOutline" onclick="prototypeDecision('Returned')">Return</button><button class="btn primary" onclick="prototypeDecision('Approved')">Approve</button></div>
-              </div>
+              <div class="approvalDecision" id="approvalDecision" style="display:none"><label>Decision comment<textarea id="approvalDecisionComment" placeholder="Add a reason or comment for the audit trail..."></textarea></label><div><button class="btn dangerOutline" onclick="prototypeDecision('Returned')">Return</button><button class="btn primary" onclick="prototypeDecision('Approved')">Approve</button></div></div>
             </aside>
           </div>
         </div>
@@ -574,62 +586,19 @@ body.navExpanded .railExpand span{display:inline!important}
 
       <div id="structure" class="view">
         <div class="pageHeader">
-          <div><h1>Spaces & structure</h1><p>Configure contextual workspaces and how users browse the canonical information model.</p></div>
-          <div class="pageActions"><button class="btn primary" onclick="openSpaceModal()"><i data-lucide="plus"></i>Create space</button></div>
+          <div><h1>Space administration</h1><p>Configure the Primary Spaces used to organize controlled information. This page changes structure, not document storage.</p></div>
+          <div class="pageActions"><button class="btn secondary" onclick="showView('repository')"><i data-lucide="arrow-left"></i>Back to controlled information</button><button class="btn primary" onclick="openSpaceModal()"><i data-lucide="plus"></i>Create space</button></div>
         </div>
-
-        <div class="structureTabs" id="structureTabs">
-          <button class="active" data-structure-tab="spaces"><i data-lucide="folder-kanban"></i>Process spaces</button>
-          <button data-structure-tab="hierarchy"><i data-lucide="folder-tree"></i>Browse hierarchy</button>
+        <div class="adminNotice"><i data-lucide="info"></i><div><b>For QMS administrators</b><span>Users browse these spaces from Controlled information. Keep this page for configuration only.</span></div></div>
+        <div class="spaceAdminSurface">
+          <div class="spaceAdminHead"><span>Primary space</span><span>Code</span><span>Purpose</span><span>Resources</span><span>Default owner</span><span>Status</span><span></span></div>
+          <div class="spaceAdminRow"><div><i data-lucide="landmark"></i><b>Management System</b></div><span>MGT</span><span>System-level governance</span><span>66</span><span>Quality Manager</span><span class="tag success">Active</span><button class="iconButton"><i data-lucide="ellipsis"></i></button></div>
+          <div class="spaceAdminRow"><div><i data-lucide="shield-check"></i><b>Quality Management</b></div><span>QA</span><span>Quality-system controls</span><span>486</span><span>Quality Manager</span><span class="tag success">Active</span><button class="iconButton"><i data-lucide="ellipsis"></i></button></div>
+          <div class="spaceAdminRow"><div><i data-lucide="user-round-search"></i><b>Recruitment</b></div><span>REC</span><span>Recruitment controls</span><span>118</span><span>Recruitment Manager</span><span class="tag success">Active</span><button class="iconButton"><i data-lucide="ellipsis"></i></button></div>
+          <div class="spaceAdminRow"><div><i data-lucide="workflow"></i><b>Operations</b></div><span>OPS</span><span>Operational controls</span><span>368</span><span>Operations Manager</span><span class="tag success">Active</span><button class="iconButton"><i data-lucide="ellipsis"></i></button></div>
+          <div class="spaceAdminRow"><div><i data-lucide="drafting-compass"></i><b>Engineering</b></div><span>ENG</span><span>Engineering controls</span><span>271</span><span>Engineering Manager</span><span class="tag success">Active</span><button class="iconButton"><i data-lucide="ellipsis"></i></button></div>
+          <div class="spaceAdminRow"><div><i data-lucide="handshake"></i><b>Purchasing & Supplier Quality</b></div><span>PUR</span><span>Supplier and purchasing controls</span><span>144</span><span>Purchasing Manager</span><span class="tag success">Active</span><button class="iconButton"><i data-lucide="ellipsis"></i></button></div>
         </div>
-
-        <section class="structureTabPanel active" data-structure-panel="spaces">
-          <div class="structurePanelIntro"><div><h2>Process spaces</h2><p>Contextual views of canonical resources. A document can appear in several spaces without being duplicated.</p></div><span>8 configured spaces</span></div>
-          <div class="documentSpaces" id="documentSpaces">
-            <button class="spaceCard" data-space-id="quality" data-space-name="Quality Management" data-space-path="Quality / Procedures" data-space-count="486">
-              <span class="spaceIcon toneBlue"><i data-lucide="shield-check"></i></span><span class="spaceArrow"><i data-lucide="arrow-up-right"></i></span>
-              <strong>Quality Management</strong><p>Policies, procedures, audits, NCRs and quality-system controls.</p><span class="spaceMeta"><b>486</b> resources · <b>7</b> reviews due</span>
-            </button>
-            <button class="spaceCard" data-space-id="recruitment" data-space-name="Recruitment" data-space-path="Recruitment / Controlled Information" data-space-count="118">
-              <span class="spaceIcon toneTeal"><i data-lucide="user-round-search"></i></span><span class="spaceArrow"><i data-lucide="arrow-up-right"></i></span>
-              <strong>Recruitment</strong><p>Recruitment procedures, screening controls, interview guidance and controlled forms.</p><span class="spaceMeta"><b>118</b> resources · <b>6</b> linked records</span>
-            </button>
-            <button class="spaceCard" data-space-id="operations" data-space-name="Operations" data-space-path="Operations / Controlled Documents" data-space-count="368">
-              <span class="spaceIcon toneTeal"><i data-lucide="workflow"></i></span><span class="spaceArrow"><i data-lucide="arrow-up-right"></i></span>
-              <strong>Operations</strong><p>Production procedures, work instructions and shop-floor forms.</p><span class="spaceMeta"><b>368</b> resources · <b>4</b> pending</span>
-            </button>
-            <button class="spaceCard" data-space-id="engineering" data-space-name="Engineering" data-space-path="Engineering / Controlled Documents" data-space-count="271">
-              <span class="spaceIcon toneViolet"><i data-lucide="drafting-compass"></i></span><span class="spaceArrow"><i data-lucide="arrow-up-right"></i></span>
-              <strong>Engineering</strong><p>Specifications, drawings, technical standards and engineering changes.</p><span class="spaceMeta"><b>271</b> resources · <b>12</b> linked standards</span>
-            </button>
-            <button class="spaceCard" data-space-id="purchasing" data-space-name="Purchasing & Supplier Quality" data-space-path="Purchasing / Supplier Quality" data-space-count="144">
-              <span class="spaceIcon toneAmber"><i data-lucide="handshake"></i></span><span class="spaceArrow"><i data-lucide="arrow-up-right"></i></span>
-              <strong>Purchasing & Supplier Quality</strong><p>Supplier controls, approved-source documents and purchasing requirements.</p><span class="spaceMeta"><b>144</b> resources · <b>19</b> supplier links</span>
-            </button>
-            <button class="spaceCard" data-space-id="hr" data-space-name="People & Competence" data-space-path="Human Resources / Competence" data-space-count="93">
-              <span class="spaceIcon toneRose"><i data-lucide="users"></i></span><span class="spaceArrow"><i data-lucide="arrow-up-right"></i></span>
-              <strong>People & Competence</strong><p>Training procedures, role requirements and competency controls.</p><span class="spaceMeta"><b>93</b> resources · <b>18</b> training links</span>
-            </button>
-            <button class="spaceCard" data-space-id="external" data-space-name="External Standards & Customer Requirements" data-space-path="External Documents / Standards" data-space-count="203">
-              <span class="spaceIcon toneSlate"><i data-lucide="book-open-check"></i></span><span class="spaceArrow"><i data-lucide="arrow-up-right"></i></span>
-              <strong>External Standards</strong><p>Standards, regulations and customer-controlled specifications.</p><span class="spaceMeta"><b>203</b> resources · <b>9</b> currency checks</span>
-            </button>
-            <button class="spaceCard" data-space-id="management" data-space-name="Management System" data-space-path="Management / System Documents" data-space-count="66">
-              <span class="spaceIcon toneIndigo"><i data-lucide="landmark"></i></span><span class="spaceArrow"><i data-lucide="arrow-up-right"></i></span>
-              <strong>Management System</strong><p>Quality policy, objectives and system-level governance documents.</p><span class="spaceMeta"><b>66</b> resources · <b>6</b> approvals</span>
-            </button>
-            <button class="spaceCard createSpaceCard" onclick="openSpaceModal()">
-              <span class="spaceIcon createIcon"><i data-lucide="plus"></i></span><strong>Create process space</strong><p>Add another contextual workspace without creating another storage location.</p><span class="spaceCreateLink">Configure space <i data-lucide="arrow-right"></i></span>
-            </button>
-          </div>
-        </section>
-
-        <section class="structureTabPanel" data-structure-panel="hierarchy">
-          <div class="settingsGrid structureSettingsGrid">
-            <section class="surface"><div class="sectionHeader"><div><h2>Current browse hierarchy</h2><p>Controls navigation only. It does not move or duplicate canonical resources.</p></div><button class="btn secondary">Add level</button></div><div class="structureLevel"><span>1</span><div><b>Primary space</b><small>Quality, Recruitment, Operations, Engineering...</small></div><i data-lucide="grip-vertical"></i></div><div class="structureLevel"><span>2</span><div><b>Process</b><small>Document Control, Audit, Purchasing...</small></div><i data-lucide="grip-vertical"></i></div><div class="structureLevel"><span>3</span><div><b>Document type</b><small>Policy, Procedure, SOP, Work Instruction...</small></div><i data-lucide="grip-vertical"></i></div><div class="structureLevel"><span>4</span><div><b>Document</b><small>Canonical controlled resource</small></div><i data-lucide="grip-vertical"></i></div></section>
-            <section class="surface"><div class="sectionHeader"><div><h2>Hierarchy presets</h2><p>Starting points for how users browse, not separate repositories.</p></div></div><div class="preset"><div><b>Multi-site manufacturer</b><span>Site → Space → Process → Document</span></div><button class="btn secondary">Use</button></div><div class="preset"><div><b>Service organization</b><span>Business unit → Process → Category</span></div><button class="btn secondary">Use</button></div><div class="preset"><div><b>Simple SME</b><span>Space → Type → Document</span></div><button class="btn secondary">Use</button></div></section>
-          </div>
-        </section>
       </div>
 
       <div id="types" class="view">
@@ -1162,6 +1131,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-ia-stable2"></script>
+<script src="./app.js?v=20260922-hierarchy1"></script>
 </body>
 </html>
