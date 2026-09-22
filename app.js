@@ -178,35 +178,89 @@ function escapeHtml(value=''){
 function renderSpaceRows(space){
   const host=document.getElementById('spaceDocumentRows');
   const empty=document.getElementById('spaceEmptyState');
-  const workspace=document.querySelector('#repositorySpace .documentWorkspace');
   if(!host||!empty) return;
   const docs=space.docs||[];
   host.innerHTML=docs.map((d,i)=>`
-    <button class="documentRow ${i===0?'selected':''}" data-space-doc-index="${i}">
-      <div><b>${escapeHtml(d.code)}</b><strong>${escapeHtml(d.title)}</strong><small>${escapeHtml(d.type)}</small></div>
-      <span>${escapeHtml(d.rev)}</span><span>${escapeHtml(d.owner)}</span><span class="tag ${escapeHtml(d.kind)}">${escapeHtml(d.status)}</span><span>${escapeHtml(d.review)}</span>
+    <button class="spaceDocumentItem ${i===0?'selected':''}" data-space-doc-index="${i}">
+      <span class="docMain">
+        <b>${escapeHtml(d.code)}</b>
+        <strong>${escapeHtml(d.title)}</strong>
+        <small>${escapeHtml(d.type)}</small>
+      </span>
+      <span class="docSide">
+        <span class="tag ${escapeHtml(d.kind)}">${escapeHtml(d.status)}</span>
+        <span>${d.review==='—'?'No review date':escapeHtml(d.review)}</span>
+      </span>
     </button>`).join('');
   host.style.display=docs.length?'block':'none';
   empty.style.display=docs.length?'none':'block';
-  workspace?.classList.toggle('inspectorHidden',!docs.length);
-  if(docs[0]) selectSpaceDocument(docs[0],host.querySelector('.documentRow'));
+  if(docs[0]) selectSpaceDocument(docs[0],host.querySelector('.spaceDocumentItem'));
+  const count=document.getElementById('spaceTabDocCount');
+  if(count) count.textContent=space.count||docs.length;
   refreshIcons();
 }
 
 function selectSpaceDocument(doc,row){
-  document.querySelectorAll('#repositorySpace .documentRow').forEach(x=>x.classList.remove('selected'));
+  document.querySelectorAll('#repositorySpace .spaceDocumentItem').forEach(x=>x.classList.remove('selected'));
   row?.classList.add('selected');
+
   const title=document.getElementById('docTitle');
   if(!title) return;
+
+  const normalizedRev=doc.rev==='—'?'Record':('Rev '+doc.rev);
+  const isWorkflow=['In approval','In review','Draft','Review due'].includes(doc.status);
+
   title.textContent=doc.title;
   document.getElementById('docCode').textContent=doc.code;
-  document.getElementById('docRev').textContent=doc.rev==='—'?'Record':('Rev '+doc.rev);
+  document.getElementById('docRev').textContent=normalizedRev;
   setTag(document.getElementById('docStatus'),doc.status,doc.kind);
   document.getElementById('docOwner').textContent=doc.owner;
   document.getElementById('docApprover').textContent=doc.approver||'—';
   document.getElementById('docEffective').textContent=doc.effective||'—';
   document.getElementById('docReview').textContent=doc.review||'—';
-  document.getElementById('docPurpose').textContent=doc.purpose||'No purpose statement has been added yet.';
+
+  const viewerFileName=document.getElementById('viewerFileName');
+  const viewerFileMeta=document.getElementById('viewerFileMeta');
+  if(viewerFileName) viewerFileName.textContent=(doc.code||'document')+'.pdf';
+  if(viewerFileMeta) viewerFileMeta.textContent=(doc.type||'Controlled document')+' · '+normalizedRev;
+
+  document.getElementById('previewDocCode').textContent=doc.code;
+  document.getElementById('previewDocTitle').textContent=doc.title;
+  document.getElementById('previewDocRev').textContent=doc.rev;
+  document.getElementById('previewDocStatus').textContent=doc.status;
+  document.getElementById('previewEffective').textContent=doc.effective||'—';
+  document.getElementById('previewPurpose').textContent=doc.purpose||'No purpose statement has been added yet.';
+  document.getElementById('previewOwner').textContent=doc.owner||'—';
+  document.getElementById('previewApprover').textContent=doc.approver||'—';
+  document.getElementById('previewFooterCode').textContent=doc.code+' · '+normalizedRev;
+  document.getElementById('previewDocType').textContent=(doc.type||'CONTROLLED DOCUMENT').toUpperCase();
+
+  document.getElementById('detailDocType').textContent=doc.type||'Controlled document';
+  document.getElementById('detailResourceId').textContent='RES-'+String(doc.code||'DOC').replace(/[^A-Z0-9]/gi,'').slice(0,12).toUpperCase();
+  document.getElementById('changeReasonRev').textContent=doc.rev==='—'?'—':doc.rev;
+  document.getElementById('changeReasonText').textContent=doc.status==='Draft'
+    ? 'Draft revision is being prepared and has not yet been released.'
+    : doc.status==='In approval'
+      ? 'Revision submitted for controlled approval. Release is blocked until the route is completed.'
+      : 'Controlled revision retained with its documented change reason and approval history.';
+
+  const decision=document.getElementById('approvalDecision');
+  if(decision) decision.style.display=doc.status==='In approval'?'block':'none';
+
+  const workflow=document.querySelector('#repositorySpace .reviewWorkflow');
+  if(workflow){
+    workflow.innerHTML=isWorkflow && doc.status!=='Effective'
+      ? '<div class="done"><i data-lucide="check"></i><span><b>Author</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Department review</b><small>Completed</small></span></div><div class="active"><i data-lucide="clock-3"></i><span><b>Final approval</b><small>Waiting for decision</small></span></div><div><i data-lucide="circle"></i><span><b>Release</b><small>Blocked</small></span></div>'
+      : '<div class="done"><i data-lucide="check"></i><span><b>Author</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Department review</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Final approval</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Released</b><small>'+escapeHtml(doc.status)+'</small></span></div>';
+  }
+
+  document.querySelector('.documentStage')?.scrollTo({top:0,behavior:'smooth'});
+  refreshIcons();
+}
+
+function prototypeDecision(result){
+  const comment=document.getElementById('approvalDecisionComment')?.value.trim();
+  toast('Revision '+result.toLowerCase(),comment||('The '+result.toLowerCase()+' decision was recorded in the prototype audit trail.'));
 }
 
 let activeSpace=null;
@@ -219,7 +273,6 @@ function openDocumentSpace(spaceId,override=null){
   document.getElementById('spaceDetailName').textContent=base.name;
   document.getElementById('spaceDetailCount').textContent=base.count||0;
   document.getElementById('spaceDetailPath').textContent=base.path||base.name;
-  document.getElementById('spaceListTitle').textContent=base.path||base.name;
   renderSpaceRows(base);
   if(breadcrumbCurrent) breadcrumbCurrent.textContent='Documents / '+base.name;
   window.scrollTo({top:0,behavior:'smooth'});
@@ -241,10 +294,47 @@ spacesHost?.addEventListener('click',e=>{
 });
 
 document.getElementById('spaceDocumentRows')?.addEventListener('click',e=>{
-  const row=e.target.closest('.documentRow[data-space-doc-index]');
+  const row=e.target.closest('.spaceDocumentItem[data-space-doc-index]');
   if(!row||!activeSpace) return;
   const doc=activeSpace.docs?.[Number(row.dataset.spaceDocIndex)];
   if(doc) selectSpaceDocument(doc,row);
+});
+
+
+const spaceDocSearch=document.getElementById('spaceDocSearch');
+spaceDocSearch?.addEventListener('input',()=>{
+  const q=spaceDocSearch.value.trim().toLowerCase();
+  document.querySelectorAll('#spaceDocumentRows .spaceDocumentItem').forEach(row=>{
+    row.style.display=!q||row.textContent.toLowerCase().includes(q)?'grid':'none';
+  });
+});
+
+document.querySelectorAll('.libraryFilterTabs button').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    tab.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+    tab.classList.add('active');
+    const label=tab.textContent.trim();
+    document.querySelectorAll('#spaceDocumentRows .spaceDocumentItem').forEach(row=>{
+      const text=row.textContent;
+      let show=true;
+      if(label==='Effective') show=text.includes('Effective')||text.includes('Current');
+      if(label==='In workflow') show=text.includes('In approval')||text.includes('Draft')||text.includes('In review');
+      if(label==='Due') show=text.includes('Review due');
+      row.style.display=show?'grid':'none';
+    });
+  });
+});
+
+document.querySelectorAll('.spaceTabs button').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    const name=tab.dataset.spaceTab;
+    if(name==='documents'){
+      document.querySelectorAll('.spaceTabs button').forEach(x=>x.classList.remove('active'));
+      tab.classList.add('active');
+      return;
+    }
+    toast('Space '+tab.textContent.trim(), 'This prototype keeps the document review workspace visible. The '+name+' workspace will use the same space context.');
+  });
 });
 
 function openSpaceModal(){
