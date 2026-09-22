@@ -3552,3 +3552,162 @@ html,body{background:var(--bg)}
   .recordPreview{margin:16px;padding:24px}
   .recordInfoList>div,.recordControlRows>div,.recordActivityRows>div{grid-template-columns:1fr}
 }
+
+
+/* ============================================================
+   Readability pass
+   Keep the current layout and hierarchy, but remove 7–9px UI text.
+   Target: comfortable desktop reading at normal browser zoom.
+   ============================================================ */
+body{font-size:15px}
+
+/* Shell */
+.brand strong{font-size:15px}
+.brand span{font-size:11px}
+.workspaceText b{font-size:12px}
+.workspaceText small{font-size:10px}
+.navGroup{font-size:9px}
+.navItem{font-size:12px}
+.navMeta,.navBadge{font-size:10px}
+.sideStatus b{font-size:10px}
+.sideStatus span{font-size:9px}
+.breadcrumb,.breadcrumb b{font-size:11px}
+.profileButton b{font-size:11px}
+.profileButton small{font-size:9px}
+
+/* Page hierarchy */
+.pageHeader h1{font-size:28px}
+.pageHeader p{font-size:13px;line-height:1.5}
+.btn{font-size:12px}
+.recordLabel{font-size:10px}
+.recordMeta>b,.recordMeta>span:not(.tag){font-size:11px}
+.tag{font-size:9px}
+
+/* Overview */
+.overviewHealth b{font-size:11px}
+.overviewHealth span:not(.statusDot){font-size:10px}
+.overviewMetrics span{font-size:10px}
+.overviewMetrics b{font-size:22px}
+.overviewMetrics small{font-size:9px}
+.overviewPanelTabs button{font-size:11px}
+.overviewPanelTabs span{font-size:9px}
+.overviewPanelHeader h2{font-size:14px}
+.overviewPanelHeader p{font-size:10px}
+.overviewWorkRow .workType{font-size:10px}
+.overviewWorkRow b{font-size:12px}
+.overviewWorkRow small{font-size:10px}
+.overviewActivityList>div>span:first-child{font-size:10px}
+.overviewActivityList p b{font-size:12px}
+.overviewActivityList p small{font-size:10px}
+.recentFileCard b{font-size:10px}
+.recentFileCard small{font-size:9px}
+.upcomingList b{font-size:10px}
+.upcomingList span{font-size:11px}
+.upcomingList strong{font-size:10px}
+
+/* Controlled information — persistent DMS workspace */
+.repositoryModeTabs button{font-size:11px}
+.dmsRailHeader h2{font-size:14px}
+.dmsRailSearch input{font-size:11px}
+.dmsSpaceTabs b{font-size:11px}
+.dmsSpaceTabs small{font-size:9px}
+.dmsRailFooter{font-size:10px}
+.dmsSpaceIdentity h2{font-size:18px}
+.dmsSpaceIdentity p{font-size:11px;line-height:1.5}
+.dmsSpaceStats b{font-size:15px}
+.dmsSpaceStats small{font-size:9px}
+.dmsContextTabs button{font-size:11px}
+.dmsContextTabs span{font-size:9px}
+.dmsDocumentTypeTabs button{font-size:10px}
+.dmsDocumentHead{font-size:9px}
+.dmsDocumentRow{min-height:72px}
+.dmsDocumentRow>div b{font-size:9px}
+.dmsDocumentRow>div strong{font-size:12px}
+.dmsDocumentRow>div small{font-size:9px}
+.dmsDocumentRow>span:not(.tag){font-size:10px}
+.dmsEmpty b{font-size:12px}
+.dmsEmpty span{font-size:10px}
+.dmsContextPlaceholder h3{font-size:14px}
+.dmsContextPlaceholder p{font-size:10px}
+
+/* Records & evidence — process rail */
+.recordsRailHeader h2{font-size:14px}
+.recordsRailSearch input{font-size:11px}
+.recordsProcessTabs b{font-size:11px}
+.recordsProcessTabs small{font-size:9px}
+.recordsLibraryHeader h2{font-size:18px}
+.recordsLibraryHeader p{font-size:11px;line-height:1.5}
+.recordsLibraryStats b{font-size:15px}
+.recordsLibraryStats small{font-size:9px}
+.recordsLibraryTabs button{font-size:11px}
+.recordsLibraryTabs span{font-size:9px}
+.recordsLibraryToolbar select{font-size:11px}
+.recordsLibraryHead{font-size:9px}
+.recordsLibraryRows .evidenceRow{min-height:74px}
+.recordsLibraryRows .evidenceRow>div b{font-size:9px}
+.recordsLibraryRows .evidenceRow>div strong{font-size:12px}
+.recordsLibraryRows .evidenceRow>div small{font-size:9px}
+.recordsLibraryRows .evidenceRow>span:not(.tag){font-size:10px}
+.recordsLibraryFooter{font-size:9px}
+.recordsLibraryEmpty b{font-size:12px}
+.recordsLibraryEmpty span{font-size:10px}
+
+/* Record detail */
+.recordFileHeader b{font-size:11px}
+.recordFileHeader span{font-size:9px}
+.recordPreview h2{font-size:20px}
+.recordPreview p{font-size:11px;line-height:1.6}
+.recordInfoList dt{font-size:9px}
+.recordInfoList dd{font-size:11px}
+.recordTraceabilityIntro h2,.recordSimplePanel h2{font-size:16px}
+.recordTraceabilityIntro p{font-size:10px}
+.recordTracePath>div>small{font-size:9px}
+.recordTracePath>div>b{font-size:11px}
+.recordUsedBy .sectionTitleRow p{font-size:10px}
+.recordLinkRows b{font-size:11px}
+.recordLinkRows small{font-size:9px}
+.recordControlRows span{font-size:10px}
+.recordControlRows b{font-size:11px}
+.recordActivityRows span{font-size:10px}
+.recordActivityRows b{font-size:11px}
+.recordActivityRows small{font-size:9px}
+
+/* Controlled document detail + per-document traceability */
+.documentDetailTabs button{font-size:11px}
+.documentTraceabilityHeader h2{font-size:15px}
+.documentTraceabilityHeader p{font-size:10px}
+#repositoryDocument [data-doc-panel="traceability"] .traceSectionHead h3{font-size:11px}
+#repositoryDocument [data-doc-panel="traceability"] .traceSectionHead p{font-size:9px}
+#repositoryDocument [data-doc-panel="traceability"] .traceItem b{font-size:10px}
+#repositoryDocument [data-doc-panel="traceability"] .traceItem span{font-size:9px}
+#repositoryDocument [data-doc-panel="traceability"] .tracePathStep small{font-size:8px}
+#repositoryDocument [data-doc-panel="traceability"] .tracePathStep b{font-size:10px}
+
+/* Tasks / inspectors / configuration */
+.queueTabs button{font-size:10px}
+.approvalItem>b{font-size:10px}
+.approvalItem>strong{font-size:12px}
+.approvalItem>span{font-size:10px}
+.approvalTop small{font-size:9px}
+.changeBox span{font-size:9px}
+.changeBox p{font-size:11px}
+.detailGrid dt{font-size:9px}
+.detailGrid dd{font-size:11px}
+.detailSection h3{font-size:12px}
+.detailSection p{font-size:11px}
+.linkedRecord b{font-size:11px}
+.linkedRecord small{font-size:9px}
+.tabBar button{font-size:10px}
+
+/* Form fields and filters */
+input,select,textarea{font-size:12px}
+.filterSearch input{font-size:11px}
+
+/* Avoid typography growth making the dark sidebar wrap */
+body.navExpanded .navItem{
+  font-size:11px!important;
+  line-height:1!important;
+}
+body.navExpanded .navMeta{
+  font-size:9px!important;
+}
