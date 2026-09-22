@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-spaces1">
+<link rel="stylesheet" href="./styles.css?v=20260922-space-detail1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -340,7 +340,7 @@ body.navExpanded .railExpand span{display:inline!important}
             <div class="spaceDetailTitle">
               <span class="eyebrow">DOCUMENT SPACE</span>
               <h1 id="spaceDetailName">Quality Management</h1>
-              <p><span id="spaceDetailCount">486</span> resources · canonical records remain centrally governed</p>
+              <p><span id="spaceDetailCount">486</span> resources · canonical resources remain centrally governed</p>
             </div>
             <div class="pageActions">
               <button class="btn secondary"><i data-lucide="settings-2"></i>Space settings</button>
@@ -348,105 +348,122 @@ body.navExpanded .railExpand span{display:inline!important}
             </div>
           </div>
 
-          <div class="spaceToolbar">
-            <div class="spacePath"><i data-lucide="folder"></i><span id="spaceDetailPath">Quality / Procedures</span></div>
-            <div class="spaceToolbarActions"><button class="btn secondary"><i data-lucide="upload"></i>Upload files</button><button class="btn secondary"><i data-lucide="link-2"></i>Link existing resource</button></div>
+          <div class="spaceTabs">
+            <button class="active" data-space-tab="documents"><i data-lucide="files"></i>Documents <span id="spaceTabDocCount">486</span></button>
+            <button data-space-tab="records"><i data-lucide="archive"></i>Records & evidence</button>
+            <button data-space-tab="approvals"><i data-lucide="clipboard-check"></i>Approvals</button>
+            <button data-space-tab="activity"><i data-lucide="history"></i>Activity</button>
           </div>
 
-          <div class="documentWorkspace">
-            <aside class="structurePane">
-              <div class="paneUtility"><span>Structure</span><button class="iconButton paneClose" id="hideStructurePane" aria-label="Hide repository structure" title="Hide repository structure"><i data-lucide="panel-left-close"></i></button></div>
-              <div class="paneSearch"><span><i data-lucide="search"></i></span><input placeholder="Filter structure"></div>
-              <div class="treeLabel">Quality Management</div>
-              <button class="treeRow root active"><span><i data-lucide="chevron-down"></i></span><b>Quality</b><em>486</em></button>
-              <button class="treeRow l2 selected">Procedures <em>84</em></button>
-              <button class="treeRow l2">Work instructions <em>126</em></button>
-              <button class="treeRow l2">Forms & templates <em>97</em></button>
-              <button class="treeRow l2">Records & evidence <em>161</em></button>
-              <div class="treeDivider"></div>
-              <button class="treeRow"><span><i data-lucide="link-2"></i></span>Linked resources <em>312</em></button>
-              <button class="treeRow"><span><i data-lucide="archive"></i></span>Obsolete <em>18</em></button>
-            </aside>
-
-            <section class="documentListPane">
-              <div class="paneHeader">
-                <div class="paneTitleGroup"><button class="iconButton paneRestore" id="showStructurePane" aria-label="Show repository structure" title="Show repository structure"><i data-lucide="panel-left-open"></i></button><div><h2 id="spaceListTitle">Quality / Procedures</h2><span>84 controlled documents</span></div></div>
-                <div><button class="iconButton paneRestore" id="showDocumentInspector" aria-label="Show document details" title="Show document details"><i data-lucide="panel-right-open"></i></button><button class="iconButton" title="Filter"><i data-lucide="list-filter"></i></button><button class="iconButton" title="Sort"><i data-lucide="arrow-up-down"></i></button><button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button></div>
+          <div class="spaceWorkspace">
+            <aside class="spaceLibraryPane">
+              <div class="libraryHeader">
+                <div><b>Controlled resources</b><span id="spaceDetailPath">Quality / Procedures</span></div>
+                <button class="iconButton" title="More actions"><i data-lucide="ellipsis"></i></button>
               </div>
-              <div class="documentTableHeader"><span>Document</span><span>Rev</span><span>Owner</span><span>Status</span><span>Review</span></div>
-              <div class="spaceDocumentRows" id="spaceDocumentRows">
-<button class="documentRow selected" data-doc="qa014">
-                <div><b>SOP-QA-014</b><strong>Control of Nonconforming Outputs</strong><small>SOP · Quality</small></div><span>06</span><span>M. Santos</span><span class="tag success">Effective</span><span>15 Sep 2027</span>
-              </button>
-              <button class="documentRow" data-doc="qa005">
-                <div><b>SOP-QA-005</b><strong>Internal Audit Procedure</strong><small>SOP · Quality</small></div><span>04</span><span>A. Reyes</span><span class="tag warning">Review due</span><span>03 Oct 2026</span>
-              </button>
-              <button class="documentRow" data-doc="qa001">
-                <div><b>SOP-QA-001</b><strong>Document Control Procedure</strong><small>SOP · Quality</small></div><span>05</span><span>M. Santos</span><span class="tag success">Effective</span><span>20 Sep 2027</span>
-              </button>
-              <button class="documentRow" data-doc="qa020">
-                <div><b>SOP-QA-020</b><strong>Corrective Action Procedure</strong><small>SOP · Quality</small></div><span>03</span><span>J. Dela Cruz</span><span class="tag neutral">Draft</span><span>—</span>
-              </button>
-              <button class="documentRow" data-doc="qa009">
-                <div><b>SOP-QA-009</b><strong>Management of Customer Complaints</strong><small>SOP · Quality</small></div><span>07</span><span>L. Garcia</span><span class="tag success">Effective</span><span>11 Jan 2027</span>
-              </button>
+              <div class="libraryTools">
+                <div class="paneSearch"><span><i data-lucide="search"></i></span><input id="spaceDocSearch" placeholder="Search this space"></div>
+                <button class="iconButton" title="Filter"><i data-lucide="list-filter"></i></button>
               </div>
+              <div class="libraryFilterTabs">
+                <button class="active">All</button><button>Effective</button><button>In workflow</button><button>Due</button>
+              </div>
+              <div class="spaceDocumentRows" id="spaceDocumentRows"></div>
               <div class="spaceEmptyState" id="spaceEmptyState" style="display:none">
                 <span><i data-lucide="folder-open"></i></span>
                 <h3>This space is ready</h3>
                 <p>Add a controlled document, link an existing canonical resource, or upload files for classification.</p>
-                <div><button class="btn primary" onclick="openManualRepo()">Add controlled document</button><button class="btn secondary">Link existing resource</button></div>
+                <div><button class="btn primary" onclick="openManualRepo()">Add controlled document</button></div>
+              </div>
+            </aside>
+
+            <section class="documentViewerPane">
+              <div class="viewerToolbar">
+                <div class="viewerIdentity"><span class="fileTypeIcon"><i data-lucide="file-text"></i></span><div><b id="viewerFileName">SOP-QA-014.pdf</b><span id="viewerFileMeta">Controlled document · Rev 06</span></div></div>
+                <div class="viewerTools">
+                  <button class="viewerTool"><i data-lucide="zoom-out"></i></button>
+                  <span class="zoomLabel">100%</span>
+                  <button class="viewerTool"><i data-lucide="zoom-in"></i></button>
+                  <span class="viewerDivider"></span>
+                  <button class="viewerTool" title="Open full screen"><i data-lucide="maximize-2"></i></button>
+                  <button class="viewerTool" title="Download"><i data-lucide="download"></i></button>
+                </div>
+              </div>
+              <div class="viewerCanvas">
+                <div class="pageNavigator">
+                  <button class="pageThumb active"><span>1</span><div class="miniPage"><i></i><i></i><i></i><i></i></div></button>
+                  <button class="pageThumb"><span>2</span><div class="miniPage"><i></i><i></i><i></i></div></button>
+                  <button class="pageThumb"><span>3</span><div class="miniPage"><i></i><i></i><i></i><i></i><i></i></div></button>
+                </div>
+                <div class="documentStage">
+                  <article class="controlledPreviewPage">
+                    <header class="previewDocHeader">
+                      <div class="previewOrg"><span class="previewLogo">AM</span><div><b>ABC Manufacturing</b><small>Quality Management System</small></div></div>
+                      <div class="previewControl"><span>CONTROLLED DOCUMENT</span><b id="previewDocCode">SOP-QA-014</b></div>
+                    </header>
+                    <section class="previewTitleBlock">
+                      <div><span id="previewDocType">STANDARD OPERATING PROCEDURE</span><h2 id="previewDocTitle">Control of Nonconforming Outputs</h2></div>
+                      <dl><div><dt>Revision</dt><dd id="previewDocRev">06</dd></div><div><dt>Status</dt><dd id="previewDocStatus">Effective</dd></div><div><dt>Effective date</dt><dd id="previewEffective">15 Sep 2026</dd></div></dl>
+                    </section>
+                    <section class="previewSection"><h3>1. Purpose</h3><p id="previewPurpose">Defines controls for identifying, segregating, reviewing and dispositioning nonconforming outputs.</p></section>
+                    <section class="previewSection"><h3>2. Scope</h3><p>This controlled document applies to personnel and activities within the assigned process space. Users must verify the current effective revision before use.</p></section>
+                    <section class="previewSection"><h3>3. Responsibilities</h3><table><tbody><tr><th>Process Owner</th><td id="previewOwner">Quality Department</td></tr><tr><th>Approver</th><td id="previewApprover">Quality Manager</td></tr><tr><th>Document Control</th><td>Maintains revision, release, distribution and obsolete-copy controls.</td></tr></tbody></table></section>
+                    <section class="previewSection"><h3>4. Controlled Procedure</h3><ol><li>Confirm the applicable document and effective revision.</li><li>Perform the activity using approved forms, work instructions and referenced sources.</li><li>Retain generated evidence according to the configured retention requirement.</li><li>Escalate exceptions through the assigned quality workflow.</li></ol></section>
+                    <footer class="previewFooter"><span id="previewFooterCode">SOP-QA-014 · Rev 06</span><span>Controlled copy — verify current revision in NexusQMS</span><span>Page 1 of 3</span></footer>
+                  </article>
+                </div>
               </div>
             </section>
 
-            <aside class="inspectorPane">
-              <div class="inspectorHeader">
-                <div><span class="recordLabel">Controlled document</span><h2 id="docTitle">Control of Nonconforming Outputs</h2><div class="recordMeta"><b id="docCode">SOP-QA-014</b><span id="docRev">Rev 06</span><span id="docStatus" class="tag success">Effective</span></div></div>
-                <div class="inspectorHeaderActions"><button class="iconButton" id="hideDocumentInspector" aria-label="Hide document details" title="Hide document details"><i data-lucide="panel-right-close"></i></button><button class="iconButton" aria-label="More actions" title="More actions"><i data-lucide="ellipsis"></i></button></div>
-              </div>
-              <div class="inspectorActions"><button class="btn primary">Open document</button><button class="btn secondary">Create revision</button></div>
-              <div class="tabBar inspectorTabs">
-                <button class="active" data-tab="summary">Summary</button>
-                <button data-tab="revisions">Revisions</button>
-                <button data-tab="links">Relationships</button>
-                <button data-tab="workflow">Workflow</button>
-                <button data-tab="history">Audit</button>
+            <aside class="documentReviewPane">
+              <div class="reviewPaneHeader">
+                <div><span class="recordLabel">DOCUMENT DETAILS</span><h2 id="docTitle">Control of Nonconforming Outputs</h2><div class="recordMeta"><b id="docCode">SOP-QA-014</b><span id="docRev">Rev 06</span><span id="docStatus" class="tag success">Effective</span></div></div>
+                <button class="iconButton" title="More actions"><i data-lucide="ellipsis"></i></button>
               </div>
 
-              <div class="inspectorContent inspectorPaneContent active" id="tab-summary">
-                <dl class="detailGrid">
-                  <div><dt>Owner</dt><dd id="docOwner">Quality Department</dd></div>
-                  <div><dt>Approver</dt><dd id="docApprover">Quality Manager</dd></div>
-                  <div><dt>Effective date</dt><dd id="docEffective">15 Sep 2026</dd></div>
-                  <div><dt>Next review</dt><dd id="docReview">15 Sep 2027</dd></div>
-                </dl>
-                <section class="detailSection"><h3>Purpose</h3><p id="docPurpose">Defines controls for identifying, segregating, reviewing and dispositioning nonconforming outputs.</p></section>
-                <section class="detailSection"><div class="sectionTitleRow"><h3>Relationships</h3><button class="btn link">Manage</button></div>
-                  <button class="linkedRecord"><span><i data-lucide="link-2"></i></span><div><b>WI-QA-003</b><small>Inspection Work Instruction · follows current</small></div></button>
-                  <button class="linkedRecord"><span><i data-lucide="link-2"></i></span><div><b>FORM-QA-011</b><small>NCR Form · follows current</small></div></button>
-                  <button class="linkedRecord"><span><i data-lucide="paperclip"></i></span><div><b>23 evidence records</b><small>NCRs, audit records and inspection evidence</small></div></button>
-                </section>
+              <div class="reviewActionRow">
+                <button class="btn secondary"><i data-lucide="download"></i>Download</button>
+                <button class="btn secondary"><i data-lucide="git-branch"></i>Create revision</button>
               </div>
-              <div class="inspectorContent inspectorPaneContent" id="tab-revisions">
-                <div class="revisionRow current"><div><b>Rev 06</b><span>Effective</span></div><small>15 Sep 2026 · Maria Santos</small></div>
-                <div class="revisionRow"><div><b>Rev 05</b><span>Obsolete</span></div><small>12 Mar 2026 · retained</small></div>
-                <div class="revisionRow"><div><b>Rev 04</b><span>Obsolete</span></div><small>18 Jul 2025 · retained</small></div>
-              </div>
-              <div class="inspectorContent inspectorPaneContent" id="tab-links">
-                <section class="detailSection"><h3>References</h3><button class="linkedRecord"><span><i data-lucide="link-2"></i></span><div><b>WI-QA-003</b><small>Follow current revision</small></div></button><button class="linkedRecord"><span><i data-lucide="link-2"></i></span><div><b>FORM-QA-011</b><small>Follow current revision</small></div></button></section>
-                <section class="detailSection"><h3>Referenced by</h3><p>SOP-PROD-009 · WI-WH-004 · 5 more</p></section>
-              </div>
-              <div class="inspectorContent inspectorPaneContent" id="tab-workflow">
-                <div class="miniWorkflow"><div class="done"><i><i data-lucide="check"></i></i><span><b>Author</b><small>Ana Reyes</small></span></div><div class="done"><i><i data-lucide="check"></i></i><span><b>Department review</b><small>QA Supervisor</small></span></div><div class="done"><i><i data-lucide="check"></i></i><span><b>Final approval</b><small>Maria Santos</small></span></div><div class="done"><i><i data-lucide="check"></i></i><span><b>Released</b><small>System</small></span></div></div>
-              </div>
-              <div class="inspectorContent inspectorPaneContent" id="tab-history">
-                <div class="auditMini"><span>15 Sep 10:16</span><div><b>Released</b><small>System · AR-882 completed</small></div></div>
-                <div class="auditMini"><span>15 Sep 10:15</span><div><b>Approved</b><small>Maria Santos</small></div></div>
-                <div class="auditMini"><span>13 Sep 14:22</span><div><b>Submitted for approval</b><small>Ana Reyes</small></div></div>
+
+              <dl class="reviewDetails">
+                <div><dt>Owner</dt><dd id="docOwner">Quality Department</dd></div>
+                <div><dt>Approver</dt><dd id="docApprover">Quality Manager</dd></div>
+                <div><dt>Effective</dt><dd id="docEffective">15 Sep 2026</dd></div>
+                <div><dt>Next review</dt><dd id="docReview">15 Sep 2027</dd></div>
+                <div><dt>Document type</dt><dd id="detailDocType">SOP / Procedure</dd></div>
+                <div><dt>Resource ID</dt><dd id="detailResourceId">RES-DOC-014</dd></div>
+              </dl>
+
+              <section class="reviewPanelSection">
+                <div class="sectionTitleRow"><h3>Change reason</h3><span class="tag neutral">Rev <span id="changeReasonRev">06</span></span></div>
+                <p id="changeReasonText">Updated controls and responsibilities for disposition of nonconforming outputs.</p>
+              </section>
+
+              <section class="reviewPanelSection">
+                <div class="sectionTitleRow"><h3>Relationships</h3><button class="btn link">Manage</button></div>
+                <button class="reviewRelation"><i data-lucide="link-2"></i><div><b>WI-QA-003</b><span>Inspection Work Instruction</span></div><em>Current</em></button>
+                <button class="reviewRelation"><i data-lucide="link-2"></i><div><b>FORM-QA-011</b><span>NCR Form</span></div><em>Current</em></button>
+                <button class="reviewRelation"><i data-lucide="paperclip"></i><div><b>23 records</b><span>Linked evidence</span></div><em>Evidence</em></button>
+              </section>
+
+              <section class="reviewPanelSection">
+                <h3>Workflow</h3>
+                <div class="reviewWorkflow">
+                  <div class="done"><i data-lucide="check"></i><span><b>Author</b><small>Completed</small></span></div>
+                  <div class="done"><i data-lucide="check"></i><span><b>Department review</b><small>Completed</small></span></div>
+                  <div class="done"><i data-lucide="check"></i><span><b>Final approval</b><small>Completed</small></span></div>
+                  <div class="done"><i data-lucide="check"></i><span><b>Released</b><small>Effective</small></span></div>
+                </div>
+              </section>
+
+              <div class="approvalDecision" id="approvalDecision" style="display:none">
+                <label>Decision comment<textarea id="approvalDecisionComment" placeholder="Add a reason or comment for the audit trail..."></textarea></label>
+                <div><button class="btn dangerOutline" onclick="prototypeDecision('Returned')">Return</button><button class="btn primary" onclick="prototypeDecision('Approved')">Approve</button></div>
               </div>
             </aside>
           </div>
-        </div>
+        </div></div>
       </div>
 
       <div id="approvals" class="view">
@@ -703,6 +720,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-spaces1"></script>
+<script src="./app.js?v=20260922-space-detail1"></script>
 </body>
 </html>
