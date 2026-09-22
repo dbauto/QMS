@@ -1619,3 +1619,222 @@ body.navExpanded .navItem:hover{background:#172e47}
   .sourceIntentGrid,.authoringChoice,.existingResourceControls,.externalSourceGrid{grid-template-columns:1fr}
   .registrationPageIntro{flex-direction:column}
 }
+
+
+/* Configurable multi-reviewer / multi-approver route */
+.governanceIntro{margin-bottom:10px}
+.approvalRouteConfigurator{
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  overflow:hidden;
+  margin-bottom:12px;
+}
+.routeConfigHeader{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 240px;
+  gap:18px;
+  align-items:start;
+  padding:14px;
+  border-bottom:1px solid var(--line);
+  background:#fafbfc;
+}
+.routeConfigHeader h4{margin:3px 0 2px;font-size:12px;color:var(--ink)}
+.routeConfigHeader p{margin:0;font-size:8px;line-height:1.45;color:#98a2b3}
+.routePresetControl label{font-size:8px;color:#667085;font-weight:700}
+.routePresetControl select{
+  display:block;
+  width:100%;
+  height:34px;
+  margin-top:4px;
+  border:1px solid var(--line-strong);
+  border-radius:7px;
+  background:#fff;
+  padding:0 8px;
+  font-size:9px;
+  color:#344054;
+}
+
+.approvalStages{padding:12px;display:flex;flex-direction:column;gap:10px}
+.approvalStage{
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:#fff;
+  overflow:hidden;
+}
+.stageHeader{
+  min-height:54px;
+  display:grid;
+  grid-template-columns:28px minmax(0,1fr) auto;
+  gap:9px;
+  align-items:center;
+  padding:8px 10px;
+  background:#fbfcfd;
+  border-bottom:1px solid var(--line);
+}
+.stageOrder{
+  width:24px;height:24px;border-radius:50%;
+  background:#eef2f6;color:#526276;
+  display:grid;place-items:center;
+  font-size:9px;font-weight:800;
+}
+.stageTitle{display:flex;align-items:center;gap:8px;min-width:0}
+.stageKind{
+  display:inline-flex;
+  align-items:center;
+  height:20px;
+  padding:0 7px;
+  border-radius:999px;
+  font-size:7px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  flex:0 0 auto;
+}
+.stageKind.review{background:#eef4ff;color:#315ea8}
+.stageKind.approve{background:#ecfdf3;color:#067647}
+.stageTitle b,.stageTitle small{display:block}
+.stageTitle b{font-size:10px;color:#344054}
+.stageTitle small{font-size:8px;color:#98a2b3;margin-top:1px}
+.stageActions{display:flex;gap:3px}
+.stageActions .iconButton{width:28px;height:28px}
+.stageActions .dangerIcon:hover{background:#fff1f0;color:#b42318}
+
+.stageBody{
+  display:grid;
+  grid-template-columns:220px minmax(0,1fr);
+  gap:12px;
+  padding:11px;
+  align-items:start;
+}
+.stageBody>label{
+  font-size:8px;
+  color:#667085;
+  font-weight:700;
+}
+.stageBody>label select{
+  display:block;
+  width:100%;
+  height:34px;
+  margin-top:4px;
+  border:1px solid var(--line-strong);
+  border-radius:7px;
+  background:#fff;
+  padding:0 8px;
+  font-size:9px;
+  color:#344054;
+}
+.participantBlock{
+  border-left:1px solid var(--line);
+  padding-left:12px;
+  min-width:0;
+}
+.participantHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:6px;
+}
+.participantHeader span{font-size:8px;font-weight:800;color:#667085;text-transform:uppercase;letter-spacing:.04em}
+.participantHeader small{font-size:7px;color:#98a2b3}
+.participantChips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  min-height:30px;
+  margin-bottom:7px;
+}
+.participantChip{
+  display:grid;
+  grid-template-columns:24px minmax(0,1fr) 18px;
+  align-items:center;
+  gap:6px;
+  min-width:170px;
+  max-width:240px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#fff;
+  padding:5px 5px 5px 6px;
+}
+.participantAvatar{
+  width:22px;height:22px;border-radius:50%;
+  background:#eaf2f8;color:#405a73;
+  display:grid;place-items:center;
+  font-size:7px;font-weight:800;
+}
+.participantChip>span:nth-child(2) b,
+.participantChip>span:nth-child(2) small{display:block}
+.participantChip>span:nth-child(2) b{font-size:8px;color:#344054}
+.participantChip>span:nth-child(2) small{font-size:7px;color:#98a2b3;margin-top:1px}
+.participantChip>button{
+  width:18px;height:18px;border:0;background:transparent;color:#98a2b3;
+  border-radius:4px;display:grid;place-items:center;padding:0;
+}
+.participantChip>button:hover{background:#f2f4f7;color:#475467}
+.participantChip>button .lucide{width:11px;height:11px}
+
+.participantAddRow{
+  display:grid;
+  grid-template-columns:minmax(180px,1fr) auto;
+  gap:6px;
+}
+.participantAddRow select{
+  min-width:0;
+  height:34px;
+  border:1px solid var(--line-strong);
+  border-radius:7px;
+  background:#fff;
+  padding:0 8px;
+  font-size:9px;
+}
+.participantAddRow .btn{height:34px;min-width:auto}
+
+.addStageBar{
+  min-height:52px;
+  display:grid;
+  grid-template-columns:auto auto 1fr auto;
+  align-items:center;
+  gap:7px;
+  padding:9px 12px;
+  border-top:1px solid var(--line);
+  background:#fafbfc;
+}
+.addStageBar .btn{height:32px;min-width:auto}
+.routeSummary{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:#667085;
+  font-size:8px;
+  justify-self:end;
+}
+.routeSummary .lucide{width:13px;height:13px;color:#98a2b3}
+
+.governanceSettingsGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:10px;
+  margin-bottom:11px;
+}
+.governanceSettingsGrid>section{
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:11px;
+  background:#fbfcfd;
+}
+.governanceSettingsGrid .fieldLabel{display:block;margin-top:8px}
+.governanceSettingsGrid .fieldInput{width:100%;margin-top:4px}
+
+@media(max-width:860px){
+  .routeConfigHeader{grid-template-columns:1fr}
+  .stageBody{grid-template-columns:1fr}
+  .participantBlock{border-left:0;border-top:1px solid var(--line);padding:10px 0 0}
+  .governanceSettingsGrid{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .participantAddRow{grid-template-columns:1fr}
+  .addStageBar{grid-template-columns:1fr 1fr}
+  .addStageBar>span{display:none}
+  .routeSummary{grid-column:1/-1;justify-self:start}
+}
