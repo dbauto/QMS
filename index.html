@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-qms-model1">
+<link rel="stylesheet" href="./styles.css?v=20260922-modal-buttons1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -726,7 +726,7 @@ body.navExpanded .railExpand span{display:inline!important}
     <div class="registrationPage" style="display:none">
       <h3>Add the source</h3>
       <div class="sourceMethodGrid"><button class="sourceMethod selected"><i data-lucide="upload"></i><b>Upload file</b><span>PDF, DOCX, XLSX, image</span></button><button class="sourceMethod"><i data-lucide="file-plus-2"></i><b>Create from template</b><span>Start from controlled template</span></button><button class="sourceMethod"><i data-lucide="link-2"></i><b>Link existing resource</b><span>Reuse an existing canonical item</span></button><button class="sourceMethod"><i data-lucide="external-link"></i><b>External source</b><span>Track without importing</span></button></div>
-      <div class="dropzone"><div class="uploadIcon"><i data-lucide="upload"></i></div><b>Drop a file here</b><span id="registerDropHint">Example: Recruitment_Procedure_Rev3.docx</span><button class="secondary">Browse file</button></div>
+      <div class="dropzone"><div class="uploadIcon"><i data-lucide="upload"></i></div><b>Drop a file here</b><span id="registerDropHint">Example: Recruitment_Procedure_Rev3.docx</span><button class="btn secondary">Browse file</button></div>
     </div>
 
     <div class="registrationPage" style="display:none">
@@ -792,10 +792,10 @@ body.navExpanded .railExpand span{display:inline!important}
         <section><span class="eyebrow">TRACEABILITY CREATED</span><div class="traceReview"><span>Requirement</span><i data-lucide="arrow-right"></i><span>Process</span><i data-lucide="arrow-right"></i><span>Resource</span><i data-lucide="arrow-right"></i><span>Evidence</span></div><p>Process spaces and QMS modules will point to this resource. No duplicate file is created.</p></section>
         <section><span class="eyebrow">NEXT STATE</span><div class="nextStateBox"><i data-lucide="git-pull-request-create"></i><div><b id="reviewNextState">Draft revision created</b><span id="reviewNextStateDetail">Approval route is snapshotted. The document is not Effective until final approval.</span></div></div></section>
       </div>
-      <div class="reviewCallout"><div><b id="registerConfirmTitle">Create controlled draft?</b><span id="registerConfirmText">The canonical resource, relationships and workflow will be created together.</span></div><button class="primary" onclick="finishResourceRegistration()">Register resource</button></div>
+      <div class="reviewCallout"><div><b id="registerConfirmTitle">Create controlled draft?</b><span id="registerConfirmText">The canonical resource, relationships and workflow will be created together.</span></div><button class="btn primary" onclick="finishResourceRegistration()">Register resource</button></div>
     </div>
 
-    <div class="modalActions"><button class="secondary" id="registerPrev" onclick="moveRegistration(-1)" style="display:none">Back</button><div></div><button class="primary" id="registerNext" onclick="moveRegistration(1)">Continue</button></div>
+    <div class="modalActions"><button class="btn secondary" id="registerPrev" onclick="moveRegistration(-1)" style="display:none">Back</button><div></div><button class="btn primary" id="registerNext" onclick="moveRegistration(1)">Continue</button></div>
   </div>
 </div>
 
@@ -829,7 +829,7 @@ body.navExpanded .railExpand span{display:inline!important}
 
     <div class="manualPage">
       <h3>Choose where this document appears</h3>
-      <div class="wizardGrid"><div class="panel"><div class="folderMini active">ABC Manufacturing</div><div class="folderMini l1">▾ Purchasing</div><div class="folderMini l2 active">Procedures</div><div class="folderMini l1">› Quality</div><div class="folderMini l1">› Operations</div><button class="secondary">＋ Add structure node</button></div><div class="panel"><h3>Selected location</h3><div class="pathBox">ABC Manufacturing <span>›</span> Purchasing <span>›</span> Procedures</div><p class="muted small">This is a navigation location only. The underlying resource stays canonical and may be linked anywhere else.</p></div></div>
+      <div class="wizardGrid"><div class="panel"><div class="folderMini active">ABC Manufacturing</div><div class="folderMini l1">▾ Purchasing</div><div class="folderMini l2 active">Procedures</div><div class="folderMini l1">› Quality</div><div class="folderMini l1">› Operations</div><button class="btn secondary">＋ Add structure node</button></div><div class="panel"><h3>Selected location</h3><div class="pathBox">ABC Manufacturing <span>›</span> Purchasing <span>›</span> Procedures</div><p class="muted small">This is a navigation location only. The underlying resource stays canonical and may be linked anywhere else.</p></div></div>
     </div>
 
     <div class="manualPage" style="display:none">
@@ -840,7 +840,7 @@ body.navExpanded .railExpand span{display:inline!important}
 
     <div class="manualPage" style="display:none">
       <h3>Upload the current file</h3>
-      <div class="dropzone"><div class="uploadIcon"><i data-lucide="upload"></i></div><b>Drop the document here</b><span>PDF, DOCX, XLSX or supported company file</span><button class="secondary">Browse file</button></div>
+      <div class="dropzone"><div class="uploadIcon"><i data-lucide="upload"></i></div><b>Drop the document here</b><span>PDF, DOCX, XLSX or supported company file</span><button class="btn secondary">Browse file</button></div>
       <div class="fileReady"><div><b>Supplier_Control_Procedure_Rev5.docx</b><span>2.8 MB · Ready to upload</span></div><span class="pill success">Ready</span></div>
     </div>
 
@@ -859,16 +859,16 @@ body.navExpanded .railExpand span{display:inline!important}
     <div class="manualPage" style="display:none">
       <h3>Approval route for this revision</h3>
       <div class="routeBuilder"><div class="routeBox done"><span>1</span><div><b>Owner</b><small>John Cruz</small></div></div><i class="routeArrow"><i data-lucide="arrow-right"></i></i><div class="routeBox"><span>2</span><div><b>Department review</b><small>Purchasing Manager</small></div></div><i class="routeArrow"><i data-lucide="arrow-right"></i></i><div class="routeBox"><span>3</span><div><b>Final approval</b><small>Quality Manager</small></div></div><i class="routeArrow"><i data-lucide="arrow-right"></i></i><div class="routeBox mutedBox"><span>4</span><div><b>Release</b><small>System controlled</small></div></div></div>
-      <button class="secondary">Customize route</button>
+      <button class="btn secondary">Customize route</button>
     </div>
 
     <div class="manualPage" style="display:none">
       <h3>Review before creating</h3>
       <div class="reviewGrid"><div class="reviewSummary"><span>PATH</span><b>Purchasing / Procedures</b><span>DOCUMENT</span><b>SOP-PUR-012 · Rev 05</b><span>OWNER</span><b>John Cruz</b><span>REVIEW CYCLE</span><b>12 months</b></div><div class="nextSteps"><h4>What happens next</h4><ol><li>File stored as one canonical resource</li><li>Revision created with Draft status</li><li>Relationships are saved</li><li>Approval route snapshot is created</li><li>Audit event is recorded</li><li>Document becomes Effective only after approval</li></ol></div></div>
-      <div class="reviewCallout"><div><b>Create controlled draft?</b><span>It will appear in the repository immediately as Draft / Pending submission.</span></div><button class="primary" onclick="finishManualRepo()">Create controlled draft</button></div>
+      <div class="reviewCallout"><div><b>Create controlled draft?</b><span>It will appear in the repository immediately as Draft / Pending submission.</span></div><button class="btn primary" onclick="finishManualRepo()">Create controlled draft</button></div>
     </div>
 
-    <div class="modalActions"><button class="secondary" id="manualPrev" onclick="manualMove(-1)" style="display:none">← Back</button><div></div><button class="primary" id="manualNext" onclick="manualMove(1)">Continue →</button></div>
+    <div class="modalActions"><button class="btn secondary" id="manualPrev" onclick="manualMove(-1)" style="display:none">← Back</button><div></div><button class="btn primary" id="manualNext" onclick="manualMove(1)">Continue →</button></div>
   </div>
 </div>
 
@@ -884,7 +884,7 @@ body.navExpanded .railExpand span{display:inline!important}
     <div class="wiz" id="wiz2" style="display:none">
       <h3>Connect the existing repository</h3><p class="muted">Nothing is reorganized or deleted during discovery.</p>
       <div class="choiceGrid"><button class="sourceChoice selected"><i data-lucide="folder-up"></i><b>Upload folders / ZIP</b><span>Existing file directory</span></button><button class="sourceChoice"><i data-lucide="building-2"></i><b>SharePoint / OneDrive</b><span>Company repository</span></button><button class="sourceChoice"><i data-lucide="hard-drive"></i><b>Google Drive</b><span>Shared drives / folders</span></button><button class="sourceChoice"><i data-lucide="cloud"></i><b>S3 / Cloud</b><span>Object storage</span></button></div>
-      <div class="dropzone"><div class="uploadIcon"><i data-lucide="upload"></i></div><b>Drop folders, ZIPs or files here</b><span>Mock source · Quality Management System · 1,428 files · 7.4 GB</span><button class="secondary">Browse files</button></div>
+      <div class="dropzone"><div class="uploadIcon"><i data-lucide="upload"></i></div><b>Drop folders, ZIPs or files here</b><span>Mock source · Quality Management System · 1,428 files · 7.4 GB</span><button class="btn secondary">Browse files</button></div>
     </div>
 
     <div class="wiz" id="wiz3" style="display:none">
@@ -892,7 +892,7 @@ body.navExpanded .railExpand span{display:inline!important}
       <div class="bubble ai"><b>QMS AI</b><br>I found Quality, Production, Engineering, Purchasing, HR and Management. Should these become your top-level departments?</div>
       <div class="bubble user">Yes, but rename Production to Operations.</div>
       <div class="bubble ai"><b>QMS AI</b><br>I also found SOP-QA-001 Rev1 through Rev5. I can group these as revisions, but I will not decide which revision is effective. Who confirms the current revision?</div>
-      <div class="chatComposer inline"><input value="The Quality Manager confirms it."><button class="primary" onclick="addAIReply()">Send</button></div>
+      <div class="chatComposer inline"><input value="The Quality Manager confirms it."><button class="btn primary" onclick="addAIReply()">Send</button></div>
     </div>
 
     <div class="wiz" id="wiz4" style="display:none">
@@ -903,15 +903,15 @@ body.navExpanded .railExpand span{display:inline!important}
     <div class="wiz" id="wiz5" style="display:none">
       <h3>Review before creating the draft repository</h3>
       <div class="reviewGrid"><div class="nextSteps"><h4>Will be created</h4><ul><li>6 departments</li><li>11 document types</li><li>1,428 centralized resources</li><li>217 revision groups</li><li>312 proposed links after confirmation</li></ul></div><div class="nextSteps blocked"><h4>Will not be automated</h4><ul><li>Marking revisions effective</li><li>Approving controlled documents</li><li>Deleting suspected duplicates</li><li>Accepting low-confidence relationships</li><li>Changing source files</li></ul></div></div>
-      <div class="reviewCallout"><div><b>Ready to create the draft repository</b><span>The Document Controller can continue reviewing classifications and links after creation.</span></div><button class="primary" onclick="buildRepo()">Create draft repository</button></div>
+      <div class="reviewCallout"><div><b>Ready to create the draft repository</b><span>The Document Controller can continue reviewing classifications and links after creation.</span></div><button class="btn primary" onclick="buildRepo()">Create draft repository</button></div>
     </div>
 
-    <div class="modalActions"><button class="secondary" id="prevBtn" onclick="wizardMove(-1)" style="display:none">← Back</button><div></div><button class="primary" id="nextBtn" onclick="wizardMove(1)">Continue →</button></div>
+    <div class="modalActions"><button class="btn secondary" id="prevBtn" onclick="wizardMove(-1)" style="display:none">← Back</button><div></div><button class="btn primary" id="nextBtn" onclick="wizardMove(1)">Continue →</button></div>
   </div>
 </div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-qms-model1"></script>
+<script src="./app.js?v=20260922-modal-buttons1"></script>
 </body>
 </html>
