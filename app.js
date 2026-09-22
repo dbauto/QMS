@@ -405,6 +405,7 @@ function createDocumentSpace(){
   saved.push(space);
   saveCustomSpaces(saved);
   renderCustomSpaceCard(space);
+  refreshRegistrationOptions();
   closeSpaceModal();
   ['newSpaceName','newSpaceCode','newSpacePurpose'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
   toast('Document space created',name+' is ready. Add controlled documents or link existing canonical resources.');
@@ -578,22 +579,48 @@ const typeConfigs={
   policy:{name:'Policy',count:'37 documents',prefix:'POL',numbering:'POL-{###}',approval:'Executive approval',review:'24 months'},
   external:{name:'External Document',count:'203 documents',prefix:'EXT',numbering:'EXT-{SRC}-{###}',approval:'Document control review',review:'12 months'}
 };
-document.querySelectorAll('.typeRow').forEach(row=>{
-  row.addEventListener('click',()=>{
-    document.querySelectorAll('.typeRow').forEach(x=>x.classList.remove('selected'));
-    row.classList.add('selected');
-    const d=typeConfigs[row.dataset.type];
-    if(!d) return;
-    document.getElementById('typeName').textContent=d.name;
-    document.getElementById('typeCount').textContent=d.count;
-    document.getElementById('typePrefix').value=d.prefix;
-    document.getElementById('typeNumbering').value=d.numbering;
-    const approval=document.getElementById('typeApproval');
-    const review=document.getElementById('typeReview');
-    approval.innerHTML='<option>'+d.approval+'</option>';
-    review.innerHTML='<option>'+d.review+'</option><option>'+(d.review==='12 months'?'24 months':'12 months')+'</option>';
-  });
-});
+function selectTypeConfiguration(row,key){
+  document.querySelectorAll('.typeRow').forEach(x=>x.classList.remove('selected'));
+  row?.classList.add('selected');
+  const d=typeConfigs[key];
+  if(!d) return;
+  document.getElementById('typeName').textContent=d.name;
+  document.getElementById('typeCount').textContent=d.count;
+  document.getElementById('typePrefix').value=d.prefix;
+  document.getElementById('typeNumbering').value=d.numbering;
+  const approval=document.getElementById('typeApproval');
+  const review=document.getElementById('typeReview');
+  approval.innerHTML='<option>'+d.approval+'</option>';
+  review.innerHTML='<option>'+d.review+'</option><option>'+(d.review==='12 months'?'24 months':'12 months')+'</option>';
+}
+document.querySelectorAll('.typeRow').forEach(row=>row.addEventListener('click',()=>selectTypeConfiguration(row,row.dataset.type)));
+
+function loadCustomDocumentTypes(){
+  try{return JSON.parse(localStorage.getItem('nexus.customDocumentTypes')||'[]')}catch(e){return[]}
+}
+function saveCustomDocumentTypes(types){
+  try{localStorage.setItem('nexus.customDocumentTypes',JSON.stringify(types))}catch(e){}
+}
+function renderCustomDocumentTypeRow(type){
+  if(!type?.id||document.querySelector('.typeRow[data-type="'+type.id+'"]')) return;
+  typeConfigs[type.id]={
+    name:type.name,
+    count:(type.count||0)+' documents',
+    prefix:type.code,
+    numbering:type.numbering||('QMS-'+type.code+'-{SPACE}-{###}'),
+    approval:type.approval||'Process Owner → Quality Manager',
+    review:type.review||'12 months'
+  };
+  const pane=document.querySelector('.typeTablePane');
+  if(!pane) return;
+  const row=document.createElement('button');
+  row.className='typeRow customTypeRow';
+  row.dataset.type=type.id;
+  row.innerHTML='<div><b>'+escapeHtml(type.name)+'</b><small>Custom controlled type</small></div><span>'+escapeHtml(type.code)+'</span><span>'+escapeHtml(type.numbering||('QMS-'+type.code+'-{SPACE}-{###}'))+'</span><span>'+escapeHtml(type.approval||'Process Owner → Quality Manager')+'</span><span>'+escapeHtml((type.review||'12 months').replace(' months',' mo'))+'</span><span>'+String(type.count||0)+'</span><span class="tag success">Active</span>';
+  row.addEventListener('click',()=>selectTypeConfiguration(row,type.id));
+  pane.appendChild(row);
+}
+loadCustomDocumentTypes().forEach(renderCustomDocumentTypeRow);
 
 /* Prototype search within the active operational list */
 const globalSearch=document.getElementById('globalSearch');
@@ -610,6 +637,165 @@ globalSearch?.addEventListener('input',()=>{
 /* Canonical QMS resource registration */
 let registrationStep=1;
 let registrationClass='controlled';
+
+let quickTypeContext='registration';
+let lastValidRegType='Procedure';
+let lastValidRegSpace='Recruitment';
+
+function sanitizeConfigCode(value,max=10){
+  return String(value||'').toUpperCase().replace(/[^A-Z0-9-]/g,'').slice(0,max);
+}
+
+function refreshRegistrationOptions(){
+  const spaceSelect=document.getElementById('regSpace');
+  const typeSelect=document.getElementById('regType');
+
+  if(spaceSelect){
+    const current=spaceSelect.value;
+    spaceSelect.querySelectorAll('option[data-custom="1"]').forEach(o=>o.remove());
+    const create=spaceSelect.querySelector('option[value="__create__"]');
+    loadCustomSpaces().forEach(space=>{
+      const option=document.createElement('option');
+      option.value=space.name;
+      option.dataset.code=space.code;
+      option.dataset.custom='1';
+      option.textContent=space.name;
+      spaceSelect.insertBefore(option,create);
+    });
+    if([...spaceSelect.options].some(o=>o.value===current)) spaceSelect.value=current;
+  }
+
+  if(typeSelect){
+    const current=typeSelect.value;
+    typeSelect.querySelectorAll('option[data-custom="1"]').forEach(o=>o.remove());
+    const create=typeSelect.querySelector('option[value="__create__"]');
+    loadCustomDocumentTypes().forEach(type=>{
+      const option=document.createElement('option');
+      option.value=type.name;
+      option.dataset.code=type.code;
+      option.dataset.custom='1';
+      option.textContent=type.name;
+      typeSelect.insertBefore(option,create);
+    });
+    if([...typeSelect.options].some(o=>o.value===current)) typeSelect.value=current;
+  }
+}
+
+function updateQuickTypePattern(){
+  const code=sanitizeConfigCode(document.getElementById('quickTypeCode')?.value||'TYPE',8)||'TYPE';
+  const target=document.getElementById('quickTypePattern');
+  if(target) target.textContent='QMS-'+code+'-{SPACE}-{###}';
+}
+function updateQuickSpacePattern(){
+  const code=sanitizeConfigCode(document.getElementById('quickSpaceCode')?.value||'SPACE',10)||'SPACE';
+  const typeCode=getSelectCode('regType')==='GEN'?'PRO':getSelectCode('regType');
+  const target=document.getElementById('quickSpacePattern');
+  if(target) target.textContent='QMS-'+typeCode+'-'+code+'-001';
+}
+
+function openQuickTypeModal(context='registration'){
+  quickTypeContext=context;
+  const name=document.getElementById('quickTypeName');
+  const code=document.getElementById('quickTypeCode');
+  if(name) name.value='';
+  if(code) code.value='';
+  updateQuickTypePattern();
+  document.getElementById('quickTypeModal')?.classList.add('show');
+  setTimeout(()=>name?.focus(),60);
+  refreshIcons();
+}
+function closeQuickTypeModal(){document.getElementById('quickTypeModal')?.classList.remove('show')}
+
+function saveQuickDocumentType(){
+  const name=document.getElementById('quickTypeName')?.value.trim();
+  const code=sanitizeConfigCode(document.getElementById('quickTypeCode')?.value,8);
+  if(!name){toast('Type name required','Enter a name for the new document type.');document.getElementById('quickTypeName')?.focus();return}
+  if(code.length<2){toast('Type code required','Use a short unique code such as INS or SPEC.');document.getElementById('quickTypeCode')?.focus();return}
+
+  const reserved=[...document.querySelectorAll('#regType option[data-code]')].map(o=>o.dataset.code);
+  if(reserved.includes(code)||loadCustomDocumentTypes().some(t=>t.code===code)){
+    toast('Type code already in use',code+' is already assigned to another document type.');
+    document.getElementById('quickTypeCode')?.focus();
+    return;
+  }
+
+  const review=document.getElementById('quickTypeReview')?.value||'12 months';
+  const approval=document.getElementById('quickTypeApproval')?.value||'Process Owner → Quality Manager';
+  const type={id:'ctype-'+Date.now(),name,code,review,approval,numbering:'QMS-'+code+'-{SPACE}-{###}',count:0};
+  const saved=loadCustomDocumentTypes();
+  saved.push(type);
+  saveCustomDocumentTypes(saved);
+  renderCustomDocumentTypeRow(type);
+  refreshRegistrationOptions();
+  closeQuickTypeModal();
+
+  if(quickTypeContext==='registration'){
+    const select=document.getElementById('regType');
+    if(select){
+      select.value=name;
+      lastValidRegType=name;
+      generateControlledDocumentId();
+    }
+    toast('Document type created',name+' is selected for this registration.');
+  }else{
+    const row=document.querySelector('.typeRow[data-type="'+type.id+'"]');
+    selectTypeConfiguration(row,type.id);
+    toast('Document type created',name+' is now available in document registration.');
+  }
+}
+
+function openQuickSpaceModal(){
+  const name=document.getElementById('quickSpaceName');
+  const code=document.getElementById('quickSpaceCode');
+  const purpose=document.getElementById('quickSpacePurpose');
+  if(name) name.value='';
+  if(code) code.value='';
+  if(purpose) purpose.value='';
+  updateQuickSpacePattern();
+  document.getElementById('quickSpaceModal')?.classList.add('show');
+  setTimeout(()=>name?.focus(),60);
+  refreshIcons();
+}
+function closeQuickSpaceModal(){document.getElementById('quickSpaceModal')?.classList.remove('show')}
+
+function saveQuickSpace(){
+  const name=document.getElementById('quickSpaceName')?.value.trim();
+  const code=sanitizeConfigCode(document.getElementById('quickSpaceCode')?.value,10);
+  if(!name){toast('Space name required','Enter a name for the new QMS space.');document.getElementById('quickSpaceName')?.focus();return}
+  if(code.length<2){toast('Space code required','Use a short code such as MNT or LAB.');document.getElementById('quickSpaceCode')?.focus();return}
+
+  const existingCodes=[...document.querySelectorAll('#regSpace option[data-code]')].map(o=>o.dataset.code);
+  if(existingCodes.includes(code)||loadCustomSpaces().some(s=>s.code===code)){
+    toast('Space code already in use',code+' is already assigned to another space.');
+    document.getElementById('quickSpaceCode')?.focus();
+    return;
+  }
+
+  const type=document.getElementById('quickSpaceType')?.value||'Department / Function';
+  const purpose=document.getElementById('quickSpacePurpose')?.value.trim()||'Custom QMS working space.';
+  const space={id:'custom-'+Date.now(),name,code,type,purpose,owner:'Quality Department',view:'Controlled documents',count:0,path:name,docs:[]};
+  const saved=loadCustomSpaces();
+  saved.push(space);
+  saveCustomSpaces(saved);
+  renderCustomSpaceCard(space);
+  refreshRegistrationOptions();
+  closeQuickSpaceModal();
+
+  const select=document.getElementById('regSpace');
+  if(select){
+    select.value=name;
+    lastValidRegSpace=name;
+    updateRegistrationSpaceLabel();
+    generateControlledDocumentId();
+  }
+  toast('Process space created',name+' is selected as the Primary Space.');
+}
+
+function updateRegistrationSpaceLabel(){
+  const select=document.getElementById('regSpace');
+  const label=document.getElementById('regSpaceMappingLabel');
+  if(label&&select) label.textContent=select.options[select.selectedIndex]?.textContent||select.value;
+}
 
 function getSelectCode(selectId){
   const select=document.getElementById(selectId);
@@ -663,9 +849,15 @@ function syncRegistrationSpaceFromContext(){
 function openRegisterResource(kind='controlled'){
   registrationClass=kind==='record'?'record':'controlled';
   registrationStep=1;
+  refreshRegistrationOptions();
   selectRegistrationClass(registrationClass,false);
   if(registrationClass==='controlled'){
     syncRegistrationSpaceFromContext();
+    const typeSelect=document.getElementById('regType');
+    const spaceSelect=document.getElementById('regSpace');
+    if(typeSelect&&typeSelect.value!=='__create__') lastValidRegType=typeSelect.value;
+    if(spaceSelect&&spaceSelect.value!=='__create__') lastValidRegSpace=spaceSelect.value;
+    updateRegistrationSpaceLabel();
     generateControlledDocumentId();
   }
   renderRegistration();
@@ -729,6 +921,7 @@ function moveRegistration(delta){
 }
 function updateRegistrationReview(){
   const controlled=registrationClass==='controlled';
+  updateRegistrationSpaceLabel();
   const reviewLibrary=document.getElementById('reviewLibrary');
   const reviewIdentity=document.getElementById('reviewIdentity');
   const reviewState=document.getElementById('reviewNextState');
@@ -770,8 +963,36 @@ document.querySelectorAll('.relationshipPick').forEach(btn=>btn.addEventListener
   refreshIcons();
 }));
 ['regTitle','recTitle','recId'].forEach(id=>document.getElementById(id)?.addEventListener('input',updateRegistrationReview));
-document.getElementById('regType')?.addEventListener('change',generateControlledDocumentId);
-document.getElementById('regSpace')?.addEventListener('change',generateControlledDocumentId);
+
+document.getElementById('regType')?.addEventListener('change',e=>{
+  if(e.target.value==='__create__'){
+    e.target.value=lastValidRegType;
+    openQuickTypeModal('registration');
+    return;
+  }
+  lastValidRegType=e.target.value;
+  generateControlledDocumentId();
+});
+
+document.getElementById('regSpace')?.addEventListener('change',e=>{
+  if(e.target.value==='__create__'){
+    e.target.value=lastValidRegSpace;
+    openQuickSpaceModal();
+    return;
+  }
+  lastValidRegSpace=e.target.value;
+  updateRegistrationSpaceLabel();
+  generateControlledDocumentId();
+});
+
+document.getElementById('quickTypeCode')?.addEventListener('input',e=>{
+  e.target.value=sanitizeConfigCode(e.target.value,8);
+  updateQuickTypePattern();
+});
+document.getElementById('quickSpaceCode')?.addEventListener('input',e=>{
+  e.target.value=sanitizeConfigCode(e.target.value,10);
+  updateQuickSpacePattern();
+});
 
 function finishResourceRegistration(){
   const controlled=registrationClass==='controlled';
@@ -879,12 +1100,16 @@ document.querySelectorAll('.modal').forEach(modal=>{
       if(modal.id==='manualRepo') closeManualRepo();
       if(modal.id==='spaceModal') closeSpaceModal();
       if(modal.id==='registerResourceModal') closeRegisterResource();
+      if(modal.id==='quickTypeModal') closeQuickTypeModal();
+      if(modal.id==='quickSpaceModal') closeQuickSpaceModal();
     }
   });
 });
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeBuilder();closeManualRepo();closeSpaceModal();closeRegisterResource()}
+  if(e.key==='Escape'){closeBuilder();closeManualRepo();closeSpaceModal();closeRegisterResource();closeQuickTypeModal();closeQuickSpaceModal()}
 });
 
 document.addEventListener('DOMContentLoaded',refreshIcons);
 refreshIcons();
+
+refreshRegistrationOptions();
