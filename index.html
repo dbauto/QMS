@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>NexusQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-modal-buttons1">
+<link rel="stylesheet" href="./styles.css?v=20260922-auto-id1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -733,8 +733,19 @@ body.navExpanded .railExpand span{display:inline!important}
       <h3 id="identityHeading">Document identity & control metadata</h3>
       <div class="formGrid registrationControlledFields">
         <label>Document title<input id="regTitle" value="Recruitment Procedure"></label>
-        <label>Document ID<input id="regId" value="QMS-PRO-REC-001"></label>
-        <label>Document type<select id="regType"><option>Procedure</option><option>Policy</option><option>Manual</option><option>SOP</option><option>Work Instruction</option><option>Form / Template</option><option>External Document</option></select></label>
+        <label>Document ID <span class="generatedFieldLabel">System generated</span>
+          <div class="generatedField"><input id="regId" value="QMS-PRO-REC-001" readonly aria-readonly="true"><i data-lucide="lock-keyhole"></i></div>
+          <small class="fieldHelp" id="regIdHelp">Generated from document type + assigned space code + next sequence.</small>
+        </label>
+        <label>Document type<select id="regType">
+          <option value="Procedure" data-code="PRO">Procedure</option>
+          <option value="Policy" data-code="POL">Policy</option>
+          <option value="Manual" data-code="MAN">Manual</option>
+          <option value="SOP" data-code="SOP">SOP</option>
+          <option value="Work Instruction" data-code="WI">Work Instruction</option>
+          <option value="Form / Template" data-code="FORM">Form / Template</option>
+          <option value="External Document" data-code="EXT">External Document</option>
+        </select></label>
         <label>Owner<select id="regOwner"><option>Recruitment Manager</option><option>Quality Manager</option><option>Document Control</option></select></label>
         <label>Revision / version<input id="regRev" value="03"></label>
         <label>Initial status<select id="regStatus"><option>Draft</option><option>In Review</option></select></label>
@@ -757,7 +768,18 @@ body.navExpanded .railExpand span{display:inline!important}
       <h3>Map it into the QMS</h3>
       <div class="mappingGrid">
         <label>Applicable process<select id="regProcess"><option>Recruitment</option><option>Candidate Screening</option><option>Training</option><option>Procurement</option><option>Operations</option><option>Internal Audit</option></select></label>
-        <label>Process space<select id="regSpace"><option>Recruitment</option><option>Quality Management</option><option>People & Competence</option><option>Operations</option></select></label>
+        <label>Process space<select id="regSpace">
+          <option value="Recruitment" data-code="REC">Recruitment</option>
+          <option value="Quality Management" data-code="QA">Quality Management</option>
+          <option value="Operations" data-code="OPS">Operations</option>
+          <option value="Engineering" data-code="ENG">Engineering</option>
+          <option value="Purchasing & Supplier Quality" data-code="PUR">Purchasing & Supplier Quality</option>
+          <option value="People & Competence" data-code="HR">People & Competence</option>
+          <option value="External Standards & Customer Requirements" data-code="EXT">External Standards & Customer Requirements</option>
+          <option value="Records & Evidence" data-code="REC-EV">Records & Evidence</option>
+          <option value="Management System" data-code="MGT">Management System</option>
+        </select>
+        <small class="fieldHelp">The assigned space supplies the space code used in the Document ID.</small></label>
         <label>ISO / HLS mapping<select id="regIso"><option>8.1 Operational planning and control</option><option>8.5 Production and service provision</option><option>7.2 Competence</option><option>7.5 Documented information</option><option>9.2 Internal audit</option></select></label>
         <label>Responsible person<select><option>Recruitment Manager</option><option>Quality Manager</option><option>Process Owner</option></select></label>
       </div>
@@ -912,6 +934,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-modal-buttons1"></script>
+<script src="./app.js?v=20260922-auto-id1"></script>
 </body>
 </html>
