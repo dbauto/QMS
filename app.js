@@ -3,27 +3,58 @@ function refreshIcons(){
 }
 const navItems=[...document.querySelectorAll('.navItem[data-view]')];
 
-/* Collapsible navigation and workspace panels */
-const sidebarModeToggle=document.getElementById('sidebarModeToggle');
-function setSidebarExpanded(expanded){
-  document.body.classList.toggle('navExpanded',expanded);
-  if(sidebarModeToggle){
-    sidebarModeToggle.innerHTML=expanded
-      ? '<i data-lucide="panel-left-close"></i><span>Collapse</span>'
-      : '<i data-lucide="panel-left-open"></i><span>Expand</span>';
-    sidebarModeToggle.title=expanded?'Collapse navigation':'Expand navigation';
-    sidebarModeToggle.setAttribute('aria-label',sidebarModeToggle.title);
+/* Hover-expand navigation with a persistent pin state */
+const sideNav=document.querySelector('.sideNav');
+const sidebarPin=document.getElementById('sidebarPin');
+
+function renderSidebarPin(){
+  const pinned=document.body.classList.contains('navPinned');
+  if(sidebarPin){
+    sidebarPin.innerHTML=pinned?'<i data-lucide="pin-off"></i>':'<i data-lucide="pin"></i>';
+    sidebarPin.title=pinned?'Unpin sidebar':'Pin sidebar';
+    sidebarPin.setAttribute('aria-label',sidebarPin.title);
+    sidebarPin.setAttribute('aria-pressed',pinned?'true':'false');
   }
-  try{localStorage.setItem('nexus.navExpanded',expanded?'1':'0')}catch(e){}
   refreshIcons();
 }
 
-let savedExpanded=false;
-try{savedExpanded=localStorage.getItem('nexus.navExpanded')==='1'}catch(e){}
-try{localStorage.removeItem('nexus.navHidden')}catch(e){}
+function setSidebarPinned(pinned){
+  document.body.classList.toggle('navPinned',pinned);
+  document.body.classList.toggle('navExpanded',pinned||Boolean(sideNav?.matches(':hover')));
+  try{
+    localStorage.setItem('nexus.navPinned',pinned?'1':'0');
+    localStorage.removeItem('nexus.navExpanded');
+  }catch(e){}
+  renderSidebarPin();
+}
+
+function setSidebarHover(expanded){
+  if(document.body.classList.contains('navPinned')) return;
+  document.body.classList.toggle('navExpanded',expanded);
+  renderSidebarPin();
+}
+
+let savedPinned=false;
+try{
+  const storedPin=localStorage.getItem('nexus.navPinned');
+  savedPinned=storedPin==='1'||(storedPin===null&&localStorage.getItem('nexus.navExpanded')==='1');
+  localStorage.removeItem('nexus.navExpanded');
+  localStorage.removeItem('nexus.navHidden');
+}catch(e){}
 document.body.classList.remove('navHidden');
-setSidebarExpanded(savedExpanded);
-sidebarModeToggle?.addEventListener('click',()=>setSidebarExpanded(!document.body.classList.contains('navExpanded')));
+setSidebarPinned(savedPinned);
+sideNav?.addEventListener('mouseenter',()=>setSidebarHover(true));
+sideNav?.addEventListener('mouseleave',()=>setSidebarHover(false));
+sideNav?.addEventListener('focusin',()=>setSidebarHover(true));
+sideNav?.addEventListener('focusout',()=>{
+  requestAnimationFrame(()=>{
+    if(sideNav&&!sideNav.contains(document.activeElement)&&!sideNav.matches(':hover')) setSidebarHover(false);
+  });
+});
+sidebarPin?.addEventListener('click',event=>{
+  event.stopPropagation();
+  setSidebarPinned(!document.body.classList.contains('navPinned'));
+});
 
 function wirePanel(workspaceSelector,hideId,showId,className='inspectorHidden'){
   const workspace=document.querySelector(workspaceSelector);
@@ -48,7 +79,7 @@ if(workspaceSwitch) workspaceSwitch.title='ABC Manufacturing';
 document.addEventListener('keydown',e=>{
   if(e.altKey&&e.key==='\\'){
     e.preventDefault();
-    setSidebarExpanded(!document.body.classList.contains('navExpanded'));
+    setSidebarPinned(!document.body.classList.contains('navPinned'));
   }
 });
 

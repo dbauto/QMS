@@ -705,6 +705,58 @@ body.navExpanded .navItem.active{background:#1d3854}
 body.navExpanded .navItem:hover{background:#172e47}
 
 
+/* Hover-expand dark green navigation with persistent pinning */
+.sideNav{
+  background:#083d35!important;
+  transition:width .18s ease,box-shadow .18s ease!important;
+}
+.mainArea{transition:margin-left .18s ease!important}
+.brand{position:relative!important}
+.brandMark{background:#19a68f!important}
+.navItem{color:#a5c8c1!important}
+.navItem:hover{background:rgba(255,255,255,.09)!important;color:#fff!important}
+.navItem.active,body.navExpanded .navItem.active{background:#176a5c!important;color:#fff!important}
+.navBadge{border-color:#083d35!important}
+.railControls{display:none!important}
+.sidebarPin{
+  display:none!important;
+  position:absolute!important;
+  right:4px!important;
+  top:1px!important;
+  width:28px!important;
+  height:28px!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  border-radius:7px!important;
+  background:rgba(255,255,255,.06)!important;
+  color:#cbe5df!important;
+  place-items:center!important;
+  padding:0!important;
+  cursor:pointer!important;
+}
+.sidebarPin:hover{background:rgba(255,255,255,.14)!important;color:#fff!important}
+.sidebarPin .lucide{width:14px!important;height:14px!important}
+body.navExpanded .sidebarPin{display:grid!important}
+body.navExpanded:not(.navPinned) .sideNav{box-shadow:12px 0 28px rgba(4,35,30,.22)!important}
+body.navExpanded .mainArea{margin-left:58px!important}
+body.navPinned .mainArea{margin-left:228px!important}
+body.navExpanded .brand{padding-right:42px!important}
+body.navExpanded .brand>div:last-child span{color:#89b1a9!important}
+body.navExpanded .workspaceAvatar{background:#165f54!important;color:#d5f7f0!important}
+body.navExpanded .workspaceText small,
+body.navExpanded .workspaceChevron,
+body.navExpanded .navMeta{color:#89b1a9!important}
+body.navExpanded .navGroup{color:#78a99f!important}
+body.navExpanded .sideStatus b{color:#e1f2ee!important}
+body.navExpanded .sideStatus span{color:#82a69f!important}
+body.navExpanded .navItem:hover{background:rgba(255,255,255,.09)!important}
+
+@media(max-width:780px){
+  body.navExpanded .mainArea{margin-left:54px!important}
+  body.navPinned .mainArea{margin-left:210px!important}
+  body.navExpanded .sideNav{width:210px!important}
+}
+
+
 /* Documents — QMS document-space landing */
 .repositoryPageHeader{margin-bottom:14px}
 .repositoryIntro{
