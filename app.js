@@ -182,9 +182,77 @@ function renderTraceability(docOrCode){
   refreshIcons();
 }
 
+function renderDocumentTraceability(docOrCode){
+  const p=getTraceabilityProfile(docOrCode||activeTraceabilityDoc||'QMS-PRO-REC-001');
+  const set=(id,value)=>{const el=document.getElementById(id);if(el) el.textContent=value};
+
+  set('docTraceTitle',p.title);
+  set('docTracePathRequirement',p.requirement.code);
+  set('docTracePathProcess',p.process.name);
+  set('docTracePathDocument',p.title);
+  set('docTracePathEvidence',p.evidence[0]?.[0]||'Linked evidence');
+  set('docTracePathAudit',p.audit[0]||'Verification history');
+
+  const requirements=document.getElementById('docTraceRequirements');
+  if(requirements) requirements.innerHTML=traceItemHtml(p.requirement.code,p.requirement.detail);
+  const process=document.getElementById('docTraceProcess');
+  if(process) process.innerHTML=traceItemHtml(p.process.name,p.process.detail);
+  const related=document.getElementById('docTraceRelated');
+  if(related) related.innerHTML=p.related.map(x=>traceItemHtml(x[0],x[1])).join('');
+  const evidence=document.getElementById('docTraceEvidence');
+  if(evidence) evidence.innerHTML=p.evidence.map(x=>traceItemHtml(x[0],x[1])).join('');
+  const risks=document.getElementById('docTraceRisks');
+  if(risks) risks.innerHTML=traceItemHtml(p.risk[0],p.risk[1]);
+  const audits=document.getElementById('docTraceAudits');
+  if(audits) audits.innerHTML=traceItemHtml(p.audit[0],p.audit[1]);
+
+  set('docTraceMapRequirement',p.requirement.code);
+  set('docTraceMapRequirementDetail',p.requirement.detail);
+  set('docTraceMapProcess',p.process.name);
+  set('docTraceMapProcessDetail',p.process.detail);
+  set('docTraceMapDocumentCode',p.code);
+  set('docTraceMapDocumentTitle',p.title+' · '+p.rev);
+  set('docTraceMapEvidenceCode',p.mapEvidenceCode);
+  set('docTraceMapEvidenceTitle',p.mapEvidenceTitle);
+  set('docTraceMapAuditCode',p.mapAuditCode);
+  set('docTraceMapAuditTitle',p.mapAuditTitle);
+  refreshIcons();
+}
+
+function setDocumentDetailTab(tab='document'){
+  document.querySelectorAll('#documentDetailTabs [data-doc-tab]').forEach(button=>{
+    button.classList.toggle('active',button.dataset.docTab===tab);
+  });
+  document.querySelectorAll('#repositoryDocument [data-doc-panel]').forEach(panel=>{
+    panel.classList.toggle('active',panel.dataset.docPanel===tab);
+  });
+  if(tab==='traceability'){
+    renderDocumentTraceability(activeTraceabilityDoc||'QMS-PRO-REC-001');
+    const map=document.getElementById('documentTraceabilityMap');
+    const summary=document.getElementById('documentTraceabilitySummary');
+    if(map) map.style.display='none';
+    if(summary) summary.style.display='grid';
+    const toggle=document.getElementById('docTraceMapToggle');
+    if(toggle) toggle.innerHTML='<i data-lucide="network"></i>Open visual map';
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+  refreshIcons();
+}
+
 function openTraceabilityForDocument(){
-  showView('relationships');
-  renderTraceability(activeTraceabilityDoc||'QMS-PRO-REC-001');
+  setDocumentDetailTab('traceability');
+}
+
+function toggleDocumentTraceabilityMap(force){
+  const summary=document.getElementById('documentTraceabilitySummary');
+  const map=document.getElementById('documentTraceabilityMap');
+  const button=document.getElementById('docTraceMapToggle');
+  if(!summary||!map) return;
+  const open=typeof force==='boolean'?force:map.style.display==='none';
+  summary.style.display=open?'none':'grid';
+  map.style.display=open?'block':'none';
+  if(button) button.innerHTML=open?'<i data-lucide="rows-3"></i>Simple traceability':'<i data-lucide="network"></i>Open visual map';
+  refreshIcons();
 }
 
 function toggleTraceabilityMap(force){
@@ -400,6 +468,8 @@ function renderSpaceRows(space){
 
 function selectSpaceDocument(doc,row){
   activeTraceabilityDoc=doc;
+  renderDocumentTraceability(doc);
+  setDocumentDetailTab('document');
   document.querySelectorAll('#repositorySpace .spaceDocumentItem').forEach(x=>x.classList.remove('selected'));
   row?.classList.add('selected');
   const spaceView=document.getElementById('repositorySpace');

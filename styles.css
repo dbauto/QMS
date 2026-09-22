@@ -2534,3 +2534,42 @@ body.navExpanded .navItem:hover{background:#172e47}
   .traceabilityToolbar{grid-template-columns:1fr}
   .traceabilityFocusMeta{flex-direction:column;gap:8px}
 }
+
+
+/* Per-document traceability stays inside the controlled-document detail view */
+.documentDetailPanel{display:none}
+.documentDetailPanel.active{display:block}
+
+.documentTraceabilityHeader{
+  min-height:72px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  padding:12px 14px;
+  margin-bottom:10px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  box-shadow:var(--shadow);
+}
+.documentTraceabilityHeader h2{margin:3px 0 2px;font-size:14px;color:var(--ink)}
+.documentTraceabilityHeader p{margin:0;max-width:760px;font-size:8px;line-height:1.5;color:var(--muted)}
+.documentTraceabilityWorkspace{
+  display:grid;
+  grid-template-columns:minmax(620px,1fr) 320px;
+  gap:10px;
+  align-items:start;
+}
+.documentTraceabilitySections .traceSection{min-height:170px}
+.documentTracePathPanel{top:72px}
+.documentTraceMapPanel{margin-top:0}
+#repositoryDocument [data-doc-panel="traceability"]{padding-bottom:16px}
+
+@media(max-width:1100px){
+  .documentTraceabilityWorkspace{grid-template-columns:1fr}
+  .documentTracePathPanel{position:static}
+}
+@media(max-width:760px){
+  .documentTraceabilityHeader{flex-direction:column}
+}

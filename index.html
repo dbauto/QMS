@@ -8,7 +8,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-traceability1">
+<link rel="stylesheet" href="./styles.css?v=20260922-doc-trace1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -392,10 +392,14 @@ body.navExpanded .railExpand span{display:inline!important}
             <div class="pageActions"><button class="btn secondary"><i data-lucide="download"></i>Download</button><button class="btn primary"><i data-lucide="git-branch"></i>Create revision</button></div>
           </div>
 
-          <div class="documentDetailTabs">
-            <button class="active">Document</button><button onclick="openTraceabilityForDocument()">Traceability</button><button data-toast-title="Revision history" data-toast-message="Revision history is preserved for this canonical document.">Revision history</button><button data-toast-title="Audit history" data-toast-message="Audit events for this resource are available in Audit trail.">Audit history</button>
+          <div class="documentDetailTabs" id="documentDetailTabs">
+            <button class="active" data-doc-tab="document" onclick="setDocumentDetailTab('document')">Document</button>
+            <button data-doc-tab="traceability" onclick="setDocumentDetailTab('traceability')">Traceability</button>
+            <button data-toast-title="Revision history" data-toast-message="Revision history is preserved for this canonical document.">Revision history</button>
+            <button data-toast-title="Audit history" data-toast-message="Audit events for this resource are available in Audit trail.">Audit history</button>
           </div>
 
+          <div class="documentDetailPanel active" data-doc-panel="document">
           <div class="documentDetailWorkspace">
             <section class="documentViewerPane">
               <div class="viewerToolbar">
@@ -430,7 +434,7 @@ body.navExpanded .railExpand span{display:inline!important}
 
               <section class="reviewPanelSection"><div class="sectionTitleRow"><h3>Change reason</h3><span class="tag neutral">Rev <span id="changeReasonRev">06</span></span></div><p id="changeReasonText">Controlled revision retained with its documented change reason and approval history.</p></section>
 
-              <section class="reviewPanelSection"><div class="sectionTitleRow"><h3>Traceability</h3><button class="btn link" onclick="openTraceabilityForDocument()">View traceability</button></div>
+              <section class="reviewPanelSection"><div class="sectionTitleRow"><h3>Traceability</h3><button class="btn link" onclick="setDocumentDetailTab('traceability')">View traceability</button></div>
                 <button class="reviewRelation"><i data-lucide="link-2"></i><div><b>WI-QA-003</b><span>Inspection Work Instruction</span></div><em>Current</em></button>
                 <button class="reviewRelation"><i data-lucide="paperclip"></i><div><b>23 records</b><span>Linked evidence</span></div><em>Evidence</em></button>
               </section>
@@ -439,6 +443,86 @@ body.navExpanded .railExpand span{display:inline!important}
 
               <div class="approvalDecision" id="approvalDecision" style="display:none"><label>Decision comment<textarea id="approvalDecisionComment" placeholder="Add a reason or comment for the audit trail..."></textarea></label><div><button class="btn dangerOutline" onclick="prototypeDecision('Returned')">Return</button><button class="btn primary" onclick="prototypeDecision('Approved')">Approve</button></div></div>
             </aside>
+          </div>
+          </div>
+
+          <div class="documentDetailPanel" data-doc-panel="traceability">
+            <div class="documentTraceabilityHeader">
+              <div>
+                <span class="recordLabel">DOCUMENT TRACEABILITY</span>
+                <h2 id="docTraceTitle">Recruitment Procedure</h2>
+                <p>See the QMS requirements, process context, related information, evidence, risks and verification linked to this document.</p>
+              </div>
+              <button class="btn secondary" id="docTraceMapToggle" onclick="toggleDocumentTraceabilityMap()"><i data-lucide="network"></i>Open visual map</button>
+            </div>
+
+            <div class="documentTraceabilityWorkspace" id="documentTraceabilitySummary">
+              <main class="traceabilitySections documentTraceabilitySections">
+                <section class="traceSection">
+                  <div class="traceSectionHead"><span class="traceSectionIcon requirement"><i data-lucide="landmark"></i></span><div><h3>Requirements covered</h3><p>Clauses or obligations this document helps satisfy.</p></div></div>
+                  <div class="traceItems" id="docTraceRequirements"></div>
+                </section>
+
+                <section class="traceSection">
+                  <div class="traceSectionHead"><span class="traceSectionIcon process"><i data-lucide="workflow"></i></span><div><h3>Process & responsibility</h3><p>Where this document is used and who owns the process.</p></div></div>
+                  <div class="traceItems" id="docTraceProcess"></div>
+                </section>
+
+                <section class="traceSection">
+                  <div class="traceSectionHead"><span class="traceSectionIcon document"><i data-lucide="files"></i></span><div><h3>Forms & related controlled information</h3><p>Controlled resources used with this document.</p></div></div>
+                  <div class="traceItems" id="docTraceRelated"></div>
+                </section>
+
+                <section class="traceSection">
+                  <div class="traceSectionHead"><span class="traceSectionIcon evidence"><i data-lucide="archive"></i></span><div><h3>Records & evidence produced</h3><p>Proof created when this process is carried out.</p></div></div>
+                  <div class="traceItems" id="docTraceEvidence"></div>
+                </section>
+
+                <section class="traceSection">
+                  <div class="traceSectionHead"><span class="traceSectionIcon risk"><i data-lucide="triangle-alert"></i></span><div><h3>Risks & controls</h3><p>Known risks this document helps control.</p></div></div>
+                  <div class="traceItems" id="docTraceRisks"></div>
+                </section>
+
+                <section class="traceSection">
+                  <div class="traceSectionHead"><span class="traceSectionIcon verification"><i data-lucide="search-check"></i></span><div><h3>Audits & verification</h3><p>Where implementation has been checked.</p></div></div>
+                  <div class="traceItems" id="docTraceAudits"></div>
+                </section>
+              </main>
+
+              <aside class="traceabilityPathPanel documentTracePathPanel">
+                <div class="tracePathHeader"><span class="recordLabel">TRACEABILITY PATH</span><h3>From requirement to evidence</h3><p>Current effective context for this document.</p></div>
+                <div class="tracePath">
+                  <div class="tracePathStep requirement"><span><i data-lucide="landmark"></i></span><div><small>Requirement</small><b id="docTracePathRequirement">—</b></div></div>
+                  <i data-lucide="arrow-down"></i>
+                  <div class="tracePathStep process"><span><i data-lucide="workflow"></i></span><div><small>Process</small><b id="docTracePathProcess">—</b></div></div>
+                  <i data-lucide="arrow-down"></i>
+                  <div class="tracePathStep document"><span><i data-lucide="file-check-2"></i></span><div><small>Controlled information</small><b id="docTracePathDocument">—</b></div></div>
+                  <i data-lucide="arrow-down"></i>
+                  <div class="tracePathStep evidence"><span><i data-lucide="archive"></i></span><div><small>Record / evidence</small><b id="docTracePathEvidence">—</b></div></div>
+                  <i data-lucide="arrow-down"></i>
+                  <div class="tracePathStep verification"><span><i data-lucide="search-check"></i></span><div><small>Audit / verification</small><b id="docTracePathAudit">—</b></div></div>
+                </div>
+                <div class="tracePathNote"><i data-lucide="info"></i><span>This view stays with the document. Historical revision links remain available to Document Control.</span></div>
+              </aside>
+            </div>
+
+            <section class="traceMapPanel documentTraceMapPanel" id="documentTraceabilityMap" style="display:none">
+              <div class="traceMapHeader">
+                <div><span class="recordLabel">VISUAL MAP</span><h2>Document traceability map</h2><p>Optional visual view of the same document relationships.</p></div>
+                <button class="btn text" onclick="toggleDocumentTraceabilityMap(false)">Back to simple traceability</button>
+              </div>
+              <div class="relationshipGraph traceabilityGraph">
+                <button class="graphNode requirement"><span>Requirement</span><b id="docTraceMapRequirement">—</b><small id="docTraceMapRequirementDetail">—</small></button>
+                <div class="graphConnector"><i data-lucide="arrow-right"></i></div>
+                <button class="graphNode process"><span>Process</span><b id="docTraceMapProcess">—</b><small id="docTraceMapProcessDetail">—</small></button>
+                <div class="graphConnector"><i data-lucide="arrow-right"></i></div>
+                <button class="graphNode document selected"><span>Controlled information</span><b id="docTraceMapDocumentCode">—</b><small id="docTraceMapDocumentTitle">—</small></button>
+                <div class="graphConnector"><i data-lucide="arrow-right"></i></div>
+                <button class="graphNode evidence"><span>Record / evidence</span><b id="docTraceMapEvidenceCode">—</b><small id="docTraceMapEvidenceTitle">—</small></button>
+                <div class="graphConnector"><i data-lucide="arrow-right"></i></div>
+                <button class="graphNode verification"><span>Verification</span><b id="docTraceMapAuditCode">—</b><small id="docTraceMapAuditTitle">—</small></button>
+              </div>
+            </section>
           </div>
         </div>
       </div>
@@ -1203,6 +1287,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-traceability1"></script>
+<script src="./app.js?v=20260922-doc-trace1"></script>
 </body>
 </html>
