@@ -1146,7 +1146,7 @@ body.navExpanded .navItem:hover{background:#172e47}
 }
 
 
-/* Modal button system — consistent actions across all NexusQMS dialogs */
+/* Modal button system — consistent actions across all iQMS dialogs */
 .modal .btn,
 .modal button.btn{
   min-width:96px;
