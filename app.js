@@ -747,7 +747,7 @@ function refreshRevisionDashboard(){
 }
 
 const viewLabels={
-  dashboard:'Overview',
+  dashboard:'Dashboard',
   repository:'Controlled information',
   records:'Records & evidence',
   approvals:'My tasks',

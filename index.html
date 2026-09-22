@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="iqms-build" content="20260922-iso-readiness1">
+<meta name="iqms-build" content="20260922-dashboard-reference1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-iso-readiness1">
+<link rel="stylesheet" href="./styles.css?v=20260922-dashboard-reference1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -181,8 +181,8 @@ body.navExpanded .railExpand span{display:inline!important}
       <div id="dashboard" class="view active">
         <div class="pageHeader overviewHeader">
           <div>
-            <h1>Overview</h1>
-            <p>Your QMS workspace at a glance — what needs attention, what changed, and what you opened recently.</p>
+            <h1>Dashboard</h1>
+            <p>Monitor quality performance, ISO readiness and the work requiring your attention.</p>
           </div>
           <div class="pageActions">
             <button class="btn secondary" onclick="openBuilder()"><i data-lucide="folder-input"></i>Onboard repository</button>
@@ -190,40 +190,34 @@ body.navExpanded .railExpand span{display:inline!important}
           </div>
         </div>
 
-        <div class="overviewHealth">
-          <div><span class="statusDot warn"></span><b>1 controlled revision is open</b><span>Recruitment Procedure Rev 04 · working copy downloaded · PIC Ana Reyes</span></div>
-          <button class="btn link" onclick="showView('approvals')">Review tasks</button>
-        </div>
+        <div class="referenceDashboardTop">
+          <div class="referenceDashboardMain">
+            <section class="referenceWelcomeCard">
+              <div class="referenceWelcomeCopy">
+                <span class="welcomeEyebrow"><i data-lucide="sparkles"></i>AI QUALITY MONITOR</span>
+                <h2>Welcome back, Maria!</h2>
+                <p>Your quality system is <b>73% ready</b>. Two ISO areas require immediate attention, while documentation coverage remains strong.</p>
+                <button onclick="showView('compliance')">Review ISO readiness <i data-lucide="arrow-right"></i></button>
+              </div>
+              <div class="referenceWelcomeVisual" aria-hidden="true">
+                <div class="welcomeGauge"><span><b>73%</b><small>ready</small></span></div>
+                <span class="welcomeShield"><i data-lucide="shield-check"></i></span>
+              </div>
+            </section>
 
-        <section class="isoOverviewCard" aria-labelledby="isoOverviewTitle">
-          <div class="isoOverviewSummary">
-            <div class="isoScoreRing" style="--score:73"><div><b>73%</b><span>readiness</span></div></div>
-            <div class="isoOverviewCopy">
-              <div class="isoStandardRow"><span class="isoStandardBadge"><i data-lucide="badge-check"></i>ISO 9001:2026</span><span class="isoLiveStatus"><i></i>AI assessed</span></div>
-              <h2 id="isoOverviewTitle">QMS readiness needs attention</h2>
-              <p>Evidence-based view of documented controls, implementation records and process effectiveness.</p>
-              <div class="isoRiskSummary"><button onclick="showView('compliance');filterCompliance('critical')"><b>5</b><span>critical risks</span></button><button onclick="showView('compliance');filterCompliance('warning')"><b>8</b><span>warnings</span></button><button onclick="showView('compliance');filterCompliance('opportunity')"><b>12</b><span>opportunities</span></button></div>
+            <div class="referenceMetricCards">
+              <button onclick="showView('repository')"><span>Controlled documents</span><b>1,428</b><small><i data-lucide="trending-up"></i>34 added this month</small></button>
+              <button onclick="showView('records')"><span>Linked evidence</span><b>8,942</b><small><i data-lucide="circle-check"></i>78% implementation coverage</small></button>
+              <button onclick="showView('approvals')"><span>Pending actions</span><b>24</b><small class="needsAttention"><i data-lucide="clock-3"></i>9 assigned to you</small></button>
             </div>
           </div>
-          <div class="isoCoverageBars">
-            <button onclick="showView('compliance')"><span><b>Documentation coverage</b><strong>94%</strong></span><i><em style="width:94%"></em></i><small>Requirements mapped to approved information</small></button>
-            <button onclick="showView('compliance')"><span><b>Implementation evidence</b><strong>78%</strong></span><i><em style="width:78%"></em></i><small>Current records show processes are followed</small></button>
-            <button onclick="showView('compliance')"><span><b>Overall QMS readiness</b><strong>73%</strong></span><i><em class="amber" style="width:73%"></em></i><small>Risk-weighted assessment across clauses 4–10</small></button>
-          </div>
-          <div class="isoAttentionPreview">
-            <div class="isoAttentionHeader"><span><i data-lucide="sparkles"></i>AI attention required</span><button class="btn link" onclick="showView('compliance')">Open assessment <i data-lucide="arrow-right"></i></button></div>
-            <button onclick="openComplianceFinding('audit')"><i class="severityDot critical"></i><span><b>Internal audit overdue</b><small>Clause 9.2 · No current approved audit report</small></span><strong>High</strong></button>
-            <button onclick="openComplianceFinding('capa')"><i class="severityDot critical"></i><span><b>3 CAPAs past target date</b><small>Clause 10.2 · Oldest action is 41 days overdue</small></span><strong>High</strong></button>
-            <button onclick="openComplianceFinding('training')"><i class="severityDot warning"></i><span><b>Training evidence missing</b><small>Clause 7.2 · 7 employees affected</small></span><strong>Medium</strong></button>
-          </div>
-        </section>
 
-        <div class="overviewMetrics">
-          <div><span>Controlled documents</span><b>1,428</b><small>34 added this month</small></div>
-          <div><span>Effective</span><b>1,236</b><small>86.6% current</small></div>
-          <div><span>Pending approval</span><b>24</b><small>9 assigned to you</small></div>
-          <div><span>Review overdue</span><b>7</b><small>Oldest: 18 days</small></div>
-          <div><span>Linked evidence</span><b>8,942</b><small>Across 1,106 resources</small></div>
+          <aside class="referenceCalendar surface">
+            <div class="referenceCalendarHead"><div><h2>September 2026</h2><span>Quality schedule</span></div><div><button aria-label="Previous month"><i data-lucide="chevron-left"></i></button><button aria-label="Next month"><i data-lucide="chevron-right"></i></button></div></div>
+            <div class="calendarWeek"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
+            <div class="calendarDays"><span class="mutedDay">30</span><span class="mutedDay">31</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span class="calendarToday">22</span><span class="hasEvent warning">23</span><span>24</span><span class="hasEvent critical">25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span><span class="mutedDay">1</span><span class="mutedDay">2</span><span class="mutedDay">3</span></div>
+            <div class="calendarLegend"><span><i class="warning"></i>Review</span><span><i class="critical"></i>Audit / CAPA</span></div>
+          </aside>
         </div>
 
         <div class="overviewBoard">
@@ -281,31 +275,25 @@ body.navExpanded .railExpand span{display:inline!important}
           </section>
 
           <aside class="overviewSideColumn">
-            <section class="surface recentlyOpenedPanel">
-              <div class="sectionHeader compactHeader"><div><h2>Recently opened</h2><p>Continue where you left off</p></div><button class="btn link" onclick="showView('repository')">View all</button></div>
-              <div class="recentFileGrid">
-                <button class="recentFileCard" onclick="openControlledDocument('recruitment','QMS-PRO-REC-001')">
-                  <span class="recentFilePreview"><i data-lucide="file-text"></i><em>PDF</em></span>
-                  <b>Recruitment Procedure</b><small>QMS-PRO-REC-001 · Rev 03</small>
-                </button>
-                <button class="recentFileCard" onclick="openControlledDocument('quality','SOP-QA-014')">
-                  <span class="recentFilePreview"><i data-lucide="file-check-2"></i><em>SOP</em></span>
-                  <b>Control of Nonconforming Outputs</b><small>SOP-QA-014 · Rev 06</small>
-                </button>
-                <button class="recentFileCard" onclick="openControlledDocument('operations','WI-PROD-021')">
-                  <span class="recentFilePreview"><i data-lucide="clipboard-list"></i><em>WI</em></span>
-                  <b>Final Inspection Work Instruction</b><small>WI-PROD-021 · Rev 03</small>
-                </button>
+            <section class="surface referenceReadinessPanel">
+              <div class="sectionHeader compactHeader"><div><h2>ISO readiness distribution</h2><p>Evidence-based assessment by status</p></div><button class="btn link" onclick="showView('compliance')">View details</button></div>
+              <div class="referenceReadinessBody">
+                <button class="readinessDonut" onclick="showView('compliance')"><span><b>73%</b><small>overall</small></span></button>
+                <div class="readinessLegend">
+                  <button onclick="showView('compliance');filterCompliance('good')"><i class="ready"></i><span><b>On track</b><small>2 clauses</small></span><strong>29%</strong></button>
+                  <button onclick="showView('compliance');filterCompliance('warning')"><i class="risk"></i><span><b>At risk</b><small>3 clauses</small></span><strong>42%</strong></button>
+                  <button onclick="showView('compliance');filterCompliance('critical')"><i class="critical"></i><span><b>Critical</b><small>2 clauses</small></span><strong>29%</strong></button>
+                </div>
               </div>
             </section>
 
             <section class="surface upcomingPanel">
-              <div class="sectionHeader compactHeader"><div><h2>Upcoming reviews</h2><p>Next 30 days</p></div><button class="btn link" onclick="showView('repository')">Open register</button></div>
-              <div class="upcomingList">
-                <button onclick="openControlledDocument('purchasing','SOP-PUR-012')"><div><b>SOP-PUR-012</b><span>Supplier Control Procedure</span></div><strong>8 days</strong></button>
-                <button onclick="openControlledDocument('quality','SOP-QA-005')"><div><b>SOP-QA-005</b><span>Internal Audit Procedure</span></div><strong>13 days</strong></button>
-                <button><div><b>SOP-HR-003</b><span>Training Management</span></div><strong>18 days</strong></button>
-                <button onclick="openControlledDocument('external','EXT-STD-002')"><div><b>EXT-STD-002</b><span>Customer Quality Specification</span></div><strong>24 days</strong></button>
+              <div class="sectionHeader compactHeader"><div><h2>Schedule & deadlines</h2><p>Next 30 days</p></div><button class="btn link" onclick="showView('repository')">View all</button></div>
+              <div class="upcomingList referenceScheduleList">
+                <button onclick="openComplianceFinding('audit')"><span class="scheduleIcon critical"><i data-lucide="clipboard-check"></i></span><div><b>Internal audit</b><span>Overdue by 32 days</span></div><strong>High</strong></button>
+                <button onclick="openComplianceFinding('supplier')"><span class="scheduleIcon warning"><i data-lucide="handshake"></i></span><div><b>Supplier evaluation</b><span>Due 06 Oct 2026</span></div><strong>14 days</strong></button>
+                <button onclick="openControlledDocument('purchasing','SOP-PUR-012')"><span class="scheduleIcon"><i data-lucide="file-clock"></i></span><div><b>Supplier Control Procedure</b><span>SOP-PUR-012 · Review</span></div><strong>8 days</strong></button>
+                <button onclick="openComplianceFinding('training')"><span class="scheduleIcon"><i data-lucide="graduation-cap"></i></span><div><b>Competency records</b><span>7 employees missing proof</span></div><strong>Open</strong></button>
               </div>
             </section>
           </aside>
@@ -2054,6 +2042,6 @@ body.navExpanded .railExpand span{display:inline!important}
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-iso-readiness1"></script>
+<script src="./app.js?v=20260922-dashboard-reference1"></script>
 </body>
 </html>
