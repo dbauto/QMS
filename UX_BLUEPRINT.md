@@ -95,6 +95,17 @@ Purpose: permission-aware quality assistant.
 - action boundaries visible but not visually dominant
 - controlled write actions require confirmation
 
+### ISO Readiness
+Purpose: show management how well the QMS is documented, implemented and effective.
+- dashboard summary separates documentation coverage, implementation evidence and overall readiness
+- dedicated clause assessment for clauses 4–10 with risk-weighted status
+- every AI finding shows its reason, evidence checked, confidence and recommended action
+- distinguish Documented → Implemented → Effective; a procedure alone is not proof of conformance
+- filters expose critical, at-risk and on-track areas without hiding the assessment basis
+- generated actions remain drafts until a human reviews owners, dates and evidence requirements
+- use “readiness” or “conformance assessment”; never represent an AI score as certification
+- standards and editions are versioned so transition and legacy profiles can coexist
+
 ### Repository Builder
 Purpose: guided migration/onboarding.
 - stepper

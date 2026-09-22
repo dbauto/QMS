@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="iqms-build" content="20260922-hierarchy1">
+<meta name="iqms-build" content="20260922-iso-readiness1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-classification-revision4">
+<link rel="stylesheet" href="./styles.css?v=20260922-iso-readiness1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -143,6 +143,7 @@ body.navExpanded .railExpand span{display:inline!important}
       <button class="navItem" data-view="types"><span class="navIcon"><i data-lucide="file-cog"></i></span><span>Document types</span></button>
 
       <div class="navGroup">Intelligence</div>
+      <button class="navItem" data-view="compliance"><span class="navIcon"><i data-lucide="badge-check"></i></span><span>ISO readiness</span><span class="navBadge">5</span></button>
       <button class="navItem" data-view="ai"><span class="navIcon"><i data-lucide="sparkles"></i></span><span>QMS AI</span></button>
       <button class="navItem" onclick="openBuilder()"><span class="navIcon"><i data-lucide="folder-input"></i></span><span>Repository builder</span></button>
 
@@ -193,6 +194,29 @@ body.navExpanded .railExpand span{display:inline!important}
           <div><span class="statusDot warn"></span><b>1 controlled revision is open</b><span>Recruitment Procedure Rev 04 · working copy downloaded · PIC Ana Reyes</span></div>
           <button class="btn link" onclick="showView('approvals')">Review tasks</button>
         </div>
+
+        <section class="isoOverviewCard" aria-labelledby="isoOverviewTitle">
+          <div class="isoOverviewSummary">
+            <div class="isoScoreRing" style="--score:73"><div><b>73%</b><span>readiness</span></div></div>
+            <div class="isoOverviewCopy">
+              <div class="isoStandardRow"><span class="isoStandardBadge"><i data-lucide="badge-check"></i>ISO 9001:2026</span><span class="isoLiveStatus"><i></i>AI assessed</span></div>
+              <h2 id="isoOverviewTitle">QMS readiness needs attention</h2>
+              <p>Evidence-based view of documented controls, implementation records and process effectiveness.</p>
+              <div class="isoRiskSummary"><button onclick="showView('compliance');filterCompliance('critical')"><b>5</b><span>critical risks</span></button><button onclick="showView('compliance');filterCompliance('warning')"><b>8</b><span>warnings</span></button><button onclick="showView('compliance');filterCompliance('opportunity')"><b>12</b><span>opportunities</span></button></div>
+            </div>
+          </div>
+          <div class="isoCoverageBars">
+            <button onclick="showView('compliance')"><span><b>Documentation coverage</b><strong>94%</strong></span><i><em style="width:94%"></em></i><small>Requirements mapped to approved information</small></button>
+            <button onclick="showView('compliance')"><span><b>Implementation evidence</b><strong>78%</strong></span><i><em style="width:78%"></em></i><small>Current records show processes are followed</small></button>
+            <button onclick="showView('compliance')"><span><b>Overall QMS readiness</b><strong>73%</strong></span><i><em class="amber" style="width:73%"></em></i><small>Risk-weighted assessment across clauses 4–10</small></button>
+          </div>
+          <div class="isoAttentionPreview">
+            <div class="isoAttentionHeader"><span><i data-lucide="sparkles"></i>AI attention required</span><button class="btn link" onclick="showView('compliance')">Open assessment <i data-lucide="arrow-right"></i></button></div>
+            <button onclick="openComplianceFinding('audit')"><i class="severityDot critical"></i><span><b>Internal audit overdue</b><small>Clause 9.2 · No current approved audit report</small></span><strong>High</strong></button>
+            <button onclick="openComplianceFinding('capa')"><i class="severityDot critical"></i><span><b>3 CAPAs past target date</b><small>Clause 10.2 · Oldest action is 41 days overdue</small></span><strong>High</strong></button>
+            <button onclick="openComplianceFinding('training')"><i class="severityDot warning"></i><span><b>Training evidence missing</b><small>Clause 7.2 · 7 employees affected</small></span><strong>Medium</strong></button>
+          </div>
+        </section>
 
         <div class="overviewMetrics">
           <div><span>Controlled documents</span><b>1,428</b><small>34 added this month</small></div>
@@ -1027,6 +1051,82 @@ body.navExpanded .railExpand span{display:inline!important}
             <div class="formSection"><label>Default approval route<select id="typeApproval"><option>Department review → Quality approval</option></select></label><label>Default review cycle<select id="typeReview"><option>12 months</option><option>24 months</option></select></label></div>
             <section class="detailSection"><h3>Control requirements</h3><label class="checkRow"><input type="checkbox" checked> Revision history required</label><label class="checkRow"><input type="checkbox" checked> Change reason required</label><label class="checkRow"><input type="checkbox" checked> Approval before release</label><label class="checkRow"><input type="checkbox"> User acknowledgement required</label></section>
             <div class="inspectorFooter"><button class="btn secondary">Deactivate type</button><button class="btn primary" data-toast-title="Type settings saved" data-toast-message="The configuration is ready to apply to future documents.">Save changes</button></div>
+          </aside>
+        </div>
+      </div>
+
+      <div id="compliance" class="view">
+        <div class="pageHeader compliancePageHeader">
+          <div>
+            <div class="complianceTitleLine"><h1>ISO 9001 readiness</h1><span class="isoStandardBadge"><i data-lucide="badge-check"></i>ISO 9001:2026</span></div>
+            <p>Evidence-based conformance monitoring across clauses 4–10. This assessment supports management review; it is not a certification decision.</p>
+          </div>
+          <div class="pageActions">
+            <button class="btn secondary" onclick="runComplianceAssessment(this)"><i data-lucide="scan-search"></i>Run assessment</button>
+            <button class="btn primary" onclick="generateCompliancePlan()"><i data-lucide="list-checks"></i>Generate action plan</button>
+          </div>
+        </div>
+
+        <div class="complianceAssessmentMeta">
+          <span><i class="statusDot good"></i>Last assessed today at 10:42</span>
+          <span>1,428 controlled documents</span><span>8,942 evidence records</span><span>AI confidence 91%</span>
+        </div>
+
+        <div class="complianceScoreGrid">
+          <button onclick="filterCompliance('all')"><span class="scoreIcon blue"><i data-lucide="files"></i></span><span><small>Documentation coverage</small><b>94%</b><em>58 of 62 requirements mapped</em></span></button>
+          <button onclick="filterCompliance('all')"><span class="scoreIcon teal"><i data-lucide="archive-check"></i></span><span><small>Implementation evidence</small><b>78%</b><em>48 requirements have current proof</em></span></button>
+          <button onclick="filterCompliance('all')"><span class="scoreIcon amber"><i data-lucide="gauge"></i></span><span><small>Overall QMS readiness</small><b>73%</b><em>Risk weighted across clauses 4–10</em></span></button>
+          <button onclick="filterCompliance('critical')"><span class="scoreIcon red"><i data-lucide="triangle-alert"></i></span><span><small>Attention required</small><b>5</b><em>Critical findings need an owner</em></span></button>
+        </div>
+
+        <div class="complianceWorkspace">
+          <section class="surface clauseAssessmentPanel">
+            <div class="complianceSectionHead">
+              <div><h2>Clause readiness</h2><p>Select a clause to inspect the evidence and assessment basis.</p></div>
+              <div class="complianceFilters" id="complianceFilters">
+                <button class="active" data-compliance-filter="all" onclick="filterCompliance('all',this)">All</button>
+                <button data-compliance-filter="critical" onclick="filterCompliance('critical',this)">Critical <span>2</span></button>
+                <button data-compliance-filter="warning" onclick="filterCompliance('warning',this)">At risk <span>3</span></button>
+                <button data-compliance-filter="good" onclick="filterCompliance('good',this)">On track <span>2</span></button>
+              </div>
+            </div>
+            <div class="clauseTableHead"><span>ISO area</span><span>Documented</span><span>Implemented</span><span>Readiness</span><span>Main assessment</span><span></span></div>
+            <div class="clauseRows" id="clauseRows">
+              <button class="clauseRow" data-risk="good" onclick="openComplianceFinding('context')"><div><b>4</b><span><strong>Context</strong><small>Organization and interested parties</small></span></div><span class="metricState good">98%</span><span class="metricState good">88%</span><span><i class="clauseBar"><em style="width:92%"></em></i><b>92%</b></span><p>Minor evidence gap</p><i data-lucide="chevron-right"></i></button>
+              <button class="clauseRow" data-risk="good" onclick="openComplianceFinding('leadership')"><div><b>5</b><span><strong>Leadership</strong><small>Policy, roles and accountability</small></span></div><span class="metricState good">95%</span><span class="metricState good">82%</span><span><i class="clauseBar"><em style="width:84%"></em></i><b>84%</b></span><p>1 policy awaiting approval</p><i data-lucide="chevron-right"></i></button>
+              <button class="clauseRow" data-risk="warning" onclick="openComplianceFinding('planning')"><div><b>6</b><span><strong>Planning</strong><small>Risks, opportunities and objectives</small></span></div><span class="metricState good">91%</span><span class="metricState warning">65%</span><span><i class="clauseBar warning"><em style="width:68%"></em></i><b>68%</b></span><p>Risk register incomplete</p><i data-lucide="chevron-right"></i></button>
+              <button class="clauseRow" data-risk="warning" onclick="openComplianceFinding('training')"><div><b>7</b><span><strong>Support</strong><small>Resources, competence and information</small></span></div><span class="metricState good">96%</span><span class="metricState warning">74%</span><span><i class="clauseBar warning"><em style="width:81%"></em></i><b>81%</b></span><p>Training proof missing</p><i data-lucide="chevron-right"></i></button>
+              <button class="clauseRow" data-risk="good" onclick="openComplianceFinding('supplier')"><div><b>8</b><span><strong>Operation</strong><small>Operational and supplier controls</small></span></div><span class="metricState good">97%</span><span class="metricState good">87%</span><span><i class="clauseBar"><em style="width:89%"></em></i><b>89%</b></span><p>Supplier review due soon</p><i data-lucide="chevron-right"></i></button>
+              <button class="clauseRow" data-risk="critical" onclick="openComplianceFinding('audit')"><div><b>9</b><span><strong>Performance evaluation</strong><small>Monitoring, audit and management review</small></span></div><span class="metricState warning">82%</span><span class="metricState critical">49%</span><span><i class="clauseBar critical"><em style="width:57%"></em></i><b>57%</b></span><p>Internal audit overdue</p><i data-lucide="chevron-right"></i></button>
+              <button class="clauseRow" data-risk="critical" onclick="openComplianceFinding('capa')"><div><b>10</b><span><strong>Improvement</strong><small>Nonconformity and corrective action</small></span></div><span class="metricState good">90%</span><span class="metricState critical">55%</span><span><i class="clauseBar critical"><em style="width:64%"></em></i><b>64%</b></span><p>3 CAPAs overdue</p><i data-lucide="chevron-right"></i></button>
+            </div>
+            <div class="complianceEmpty" id="complianceEmpty"><i data-lucide="circle-check-big"></i><b>No clauses match this filter</b><span>Choose another status to continue reviewing the assessment.</span></div>
+          </section>
+
+          <aside class="complianceSideColumn">
+            <section class="surface attentionPanel">
+              <div class="complianceSectionHead"><div><h2>AI attention required</h2><p>Potential gaps ranked by risk and evidence strength.</p></div><span class="aiConfidence"><i data-lucide="sparkles"></i>91% confidence</span></div>
+              <div class="attentionList">
+                <button data-risk="critical" onclick="openComplianceFinding('audit')"><i class="severityDot critical"></i><span><b>Internal audit overdue</b><small>Clause 9.2 · 32 days</small></span><strong>High</strong><i data-lucide="chevron-right"></i></button>
+                <button data-risk="critical" onclick="openComplianceFinding('capa')"><i class="severityDot critical"></i><span><b>3 CAPAs past target date</b><small>Clause 10.2 · Oldest is 41 days</small></span><strong>High</strong><i data-lucide="chevron-right"></i></button>
+                <button data-risk="warning" onclick="openComplianceFinding('training')"><i class="severityDot warning"></i><span><b>Training evidence missing</b><small>Clause 7.2 · 7 employees</small></span><strong>Medium</strong><i data-lucide="chevron-right"></i></button>
+                <button data-risk="warning" onclick="openComplianceFinding('supplier')"><i class="severityDot warning"></i><span><b>Supplier evaluation due</b><small>Clause 8.4 · 14 days</small></span><strong>Medium</strong><i data-lucide="chevron-right"></i></button>
+                <button data-risk="opportunity" onclick="openComplianceFinding('objective')"><i class="severityDot opportunity"></i><span><b>Quality objective below target</b><small>Clause 6.2 · 3-month trend</small></span><strong>Advisory</strong><i data-lucide="chevron-right"></i></button>
+              </div>
+            </section>
+
+            <section class="surface assessmentLegend">
+              <h2>How the score is assessed</h2>
+              <div><span class="legendIcon blue"><i data-lucide="file-check-2"></i></span><p><b>Documented</b><small>Required policies, procedures and mappings exist and are approved.</small></p></div>
+              <div><span class="legendIcon teal"><i data-lucide="archive"></i></span><p><b>Implemented</b><small>Current operational records show the documented process is being followed.</small></p></div>
+              <div><span class="legendIcon amber"><i data-lucide="chart-no-axes-combined"></i></span><p><b>Effective</b><small>KPIs, audits and outcomes indicate the process achieves its intended result.</small></p></div>
+            </section>
+
+            <section class="surface generatedPlan" id="generatedCompliancePlan">
+              <div class="generatedPlanHead"><span><i data-lucide="list-checks"></i></span><div><b>Draft action plan</b><small>Human approval required before assignment</small></div></div>
+              <ol><li>Schedule and complete internal audit</li><li>Recover 3 overdue CAPA actions</li><li>Collect 7 competency records</li><li>Complete supplier evaluation</li><li>Review underperforming quality objective</li></ol>
+              <div><button class="btn secondary" onclick="toast('Draft discarded','No actions were created or assigned.')">Discard</button><button class="btn primary" onclick="approveCompliancePlan(this)">Review & assign</button></div>
+            </section>
           </aside>
         </div>
       </div>
@@ -1936,7 +2036,24 @@ body.navExpanded .railExpand span{display:inline!important}
 </div>
 
 
+<div class="complianceDrawerBackdrop" id="complianceDrawerBackdrop" onclick="closeComplianceFinding(event)">
+  <aside class="complianceDrawer" role="dialog" aria-modal="true" aria-labelledby="findingTitle">
+    <header>
+      <div><span class="findingSeverity" id="findingSeverity"><i></i>High risk</span><h2 id="findingTitle">Internal audit overdue</h2><p id="findingClause">ISO 9001:2026 · Clause 9.2</p></div>
+      <button class="iconButton" onclick="closeComplianceFinding()" aria-label="Close assessment detail"><i data-lucide="x"></i></button>
+    </header>
+    <div class="findingBody">
+      <section class="findingAssessment"><div><span>AI assessment</span><b id="findingAssessment">Likely gap</b></div><div><span>Confidence</span><b id="findingConfidence">96%</b></div><div><span>Status</span><b id="findingStatus">Open</b></div></section>
+      <section><h3>Why this was raised</h3><p id="findingReason">Internal audit evidence has not been found for the required review period.</p></section>
+      <section><h3>Evidence checked</h3><div class="evidenceChecked" id="findingEvidence"></div></section>
+      <section class="findingRecommendation"><span><i data-lucide="sparkles"></i></span><div><h3>Recommended action</h3><p id="findingRecommendation">Schedule the internal audit and attach the approved report and resulting findings.</p></div></section>
+      <section><h3>Assessment basis</h3><div class="assessmentBasis"><span><i data-lucide="file-check-2"></i><b>Documented</b><small id="findingDocumented">Procedure exists</small></span><span><i data-lucide="archive"></i><b>Implemented</b><small id="findingImplemented">Evidence missing</small></span><span><i data-lucide="chart-no-axes-combined"></i><b>Effective</b><small id="findingEffective">Cannot verify</small></span></div></section>
+    </div>
+    <footer><button class="btn secondary" onclick="showView('ai');closeComplianceFinding()"><i data-lucide="message-circle-question"></i>Ask QMS AI</button><button class="btn secondary" onclick="toast('Evidence view opened','Showing the records and controlled information used by this assessment.')"><i data-lucide="folder-search"></i>View evidence</button><button class="btn primary" onclick="createFindingAction(this)"><i data-lucide="circle-plus"></i>Create action</button></footer>
+  </aside>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-classification-revision5"></script>
+<script src="./app.js?v=20260922-iso-readiness1"></script>
 </body>
 </html>

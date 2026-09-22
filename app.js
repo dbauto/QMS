@@ -755,6 +755,7 @@ const viewLabels={
   relationships:'Traceability',
   structure:'Space administration',
   types:'Document types',
+  compliance:'ISO readiness',
   ai:'QMS AI',
   users:'Users & access',
   settings:'Settings'
@@ -998,6 +999,112 @@ function showView(id){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 navItems.forEach(item=>item.addEventListener('click',()=>showView(item.dataset.view)));
+
+const complianceFindings={
+  audit:{
+    severity:'critical',severityLabel:'High risk',title:'Internal audit overdue',clause:'ISO 9001:2026 · Clause 9.2',assessment:'Likely gap',confidence:'96%',status:'Open',
+    reason:'The planned internal audit is 32 days overdue and no current approved audit report was found for this review period.',
+    evidence:[['calendar-clock','Audit schedule','IA-SCH-2026 · Planned date passed','Overdue'],['file-search','Internal audit repository','No approved 2026 report found','Missing'],['history','Previous audit','IA-2025-006 · Outside current period','Outdated']],
+    recommendation:'Schedule the internal audit, assign the lead auditor and attach the approved report and resulting findings.',documented:'Procedure and schedule exist',implemented:'Current report missing',effective:'Cannot verify'
+  },
+  capa:{
+    severity:'critical',severityLabel:'High risk',title:'Corrective actions past target date',clause:'ISO 9001:2026 · Clause 10.2',assessment:'Probable nonconformity',confidence:'94%',status:'Open',
+    reason:'Three corrective actions remain open beyond their approved target dates. Two do not contain effectiveness verification.',
+    evidence:[['list-checks','CAPA register','3 actions overdue; oldest by 41 days','Overdue'],['user-round-check','Action ownership','Owners assigned to all 3 actions','Present'],['scan-search','Effectiveness checks','Missing for CAPA-2026-031 and 034','Missing']],
+    recommendation:'Escalate the overdue actions, confirm revised dates and require effectiveness evidence before closure.',documented:'CAPA procedure exists',implemented:'3 actions overdue',effective:'2 checks missing'
+  },
+  training:{
+    severity:'warning',severityLabel:'Medium risk',title:'Competency evidence missing',clause:'ISO 9001:2026 · Clause 7.2',assessment:'Evidence gap',confidence:'91%',status:'Open',
+    reason:'Seven employees are assigned to controlled production activities without a current linked training or competency record.',
+    evidence:[['users','Role assignments','7 affected employees identified','Checked'],['graduation-cap','Training matrix','Training marked complete for 5 employees','Partial'],['paperclip','Competency records','No current attachment for 7 employees','Missing']],
+    recommendation:'Collect or complete competency records for the affected employees and link them to the applicable work instructions.',documented:'Training process exists',implemented:'Records incomplete',effective:'Partially verifiable'
+  },
+  supplier:{
+    severity:'warning',severityLabel:'Medium risk',title:'Supplier evaluation approaching due date',clause:'ISO 9001:2026 · Clause 8.4',assessment:'Emerging risk',confidence:'89%',status:'Due in 14 days',
+    reason:'The annual evaluation for a critical raw-material supplier is due in 14 days and supporting delivery-performance data is incomplete.',
+    evidence:[['handshake','Approved supplier list','Supplier remains approved','Current'],['calendar-days','Evaluation schedule','Annual review due in 14 days','Due soon'],['chart-no-axes-combined','Performance evidence','August delivery data not linked','Partial']],
+    recommendation:'Complete the missing delivery-performance record and assign the supplier evaluation before the due date.',documented:'Supplier control exists',implemented:'Review scheduled',effective:'Data incomplete'
+  },
+  objective:{
+    severity:'warning',severityLabel:'Advisory',title:'Quality objective trending below target',clause:'ISO 9001:2026 · Clause 6.2',assessment:'Improvement opportunity',confidence:'86%',status:'Monitor',
+    reason:'On-time release performance has remained below its 96% target for three consecutive months, although the decline is not yet linked to a corrective action.',
+    evidence:[['target','Quality objective','On-time release target: 96%','Current'],['chart-no-axes-combined','KPI results','93.4%, 92.8% and 92.1%','Below target'],['circle-dot-dashed','Improvement register','No linked action found','Missing']],
+    recommendation:'Review the trend with the process owner and open an improvement action if the cause is confirmed.',documented:'Objective defined',implemented:'Results measured',effective:'Target not achieved'
+  },
+  planning:{
+    severity:'warning',severityLabel:'Medium risk',title:'Risk register is incomplete',clause:'ISO 9001:2026 · Clause 6.1',assessment:'Coverage gap',confidence:'88%',status:'Open',
+    reason:'Two operational processes have approved procedures but do not have a current risk and opportunity assessment linked in the register.',
+    evidence:[['workflow','Process register','18 active processes reviewed','Checked'],['shield-alert','Risk register','16 of 18 processes mapped','Partial'],['link-2-off','Unlinked processes','Recruitment and final packaging','Missing']],
+    recommendation:'Complete the risk assessments for the two unmapped processes and link their controls and owners.',documented:'Risk method defined',implemented:'16 of 18 mapped',effective:'Partially verifiable'
+  },
+  context:{
+    severity:'good',severityLabel:'On track',title:'Organizational context is well supported',clause:'ISO 9001:2026 · Clause 4',assessment:'Supported',confidence:'93%',status:'Monitor',
+    reason:'Context, scope and interested-party records are current. One customer requirement link is due for confirmation.',
+    evidence:[['building-2','Context register','Approved and reviewed this quarter','Current'],['users-round','Interested parties','Requirements mapped to owners','Current'],['link','Customer requirement','One link awaits confirmation','Review']],
+    recommendation:'Confirm the pending customer requirement link during the next context review.',documented:'Current and approved',implemented:'Evidence present',effective:'Supported'
+  },
+  leadership:{
+    severity:'good',severityLabel:'On track',title:'Leadership controls are supported',clause:'ISO 9001:2026 · Clause 5',assessment:'Supported with minor action',confidence:'92%',status:'Monitor',
+    reason:'Leadership responsibilities and management-review evidence are current. One revised quality policy is awaiting final approval.',
+    evidence:[['landmark','Quality policy','Rev 05 effective; Rev 06 pending','Controlled'],['user-round-check','Roles and authority','Assigned and acknowledged','Current'],['presentation','Management review','Current approved minutes linked','Present']],
+    recommendation:'Complete final approval of the revised quality policy before its planned effective date.',documented:'Controls current',implemented:'Evidence present',effective:'Supported'
+  }
+};
+
+function filterCompliance(status='all',trigger){
+  const rows=[...document.querySelectorAll('#clauseRows .clauseRow')];
+  rows.forEach(row=>row.hidden=status!=='all'&&row.dataset.risk!==status);
+  const visible=rows.some(row=>!row.hidden);
+  document.getElementById('complianceEmpty')?.classList.toggle('show',!visible);
+  document.querySelectorAll('#complianceFilters [data-compliance-filter]').forEach(button=>button.classList.toggle('active',button.dataset.complianceFilter===status));
+  document.querySelectorAll('.attentionList [data-risk]').forEach(item=>item.hidden=status!=='all'&&status!=='good'&&item.dataset.risk!==status);
+  if(trigger?.dataset?.complianceFilter) trigger.classList.add('active');
+}
+
+function openComplianceFinding(key){
+  const finding=complianceFindings[key]||complianceFindings.audit;
+  const set=(id,value)=>{const el=document.getElementById(id);if(el) el.textContent=value};
+  set('findingTitle',finding.title);set('findingClause',finding.clause);set('findingAssessment',finding.assessment);set('findingConfidence',finding.confidence);set('findingStatus',finding.status);set('findingReason',finding.reason);set('findingRecommendation',finding.recommendation);set('findingDocumented',finding.documented);set('findingImplemented',finding.implemented);set('findingEffective',finding.effective);
+  const severity=document.getElementById('findingSeverity');
+  if(severity){severity.className='findingSeverity '+finding.severity;severity.innerHTML='<i></i>'+escapeHtml(finding.severityLabel)}
+  const evidence=document.getElementById('findingEvidence');
+  if(evidence) evidence.innerHTML=finding.evidence.map(item=>'<div><span><i data-lucide="'+escapeHtml(item[0])+'"></i></span><p><b>'+escapeHtml(item[1])+'</b><small>'+escapeHtml(item[2])+'</small></p><em>'+escapeHtml(item[3])+'</em></div>').join('');
+  document.getElementById('complianceDrawerBackdrop')?.classList.add('show');
+  document.body.style.overflow='hidden';
+  refreshIcons();
+}
+
+function closeComplianceFinding(event){
+  if(event&&event.target?.id!=='complianceDrawerBackdrop') return;
+  document.getElementById('complianceDrawerBackdrop')?.classList.remove('show');
+  document.body.style.overflow='';
+}
+
+function generateCompliancePlan(){
+  const panel=document.getElementById('generatedCompliancePlan');
+  panel?.classList.add('show');
+  panel?.scrollIntoView({behavior:'smooth',block:'center'});
+  refreshIcons();
+}
+
+function approveCompliancePlan(button){
+  if(button){button.innerHTML='<i data-lucide="check"></i>Ready for review';button.disabled=true}
+  toast('Action plan prepared','Five draft actions are ready for owner, due-date and approval review. Nothing has been assigned yet.');
+  refreshIcons();
+}
+
+function createFindingAction(button){
+  if(button){button.innerHTML='<i data-lucide="check"></i>Draft action created';button.disabled=true}
+  toast('Draft corrective action created','Review the owner, target date and evidence requirements before submitting.');
+  refreshIcons();
+}
+
+function runComplianceAssessment(button){
+  if(!button||button.disabled) return;
+  const original=button.innerHTML;
+  button.disabled=true;button.innerHTML='<i data-lucide="loader-circle" class="spin"></i>Assessing evidence...';refreshIcons();
+  setTimeout(()=>{button.disabled=false;button.innerHTML='<i data-lucide="check"></i>Assessment current';toast('Assessment refreshed','1,428 documents and 8,942 evidence records were checked. No score changes were found.');refreshIcons();setTimeout(()=>{button.innerHTML=original;refreshIcons()},2200)},1100);
+}
 
 const headerSearch=document.getElementById('headerSearch');
 const searchToggle=document.getElementById('searchToggle');
@@ -2769,7 +2876,7 @@ document.querySelectorAll('.modal').forEach(modal=>{
   });
 });
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeBuilder();closeManualRepo();closeSpaceModal();closeRegisterResource();closeQuickTypeModal();closeQuickSpaceModal()}
+  if(e.key==='Escape'){closeBuilder();closeManualRepo();closeSpaceModal();closeRegisterResource();closeQuickTypeModal();closeQuickSpaceModal();closeComplianceFinding()}
 });
 
 document.addEventListener('DOMContentLoaded',refreshIcons);
