@@ -8,7 +8,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-revision-distinct3">
+<link rel="stylesheet" href="./styles.css?v=20260922-classification-revision4">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -511,7 +511,7 @@ body.navExpanded .railExpand span{display:inline!important}
               <div class="recordMeta"><b id="docCode">SOP-QA-014</b><span id="docRev">Rev 06</span><span id="docStatus" class="tag success">Effective</span></div>
             </div>
             <div class="pageActions documentRevisionActions">
-              <button class="btn secondary" data-toast-title="Controlled copy" data-toast-message="The current effective controlled copy is prepared as a read-only download."><i data-lucide="download"></i>Controlled copy</button>
+              <button class="btn secondary" onclick="downloadControlledPdf()"><i data-lucide="file-down"></i>Download PDF</button>
               <button class="btn secondary" onclick="openRevisionRequest('request')"><i data-lucide="message-square-plus"></i>Request revision</button>
               <button class="btn primary" onclick="openRevisionRequest('start')"><i data-lucide="git-branch-plus"></i>Start revision</button>
             </div>
@@ -533,7 +533,7 @@ body.navExpanded .railExpand span{display:inline!important}
             <div class="revisionRequestSummary">
               <span class="recordLabel">REVISION REQUESTED</span>
               <b>A change has been requested, but no new revision exists yet</b>
-              <small>PIC: <span id="pendingRevisionPic">—</span> · Due <span id="pendingRevisionDue">—</span></small>
+              <small>Requestor: <span id="pendingRevisionRequestor">—</span> · PIC: <span id="pendingRevisionPic">—</span> · Due <span id="pendingRevisionDue">—</span></small>
             </div>
             <div class="revisionRequestReason"><small>Requested change</small><b id="pendingRevisionReason">—</b></div>
             <div class="revisionRequestButtons"><button class="btn primary" onclick="openRevisionRequest('start')"><i data-lucide="git-branch-plus"></i>Start revision</button><button class="btn link" onclick="showView('approvals')">View task</button></div>
@@ -576,6 +576,7 @@ body.navExpanded .railExpand span{display:inline!important}
                 <div><dt>Effective</dt><dd id="docEffective">15 Sep 2026</dd></div>
                 <div><dt>Next review</dt><dd id="docReview">15 Sep 2027</dd></div>
                 <div><dt>Document type</dt><dd id="detailDocType">SOP / Procedure</dd></div>
+                <div><dt>Information classification</dt><dd id="docClassification"><span class="classificationPill internal"><i data-lucide="building-2"></i>Internal</span></dd></div>
                 <div><dt>Resource ID</dt><dd id="detailResourceId">RES-DOC-014</dd></div>
               </dl>
 
@@ -1362,6 +1363,10 @@ body.navExpanded .railExpand span{display:inline!important}
     </div>
 
     <div class="revisionForm">
+      <label id="revisionRequestorField">Requestor
+        <div class="generatedField"><input id="revisionRequestor" value="Maria Santos" readonly aria-readonly="true"><i data-lucide="lock-keyhole"></i></div>
+        <small class="fieldHelp">Captured automatically from the signed-in user.</small>
+      </label>
       <label class="fullField">What needs to be revised? <span>Required</span><textarea id="revisionRequestReason" placeholder="Describe the required change, issue, customer requirement or improvement..."></textarea></label>
       <label>Person in charge (PIC)
         <select id="revisionPic">
@@ -1386,6 +1391,32 @@ body.navExpanded .railExpand span{display:inline!important}
     <div class="revisionRuleNote"><i data-lucide="shield-check"></i><span id="revisionRuleText">A revision request does not alter the effective document. The next revision is created only when an authorized PIC starts the revision.</span></div>
 
     <div class="modalActions"><button class="btn secondary" onclick="closeRevisionRequest()">Cancel</button><span></span><button class="btn primary" id="revisionSubmitBtn" onclick="submitRevisionRequest()"><i data-lucide="send"></i>Create revision task</button></div>
+  </div>
+</div>
+
+<div class="modal" id="classificationDownloadModal">
+  <div class="modalBox classificationDownloadBox">
+    <div class="modalHead">
+      <div><span class="eyebrow" id="classificationDownloadEyebrow">CONFIDENTIAL DOWNLOAD</span><h2 id="classificationDownloadTitle">Protected PDF download</h2><p id="classificationDownloadSubtitle">This controlled copy has additional handling rules because of its information classification.</p></div>
+      <button class="iconBtn" onclick="closeClassificationDownload()" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+
+    <div class="classificationDownloadHero" id="classificationDownloadHero">
+      <span id="classificationDownloadIcon"><i data-lucide="shield-lock"></i></span>
+      <div><small>INFORMATION CLASSIFICATION</small><b id="classificationDownloadLevel">Confidential</b><p id="classificationDownloadPolicy">Encrypted PDF · password sent separately · personalized watermark · audited download.</p></div>
+    </div>
+
+    <div class="classificationRules" id="classificationRules"></div>
+
+    <div class="classificationCaution" id="classificationCaution">
+      <i data-lucide="info"></i><span>A downloaded file cannot be technically “recalled” after it leaves the browser. For the highest sensitivity, iQMS therefore defaults to secure in-app viewing rather than ordinary local download.</span>
+    </div>
+
+    <div class="modalActions">
+      <button class="btn secondary" onclick="closeClassificationDownload()">Cancel</button>
+      <span></span>
+      <button class="btn primary" id="classificationDownloadAction" onclick="confirmClassificationDownload()"><i data-lucide="mail"></i>Send password & download PDF</button>
+    </div>
   </div>
 </div>
 
@@ -1627,6 +1658,15 @@ body.navExpanded .railExpand span{display:inline!important}
         <label>Owner<select id="regOwner"><option>Recruitment Manager</option><option>Quality Manager</option><option>Document Control</option></select></label>
         <label>Revision / version<input id="regRev" value="03"></label>
         <label>Initial status<select id="regStatus"><option>Draft</option><option>In Review</option><option>Effective</option></select><small class="fieldHelp" id="regStatusHelp">New controlled information begins as Draft.</small></label>
+        <label>Information classification
+          <select id="regClassification">
+            <option value="Public">Public</option>
+            <option value="Internal" selected>Internal</option>
+            <option value="Confidential">Confidential</option>
+            <option value="Restricted">Restricted (highly confidential)</option>
+          </select>
+          <small class="fieldHelp">Controls who may view, download, print or export the document. All files remain encrypted at rest and in transit.</small>
+        </label>
         <label>Planned effective date<input id="regEffective" type="date" value="2026-09-01"></label>
         <label>Review date<input id="regReview" type="date" value="2027-09-01"></label>
         <label class="effectiveImportOnly" style="display:none">Existing / legacy document ID<input id="legacyDocId" placeholder="e.g. HR-PRO-012"></label>
@@ -1897,6 +1937,6 @@ body.navExpanded .railExpand span{display:inline!important}
 
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-revision-distinct3"></script>
+<script src="./app.js?v=20260922-classification-revision4"></script>
 </body>
 </html>

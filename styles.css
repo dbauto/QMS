@@ -4329,3 +4329,84 @@ body.navExpanded .navMeta{
   .revisionRequestBanner{grid-template-columns:34px 1fr}
   .revisionRequestReason,.revisionRequestButtons{grid-column:2}
 }
+
+
+/* Information classification */
+.classificationPill{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  min-height:23px;
+  padding:3px 7px;
+  border-radius:6px;
+  font-size:9px;
+  font-weight:800
+}
+.classificationPill .lucide{width:12px;height:12px}
+.classificationPill.public{background:#ecfdf3;color:#067647}
+.classificationPill.internal{background:#f2f4f7;color:#475467}
+.classificationPill.confidential{background:#fff4e5;color:#b54708}
+.classificationPill.restricted{background:#fef3f2;color:#b42318}
+
+.classificationDownloadBox{width:min(720px,96vw)}
+.classificationDownloadHero{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr);
+  gap:10px;
+  align-items:center;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:8px
+}
+.classificationDownloadHero>span{
+  width:40px;height:40px;border-radius:9px;display:grid;place-items:center
+}
+.classificationDownloadHero>span .lucide{width:18px;height:18px}
+.classificationDownloadHero small,.classificationDownloadHero b,.classificationDownloadHero p{display:block}
+.classificationDownloadHero small{font-size:8px;text-transform:uppercase;font-weight:800}
+.classificationDownloadHero b{font-size:14px;margin:2px 0}
+.classificationDownloadHero p{margin:0;font-size:9px;line-height:1.5}
+.classificationDownloadHero.confidential{background:#fffcf5;border-color:#fedf89;color:#6a4714}
+.classificationDownloadHero.confidential>span{background:#fff4e5;color:#b54708}
+.classificationDownloadHero.restricted{background:#fff7f6;border-color:#fecdca;color:#7a271a}
+.classificationDownloadHero.restricted>span{background:#fee4e2;color:#b42318}
+
+.classificationRules{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:12px 0
+}
+.classificationRules>div{
+  min-height:74px;
+  display:grid;
+  grid-template-columns:26px minmax(0,1fr);
+  gap:8px;
+  align-items:start;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:8px
+}
+.classificationRules>div>.lucide{width:15px;height:15px;color:#667085;margin-top:2px}
+.classificationRules b,.classificationRules small{display:block}
+.classificationRules b{font-size:10px;color:var(--ink)}
+.classificationRules small{margin-top:2px;font-size:9px;line-height:1.45;color:var(--muted)}
+.classificationCaution{
+  display:flex;
+  gap:8px;
+  align-items:flex-start;
+  padding:9px 10px;
+  border-radius:7px;
+  background:#f8fafb;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.5
+}
+.classificationCaution>.lucide{width:14px;height:14px;flex:0 0 auto;margin-top:1px}
+
+/* Revision request explicitly shows requestor while Start revision does not. */
+#revisionRequestorField .generatedField{margin-top:5px}
+
+@media(max-width:700px){
+  .classificationRules{grid-template-columns:1fr}
+}

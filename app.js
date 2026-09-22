@@ -247,7 +247,7 @@ if(!Object.keys(openRevisions).length){
     due:'2026-09-29',
     reason:'Update candidate screening criteria and interview evidence requirements.',
     reference:'Management review action MR-2026-17',
-    requestedBy:'Maria Santos',
+    initiatedBy:'Ana Reyes',
     mode:'start',
     stage:'Draft preparation',
     downloaded:true,
@@ -265,7 +265,7 @@ if(!Object.keys(revisionRequests).length && !openRevisions['SOP-QA-014']){
     due:'2026-09-30',
     reason:'Clarify segregation and disposition steps for nonconforming outputs.',
     reference:'Internal audit follow-up IA-QA-2026-007',
-    requestedBy:'Maria Santos',
+    requestor:'Maria Santos',
     requestedAt:'2026-09-22T10:05:00+08:00',
     space:'Quality Management',
     stage:'Awaiting PIC to start revision'
@@ -289,6 +289,103 @@ function revisionEditableExtension(doc){
   if(type.includes('presentation')||type.includes('ppt')) return 'pptx';
   if(type.includes('external')) return 'docx';
   return 'docx';
+}
+function documentClassification(doc){
+  if(doc?.classification) return doc.classification;
+  const code=String(doc?.code||'');
+  if(['SOP-QA-009'].includes(code)) return 'Confidential';
+  if(['EXT-STD-002'].includes(code)) return 'Restricted';
+  return 'Internal';
+}
+function classificationClass(level){
+  return String(level||'Internal').toLowerCase().replace(/\s+/g,'-');
+}
+function classificationIcon(level){
+  return level==='Public'?'globe-2':level==='Internal'?'building-2':level==='Confidential'?'shield-lock':'lock-keyhole';
+}
+function renderClassificationPill(doc){
+  const level=documentClassification(doc);
+  return '<span class="classificationPill '+classificationClass(level)+'"><i data-lucide="'+classificationIcon(level)+'"></i>'+escapeHtml(level)+'</span>';
+}
+function currentProfileEmail(){
+  return document.getElementById('profileEmail')?.value||'maria.santos@abc.com';
+}
+let pendingClassificationDownload=null;
+function downloadControlledPdf(){
+  const doc=activeControlledDoc();
+  if(!doc) return;
+  const level=documentClassification(doc);
+  if(level==='Public'||level==='Internal'){
+    toast('Controlled PDF prepared',
+      doc.code+' '+('Rev '+doc.rev)+' is downloaded as a non-editable PDF. The editable source is available only through an authorized revision workflow.');
+    return;
+  }
+  pendingClassificationDownload={doc,level};
+  const title=document.getElementById('classificationDownloadTitle');
+  const subtitle=document.getElementById('classificationDownloadSubtitle');
+  const levelEl=document.getElementById('classificationDownloadLevel');
+  const policy=document.getElementById('classificationDownloadPolicy');
+  const hero=document.getElementById('classificationDownloadHero');
+  const icon=document.getElementById('classificationDownloadIcon');
+  const rules=document.getElementById('classificationRules');
+  const action=document.getElementById('classificationDownloadAction');
+  const eyebrow=document.getElementById('classificationDownloadEyebrow');
+
+  if(levelEl) levelEl.textContent=level;
+  if(hero) hero.className='classificationDownloadHero '+classificationClass(level);
+  if(icon) icon.innerHTML='<i data-lucide="'+classificationIcon(level)+'"></i>';
+
+  if(level==='Confidential'){
+    if(eyebrow) eyebrow.textContent='CONFIDENTIAL DOWNLOAD';
+    if(title) title.textContent='Protected PDF download';
+    if(subtitle) subtitle.textContent='Confidential controlled copies receive additional protection outside the normal Internal download flow.';
+    if(policy) policy.textContent='Encrypted PDF · one-time password sent separately · personalized watermark · audited download.';
+    if(rules) rules.innerHTML=
+      '<div><i data-lucide="shield-lock"></i><span><b>Encrypted controlled PDF</b><small>The PDF is protected for the authorized recipient.</small></span></div>'+
+      '<div><i data-lucide="mail"></i><span><b>Password sent separately</b><small>The password is sent to '+escapeHtml(currentProfileEmail())+' and is not displayed in the workspace.</small></span></div>'+
+      '<div><i data-lucide="stamp"></i><span><b>Personalized watermark</b><small>User identity, timestamp and document ID are included on the downloaded copy.</small></span></div>'+
+      '<div><i data-lucide="scroll-text"></i><span><b>Access is audited</b><small>View and download events are written to the audit trail.</small></span></div>';
+    if(action){
+      action.disabled=false;
+      action.innerHTML='<i data-lucide="mail"></i>Send password & download PDF';
+      action.dataset.mode='confidential';
+    }
+  }else{
+    if(eyebrow) eyebrow.textContent='RESTRICTED INFORMATION';
+    if(title) title.textContent='Local download is disabled by default';
+    if(subtitle) subtitle.textContent='Restricted is the iQMS level for highly confidential information.';
+    if(policy) policy.textContent='Named-user access · MFA re-authentication · secure viewer · no ordinary download, print or external share.';
+    if(rules) rules.innerHTML=
+      '<div><i data-lucide="user-check"></i><span><b>Explicit named access</b><small>Broad department membership alone is not enough; the user must be explicitly authorized.</small></span></div>'+
+      '<div><i data-lucide="key-round"></i><span><b>MFA / re-authentication</b><small>Re-authenticate before opening Restricted content.</small></span></div>'+
+      '<div><i data-lucide="eye"></i><span><b>Secure viewer by default</b><small>Normal PDF download, print and external sharing are disabled.</small></span></div>'+
+      '<div><i data-lucide="file-check-2"></i><span><b>Exceptional export requires approval</b><small>If a local copy is truly required, request a time-bound export approval from Document Control or the information owner.</small></span></div>';
+    if(action){
+      action.disabled=false;
+      action.innerHTML='<i data-lucide="send"></i>Request exceptional export';
+      action.dataset.mode='restricted';
+    }
+  }
+  document.getElementById('classificationDownloadModal')?.classList.add('show');
+  refreshIcons();
+}
+function closeClassificationDownload(){
+  document.getElementById('classificationDownloadModal')?.classList.remove('show');
+  pendingClassificationDownload=null;
+}
+function confirmClassificationDownload(){
+  if(!pendingClassificationDownload) return;
+  const {doc,level}=pendingClassificationDownload;
+  const action=document.getElementById('classificationDownloadAction');
+  const mode=action?.dataset.mode;
+  closeClassificationDownload();
+  if(mode==='restricted'||level==='Restricted'){
+    toast('Export approval requested',
+      doc.code+' remains view-only. Document Control / the information owner must approve an exceptional local export.');
+  }else{
+    toast('Protected PDF prepared',
+      'A one-time password was sent to '+currentProfileEmail()+'. The Confidential PDF is watermarked and the download was recorded in the audit trail.');
+  }
 }
 function profileEmailForPic(pic){
   const map={
@@ -333,6 +430,10 @@ function openRevisionRequest(mode='request'){
   revisionRequestMode=mode;
   const start=mode==='start';
   const nextRev=nextRevisionNumber(doc.rev);
+  const requestorField=document.getElementById('revisionRequestorField');
+  const requestorInput=document.getElementById('revisionRequestor');
+  if(requestorField) requestorField.style.display=start?'none':'block';
+  if(requestorInput) requestorInput.value='Maria Santos';
 
   document.getElementById('revisionModeEyebrow').textContent=start?'START REVISION':'REVISION REQUEST';
   document.getElementById('revisionModalTitle').textContent=start?'Start '+('Rev '+nextRev):'Request a document revision';
@@ -400,7 +501,7 @@ function submitRevisionRequest(){
   if(revisionRequestMode==='request'){
     revisionRequests[doc.code]={
       code:doc.code,title:doc.title,pic,due,reason,reference,
-      requestedBy:'Maria Santos',requestedAt:new Date().toISOString(),
+      requestor:document.getElementById('revisionRequestor')?.value||'Maria Santos',requestedAt:new Date().toISOString(),
       space:activeSpace?.name||'',stage:'Awaiting PIC to start revision'
     };
     persistRevisionRequests();
@@ -419,7 +520,8 @@ function submitRevisionRequest(){
   openRevisions[doc.code]={
     code:doc.code,title:doc.title,currentRev:doc.rev,rev:'Rev '+rev,revRaw:rev,
     pic,due,reason,reference,
-    requestedBy:pending?.requestedBy||'Maria Santos',
+    initiatedBy:'Maria Santos',
+    sourceRequest:pending?{requestor:pending.requestor,requestedAt:pending.requestedAt,reason:pending.reason}:null,
     mode:'start',stage:'Working copy required',downloaded:false,
     createdAt:new Date().toISOString(),space:activeSpace?.name||''
   };
@@ -482,6 +584,7 @@ function refreshOpenRevisionIndicators(doc=activeControlledDoc()){
   if(requestBanner){
     requestBanner.style.display=!revision&&request?'grid':'none';
     if(!revision&&request){
+      document.getElementById('pendingRevisionRequestor').textContent=request.requestor||'—';
       document.getElementById('pendingRevisionPic').textContent=request.pic;
       document.getElementById('pendingRevisionDue').textContent=request.due||'Not set';
       document.getElementById('pendingRevisionReason').textContent=request.reason;
@@ -517,10 +620,13 @@ function openSecureRevisionDownload(){
     return;
   }
   const ext=revisionEditableExtension(doc);
+  const classification=documentClassification(doc);
   const filename=doc.code+'_'+revision.rev.replace(/\s+/g,'')+'_WORKING.'+ext;
   document.getElementById('secureDownloadFile').textContent=filename;
-  document.getElementById('secureDownloadMeta').textContent='Editable '+ext.toUpperCase()+' · '+revision.rev+' working revision';
-  document.getElementById('securePasswordEmail').textContent='A one-time file password will be sent to '+profileEmailForPic(revision.pic)+'. The password is not displayed on this page.';
+  document.getElementById('secureDownloadMeta').textContent='Editable '+ext.toUpperCase()+' · '+revision.rev+' working revision · '+classification;
+  document.getElementById('securePasswordEmail').textContent=classification==='Restricted'
+    ? 'Restricted source checkout requires re-authentication and explicit export approval before a local editable file is issued.'
+    : 'A one-time file password will be sent to '+profileEmailForPic(revision.pic)+'. The password is not displayed on this page.';
   document.getElementById('historyNewRev').textContent=revision.revRaw;
   document.getElementById('historyNewReason').textContent=revision.reason;
   const placement=document.getElementById('revisionHistoryPlacement');
@@ -559,7 +665,7 @@ function refreshRevisionTasks(){
     '<button class="approvalItem revisionRequestTaskItem" onclick="openControlledDocumentByCode(\''+escapeHtml(r.code)+'\')">'
     +'<div class="approvalTop"><span class="tag warning">Revision requested</span><small>Action for PIC</small></div>'
     +'<b>'+escapeHtml(r.code)+'</b><strong>'+escapeHtml(r.title)+'</strong>'
-    +'<span>PIC: '+escapeHtml(r.pic)+' · No revision number yet · Due '+escapeHtml(r.due||'Not set')+'</span></button>'
+    +'<span>Requestor: '+escapeHtml(r.requestor||'—')+' · PIC: '+escapeHtml(r.pic)+' · No revision number yet · Due '+escapeHtml(r.due||'Not set')+'</span></button>'
   ).join('');
 
   const revisionRows=revisions.map(r=>
@@ -571,7 +677,7 @@ function refreshRevisionTasks(){
 
   host.innerHTML=requestRows+revisionRows;
   const assigned=[...requests,...revisions].filter(r=>r.pic==='Maria Santos').length;
-  const requested=requests.filter(r=>r.requestedBy==='Maria Santos'&&r.pic!=='Maria Santos').length;
+  const requested=requests.filter(r=>r.requestor==='Maria Santos'&&r.pic!=='Maria Santos').length;
   const a=document.getElementById('assignedTaskCount'); if(a) a.textContent=9+assigned;
   const q=document.getElementById('requestedTaskCount'); if(q) q.textContent=4+requested;
   const all=document.getElementById('allActiveTaskCount'); if(all) all.textContent=24+requests.length+revisions.length;
@@ -1079,7 +1185,7 @@ const spaceDefinitions={
   recruitment:{
     name:'Recruitment',path:'Recruitment / Controlled Information',count:118,
     docs:[
-      {code:'QMS-PRO-REC-001',title:'Recruitment Procedure',type:'Procedure · Recruitment',rev:'03',owner:'Recruitment Manager',status:'Effective',kind:'success',review:'01 Sep 2027',approver:'Quality Manager',effective:'01 Sep 2026',purpose:'Defines recruitment planning, candidate screening, interview, selection and retained recruitment-record controls.'},
+      {code:'QMS-PRO-REC-001',title:'Recruitment Procedure',type:'Procedure · Recruitment',rev:'03',classification:'Internal',owner:'Recruitment Manager',status:'Effective',kind:'success',review:'01 Sep 2027',approver:'Quality Manager',effective:'01 Sep 2026',purpose:'Defines recruitment planning, candidate screening, interview, selection and retained recruitment-record controls.'},
       {code:'SOP-REC-004',title:'Candidate Screening SOP',type:'SOP · Recruitment',rev:'04',owner:'Recruitment Manager',status:'Effective',kind:'success',review:'15 Aug 2027',approver:'Quality Manager',effective:'15 Aug 2026',purpose:'Defines the controlled screening workflow, decision criteria and evidence required before candidate endorsement.'},
       {code:'FORM-REC-006',title:'Candidate Evaluation Form',type:'Form · Recruitment',rev:'02',owner:'Recruitment',status:'Effective',kind:'success',review:'10 Jul 2027',approver:'Recruitment Manager',effective:'10 Jul 2026',purpose:'Controlled master used to record candidate evaluation and interview outcomes.'}
     ]
@@ -1087,7 +1193,7 @@ const spaceDefinitions={
   quality:{
     name:'Quality Management',path:'Quality / Procedures',count:486,
     docs:[
-      {code:'SOP-QA-014',title:'Control of Nonconforming Outputs',type:'SOP · Quality',rev:'06',owner:'M. Santos',status:'Effective',kind:'success',review:'15 Sep 2027',approver:'Quality Manager',effective:'15 Sep 2026',purpose:'Defines controls for identifying, segregating, reviewing and dispositioning nonconforming outputs.'},
+      {code:'SOP-QA-014',title:'Control of Nonconforming Outputs',type:'SOP · Quality',rev:'06',classification:'Internal',owner:'M. Santos',status:'Effective',kind:'success',review:'15 Sep 2027',approver:'Quality Manager',effective:'15 Sep 2026',purpose:'Defines controls for identifying, segregating, reviewing and dispositioning nonconforming outputs.'},
       {code:'SOP-QA-005',title:'Internal Audit Procedure',type:'SOP · Quality',rev:'04',owner:'A. Reyes',status:'Review due',kind:'warning',review:'03 Oct 2026',approver:'Quality Manager',effective:'03 Oct 2025',purpose:'Defines planning, execution, reporting and follow-up requirements for the internal audit program.'},
       {code:'SOP-QA-001',title:'Document Control Procedure',type:'SOP · Quality',rev:'05',owner:'M. Santos',status:'Effective',kind:'success',review:'20 Sep 2027',approver:'Quality Manager',effective:'20 Sep 2026',purpose:'Defines document creation, review, approval, release, revision, distribution and obsolete-document controls.'},
       {code:'SOP-QA-020',title:'Corrective Action Procedure',type:'SOP · Quality',rev:'03',owner:'J. Dela Cruz',status:'Draft',kind:'neutral',review:'—',approver:'Quality Manager',effective:'Not effective',purpose:'Defines investigation, root-cause analysis, corrective action, verification and closure requirements.'}
@@ -1224,6 +1330,8 @@ function selectSpaceDocument(doc,row){
   document.getElementById('previewDocType').textContent=(doc.type||'CONTROLLED DOCUMENT').toUpperCase();
 
   document.getElementById('detailDocType').textContent=doc.type||'Controlled document';
+  const classificationHost=document.getElementById('docClassification');
+  if(classificationHost) classificationHost.innerHTML=renderClassificationPill(doc);
   document.getElementById('detailResourceId').textContent='RES-'+String(doc.code||'DOC').replace(/[^A-Z0-9]/gi,'').slice(0,12).toUpperCase();
   document.getElementById('changeReasonRev').textContent=doc.rev==='—'?'—':doc.rev;
   document.getElementById('changeReasonText').textContent=doc.status==='Draft'
