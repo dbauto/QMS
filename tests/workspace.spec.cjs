@@ -84,7 +84,7 @@ test('task documents open in context without navigating to Documents', async ({ 
   await page.locator('#openTaskDocument').click();
   await expect(page.locator('#repositoryDocument')).toBeVisible();
   await expect(page.locator('#docContextBreadcrumb')).toHaveText('My tasks');
-  await expect(page).toHaveURL(/#\\/approvals$/);
+  await expect(page).toHaveURL(/#\/approvals$/);
 });
 
 
