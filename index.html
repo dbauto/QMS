@@ -32,7 +32,7 @@
 
     <nav class="primaryNav" aria-label="Main navigation">
       <div class="navGroup">Your workspace</div>
-<button class="navItem" data-view="dashboard"><span class="navIcon"><i data-lucide="layout-dashboard"></i></span><span>Overview</span></button><button class="navItem" data-view="approvals"><span class="navIcon"><i data-lucide="clipboard-check"></i></span><span>My tasks</span><span class="navBadge">9</span></button><button class="navItem" data-view="repository"><span class="navIcon"><i data-lucide="files"></i></span><span>Documents</span></button><button class="navItem" data-view="records"><span class="navIcon"><i data-lucide="archive"></i></span><span>Records & evidence</span></button>
+<button class="navItem" data-view="dashboard"><span class="navIcon"><i data-lucide="layout-dashboard"></i></span><span>Overview</span></button><button class="navItem" data-view="approvals"><span class="navIcon"><i data-lucide="clipboard-check"></i></span><span>Documents in Review</span><span class="navBadge">9</span></button><button class="navItem" data-view="repository"><span class="navIcon"><i data-lucide="files"></i></span><span>Documents</span></button><button class="navItem" data-view="records"><span class="navIcon"><i data-lucide="archive"></i></span><span>Records & evidence</span></button>
       <div class="navGroup">Quality assurance</div>
 <button class="navItem" data-view="compliance"><span class="navIcon"><i data-lucide="badge-check"></i></span><span>ISO readiness</span></button><button class="navItem" data-view="relationships"><span class="navIcon"><i data-lucide="waypoints"></i></span><span>Traceability</span></button><button class="navItem" data-view="audit"><span class="navIcon"><i data-lucide="history"></i></span><span>Audit trail</span></button>
       <details class="navDisclosure"><summary><i data-lucide="settings-2"></i>Administration<i data-lucide="chevron-down"></i></summary>
@@ -53,7 +53,7 @@
           <button class="headerIconButton" id="searchToggle" aria-label="Search" title="Search"><i data-lucide="search"></i></button>
           <input id="globalSearch" placeholder="Find a document…" aria-label="Find a document" autocomplete="off" aria-controls="searchResults"><div id="searchResults" class="searchResults" role="region" aria-label="Search results" hidden></div>
         </div>
-        <button class="headerIconButton notification" onclick="showView('approvals')" aria-label="View pending tasks" title="View pending tasks"><i data-lucide="bell"></i><i class="notificationCount">3</i></button>
+        <button class="headerIconButton notification" onclick="showView('approvals')" aria-label="View documents in review" title="View documents in review"><i data-lucide="bell"></i><i class="notificationCount">3</i></button>
         <button class="profileButton" onclick="openSettingsTab('profile')" title="My profile"><span class="avatar" id="headerProfileAvatar">MS</span><span><b id="headerProfileName">Maria Santos</b><small id="headerProfileTitle">Quality Manager</small></span><span class="profileChevron"><i data-lucide="chevron-down"></i></span></button>
       </div>
     </header>
@@ -62,9 +62,9 @@
       <div id="dashboard" class="view active">
         <div class="pageHeader overviewHeader">
           <div><span class="pageEyebrow">YOUR QUALITY WORKSPACE</span><h1>Overview</h1><p>A clear view of what needs your attention.</p></div>
-          <div class="pageActions"><button class="btn primary" onclick="showView('approvals')">Go to my tasks <i data-lucide="arrow-right"></i></button></div>
+          <div class="pageActions"><button class="btn primary" onclick="showView('approvals')">View documents in review <i data-lucide="arrow-right"></i></button></div>
         </div>
-        <div class="overviewIntro"><div class="introIcon"><i data-lucide="sun"></i></div><div><b>Welcome back, Maria.</b><p>You have 9 assigned tasks. Start with the approval due today.</p></div><span class="introDate">23 September 2026</span></div>
+        <div class="overviewIntro"><div class="introIcon"><i data-lucide="sun"></i></div><div><b>Welcome back, Maria.</b><p>You have 9 documents in review. Start with the approval due today.</p></div><span class="introDate">23 September 2026</span></div>
         <div class="overviewBoard">
           <section class="overviewMainPanel surface">
             <div class="overviewPanelTabs" id="overviewPanelTabs">
@@ -694,7 +694,7 @@
       </div>
 
       <div id="approvals" class="view">
-        <div class="pageHeader"><div><h1>My tasks</h1><p>Review, approve and acknowledge controlled changes assigned to you.</p></div><div class="pageActions"><button class="btn secondary">Route templates</button></div></div>
+        <div class="pageHeader"><div><h1>Documents in Review</h1><p>Track ongoing revisions, reviews, approvals and controlled changes that need attention.</p></div><div class="pageActions"><button class="btn secondary">Route templates</button></div></div>
         <div class="taskWorkspace">
           <section class="taskQueue">
             <div class="queueTabs"><button class="active">Assigned to me <b id="assignedTaskCount">9</b></button><button>Requested by me <b id="requestedTaskCount">4</b></button><button>All active <b id="allActiveTaskCount">24</b></button></div><div id="revisionTaskQueue"></div>
