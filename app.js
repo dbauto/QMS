@@ -1722,6 +1722,7 @@ function applyFinalWorkflowDecision(doc,result){
     doc.status='Returned for changes';
     doc.kind='warning';
     doc.effective='Not effective';
+    removeApprovalTaskForDocument(doc.code);
   }else if(normalized==='published'){
     const revision=openRevisions[doc.code];
     if(revision?.revRaw) doc.rev=revision.revRaw;
@@ -1770,7 +1771,8 @@ function taskDecision(result){
       const next=document.querySelector('#approvals .approvalItem[data-document-code]');
       if(next) selectApprovalTaskByCode(next.dataset.documentCode,next);
     }else{
-      selectApprovalTaskByCode(code,item);
+      const next=document.querySelector('#approvals .approvalItem[data-document-code]');
+      if(next) selectApprovalTaskByCode(next.dataset.documentCode,next);
       toast('Revision returned',found.doc.code+' Rev '+found.doc.rev+' remains the same working revision for correction.');
     }
     return;
