@@ -1,4 +1,4 @@
-/* Testing-shell interactions. The existing document and workflow model stays in app.js. */
+/* Calm workspace interactions. The existing document and workflow model stays in app.js. */
 (() => {
   const nav = document.querySelector('.sideNav');
   const main = document.querySelector('.mainArea');
@@ -50,7 +50,7 @@
       } else item.removeAttribute('aria-current');
     });
     if (!restoringHistory && location.hash !== '#/' + id) history.pushState(null, '', '#/' + id);
-    document.title = (viewLabels[id] || 'Workspace') + ' · iQMS testing preview';
+    document.title = (viewLabels[id] || 'Workspace') + ' · iQMS';
     if (moveFocus) {
       const title = document.querySelector('.view.active h1');
       if (title && document.activeElement !== document.body) { title.tabIndex = -1; title.focus({ preventScroll: true }); }

@@ -3,8 +3,66 @@ function refreshIcons(){
 }
 const navItems=[...document.querySelectorAll('.navItem[data-view]')];
 
-/* Navigation remains labeled and stable; the testing shell handles the mobile drawer. */
-function setSidebarPinned() {}
+/* Hover-expand navigation with a persistent pin state on desktop. */
+const sideNav=document.querySelector('.sideNav');
+const sidebarPin=document.getElementById('sidebarPin');
+const desktopNavigation=()=>window.matchMedia('(min-width: 781px)').matches;
+
+function renderSidebarPin(){
+  const pinned=document.body.classList.contains('navPinned');
+  if(sidebarPin){
+    sidebarPin.innerHTML=pinned?'<i data-lucide="pin-off"></i>':'<i data-lucide="pin"></i>';
+    sidebarPin.title=pinned?'Unpin sidebar':'Pin sidebar';
+    sidebarPin.setAttribute('aria-label',sidebarPin.title);
+    sidebarPin.setAttribute('aria-pressed',pinned?'true':'false');
+  }
+  refreshIcons();
+}
+
+function setSidebarPinned(pinned){
+  if(!desktopNavigation()) return;
+  savedPinned=pinned;
+  document.body.classList.toggle('navPinned',pinned);
+  document.body.classList.toggle('navExpanded',pinned||Boolean(sideNav?.matches(':hover'))||Boolean(sideNav?.contains(document.activeElement)));
+  try{
+    localStorage.setItem('nexus.navPinned',pinned?'1':'0');
+    localStorage.removeItem('nexus.navExpanded');
+  }catch(e){}
+  renderSidebarPin();
+}
+
+function setSidebarHover(expanded){
+  if(!desktopNavigation()||document.body.classList.contains('navPinned')) return;
+  document.body.classList.toggle('navExpanded',expanded);
+  renderSidebarPin();
+}
+
+let savedPinned=false;
+try{
+  const storedPin=localStorage.getItem('nexus.navPinned');
+  savedPinned=storedPin==='1'||(storedPin===null&&localStorage.getItem('nexus.navExpanded')==='1');
+  localStorage.removeItem('nexus.navExpanded');
+  localStorage.removeItem('nexus.navHidden');
+}catch(e){}
+document.body.classList.remove('navHidden');
+if(desktopNavigation()) setSidebarPinned(savedPinned);
+sideNav?.addEventListener('mouseenter',()=>setSidebarHover(true));
+sideNav?.addEventListener('mouseleave',()=>setSidebarHover(false));
+sideNav?.addEventListener('focusin',()=>setSidebarHover(true));
+sideNav?.addEventListener('focusout',()=>{
+  requestAnimationFrame(()=>{
+    if(sideNav&&!sideNav.contains(document.activeElement)&&!sideNav.matches(':hover')) setSidebarHover(false);
+  });
+});
+window.setSidebarPinned=setSidebarPinned;
+window.toggleSidebarPin=event=>{
+  event.stopPropagation();
+  setSidebarPinned(!document.body.classList.contains('navPinned'));
+};
+window.matchMedia('(min-width: 781px)').addEventListener('change',event=>{
+  if(event.matches) setSidebarPinned(savedPinned||document.body.classList.contains('navPinned'));
+  else document.body.classList.remove('navExpanded','navPinned');
+});
 
 function wirePanel(workspaceSelector,hideId,showId,className='inspectorHidden'){
   const workspace=document.querySelector(workspaceSelector);
@@ -161,7 +219,7 @@ function saveSettingsProfile(){
   if(headerAvatar) headerAvatar.textContent=initials;
   if(settingsAvatar) settingsAvatar.textContent=initials;
   try{
-    localStorage.setItem('iqms-testing.iqms.profile',JSON.stringify({
+    localStorage.setItem('iqms.profile',JSON.stringify({
       name,title,
       department:document.getElementById('profileDepartment')?.value,
       email:document.getElementById('profileEmail')?.value,
@@ -187,7 +245,7 @@ function saveSettingsCompany(){
   const ws=document.querySelector('.workspaceSwitch');
   if(ws) ws.title=name;
   try{
-    localStorage.setItem('iqms-testing.iqms.company',JSON.stringify({
+    localStorage.setItem('iqms.company',JSON.stringify({
       name,
       legalName:document.getElementById('companyLegalName')?.value,
       workspace,
@@ -214,8 +272,8 @@ document.getElementById('removeCompanyLogoBtn')?.addEventListener('click',()=>to
 let revisionRequestMode='request';
 let openRevisions={};
 let revisionRequests={};
-try{openRevisions=JSON.parse(localStorage.getItem('iqms-testing.iqms.openRevisions')||'{}')||{}}catch(e){openRevisions={}}
-try{revisionRequests=JSON.parse(localStorage.getItem('iqms-testing.iqms.revisionRequests')||'{}')||{}}catch(e){revisionRequests={}}
+try{openRevisions=JSON.parse(localStorage.getItem('iqms.openRevisions')||'{}')||{}}catch(e){openRevisions={}}
+try{revisionRequests=JSON.parse(localStorage.getItem('iqms.revisionRequests')||'{}')||{}}catch(e){revisionRequests={}}
 
 if(!Object.keys(openRevisions).length){
   openRevisions['QMS-PRO-REC-001']={
@@ -236,7 +294,7 @@ if(!Object.keys(openRevisions).length){
     downloadedAt:'2026-09-22T09:26:00+08:00',
     space:'Recruitment'
   };
-  try{localStorage.setItem('iqms-testing.iqms.openRevisions',JSON.stringify(openRevisions))}catch(e){}
+  try{localStorage.setItem('iqms.openRevisions',JSON.stringify(openRevisions))}catch(e){}
 }
 if(!Object.keys(revisionRequests).length && !openRevisions['SOP-QA-014']){
   revisionRequests['SOP-QA-014']={
@@ -251,7 +309,7 @@ if(!Object.keys(revisionRequests).length && !openRevisions['SOP-QA-014']){
     space:'Quality Management',
     stage:'Awaiting PIC to start revision'
   };
-  try{localStorage.setItem('iqms-testing.iqms.revisionRequests',JSON.stringify(revisionRequests))}catch(e){}
+  try{localStorage.setItem('iqms.revisionRequests',JSON.stringify(revisionRequests))}catch(e){}
 }
 
 function activeControlledDoc(){
@@ -379,10 +437,10 @@ function profileEmailForPic(pic){
   return map[pic]||'user@abc.com';
 }
 function persistOpenRevisions(){
-  try{localStorage.setItem('iqms-testing.iqms.openRevisions',JSON.stringify(openRevisions))}catch(e){}
+  try{localStorage.setItem('iqms.openRevisions',JSON.stringify(openRevisions))}catch(e){}
 }
 function persistRevisionRequests(){
-  try{localStorage.setItem('iqms-testing.iqms.revisionRequests',JSON.stringify(revisionRequests))}catch(e){}
+  try{localStorage.setItem('iqms.revisionRequests',JSON.stringify(revisionRequests))}catch(e){}
 }
 function revisionStateBadge(code){
   if(openRevisions[code]) return '<em class="revisionOpenInline">'+escapeHtml(openRevisions[code].rev)+' open</em>';
@@ -1622,10 +1680,10 @@ function openSpaceModal(){
 function closeSpaceModal(){document.getElementById('spaceModal')?.classList.remove('show')}
 
 function loadCustomSpaces(){
-  try{return JSON.parse(localStorage.getItem('iqms-testing.nexus.customSpaces')||'[]')}catch(e){return[]}
+  try{return JSON.parse(localStorage.getItem('nexus.customSpaces')||'[]')}catch(e){return[]}
 }
 function saveCustomSpaces(spaces){
-  try{localStorage.setItem('iqms-testing.nexus.customSpaces',JSON.stringify(spaces))}catch(e){}
+  try{localStorage.setItem('nexus.customSpaces',JSON.stringify(spaces))}catch(e){}
 }
 function renderCustomSpaceCard(space){
   if(!spacesHost||document.querySelector('[data-space-id="'+space.id+'"]')) return;
@@ -1934,10 +1992,10 @@ function selectTypeConfiguration(row,key){
 document.querySelectorAll('.typeRow').forEach(row=>row.addEventListener('click',()=>selectTypeConfiguration(row,row.dataset.type)));
 
 function loadCustomDocumentTypes(){
-  try{return JSON.parse(localStorage.getItem('iqms-testing.nexus.customDocumentTypes')||'[]')}catch(e){return[]}
+  try{return JSON.parse(localStorage.getItem('nexus.customDocumentTypes')||'[]')}catch(e){return[]}
 }
 function saveCustomDocumentTypes(types){
-  try{localStorage.setItem('iqms-testing.nexus.customDocumentTypes',JSON.stringify(types))}catch(e){}
+  try{localStorage.setItem('nexus.customDocumentTypes',JSON.stringify(types))}catch(e){}
 }
 function renderCustomDocumentTypeRow(type){
   if(!type?.id||document.querySelector('.typeRow[data-type="'+type.id+'"]')) return;
@@ -2146,7 +2204,7 @@ function nextControlledSequence(typeCode,spaceCode){
     }
   });
   try{
-    const saved=JSON.parse(localStorage.getItem('iqms-testing.nexus.registeredControlledIds')||'[]');
+    const saved=JSON.parse(localStorage.getItem('nexus.registeredControlledIds')||'[]');
     saved.forEach(id=>{
       if(String(id).startsWith(prefix)){
         const n=parseInt(String(id).slice(prefix.length),10);
@@ -2755,9 +2813,9 @@ function finishResourceRegistration(){
     const generatedId=document.getElementById('regId')?.value;
     if(generatedId){
       try{
-        const saved=JSON.parse(localStorage.getItem('iqms-testing.nexus.registeredControlledIds')||'[]');
+        const saved=JSON.parse(localStorage.getItem('nexus.registeredControlledIds')||'[]');
         if(!saved.includes(generatedId)) saved.push(generatedId);
-        localStorage.setItem('iqms-testing.nexus.registeredControlledIds',JSON.stringify(saved));
+        localStorage.setItem('nexus.registeredControlledIds',JSON.stringify(saved));
       }catch(e){}
     }
     showView('repository');
@@ -2891,7 +2949,7 @@ renderDmsSpace('quality');
 selectAccessUser('maria',document.querySelector('.accessUserRow[data-user-id="maria"]'));
 
 try{
-  const p=JSON.parse(localStorage.getItem('iqms-testing.iqms.profile')||'null');
+  const p=JSON.parse(localStorage.getItem('iqms.profile')||'null');
   if(p){
     if(document.getElementById('profileFullName')) document.getElementById('profileFullName').value=p.name||'';
     if(document.getElementById('profileJobTitle')) document.getElementById('profileJobTitle').value=p.title||'';
@@ -2902,7 +2960,7 @@ try{
     if(document.getElementById('profileLanguage')) document.getElementById('profileLanguage').value=p.language||'English';
     saveSettingsProfile();
   }
-  const co=JSON.parse(localStorage.getItem('iqms-testing.iqms.company')||'null');
+  const co=JSON.parse(localStorage.getItem('iqms.company')||'null');
   if(co){
     if(document.getElementById('companyDisplayName')) document.getElementById('companyDisplayName').value=co.name||'';
     if(document.getElementById('companyLegalName')) document.getElementById('companyLegalName').value=co.legalName||'';

@@ -3,17 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="iqms-build" content="testing-ui-1">
+<meta name="iqms-build" content="calm-workspace-2">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>iQMS — Testing preview</title>
+<title>Overview · iQMS</title>
 <meta name="description" content="A calmer quality workspace for documents, evidence and your next action.">
-<meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./styles.css?v=testing-ui-1">
+<link rel="stylesheet" href="./styles.css?v=calm-workspace-2">
 
-<link rel="stylesheet" href="./calm.css?v=testing-1">
+<link rel="stylesheet" href="./calm.css?v=calm-workspace-2">
 </head>
 <body class="calmUI">
 <a class="skipLink" href="#pageContent">Skip to content</a>
@@ -22,6 +21,7 @@
     <div class="brand">
       <div class="brandMark" title="iQMS"><i data-lucide="shield-check"></i></div>
       <div class="brandText"><strong>iQMS</strong><span>Quality Management</span></div>
+      <button class="iconButton sidebarPin" id="sidebarPin" type="button" aria-label="Pin sidebar" aria-pressed="false" onpointerdown="window.toggleSidebarPin(event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.toggleSidebarPin(event)}"><i data-lucide="pin"></i></button>
       <button class="iconButton mobileNavClose" id="closeNavigation" aria-label="Close navigation"><i data-lucide="x"></i></button>
     </div>
 
@@ -47,7 +47,7 @@
     <header class="commandBar">
       <button class="iconButton mobileNavToggle" id="openNavigation" aria-label="Open navigation" aria-controls="mainNavigation" aria-expanded="false"><i data-lucide="menu"></i></button>
       <div class="breadcrumb"><span class="workspaceCrumb">ABC Manufacturing</span><span class="crumbSep">/</span><b id="breadcrumbCurrent">Overview</b></div>
-      <span class="previewBadge"><span></span>Testing preview <small>· Sample data</small></span>
+      <span class="previewBadge"><span></span>Sample workspace</span>
       <div class="commandActions">
         <div class="headerSearch" id="headerSearch">
           <button class="headerIconButton" id="searchToggle" aria-label="Search" title="Search"><i data-lucide="search"></i></button>
@@ -136,7 +136,7 @@
           </aside>
         </div>
         <section class="workspaceSnapshot" aria-label="Workspace at a glance"><div class="snapshotHeading"><i data-lucide="chart-no-axes-combined"></i><span>Workspace at a glance</span></div><button onclick="showView('repository')"><strong>1,428</strong><span>Controlled documents</span><i data-lucide="arrow-up-right"></i></button><button onclick="showView('records')"><strong>8,942</strong><span>Linked evidence</span><i data-lucide="arrow-up-right"></i></button><button onclick="showView('approvals')"><strong>24</strong><span>Workspace actions</span><i data-lucide="arrow-up-right"></i></button></section>
-        <p class="previewFootnote">Preview workspace · Sample records and assessments for design review.</p>
+        <p class="previewFootnote">Sample records and assessments for workspace review.</p>
       </div>
 
       <div id="repository" class="view">
@@ -1883,8 +1883,8 @@
   </div>
 </div>
 
-<script defer src="./vendor/lucide.min.js"></script>
-<script defer src="./app.js?v=testing-ui-1"></script>
-<script defer src="./calm.js?v=testing-1"></script>
+<script defer src="./vendor/lucide.min.js?v=calm-workspace-2"></script>
+<script defer src="./app.js?v=calm-workspace-2"></script>
+<script defer src="./calm.js?v=calm-workspace-2"></script>
 </body>
 </html>

@@ -18,4 +18,4 @@ http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': (types[path.extname(file)] || 'application/octet-stream') + '; charset=utf-8', 'Cache-Control': 'no-store', 'Vary': 'Accept-Encoding', ...(compress ? { 'Content-Encoding': 'gzip' } : {}) });
     res.end(compress ? gzipSync(data) : data);
   });
-}).listen(Number(process.env.PORT || 4173), '127.0.0.1', () => console.log('QMS testing preview: http://localhost:' + (process.env.PORT || 4173)));
+}).listen(Number(process.env.PORT || 4173), '127.0.0.1', () => console.log('QMS workspace: http://localhost:' + (process.env.PORT || 4173)));

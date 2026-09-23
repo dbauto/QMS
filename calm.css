@@ -227,3 +227,83 @@ body.calmUI{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;font-size:
 .calmUI .complianceDrawerBackdrop:not(.show){visibility:hidden}.calmUI .permissionCheck{position:relative}.calmUI .permissionCheck input:focus-visible+span{outline:3px solid var(--brand);outline-offset:3px}
 .calmUI .traceSection h3,.calmUI .tracePathHeader h3{font-size:14px}.calmUI .traceSection header p,.calmUI .traceSectionHeader p,.calmUI .tracePathHeader p,.calmUI .tracePathNote{font-size:12px;line-height:1.5}.calmUI .traceItem b,.calmUI .tracePathStep b{font-size:12px}.calmUI .traceSection{padding:18px}.calmUI .tracePathStep small{font-size:10px}.calmUI .traceItem{min-height:62px}
 @media(max-width:520px){.workspaceSnapshot button>strong{grid-column:1;grid-row:1}.workspaceSnapshot button>span{grid-column:2;grid-row:1}}
+
+/* Dark green navigation rail: compact by default, expands on hover or keyboard focus,
+   and stays open when pinned. The redesigned grouping remains unchanged. */
+@media(min-width:781px){
+  .calmUI .sideNav{width:58px!important;padding:22px 9px 16px!important;background:#083d35!important;border-right:0!important;align-items:center!important;overflow:hidden!important;transition:width .18s ease,box-shadow .18s ease!important}
+  .calmUI .mainArea{margin-left:58px!important;transition:margin-left .18s ease!important}
+  .calmUI .brand{position:relative!important;width:40px!important;height:40px!important;padding:0!important;margin:0 0 22px!important;justify-content:center!important;gap:0!important;flex:0 0 auto}
+  .calmUI .brandMark{width:36px!important;height:36px!important;background:#19a68f!important;color:#fff!important}
+  .calmUI .brandText,.calmUI .workspaceSwitch,.calmUI .sideStatus>div{display:none!important}
+  .calmUI .primaryNav{align-items:center!important;gap:4px!important;overflow:visible!important}
+  .calmUI .navGroup{width:40px!important;height:1px!important;margin:11px 0 8px!important;padding:0!important;background:#ffffff24!important;color:transparent!important;font-size:0!important;overflow:hidden!important}
+  .calmUI .navGroup:first-child{margin-top:0!important}
+  .calmUI .navItem{position:relative;width:40px!important;height:42px!important;padding:0!important;justify-content:center!important;gap:0!important;color:#a5c8c1!important;border:0!important;background:transparent!important}
+  .calmUI .navItem>span:not(.navIcon){display:none!important}
+  .calmUI .navItem .navIcon{width:20px!important;color:inherit!important}
+  .calmUI .navItem:hover{background:rgba(255,255,255,.09)!important;color:#fff!important}
+  .calmUI .navItem.active{background:#176a5c!important;color:#fff!important}
+  .calmUI .navDisclosure{width:40px;margin-top:11px;padding-top:9px;border-top:1px solid #ffffff24}
+  .calmUI .navDisclosure summary{width:40px;min-height:42px;padding:0;justify-content:center;gap:0;color:#a5c8c1;font-size:0}
+  .calmUI .navDisclosure summary:hover{background:rgba(255,255,255,.09);color:#fff}
+  .calmUI .navDisclosure summary>.lucide:last-child{display:none}
+  .calmUI .navDisclosure .navItem{display:none!important}
+  .calmUI .navAssistant{width:40px;margin-top:auto;padding-top:22px}
+  .calmUI .navAssistant .navItem{border:0!important;background:transparent!important}
+  .calmUI .navAssistant .navItem:hover{background:rgba(255,255,255,.09)!important}
+  .calmUI .sideStatus{width:40px!important;justify-content:center;margin:12px 0 0!important;padding:11px 0 0!important;border-top:1px solid #ffffff24!important}
+  .calmUI .sideStatus>i{width:7px!important;height:7px!important;background:#45d39f!important}
+  .calmUI .sidebarPin{display:none!important}
+
+  .calmUI.navExpanded .sideNav{width:228px!important;padding:22px 14px 16px!important;align-items:stretch!important;overflow-y:auto!important;overflow-x:hidden!important}
+  .calmUI.navExpanded:not(.navPinned) .sideNav{box-shadow:12px 0 28px rgba(4,35,30,.24)!important}
+  .calmUI.navExpanded .mainArea{margin-left:58px!important}
+  .calmUI.navPinned .mainArea{margin-left:228px!important}
+  .calmUI.navExpanded .brand{width:auto!important;height:40px!important;margin:0 0 22px!important;padding:0 42px 0 6px!important;justify-content:flex-start!important;gap:10px!important}
+  .calmUI.navExpanded .brandText{display:block!important;min-width:0}
+  .calmUI.navExpanded .brandText strong{color:#fff!important;font-size:18px!important;letter-spacing:-.5px}
+  .calmUI.navExpanded .brandText span{color:#89b1a9!important;font-size:9px!important}
+  .calmUI.navExpanded .sidebarPin{display:grid!important;position:absolute!important;right:0;top:2px;width:36px!important;height:36px!important;min-width:36px;color:#a5c8c1;background:transparent;border:0}
+  .calmUI.navExpanded .sidebarPin:hover{background:rgba(255,255,255,.12)!important;color:#fff}
+  .calmUI.navExpanded .workspaceSwitch{display:flex!important;width:100%!important;margin:0 0 14px!important;padding:10px!important;background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.12)!important}
+  .calmUI.navExpanded .workspaceAvatar{background:#165f54;color:#d5f7f0;border-color:#26796c}
+  .calmUI.navExpanded .workspaceText{display:block!important}
+  .calmUI.navExpanded .workspaceText b{color:#fff!important}
+  .calmUI.navExpanded .workspaceText small{color:#89b1a9!important}
+  .calmUI.navExpanded .primaryNav{align-items:stretch!important}
+  .calmUI.navExpanded .navGroup{width:auto!important;height:auto!important;margin:15px 10px 7px!important;padding:0!important;background:transparent!important;color:#78a99f!important;font-size:9px!important;overflow:visible!important}
+  .calmUI.navExpanded .navGroup:first-child{margin-top:0!important}
+  .calmUI.navExpanded .navItem{width:100%!important;height:42px!important;padding:0 11px!important;justify-content:flex-start!important;gap:11px!important;font-size:13px!important}
+  .calmUI.navExpanded .navItem>span:not(.navIcon){display:block!important}
+  .calmUI.navExpanded .navBadge{display:grid!important;background:#0b5046!important;color:#d5f7f0!important}
+  .calmUI.navExpanded .navDisclosure{width:auto;margin-top:16px;padding-top:10px;border-color:#ffffff24}
+  .calmUI.navExpanded .navDisclosure summary{width:100%;min-height:42px;padding:0 11px;justify-content:flex-start;gap:11px;color:#a5c8c1;font-size:13px}
+  .calmUI.navExpanded .navDisclosure summary>.lucide:last-child{display:block;margin-left:auto}
+  .calmUI.navExpanded .navDisclosure[open] .navItem{display:flex!important;padding-left:16px!important}
+  .calmUI.navExpanded .navAssistant{width:auto;padding-top:22px}
+  .calmUI.navExpanded .navAssistant .navItem{border:1px solid rgba(255,255,255,.13)!important;background:rgba(255,255,255,.05)!important}
+  .calmUI.navExpanded .sideStatus{display:flex!important;width:auto!important;justify-content:flex-start;margin:12px 9px 0!important;padding:12px 0 0!important}
+  .calmUI.navExpanded .sideStatus>div{display:block!important}
+  .calmUI.navExpanded .sideStatus b{color:#e1f2ee!important;font-size:10px!important}
+  .calmUI.navExpanded .sideStatus span{display:block!important;color:#82a69f!important;font-size:9px!important}
+}
+
+@media(max-width:780px){
+  .calmUI .sideNav{background:#083d35!important;border-right:0!important}
+  .calmUI .brandText strong{color:#fff!important}
+  .calmUI .brandText span,.calmUI .workspaceText small{color:#89b1a9!important}
+  .calmUI .brandMark{background:#19a68f!important}
+  .calmUI .workspaceSwitch{background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.12)!important}
+  .calmUI .workspaceAvatar{background:#165f54;color:#d5f7f0;border-color:#26796c}
+  .calmUI .workspaceText b{color:#fff!important}
+  .calmUI .navGroup{color:#78a99f!important}
+  .calmUI .navItem,.calmUI .navDisclosure summary{color:#a5c8c1!important}
+  .calmUI .navItem:hover{background:rgba(255,255,255,.09)!important;color:#fff!important}
+  .calmUI .navItem.active{background:#176a5c!important;color:#fff!important}
+  .calmUI .navDisclosure{border-color:#ffffff24}
+  .calmUI .navAssistant .navItem{border-color:rgba(255,255,255,.13)!important;background:rgba(255,255,255,.05)!important}
+  .calmUI .sideStatus b{color:#e1f2ee!important}
+  .calmUI .mobileNavClose{color:#d5f7f0}
+  .calmUI .sidebarPin{display:none!important}
+}

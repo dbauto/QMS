@@ -1,7 +1,7 @@
 {
   "name": "qms",
   "version": "1.0.0",
-  "description": "iQMS UI testing preview",
+  "description": "Calm iQMS quality workspace",
   "scripts": {
     "start": "node scripts/serve.cjs",
     "build:icons": "node scripts/build-icons.cjs",

@@ -94,12 +94,54 @@ test('mobile navigation is accessible, dismissible, and closes after choosing a 
   await expect(page.locator('#openNavigation')).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('testing settings cannot read or overwrite the main-site profile', async ({ page }) => {
+test('desktop sidebar keeps its compact, hover-expand, and persistent pin behavior', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  const nav = page.locator('.sideNav');
+  const main = page.locator('.mainArea');
+  const width = locator => locator.evaluate(element => Math.round(element.getBoundingClientRect().width));
+  const margin = locator => locator.evaluate(element => Math.round(parseFloat(getComputedStyle(element).marginLeft)));
+
+  await expect.poll(() => width(nav)).toBe(58);
+  await expect.poll(() => margin(main)).toBe(58);
+  await nav.hover();
+  await expect(page.locator('body')).toHaveClass(/navExpanded/);
+  await expect.poll(() => width(nav)).toBe(228);
+  await expect.poll(() => margin(main)).toBe(58);
+  await page.mouse.move(30, 150);
+  await page.mouse.move(120, 60);
+  await page.locator('#sidebarPin').click();
+  await expect(page.locator('body')).toHaveClass(/navPinned/);
+  await page.mouse.move(700, 300);
+  await expect(page.locator('body')).toHaveClass(/navPinned/);
+  await expect.poll(() => margin(main)).toBe(228);
+  expect(await page.evaluate(() => localStorage.getItem('nexus.navPinned'))).toBe('1');
+  await page.setViewportSize({ width: 375, height: 812 });
+  await expect(page.locator('body')).not.toHaveClass(/navPinned/);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(page.locator('body')).toHaveClass(/navPinned/);
+
+  await page.reload();
+  await expect(page.locator('body')).toHaveClass(/navPinned/);
+  await expect.poll(() => margin(main)).toBe(228);
+  await page.mouse.move(30, 150);
+  await page.mouse.move(120, 60);
+  await page.locator('#sidebarPin').click();
+  await page.mouse.move(700, 300);
+  await expect.poll(() => width(nav)).toBe(58);
+  await page.locator('[data-view="dashboard"]').focus();
+  await expect.poll(() => width(nav)).toBe(228);
+  await page.locator('#globalSearch').focus();
+  await expect.poll(() => width(nav)).toBe(58);
+});
+
+test('main workspace settings preserve the existing production profile and storage namespace', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('iqms.profile', JSON.stringify({ name: 'Production User' })));
   await page.goto('/#/settings');
-  await expect(page.locator('#headerProfileName')).toHaveText('Maria Santos');
+  await expect(page.locator('#headerProfileName')).toHaveText('Production User');
   const keys = await page.evaluate(() => Object.keys(localStorage));
-  expect(keys.filter(key => key.startsWith('iqms.') || key.startsWith('nexus.'))).toEqual(['iqms.profile']);
+  expect(keys.some(key => key.startsWith('iqms-testing.'))).toBe(false);
+  expect(keys).toContain('iqms.profile');
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('iqms.profile')).name)).toBe('Production User');
 });
 
