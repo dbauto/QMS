@@ -147,6 +147,13 @@ test('desktop sidebar keeps its compact, hover-expand, and persistent pin behavi
   await page.mouse.move(700, 300);
   await expect(page.locator('body')).toHaveClass(/navPinned/);
   await expect.poll(() => margin(main)).toBe(228);
+  const taskBadgeGap = await page.locator('[data-view="approvals"]').evaluate(item => {
+    const label = item.children[1].getBoundingClientRect();
+    const badge = item.querySelector('.navBadge').getBoundingClientRect();
+    return Math.round(badge.left - label.right);
+  });
+  expect(taskBadgeGap).toBeGreaterThanOrEqual(6);
+  expect(taskBadgeGap).toBeLessThanOrEqual(10);
   expect(await page.evaluate(() => localStorage.getItem('nexus.navPinned'))).toBe('1');
   await page.setViewportSize({ width: 375, height: 812 });
   await expect(page.locator('body')).not.toHaveClass(/navPinned/);
