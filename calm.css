@@ -314,3 +314,185 @@ body.calmUI{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;font-size:
   .calmUI .mobileNavClose{color:#d5f7f0}
   .calmUI .sidebarPin{display:none!important}
 }
+
+/* Global readability pass — 2026-09-23
+   Keep dense QMS screens compact without allowing operational text to fall
+   into 7–11px legacy sizes. This block intentionally comes last. */
+body.calmUI{font-size:15px!important;line-height:1.55!important}
+
+.calmUI .pageHeader p,
+.calmUI .repositoryIntro p,
+.calmUI .dmsSpaceHeader p,
+.calmUI .recordsLibraryHeader p,
+.calmUI .settingsPanelHeader p,
+.calmUI .modalHead p{font-size:14px!important;line-height:1.55!important}
+
+.calmUI .breadcrumb{font-size:13px!important}
+.calmUI .previewBadge{font-size:11px!important}
+.calmUI .profileButton b{font-size:13px!important}
+.calmUI .profileButton small{font-size:11px!important}
+.calmUI .headerSearch input,
+.calmUI .filterSearch input,
+.calmUI input,
+.calmUI select,
+.calmUI textarea{font-size:13px!important;line-height:1.45!important}
+
+.calmUI .navItem,
+.calmUI.navExpanded .navItem{font-size:14px!important;line-height:1.2!important}
+.calmUI.navExpanded .navGroup{font-size:11px!important}
+.calmUI.navExpanded .brandText span,
+.calmUI.navExpanded .workspaceText small{font-size:11px!important}
+.calmUI.navExpanded .sideStatus b{font-size:11px!important}
+.calmUI.navExpanded .sideStatus span{font-size:10px!important}
+
+.calmUI .recordLabel,
+.calmUI .pageEyebrow,
+.calmUI .eyebrow{font-size:12px!important;line-height:1.35!important}
+.calmUI .tag{font-size:12px!important;line-height:1.35!important}
+.calmUI .pageBody small{font-size:12px!important;line-height:1.45!important}
+
+.calmUI .controlledLibraryHead,
+.calmUI .dmsDocumentHead,
+.calmUI .recordsLibraryHead,
+.calmUI .typeTableHeader,
+.calmUI .spaceAdminHead,
+.calmUI .resourceTableHeader,
+.calmUI .accessMatrixHead,
+.calmUI .dataTable th{font-size:12px!important;line-height:1.35!important;font-weight:650!important}
+
+.calmUI .controlledLibraryRow,
+.calmUI .dmsDocumentRow,
+.calmUI .recordsLibraryRows .evidenceRow,
+.calmUI .resourceRow,
+.calmUI .dataTable td{font-size:13px!important;line-height:1.45!important}
+
+.calmUI .controlledLibraryRow>span,
+.calmUI .dmsDocumentRow>span,
+.calmUI .recordsLibraryRows .evidenceRow>span:not(.tag),
+.calmUI .resourceRow>span{font-size:13px!important}
+
+.calmUI .controlledLibraryRow>div b,
+.calmUI .dmsDocumentRow>div b,
+.calmUI .recordsLibraryRows .evidenceRow>div b{font-size:12px!important}
+.calmUI .controlledLibraryRow>div strong,
+.calmUI .dmsDocumentRow>div strong,
+.calmUI .recordsLibraryRows .evidenceRow>div strong{font-size:15px!important;line-height:1.4!important}
+
+.calmUI .spaceAdminHead{min-height:42px!important;height:auto!important;padding:10px 14px!important}
+.calmUI .spaceAdminRow{min-height:64px!important;padding:12px 14px!important}
+.calmUI .spaceAdminRow>div>b{font-size:13px!important;line-height:1.4!important}
+.calmUI .spaceAdminRow>span:not(.tag){font-size:12px!important;line-height:1.4!important}
+.calmUI .spaceAdminRow>div>.lucide{width:16px!important;height:16px!important}
+
+.calmUI .typeRow{min-height:72px!important}
+.calmUI .typeRow div b,
+.calmUI .typesAdminWorkspace .typeRow div b{font-size:14px!important}
+.calmUI .typeRow div small,
+.calmUI .typesAdminWorkspace .typeRow div small{font-size:12px!important}
+.calmUI .typeRow>span:not(.tag),
+.calmUI .typesAdminWorkspace .typeRow>span:not(.tag){font-size:12px!important;line-height:1.4!important}
+.calmUI .typesAdminWorkspace .typeRow>span:nth-child(2),
+.calmUI .typesAdminWorkspace .typeRow>span:nth-child(3){font-size:12px!important}
+
+.calmUI .queueTabs button{font-size:13px!important}
+.calmUI .approvalItem>b{font-size:12px!important}
+.calmUI .approvalItem>strong{font-size:14px!important;line-height:1.4!important}
+.calmUI .approvalItem>span,
+.calmUI .approvalItem small,
+.calmUI .approvalTop small{font-size:12px!important;line-height:1.4!important}
+.calmUI .changeBox span{font-size:11px!important}
+.calmUI .changeBox p{font-size:13px!important;line-height:1.5!important}
+.calmUI .routeNode b{font-size:13px!important}
+.calmUI .routeNode span{font-size:12px!important}
+
+.calmUI .detailGrid dt,
+.calmUI .reviewDetails dt{font-size:11px!important;line-height:1.35!important}
+.calmUI .detailGrid dd,
+.calmUI .reviewDetails dd{font-size:13px!important;line-height:1.45!important}
+.calmUI .detailSection h3,
+.calmUI .reviewPanelSection h3{font-size:14px!important}
+.calmUI .detailSection p,
+.calmUI .reviewPanelSection p{font-size:13px!important;line-height:1.55!important}
+.calmUI .reviewRelation b,
+.calmUI .reviewWorkflow b{font-size:12px!important}
+.calmUI .reviewRelation span,
+.calmUI .reviewRelation em,
+.calmUI .reviewWorkflow small{font-size:11px!important}
+
+.calmUI .settingsNavGroup>span{font-size:11px!important}
+.calmUI .settingsNavGroup b{font-size:13px!important}
+.calmUI .settingsNavGroup small{font-size:11px!important}
+.calmUI .settingsFormGrid label{font-size:12px!important}
+.calmUI .settingsRowDetailed b{font-size:13px!important}
+.calmUI .settingsRowDetailed div span{font-size:12px!important}
+.calmUI .settingsSubsection h3{font-size:14px!important}
+
+.calmUI .modalBox{font-size:14px!important}
+.calmUI .modalHead h2{font-size:22px!important}
+.calmUI .fieldLabel,
+.calmUI .formGrid label,
+.calmUI .mappingGrid label{font-size:12px!important}
+.calmUI .fieldInput,
+.calmUI .formGrid input,
+.calmUI .formGrid select,
+.calmUI .mappingGrid select{font-size:13px!important}
+.calmUI .dropzone b,
+.calmUI .sourceChoice b,
+.calmUI .sourceMethod b,
+.calmUI .registrationClass b,
+.calmUI .authoringOption b,
+.calmUI .templateCard div b,
+.calmUI .proposalTree b,
+.calmUI .findingList b,
+.calmUI .reviewSummary b,
+.calmUI .nextSteps h4,
+.calmUI .reviewCallout b{font-size:13px!important}
+.calmUI .dropzone span,
+.calmUI .sourceChoice span,
+.calmUI .sourceMethod span,
+.calmUI .registrationClass p,
+.calmUI .registrationClass small,
+.calmUI .registrationInfo p,
+.calmUI .authoringOption small,
+.calmUI .templatePickerHead span,
+.calmUI .templateCard div span,
+.calmUI .proposalTree span,
+.calmUI .proposalTree small,
+.calmUI .findingList span,
+.calmUI .reviewSummary span,
+.calmUI .nextSteps li,
+.calmUI .reviewCallout span,
+.calmUI .aiHelp p{font-size:12px!important;line-height:1.5!important}
+
+.calmUI .viewerIdentity b{font-size:13px!important}
+.calmUI .viewerIdentity span{font-size:11px!important}
+.calmUI .previewOrg b{font-size:13px!important}
+.calmUI .previewOrg small,
+.calmUI .previewControl span,
+.calmUI .previewControl b,
+.calmUI .previewTitleBlock>div>span,
+.calmUI .previewTitleBlock dt,
+.calmUI .previewTitleBlock dd{font-size:11px!important}
+.calmUI .previewSection h3{font-size:13px!important}
+.calmUI .previewSection p,
+.calmUI .previewSection li,
+.calmUI .previewSection th,
+.calmUI .previewSection td{font-size:12px!important;line-height:1.6!important}
+
+.calmUI .traceSection h3,
+.calmUI .tracePathHeader h3{font-size:14px!important}
+.calmUI .traceSectionHeader p,
+.calmUI .tracePathHeader p,
+.calmUI .tracePathNote,
+.calmUI .traceItem span{font-size:12px!important}
+.calmUI .traceItem b,
+.calmUI .tracePathStep b{font-size:13px!important}
+.calmUI .tracePathStep small{font-size:11px!important}
+
+@media(max-width:780px){
+  body.calmUI{font-size:14px!important}
+  .calmUI .pageHeader h1{font-size:27px!important}
+  .calmUI .pageHeader p{font-size:13px!important}
+  .calmUI .dataTable{font-size:12px!important}
+}
+
