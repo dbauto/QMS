@@ -158,3 +158,14 @@ The product must not look like a generic generated SaaS dashboard.
 - Established enterprise products such as CRM, ERP and document-control tools are the interaction reference: consistent tables, predictable record pages, restrained color, dense-but-readable layouts and strong state clarity.
 - Use rounded corners sparingly (generally 3–6px). Shadows are reserved for true overlays such as modals.
 - Status color is semantic, not decorative.
+
+
+## Enterprise application reference
+The visual target is an established operational SaaS product rather than an AI-generated dashboard.
+- Use CRM/ERP/QMS interaction conventions: persistent navigation, compact top chrome, tables, record inspectors, toolbars and stable tabs.
+- Do not copy another vendor's branding or exact UI. Borrow interaction maturity, density, hierarchy and predictability.
+- Default body/data text should remain comfortably readable at roughly 13–14px; metadata may reduce to 11.5–12px but should not become decorative microcopy.
+- Radius is generally 3–5px. Shadows are limited to real overlays.
+- The green brand color identifies the product and primary actions; neutral gray structures most work areas.
+- Every page should look intentionally designed for one job: find, review, approve, publish, trace, configure or assess.
+- Quality Assistant remains secondary. Users should perceive a QMS with AI capabilities, not an AI app with QMS features.
