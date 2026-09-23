@@ -496,3 +496,67 @@ body.calmUI{font-size:15px!important;line-height:1.55!important}
   .calmUI .dataTable{font-size:12px!important}
 }
 
+/* Document modal workflow fix — keep approval controls from covering workflow icons/steps. */
+.calmUI #repositoryDocument .reviewWorkflow{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:0!important;
+  margin-top:10px!important;
+  padding-bottom:0!important;
+}
+.calmUI #repositoryDocument .reviewWorkflow>div{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:24px minmax(0,1fr)!important;
+  column-gap:10px!important;
+  align-items:start!important;
+  min-height:48px!important;
+  padding:4px 0 8px!important;
+}
+.calmUI #repositoryDocument .reviewWorkflow>div>.lucide{
+  position:relative!important;
+  z-index:1!important;
+  width:22px!important;
+  height:22px!important;
+  padding:5px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+}
+.calmUI #repositoryDocument .reviewWorkflow>div:not(:last-child)::after{
+  content:""!important;
+  position:absolute!important;
+  left:10.5px!important;
+  top:26px!important;
+  bottom:-2px!important;
+  width:1px!important;
+  background:#d8e3dc!important;
+  z-index:0!important;
+}
+.calmUI #repositoryDocument .reviewWorkflow>div:last-child::after{display:none!important}
+.calmUI #repositoryDocument .reviewWorkflow>div>span{
+  min-width:0!important;
+  padding-top:1px!important;
+}
+.calmUI #repositoryDocument .approvalDecision{
+  position:relative!important;
+  inset:auto!important;
+  z-index:auto!important;
+  margin:16px 0 0!important;
+  padding:16px 0 0!important;
+  background:#fff!important;
+  border-top:1px solid var(--line)!important;
+}
+.calmUI #repositoryDocument .approvalDecision label{
+  display:block!important;
+  font-size:12px!important;
+}
+.calmUI #repositoryDocument .approvalDecision textarea{
+  min-height:88px!important;
+  margin-top:7px!important;
+  font-size:13px!important;
+}
+.calmUI #repositoryDocument .approvalDecision>div{
+  margin-top:10px!important;
+  gap:8px!important;
+}
+
