@@ -1589,7 +1589,7 @@ function closeDocumentDetail(){
   }
   const returnFocus=documentModalReturnFocus;
   documentModalReturnFocus=null;
-  requestAnimationFrame(()=>returnFocus?.focus?.());
+  setTimeout(()=>returnFocus?.focus?.(),50);
 }
 
 function closeDocumentSpace(){
