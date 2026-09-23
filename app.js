@@ -3006,56 +3006,69 @@ document.addEventListener('keydown',e=>{
 });
 
 
-function initTaskWorkspaceResize(){
+function resetTaskWorkspaceSplit(){
   const workspace=document.querySelector('#approvals .taskWorkspace');
   const splitter=document.getElementById('taskSplitter');
   if(!workspace||!splitter) return;
 
-  const STORAGE_KEY='iqms.reviewQueueWidth.v2';
+  // CSS owns the default 50:50 split. Removing the inline value guarantees
+  // the same starting layout even when this view was hidden during page load.
+  workspace.style.removeProperty('--task-queue-width');
+
+  requestAnimationFrame(()=>{
+    const width=workspace.getBoundingClientRect().width;
+    if(width<=0) return;
+    const queue=workspace.querySelector('.taskQueue')?.getBoundingClientRect().width||0;
+    splitter.setAttribute('aria-valuemin','260');
+    splitter.setAttribute('aria-valuemax',String(Math.max(260,Math.round(width-552))));
+    splitter.setAttribute('aria-valuenow',String(Math.round(queue)));
+  });
+}
+
+function initTaskWorkspaceResize(){
+  const workspace=document.querySelector('#approvals .taskWorkspace');
+  const splitter=document.getElementById('taskSplitter');
+  if(!workspace||!splitter||splitter.dataset.resizeReady==='true') return;
+  splitter.dataset.resizeReady='true';
+
   const MIN_QUEUE=260;
   const MIN_DETAIL=520;
   const STEP=20;
 
   const limits=()=>{
     const width=workspace.getBoundingClientRect().width;
-    const chrome=32; // 12px splitter + two 10px grid gaps
-    return {min:MIN_QUEUE,max:Math.max(MIN_QUEUE,width-MIN_DETAIL-chrome),width,chrome};
+    const chrome=32;
+    return {
+      min:MIN_QUEUE,
+      max:Math.max(MIN_QUEUE,width-MIN_DETAIL-chrome),
+      width,
+      chrome
+    };
   };
 
-  const defaultWidth=()=>{
-    const {width,chrome}=limits();
-    return Math.max(MIN_QUEUE,(width-chrome)/2);
-  };
+  const currentWidth=()=>workspace.querySelector('.taskQueue')?.getBoundingClientRect().width||MIN_QUEUE;
 
-  const applyWidth=(value,persist=false)=>{
-    const {min,max}=limits();
-    const width=Math.round(Math.min(max,Math.max(min,Number(value)||320)));
-    workspace.style.setProperty('--task-queue-width',width+'px');
+  const applyWidth=value=>{
+    const {min,max,width}=limits();
+    if(width<=0) return currentWidth();
+    const next=Math.round(Math.min(max,Math.max(min,Number(value)||currentWidth())));
+    workspace.style.setProperty('--task-queue-width',next+'px');
     splitter.setAttribute('aria-valuemin',String(min));
     splitter.setAttribute('aria-valuemax',String(Math.round(max)));
-    splitter.setAttribute('aria-valuenow',String(width));
-    if(persist){
-      try{localStorage.setItem(STORAGE_KEY,String(width))}catch(e){}
-    }
-    return width;
+    splitter.setAttribute('aria-valuenow',String(next));
+    return next;
   };
-
-  let restored=false;
-  try{
-    const saved=Number(localStorage.getItem(STORAGE_KEY));
-    if(saved){applyWidth(saved);restored=true}
-  }catch(e){}
-  if(!restored) applyWidth(defaultWidth());
 
   let dragging=false;
   let startX=0;
-  let startWidth=320;
+  let startWidth=0;
 
   splitter.addEventListener('pointerdown',e=>{
     if(window.matchMedia('(max-width:1100px)').matches) return;
+    if(workspace.getBoundingClientRect().width<=0) return;
     dragging=true;
     startX=e.clientX;
-    startWidth=parseFloat(getComputedStyle(workspace).getPropertyValue('--task-queue-width'))||workspace.querySelector('.taskQueue')?.getBoundingClientRect().width||defaultWidth();
+    startWidth=currentWidth();
     splitter.classList.add('isDragging');
     document.body.classList.add('resizingTasks');
     splitter.setPointerCapture?.(e.pointerId);
@@ -3072,32 +3085,48 @@ function initTaskWorkspaceResize(){
     dragging=false;
     splitter.classList.remove('isDragging');
     document.body.classList.remove('resizingTasks');
-    const current=parseFloat(getComputedStyle(workspace).getPropertyValue('--task-queue-width'))||defaultWidth();
-    applyWidth(current,true);
-    if(e?.pointerId!=null && splitter.hasPointerCapture?.(e.pointerId)) splitter.releasePointerCapture(e.pointerId);
+    if(e?.pointerId!=null && splitter.hasPointerCapture?.(e.pointerId)){
+      splitter.releasePointerCapture(e.pointerId);
+    }
   };
   splitter.addEventListener('pointerup',endDrag);
   splitter.addEventListener('pointercancel',endDrag);
 
   splitter.addEventListener('keydown',e=>{
     if(window.matchMedia('(max-width:1100px)').matches) return;
-    const current=parseFloat(getComputedStyle(workspace).getPropertyValue('--task-queue-width'))||defaultWidth();
-    if(e.key==='ArrowLeft'){applyWidth(current-STEP,true);e.preventDefault()}
-    else if(e.key==='ArrowRight'){applyWidth(current+STEP,true);e.preventDefault()}
-    else if(e.key==='Home'){applyWidth(MIN_QUEUE,true);e.preventDefault()}
-    else if(e.key==='End'){applyWidth(limits().max,true);e.preventDefault()}
+    if(e.key==='ArrowLeft'){applyWidth(currentWidth()-STEP);e.preventDefault()}
+    else if(e.key==='ArrowRight'){applyWidth(currentWidth()+STEP);e.preventDefault()}
+    else if(e.key==='Home'){applyWidth(MIN_QUEUE);e.preventDefault()}
+    else if(e.key==='End'){applyWidth(limits().max);e.preventDefault()}
   });
 
-  splitter.addEventListener('dblclick',()=>applyWidth(defaultWidth(),true));
+  splitter.addEventListener('dblclick',resetTaskWorkspaceSplit);
 
   window.addEventListener('resize',()=>{
     if(window.matchMedia('(max-width:1100px)').matches) return;
-    const current=parseFloat(getComputedStyle(workspace).getPropertyValue('--task-queue-width'))||defaultWidth();
-    applyWidth(current);
+    // If the user has not dragged the divider, CSS keeps the true 50:50 split.
+    if(!workspace.style.getPropertyValue('--task-queue-width')){
+      resetTaskWorkspaceSplit();
+      return;
+    }
+    applyWidth(currentWidth());
   });
 }
 
-document.addEventListener('DOMContentLoaded',()=>{refreshIcons();initTaskWorkspaceResize()});
+document.addEventListener('qms:viewchange',e=>{
+  if(e.detail?.id==='approvals'){
+    requestAnimationFrame(()=>{
+      initTaskWorkspaceResize();
+      resetTaskWorkspaceSplit();
+    });
+  }
+});
+
+document.addEventListener('DOMContentLoaded',()=>{
+  refreshIcons();
+  initTaskWorkspaceResize();
+  if(document.getElementById('approvals')?.classList.contains('active')) resetTaskWorkspaceSplit();
+});
 refreshIcons();
 
 refreshRegistrationOptions();
