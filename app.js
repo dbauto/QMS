@@ -1541,7 +1541,11 @@ function closeDocumentDetail(){
   }
   const returnFocus=documentModalReturnFocus;
   documentModalReturnFocus=null;
-  setTimeout(()=>returnFocus?.focus?.(),50);
+  // Restore after the dialog boundary releases inert siblings, without a delayed
+  // timer that can steal focus from the user's next search or keyboard action.
+  queueMicrotask(()=>{
+    if(returnFocus?.isConnected && returnFocus.getClientRects().length) returnFocus.focus?.({preventScroll:true});
+  });
 }
 
 function closeDocumentSpace(){
