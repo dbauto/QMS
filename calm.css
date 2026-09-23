@@ -616,3 +616,434 @@ body.calmUI{font-size:15px!important;line-height:1.55!important}
   .calmUI .workflowLockBanner{grid-template-columns:36px minmax(0,1fr)}
   .calmUI .workflowLockBanner>.btn{grid-column:2;justify-self:start}
 }
+
+
+/* ========================================================================
+   QMS UI/UX hardening — calm-workspace-18
+   Systemic overrides only: navigation, readability, review workspace,
+   controlled-document tables, modal presentation, and icon consistency.
+   ======================================================================== */
+
+body.calmUI{
+  font-size:15px;
+  line-height:1.55;
+}
+
+.calmUI .btn{
+  min-height:42px;
+  font-size:14px;
+  line-height:1.35;
+}
+
+.calmUI .pageHeader h1{font-size:30px}
+.calmUI .pageHeader p{font-size:15px;max-width:760px}
+.calmUI .sectionHeader h2,
+.calmUI .overviewPanelHeader h2,
+.calmUI .calmSectionHeading h2{font-size:17px}
+.calmUI .sectionHeader p,
+.calmUI .overviewPanelHeader p,
+.calmUI .calmSectionHeading p{font-size:13px}
+.calmUI .recordLabel,
+.calmUI .pageEyebrow{font-size:12px}
+.calmUI .pageBody small{font-size:13px}
+.calmUI .tag{font-size:12px;min-height:26px}
+.calmUI .filterSearch input,
+.calmUI select,
+.calmUI .formField input,
+.calmUI .formField textarea,
+.calmUI textarea{font-size:14px}
+
+.calmUI .lucide{
+  width:18px;
+  height:18px;
+  stroke-width:1.8;
+  vertical-align:middle;
+}
+.calmUI .iconButton .lucide,
+.calmUI .headerIconButton .lucide{width:18px;height:18px}
+.calmUI .btn .lucide{width:17px;height:17px}
+
+/* The floating numeric bell bubble was intentionally removed. */
+.calmUI .notificationCount{display:none!important}
+
+/* Desktop navigation: compact by default, hover expands, pin makes it persistent. */
+@media (min-width:781px){
+  body.calmUI .sideNav{
+    width:58px!important;
+    padding:20px 8px 16px!important;
+    background:#173f33!important;
+    border-right:1px solid #204f41!important;
+    color:#eef7f1!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    transition:width .18s ease,box-shadow .18s ease!important;
+    z-index:60!important;
+  }
+  body.calmUI .mainArea{
+    margin-left:58px!important;
+    transition:margin-left .18s ease!important;
+  }
+  body.calmUI.navExpanded .sideNav,
+  body.calmUI.navPinned .sideNav{
+    width:228px!important;
+    padding:20px 12px 16px!important;
+  }
+  body.calmUI.navExpanded:not(.navPinned) .sideNav{
+    box-shadow:12px 0 30px rgba(22,49,40,.16)!important;
+  }
+  body.calmUI.navExpanded:not(.navPinned) .mainArea{margin-left:58px!important}
+  body.calmUI.navPinned .mainArea{margin-left:228px!important}
+
+  body.calmUI .brand{
+    min-height:42px!important;
+    margin:0 0 22px!important;
+    padding:0 3px!important;
+    gap:10px!important;
+    align-items:center!important;
+    overflow:hidden!important;
+  }
+  body.calmUI .brandMark{
+    width:36px!important;
+    height:36px!important;
+    flex:0 0 36px!important;
+    background:#245846!important;
+    border:1px solid rgba(255,255,255,.12)!important;
+    color:#f4fbf6!important;
+  }
+  body.calmUI .brandText,
+  body.calmUI .workspaceText,
+  body.calmUI .navGroup,
+  body.calmUI .sideStatus div,
+  body.calmUI .navItem>span:not(.navIcon):not(.navBadge),
+  body.calmUI .navDisclosure summary>span{
+    opacity:0!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+    white-space:nowrap!important;
+    transition:opacity .12s ease!important;
+  }
+  body.calmUI.navExpanded .brandText,
+  body.calmUI.navPinned .brandText,
+  body.calmUI.navExpanded .workspaceText,
+  body.calmUI.navPinned .workspaceText,
+  body.calmUI.navExpanded .navGroup,
+  body.calmUI.navPinned .navGroup,
+  body.calmUI.navExpanded .sideStatus div,
+  body.calmUI.navPinned .sideStatus div,
+  body.calmUI.navExpanded .navItem>span:not(.navIcon):not(.navBadge),
+  body.calmUI.navPinned .navItem>span:not(.navIcon):not(.navBadge),
+  body.calmUI.navExpanded .navDisclosure summary>span,
+  body.calmUI.navPinned .navDisclosure summary>span{
+    opacity:1!important;
+    visibility:visible!important;
+    pointer-events:auto!important;
+  }
+
+  body.calmUI .brandText strong{color:#fff!important;font-size:20px!important}
+  body.calmUI .brandText span{color:#b9cdc3!important;font-size:12px!important}
+  body.calmUI .workspaceSwitch{
+    width:42px!important;
+    height:46px!important;
+    padding:6px!important;
+    margin:0 0 18px!important;
+    border-color:rgba(255,255,255,.10)!important;
+    background:rgba(255,255,255,.055)!important;
+    overflow:hidden!important;
+  }
+  body.calmUI.navExpanded .workspaceSwitch,
+  body.calmUI.navPinned .workspaceSwitch{
+    width:100%!important;
+    height:auto!important;
+    padding:10px!important;
+  }
+  body.calmUI .workspaceAvatar{
+    width:30px!important;height:30px!important;flex:0 0 30px!important;
+    border-color:rgba(255,255,255,.13)!important;
+    background:#245846!important;color:#f1f8f4!important;
+  }
+  body.calmUI .workspaceText b{font-size:13px!important;color:#f3f8f5!important}
+  body.calmUI .workspaceText small{font-size:12px!important;color:#abc3b8!important}
+
+  body.calmUI .navGroup{
+    margin:16px 10px 7px!important;
+    font-size:11px!important;
+    color:#a9c0b5!important;
+  }
+  body.calmUI .navItem{
+    width:42px!important;
+    height:44px!important;
+    min-height:44px!important;
+    padding:0!important;
+    justify-content:center!important;
+    gap:10px!important;
+    color:#c8d9d1!important;
+    font-size:14px!important;
+  }
+  body.calmUI.navExpanded .navItem,
+  body.calmUI.navPinned .navItem{
+    width:100%!important;
+    padding:0 11px!important;
+    justify-content:flex-start!important;
+  }
+  body.calmUI .navItem:hover{
+    background:rgba(255,255,255,.08)!important;
+    color:#fff!important;
+  }
+  body.calmUI .navItem.active{
+    background:#2d6551!important;
+    color:#fff!important;
+    box-shadow:inset 3px 0 0 #a8d0bc!important;
+  }
+  body.calmUI .navItem .navIcon{
+    width:20px!important;
+    min-width:20px!important;
+  }
+  body.calmUI .navBadge{
+    display:none!important;
+  }
+  body.calmUI.navExpanded .navBadge,
+  body.calmUI.navPinned .navBadge{
+    display:inline-flex!important;
+    margin-left:auto!important;
+    background:#365f50!important;
+    color:#f5faf7!important;
+    font-size:11px!important;
+  }
+
+  body.calmUI .navDisclosure{
+    border-top-color:rgba(255,255,255,.10)!important;
+  }
+  body.calmUI .navDisclosure summary{
+    min-height:44px!important;
+    padding:0!important;
+    justify-content:center!important;
+    color:#c8d9d1!important;
+    font-size:14px!important;
+  }
+  body.calmUI.navExpanded .navDisclosure summary,
+  body.calmUI.navPinned .navDisclosure summary{
+    padding:0 11px!important;
+    justify-content:flex-start!important;
+  }
+  body.calmUI .navDisclosure summary>.lucide:last-child{display:none!important}
+  body.calmUI.navExpanded .navDisclosure summary>.lucide:last-child,
+  body.calmUI.navPinned .navDisclosure summary>.lucide:last-child{display:block!important}
+
+  body.calmUI .navAssistant .navItem{
+    border-color:rgba(255,255,255,.10)!important;
+    background:rgba(255,255,255,.045)!important;
+  }
+  body.calmUI .sideStatus{
+    margin:14px 10px 0!important;
+    min-height:28px!important;
+    color:#b8cbc2!important;
+  }
+  body.calmUI .sideStatus>i{background:#8dc5a9!important}
+  body.calmUI .sideStatus b{font-size:11px!important;color:#b8cbc2!important}
+
+  body.calmUI .sidebarPin{
+    display:none!important;
+    margin-left:auto!important;
+    width:32px!important;height:32px!important;min-width:32px!important;
+    color:#d8e6df!important;
+    background:transparent!important;
+    border:1px solid rgba(255,255,255,.11)!important;
+  }
+  body.calmUI.navExpanded .sidebarPin,
+  body.calmUI.navPinned .sidebarPin{display:grid!important}
+}
+
+/* Review workspace: true 50:50 default with a stable, accessible resize handle. */
+.calmUI #approvals .taskWorkspace{
+  --task-queue-width:calc((100% - 32px)/2);
+  grid-template-columns:var(--task-queue-width) 12px minmax(0,1fr)!important;
+  gap:10px!important;
+  align-items:stretch!important;
+}
+.calmUI #approvals .taskQueue,
+.calmUI #approvals .approvalDetail{
+  min-width:0!important;
+  border-radius:10px!important;
+}
+.calmUI #approvals .taskQueue{
+  max-height:none!important;
+}
+.calmUI #approvals .queueTabs{
+  padding:12px!important;
+  border-bottom:1px solid var(--line)!important;
+  gap:6px!important;
+}
+.calmUI #approvals .queueTabs button{
+  min-height:40px!important;
+  padding:8px 10px!important;
+  font-size:13px!important;
+}
+.calmUI #approvals .queueTabs button b{font-size:12px!important}
+.calmUI #approvals .approvalItem{
+  padding:18px 20px!important;
+  min-height:112px!important;
+  font-size:14px!important;
+  border-left:3px solid transparent!important;
+  text-align:left!important;
+}
+.calmUI #approvals .approvalItem:hover{
+  background:#f7faf7!important;
+}
+.calmUI #approvals .approvalItem.selected{
+  background:#eef5f0!important;
+  border-left-color:var(--brand)!important;
+  box-shadow:inset 0 0 0 1px #d7e5db!important;
+}
+.calmUI #approvals .approvalItem strong{
+  font-size:15px!important;
+  line-height:1.35!important;
+}
+.calmUI #approvals .approvalItem>b,
+.calmUI #approvals .approvalItem>span,
+.calmUI #approvals .approvalItem small{font-size:13px!important}
+.calmUI #approvals .approvalDetail{padding:26px!important}
+.calmUI #approvals .approvalHero h2{font-size:23px!important;line-height:1.25}
+.calmUI #approvals .recordMeta{gap:8px;flex-wrap:wrap}
+.calmUI #approvals .recordMeta>b,
+.calmUI #approvals .recordMeta>span:not(.tag){font-size:13px!important}
+.calmUI #approvals .changeBox p{font-size:14px!important;line-height:1.55}
+.calmUI #approvals .routeNode b{font-size:14px!important}
+.calmUI #approvals .routeNode span{font-size:13px!important}
+.calmUI #approvals .commentLabel{font-size:13px!important}
+.calmUI #approvals .commentBox{font-size:14px!important;min-height:92px}
+.calmUI #approvals .decisionBar{
+  position:sticky;
+  bottom:0;
+  margin:20px -26px -26px;
+  padding:16px 26px;
+  background:rgba(255,255,255,.96);
+  border-top:1px solid var(--line);
+  backdrop-filter:blur(8px);
+  z-index:2;
+}
+.calmUI #approvals .taskSplitter{width:12px!important}
+.calmUI #approvals .taskSplitter span{width:10px!important;height:38px!important}
+.calmUI #approvals .taskSplitter:focus-visible{outline:none!important}
+
+/* Controlled document lists: deliberate columns and a visible revision field. */
+.calmUI .controlledLibraryHead,
+.calmUI .controlledLibraryRow{
+  grid-template-columns:minmax(240px,2.4fr) minmax(105px,.9fr) minmax(150px,1.1fr) 72px minmax(130px,1fr) 104px 112px!important;
+  gap:14px!important;
+  padding-left:20px!important;
+  padding-right:20px!important;
+}
+.calmUI .controlledLibraryHead{
+  font-size:12px!important;
+  font-weight:650!important;
+  min-height:46px!important;
+}
+.calmUI .controlledLibraryRow{
+  min-height:90px!important;
+  font-size:14px!important;
+}
+.calmUI .controlledLibraryRow>div strong{font-size:15px!important}
+.calmUI .controlledLibraryRow>div b{font-size:12px!important}
+.calmUI .controlledLibraryRow>span{font-size:13px!important}
+.calmUI .controlledLibraryHead>:nth-child(4),
+.calmUI .controlledLibraryRow>:nth-child(4){
+  justify-self:center!important;
+  text-align:center!important;
+  font-weight:700!important;
+  color:var(--ink)!important;
+  font-variant-numeric:tabular-nums;
+}
+.calmUI .controlledLibraryRow>.tag{
+  justify-self:start!important;
+}
+.calmUI .dmsDocumentHead,
+.calmUI .dmsDocumentRow,
+.calmUI .spaceDocumentTableHead,
+.calmUI .spaceDocumentItem{
+  align-items:center!important;
+}
+.calmUI .revisionColumnHead,
+.calmUI .dmsRevisionValue{
+  font-weight:700!important;
+  color:var(--ink)!important;
+  text-align:center!important;
+}
+
+/* Large document viewer that preserves the review/list context. */
+.calmUI #repositoryDocument{
+  position:fixed!important;
+  inset:0!important;
+  z-index:80!important;
+  padding:24px!important;
+  background:rgba(18,36,29,.42)!important;
+  overflow:auto!important;
+}
+.calmUI #repositoryDocument .documentModalShell{
+  width:min(1480px,calc(100vw - 48px))!important;
+  min-height:min(820px,calc(100vh - 48px))!important;
+  max-height:calc(100vh - 48px)!important;
+  margin:0 auto!important;
+  background:#fff!important;
+  border:1px solid #d7dfda!important;
+  border-radius:12px!important;
+  box-shadow:0 28px 80px rgba(18,36,29,.22)!important;
+  overflow:auto!important;
+}
+.calmUI #repositoryDocument .documentLevelHeader{
+  position:sticky!important;
+  top:0!important;
+  z-index:5!important;
+  background:#fff!important;
+  border-bottom:1px solid var(--line)!important;
+}
+.calmUI #repositoryDocument .documentLevelHeader h1{font-size:24px!important}
+.calmUI #repositoryDocument .documentDetailTabs{
+  position:sticky!important;
+  top:0!important;
+  z-index:4!important;
+  background:#fff!important;
+}
+.calmUI #repositoryDocument .documentDetailTabs button{font-size:14px!important}
+.calmUI #repositoryDocument .detailField span,
+.calmUI #repositoryDocument .detailField b,
+.calmUI #repositoryDocument .documentReviewPane p{font-size:13px!important}
+
+/* Header and top-level shell readability. */
+.calmUI .commandBar{height:68px!important;padding-inline:28px!important}
+.calmUI .breadcrumb{font-size:13px!important}
+.calmUI .previewBadge,
+.calmUI .previewBadge small{font-size:11px!important}
+.calmUI .headerSearch input{font-size:13px!important}
+.calmUI .profileButton b{font-size:13px!important}
+.calmUI .profileButton small{font-size:12px!important}
+
+/* Keep responsive reductions intentional instead of silently hiding Rev/status columns. */
+@media (max-width:1300px) and (min-width:1101px){
+  .calmUI .controlledLibraryHead,
+  .calmUI .controlledLibraryRow{
+    grid-template-columns:minmax(220px,2.2fr) minmax(130px,1fr) 64px minmax(115px,1fr) 100px 102px!important;
+  }
+  .calmUI .controlledLibraryHead>:nth-child(2),
+  .calmUI .controlledLibraryRow>:nth-child(2){display:none!important}
+  .calmUI .controlledLibraryHead>:nth-child(3),
+  .calmUI .controlledLibraryRow>:nth-child(3){display:flex!important}
+  .calmUI .controlledLibraryHead>:nth-child(4),
+  .calmUI .controlledLibraryRow>:nth-child(4){display:flex!important}
+}
+@media (max-width:1100px){
+  .calmUI #approvals .taskWorkspace{grid-template-columns:1fr!important}
+  .calmUI #approvals .taskSplitter{display:none!important}
+  .calmUI #approvals .decisionBar{margin:20px -20px -20px;padding:14px 20px}
+}
+@media (max-width:780px){
+  .calmUI #repositoryDocument{padding:0!important}
+  .calmUI #repositoryDocument .documentModalShell{
+    width:100%!important;
+    min-height:100vh!important;
+    max-height:none!important;
+    border-radius:0!important;
+    border:0!important;
+  }
+  .calmUI .pageHeader h1{font-size:27px}
+  .calmUI .pageHeader p{font-size:14px}
+}
