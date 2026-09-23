@@ -4705,11 +4705,7 @@ body.navExpanded .navMeta{
 .dmsDocumentRow>.dmsTypeCell,
 .dmsDocumentRow>.dmsOwnerCell,
 .dmsDocumentRow>.dmsStatusCell,
-.dmsDocumentRow>.dmsReviewCell{justify-self:start}
-.dmsDocumentHead>span:nth-child(5),
-.dmsDocumentHead>span:nth-child(6),
-.dmsDocumentRow>.dmsStatusCell,
-.dmsDocumentRow>.dmsReviewCell{justify-self:start;text-align:left}
+.dmsDocumentRow>.dmsReviewCell{justify-self:center;text-align:center}
 .dmsDocumentRow>div b{font-size:10px!important}
 .dmsDocumentRow>div strong{font-size:13px!important;line-height:1.35}
 .dmsDocumentRow>div small{font-size:10px!important;line-height:1.35}
@@ -4756,8 +4752,14 @@ body.navExpanded .navMeta{
 .spaceDocumentListSurface .spaceDocumentItem{min-height:80px!important;padding:9px 16px!important}
 .spaceDocumentTableHead>span:nth-child(3),
 .spaceDocumentListSurface .spaceDocumentItem>.dmsRevisionCell{justify-self:center;text-align:center}
+.spaceDocumentTableHead>span:nth-child(2),
+.spaceDocumentTableHead>span:nth-child(4),
+.spaceDocumentTableHead>span:nth-child(5),
+.spaceDocumentTableHead>span:nth-child(6),
+.spaceDocumentListSurface .spaceDocumentItem>.dmsTypeCell,
+.spaceDocumentListSurface .spaceDocumentItem>.dmsOwnerCell,
 .spaceDocumentListSurface .spaceDocumentItem>.dmsStatusCell,
-.spaceDocumentListSurface .spaceDocumentItem>.dmsReviewCell{justify-self:start}
+.spaceDocumentListSurface .spaceDocumentItem>.dmsReviewCell{justify-self:center;text-align:center}
 
 @media(max-width:1180px){
   .dmsContextPanel[data-dms-context-panel="documents"],
