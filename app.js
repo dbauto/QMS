@@ -1280,7 +1280,7 @@ function renderDmsDocuments(){
   if(empty) empty.style.display=docs.length?'none':'grid';
   refreshIcons();
 }
-function openDocumentFromWorkspace(spaceId,documentCode){
+function openDocumentFromWorkspace(spaceId,documentCode,trigger=null){
   const space=spaceDefinitions[spaceId];
   if(!space) return;
   const doc=space.docs?.find(x=>x.code===documentCode);
@@ -1288,7 +1288,7 @@ function openDocumentFromWorkspace(spaceId,documentCode){
   activeSpace=space;
   activeRepositorySpaceId=spaceId;
   documentReturnContext='hub';
-  selectSpaceDocument(doc,null);
+  selectSpaceDocument(doc,trigger);
 }
 document.getElementById('dmsSpaceTabs')?.addEventListener('click',e=>{
   const button=e.target.closest('[data-dms-space]');
@@ -1309,7 +1309,7 @@ document.querySelectorAll('#dmsDocumentTypeTabs [data-doc-type]').forEach(button
 }));
 document.getElementById('dmsDocumentRows')?.addEventListener('click',e=>{
   const row=e.target.closest('.dmsDocumentRow[data-code]');
-  if(row) openDocumentFromWorkspace(activeRepositorySpaceId,row.dataset.code);
+  if(row) openDocumentFromWorkspace(activeRepositorySpaceId,row.dataset.code,row);
 });
 document.getElementById('repositoryDocument')?.addEventListener('click',e=>{
   if(e.target.id==='repositoryDocument') closeDocumentDetail();
