@@ -102,6 +102,26 @@ test('active approval locks parallel revisions and the final approver publishes'
   await expect(page.locator('#startRevisionBtn')).toBeEnabled();
 });
 
+
+test('return keeps the same revision open and removes the stale final approval task', async ({ page }) => {
+  await page.goto('/#/repository');
+  await page.locator('.controlledLibraryRow', { hasText: 'Final Inspection Work Instruction' }).click();
+
+  await page.locator('#approvalDecision .dangerOutline').click();
+  await expect(page.locator('#docStatus')).toHaveText('Returned for changes');
+  await expect(page.locator('#openRevisionBanner')).toBeVisible();
+  await expect(page.locator('#openRevisionNumber')).toHaveText('Rev 03');
+  await expect(page.locator('#openRevisionStage')).toContainText('Returned for changes');
+  await expect(page.locator('#requestRevisionBtn')).toBeDisabled();
+  await expect(page.locator('#startRevisionBtn')).toBeDisabled();
+
+  await page.keyboard.press('Escape');
+  await page.goto('/#/approvals');
+  await expect(page.locator('#approvals .taskQueue > .approvalItem[data-document-code="WI-PROD-021"]')).toHaveCount(0);
+  await expect(page.locator('#revisionTaskQueue')).toContainText('WI-PROD-021');
+  await expect(page.locator('#revisionTaskQueue')).toContainText('Rev 03');
+});
+
 test('global document search works from Overview with keyboard selection', async ({ page }) => {
   await page.goto('/');
   await page.keyboard.press('Control+k');
