@@ -963,7 +963,7 @@ function setDocumentDetailTab(tab='document'){
     const toggle=document.getElementById('docTraceMapToggle');
     if(toggle) toggle.innerHTML='<i data-lucide="network"></i>Open visual map';
   }
-  window.scrollTo({top:0,behavior:'smooth'});
+  document.querySelector('#repositoryDocument [data-doc-panel].active')?.scrollTo({top:0,behavior:'smooth'});
   refreshIcons();
 }
 
@@ -1021,6 +1021,11 @@ document.querySelectorAll('#overviewPanelTabs [data-overview-tab]').forEach(butt
 }));
 
 function showView(id){
+  if(id!=='repository'){
+    const documentModal=document.getElementById('repositoryDocument');
+    if(documentModal) documentModal.style.display='none';
+    document.body.classList.remove('document-modal-open');
+  }
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   const target=document.getElementById(id);
   if(target) target.classList.add('active');
@@ -1193,6 +1198,7 @@ document.querySelectorAll('#repositoryBrowseTabs [data-repository-tab]').forEach
 let activeRepositorySpaceId='quality';
 let dmsDocumentTypeFilter='all';
 let documentReturnContext='hub';
+let documentModalReturnFocus=null;
 
 function spaceIconName(spaceId){
   return {
@@ -1282,12 +1288,6 @@ function openDocumentFromWorkspace(spaceId,documentCode){
   activeSpace=space;
   activeRepositorySpaceId=spaceId;
   documentReturnContext='hub';
-  const hub=document.getElementById('repositoryHub');
-  const spaceView=document.getElementById('repositorySpace');
-  const docView=document.getElementById('repositoryDocument');
-  if(hub) hub.style.display='none';
-  if(spaceView) spaceView.style.display='none';
-  if(docView) docView.style.display='block';
   selectSpaceDocument(doc,null);
 }
 document.getElementById('dmsSpaceTabs')?.addEventListener('click',e=>{
@@ -1310,6 +1310,13 @@ document.querySelectorAll('#dmsDocumentTypeTabs [data-doc-type]').forEach(button
 document.getElementById('dmsDocumentRows')?.addEventListener('click',e=>{
   const row=e.target.closest('.dmsDocumentRow[data-code]');
   if(row) openDocumentFromWorkspace(activeRepositorySpaceId,row.dataset.code);
+});
+document.getElementById('repositoryDocument')?.addEventListener('click',e=>{
+  if(e.target.id==='repositoryDocument') closeDocumentDetail();
+});
+document.addEventListener('keydown',e=>{
+  const modal=document.getElementById('repositoryDocument');
+  if(e.key==='Escape'&&modal?.style.display!=='none') closeDocumentDetail();
 });
 document.querySelectorAll('#dmsContextTabs [data-dms-context]').forEach(button=>button.addEventListener('click',()=>{
   const tab=button.dataset.dmsContext;
@@ -1443,15 +1450,15 @@ function renderSpaceRows(space){
 }
 
 function selectSpaceDocument(doc,row){
+  documentModalReturnFocus=row||document.activeElement;
   activeTraceabilityDoc=doc;
   renderDocumentTraceability(doc);
   setDocumentDetailTab('document');
   document.querySelectorAll('#repositorySpace .spaceDocumentItem').forEach(x=>x.classList.remove('selected'));
   row?.classList.add('selected');
-  const spaceView=document.getElementById('repositorySpace');
   const docView=document.getElementById('repositoryDocument');
-  if(spaceView) spaceView.style.display='none';
   if(docView) docView.style.display='block';
+  document.body.classList.add('document-modal-open');
 
   const title=document.getElementById('docTitle');
   if(!title) return;
@@ -1514,6 +1521,7 @@ function selectSpaceDocument(doc,row){
   renderDocumentRevisionHistory(doc);
   document.querySelector('.documentStage')?.scrollTo({top:0,behavior:'smooth'});
   refreshIcons();
+  requestAnimationFrame(()=>document.querySelector('#repositoryDocument .documentModalClose')?.focus());
 }
 
 function prototypeDecision(result){
@@ -1530,6 +1538,7 @@ function resetControlledInformation(){
   if(hub) hub.style.display='block';
   if(space) space.style.display='none';
   if(doc) doc.style.display='none';
+  document.body.classList.remove('document-modal-open');
   activeSpace=spaceDefinitions[activeRepositorySpaceId]||spaceDefinitions.quality;
   setRepositoryPanel('spaces');
   renderDmsSpace(activeRepositorySpaceId||'quality');
@@ -1568,17 +1577,19 @@ function closeDocumentDetail(){
   const space=document.getElementById('repositorySpace');
   const doc=document.getElementById('repositoryDocument');
   if(doc) doc.style.display='none';
+  document.body.classList.remove('document-modal-open');
   if(documentReturnContext==='hub'){
     if(space) space.style.display='none';
     if(hub) hub.style.display='block';
-    renderDmsSpace(activeRepositorySpaceId||'quality');
     if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information';
   }else{
     if(hub) hub.style.display='none';
     if(space) space.style.display='block';
     if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information / '+(activeSpace?.name||'Space');
   }
-  window.scrollTo({top:0,behavior:'smooth'});
+  const returnFocus=documentModalReturnFocus;
+  documentModalReturnFocus=null;
+  requestAnimationFrame(()=>returnFocus?.focus?.());
 }
 
 function closeDocumentSpace(){

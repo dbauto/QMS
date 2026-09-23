@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="iqms-build" content="20260923-document-register-spacing2">
+<meta name="iqms-build" content="20260923-document-modal1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260923-document-register-spacing2">
+<link rel="stylesheet" href="./styles.css?v=20260923-document-modal1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -519,8 +519,9 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
         </div>
 
         <div id="repositoryDocument" class="repositoryDocument" style="display:none">
+          <div class="documentModalShell" role="dialog" aria-modal="true" aria-labelledby="docTitle">
           <div class="levelHeader documentLevelHeader">
-            <button class="backButton" onclick="closeDocumentDetail()" aria-label="Back to space"><i data-lucide="arrow-left"></i></button>
+            <button class="backButton documentModalClose" onclick="closeDocumentDetail()" aria-label="Close document preview"><i data-lucide="x"></i></button>
             <div class="levelHeaderTitle">
               <span class="levelPath">Controlled information <i data-lucide="chevron-right"></i> <span id="docSpaceBreadcrumb">Quality Management</span> <i data-lucide="chevron-right"></i> <b id="docCodeHeader">SOP-QA-014</b></span>
               <h1 id="docTitle">Control of Nonconforming Outputs</h1>
@@ -719,6 +720,7 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
                 <button class="btn secondary" onclick="openSecureRevisionDownload()"><i data-lucide="file-down"></i>Prepare working copy</button>
               </div>
             </section>
+          </div>
           </div>
         </div>
       </div>
@@ -2047,6 +2049,6 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260923-document-register-spacing2"></script>
+<script src="./app.js?v=20260923-document-modal1"></script>
 </body>
 </html>
