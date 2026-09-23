@@ -447,12 +447,53 @@ function revisionStateBadge(code){
   if(revisionRequests[code]) return '<em class="revisionRequestInline">Revision requested</em>';
   return '';
 }
+function documentWorkflowStatusLocked(doc){
+  const status=String(doc?.status||'').trim().toLowerCase();
+  return ['in approval','in review','draft','returned for changes'].includes(status);
+}
+function updateRevisionActionAvailability(doc=activeControlledDoc()){
+  const requestBtn=document.getElementById('requestRevisionBtn');
+  const startBtn=document.getElementById('startRevisionBtn');
+  if(!doc||typeof doc!=='object'){
+    if(requestBtn) requestBtn.disabled=false;
+    if(startBtn) startBtn.disabled=false;
+    return;
+  }
+  const revision=openRevisions[doc.code];
+  const request=revisionRequests[doc.code];
+  const lockedByStatus=documentWorkflowStatusLocked(doc);
+  const requestLocked=Boolean(revision||request||lockedByStatus);
+  const startLocked=Boolean(revision||lockedByStatus);
+  const statusMessage=lockedByStatus
+    ? 'This document already has an active '+String(doc.status).toLowerCase()+' workflow. Complete or return this same revision before starting another one.'
+    : revision
+      ? revision.rev+' is already open. Complete this same working revision before starting another one.'
+      : request
+        ? 'A revision request is already pending. The assigned PIC may start that requested revision.'
+        : '';
+  if(requestBtn){
+    requestBtn.disabled=requestLocked;
+    requestBtn.title=statusMessage||'Request a revision';
+    requestBtn.setAttribute('aria-disabled',String(requestLocked));
+  }
+  if(startBtn){
+    startBtn.disabled=startLocked;
+    startBtn.title=startLocked?statusMessage:(request?'Start the pending revision request':'Start a revision');
+    startBtn.setAttribute('aria-disabled',String(startLocked));
+  }
+}
 function openRevisionRequest(mode='request'){
   const doc=activeControlledDoc();
   if(!doc) return;
 
   const existingOpen=openRevisions[doc.code];
   const existingRequest=revisionRequests[doc.code];
+
+  if(!existingOpen && !existingRequest && documentWorkflowStatusLocked(doc)){
+    toast('Active workflow already exists','This document is already '+String(doc.status).toLowerCase()+'. Complete or return the current revision before starting another request.');
+    refreshOpenRevisionIndicators(doc);
+    return;
+  }
 
   if(existingOpen){
     toast('Revision already open',existingOpen.rev+' is already being prepared by '+existingOpen.pic+'.');
@@ -607,8 +648,10 @@ function renderDocumentRevisionHistory(doc=activeControlledDoc()){
 function refreshOpenRevisionIndicators(doc=activeControlledDoc()){
   const openBanner=document.getElementById('openRevisionBanner');
   const requestBanner=document.getElementById('revisionRequestBanner');
+  const workflowBanner=document.getElementById('workflowLockBanner');
   const revision=doc&&typeof doc==='object'?openRevisions[doc.code]:null;
   const request=doc&&typeof doc==='object'?revisionRequests[doc.code]:null;
+  const workflowLocked=doc&&typeof doc==='object'&&!revision&&!request&&documentWorkflowStatusLocked(doc);
 
   if(openBanner){
     openBanner.style.display=revision?'grid':'none';
@@ -629,6 +672,15 @@ function refreshOpenRevisionIndicators(doc=activeControlledDoc()){
       document.getElementById('pendingRevisionReason').textContent=request.reason;
     }
   }
+  if(workflowBanner){
+    workflowBanner.style.display=workflowLocked?'grid':'none';
+    const text=document.getElementById('workflowLockText');
+    if(text&&workflowLocked){
+      const rev=doc.rev&&doc.rev!=='—'?'Rev '+doc.rev:'This document';
+      text.textContent=rev+' is already '+String(doc.status).toLowerCase()+'. Finish or return this same workflow before another revision request can be created.';
+    }
+  }
+  updateRevisionActionAvailability(doc);
 
   document.querySelectorAll('#controlledLibraryRows .controlledLibraryRow').forEach(row=>{
     const code=row.querySelector('div>b')?.textContent.trim();
@@ -799,6 +851,23 @@ function selectApprovalTaskByCode(code,trigger=null){
   if(openButton){
     openButton.innerHTML='<i data-lucide="file-search"></i>Review document';
   }
+
+  const taskPrimary=document.getElementById('taskPrimaryDecision');
+  const taskReturn=document.getElementById('taskReturnDecision');
+  const normalizedTask=(taskLabel||'').toLowerCase();
+  if(taskPrimary){
+    if(normalizedTask.includes('final approval')){
+      taskPrimary.textContent='Publish';
+      taskPrimary.dataset.decision='Published';
+    }else if(normalizedTask.includes('acknowledgement')){
+      taskPrimary.textContent='Acknowledge';
+      taskPrimary.dataset.decision='Acknowledged';
+    }else{
+      taskPrimary.textContent='Complete review';
+      taskPrimary.dataset.decision='Completed';
+    }
+  }
+  if(taskReturn) taskReturn.style.display=normalizedTask.includes('acknowledgement')?'none':'inline-flex';
   refreshIcons();
 }
 
@@ -852,7 +921,7 @@ function refreshRevisionDashboard(){
 const viewLabels={
   dashboard:'Overview',
   repository:'Documents',
-  records:'Records & evidence',
+  records:'Records & Evidence',
   approvals:'Documents in Review',
   audit:'Audit trail',
   structure:'Space administration',
@@ -882,7 +951,7 @@ const traceabilityProfiles={
     mapEvidenceCode:'REC-SCR-2026-0918',mapEvidenceTitle:'Candidate Screening Record',mapAuditCode:'IA-2026-004',mapAuditTitle:'Internal Audit 2026'
   },
   'SOP-QA-014':{
-    title:'Control of Nonconforming Outputs',code:'SOP-QA-014',rev:'Rev 06',status:'Effective',space:'Quality Management',owner:'Quality Manager',
+    title:'Control of Nonconforming Outputs',code:'SOP-QA-014',rev:'Rev 06',status:'In approval',space:'Quality Management',owner:'Quality Manager',
     requirement:{code:'ISO 9001 · 8.7',detail:'Control of nonconforming outputs'},
     process:{name:'Nonconformance Control',detail:'Process owner · Quality Manager'},
     related:[
@@ -929,7 +998,7 @@ function getTraceabilityProfile(doc){
       requirement:{code:'Applicable QMS requirements',detail:'Open the requirement links for this document'},
       process:{name:activeSpace?.name||'Applicable process',detail:'Process owner · '+(doc.owner||'Assigned owner')},
       related:[['Related controlled information','No specific sample link configured in this prototype']],
-      evidence:[['Linked records & evidence','Open Records & evidence to see retained proof']],
+      evidence:[['Linked records & evidence','Open Records & Evidence to see retained proof']],
       risk:['Linked process risks','Open the risk links for this controlled information'],
       audit:['Audit & verification history','Open Audit trail for verification history'],
       mapEvidenceCode:'Records / evidence',mapEvidenceTitle:'Linked retained proof',mapAuditCode:'Audit',mapAuditTitle:'Verification history'
@@ -1438,7 +1507,7 @@ const spaceDefinitions={
   quality:{
     name:'Quality Management',path:'Quality / Procedures',count:486,
     docs:[
-      {code:'SOP-QA-014',title:'Control of Nonconforming Outputs',type:'SOP · Quality',rev:'06',classification:'Internal',owner:'M. Santos',status:'Effective',kind:'success',review:'15 Sep 2027',approver:'Quality Manager',effective:'15 Sep 2026',purpose:'Defines controls for identifying, segregating, reviewing and dispositioning nonconforming outputs.'},
+      {code:'SOP-QA-014',title:'Control of Nonconforming Outputs',type:'SOP · Quality',rev:'06',classification:'Internal',owner:'M. Santos',status:'In approval',kind:'info',review:'—',approver:'Quality Manager',effective:'Not effective',purpose:'Defines controls for identifying, segregating, reviewing and dispositioning nonconforming outputs.'},
       {code:'SOP-QA-005',title:'Internal Audit Procedure',type:'SOP · Quality',rev:'04',owner:'A. Reyes',status:'Review due',kind:'warning',review:'03 Oct 2026',approver:'Quality Manager',effective:'03 Oct 2025',purpose:'Defines planning, execution, reporting and follow-up requirements for the internal audit program.'},
       {code:'SOP-QA-001',title:'Document Control Procedure',type:'SOP · Quality',rev:'05',owner:'M. Santos',status:'Effective',kind:'success',review:'20 Sep 2027',approver:'Quality Manager',effective:'20 Sep 2026',purpose:'Defines document creation, review, approval, release, revision, distribution and obsolete-document controls.'},
       {code:'SOP-QA-020',title:'Corrective Action Procedure',type:'SOP · Quality',rev:'03',owner:'J. Dela Cruz',status:'Draft',kind:'neutral',review:'—',approver:'Quality Manager',effective:'Not effective',purpose:'Defines investigation, root-cause analysis, corrective action, verification and closure requirements.'}
@@ -1546,7 +1615,7 @@ function selectSpaceDocument(doc,row){
   if(!title) return;
 
   const normalizedRev=doc.rev==='—'?'Record':('Rev '+doc.rev);
-  const isWorkflow=['In approval','In review','Draft','Review due'].includes(doc.status);
+  const isWorkflow=['In approval','In review','Draft','Returned for changes'].includes(doc.status);
 
   title.textContent=doc.title;
   document.getElementById('docCode').textContent=doc.code;
@@ -1588,19 +1657,31 @@ function selectSpaceDocument(doc,row){
   document.getElementById('detailResourceId').textContent='RES-'+String(doc.code||'DOC').replace(/[^A-Z0-9]/gi,'').slice(0,12).toUpperCase();
   document.getElementById('changeReasonRev').textContent=doc.rev==='—'?'—':doc.rev;
   document.getElementById('changeReasonText').textContent=doc.status==='Draft'
-    ? 'Draft revision is being prepared and has not yet been released.'
-    : doc.status==='In approval'
-      ? 'Revision submitted for controlled approval. Release is blocked until the route is completed.'
-      : 'Controlled revision retained with its documented change reason and approval history.';
+    ? 'Draft revision is being prepared. This same revision must continue through review and final approval before another revision can start.'
+    : doc.status==='In review'
+      ? 'This revision is already in controlled review. Another revision request is locked until this same workflow finishes or is returned.'
+      : doc.status==='In approval'
+        ? 'This revision is in final approval. Publishing completes the route and makes this same revision effective.'
+        : doc.status==='Returned for changes'
+          ? 'The approver returned this same working revision for correction. No new revision number is created.'
+          : 'Controlled revision retained with its documented change reason and approval history.';
 
   const decision=document.getElementById('approvalDecision');
   if(decision) decision.style.display=doc.status==='In approval'?'block':'none';
 
   const workflow=document.querySelector('#repositoryDocument .reviewWorkflow');
   if(workflow){
-    workflow.innerHTML=isWorkflow && doc.status!=='Effective'
-      ? '<div class="done"><i data-lucide="check"></i><span><b>Author</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Department review</b><small>Completed</small></span></div><div class="active"><i data-lucide="clock-3"></i><span><b>Final approval</b><small>Waiting for decision</small></span></div><div><i data-lucide="circle"></i><span><b>Release</b><small>Blocked</small></span></div>'
-      : '<div class="done"><i data-lucide="check"></i><span><b>Author</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Department review</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Final approval</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Released</b><small>'+escapeHtml(doc.status)+'</small></span></div>';
+    if(doc.status==='Draft'){
+      workflow.innerHTML='<div class="active"><i data-lucide="pencil-line"></i><span><b>Author</b><small>Working revision</small></span></div><div><i data-lucide="circle"></i><span><b>Department review</b><small>Pending</small></span></div><div><i data-lucide="circle"></i><span><b>Final approval & publish</b><small>Pending</small></span></div>';
+    }else if(doc.status==='In review'){
+      workflow.innerHTML='<div class="done"><i data-lucide="check"></i><span><b>Author</b><small>Completed</small></span></div><div class="active"><i data-lucide="clock-3"></i><span><b>Department review</b><small>Waiting for decision</small></span></div><div><i data-lucide="circle"></i><span><b>Final approval & publish</b><small>Pending</small></span></div>';
+    }else if(doc.status==='In approval'){
+      workflow.innerHTML='<div class="done"><i data-lucide="check"></i><span><b>Author</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Department review</b><small>Completed</small></span></div><div class="active"><i data-lucide="send"></i><span><b>Final approval & publish</b><small>Waiting for final approver</small></span></div>';
+    }else if(doc.status==='Returned for changes'){
+      workflow.innerHTML='<div class="active"><i data-lucide="rotate-ccw"></i><span><b>Returned for changes</b><small>Same revision remains open</small></span></div><div><i data-lucide="circle"></i><span><b>Department review</b><small>Resume after correction</small></span></div><div><i data-lucide="circle"></i><span><b>Final approval & publish</b><small>Pending</small></span></div>';
+    }else{
+      workflow.innerHTML='<div class="done"><i data-lucide="check"></i><span><b>Author</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Department review</b><small>Completed</small></span></div><div class="done"><i data-lucide="check"></i><span><b>Published</b><small>'+escapeHtml(doc.status)+'</small></span></div>';
+    }
   }
 
   refreshOpenRevisionIndicators(doc);
@@ -1610,9 +1691,91 @@ function selectSpaceDocument(doc,row){
   requestAnimationFrame(()=>document.querySelector('#repositoryDocument .documentModalClose')?.focus());
 }
 
+function syncDocumentStatusRows(doc){
+  document.querySelectorAll('.controlledLibraryRow,.dmsDocumentRow,.spaceDocumentItem').forEach(row=>{
+    const code=row.querySelector('div>b,.docMain>b')?.textContent?.trim();
+    if(code!==doc.code) return;
+    const tag=row.querySelector('.tag');
+    if(tag) setTag(tag,doc.status,doc.kind);
+    if(row.classList.contains('controlledLibraryRow')) row.dataset.status=['In approval','In review','Draft','Returned for changes'].includes(doc.status)?'workflow':String(doc.status).toLowerCase();
+  });
+}
+function removeApprovalTaskForDocument(code){
+  document.querySelectorAll('#approvals .approvalItem[data-document-code]').forEach(item=>{
+    if(item.dataset.documentCode===code) item.remove();
+  });
+}
+function applyFinalWorkflowDecision(doc,result){
+  if(!doc) return;
+  const normalized=String(result||'').toLowerCase();
+  if(normalized==='returned'){
+    const existing=openRevisions[doc.code];
+    openRevisions[doc.code]=existing||{
+      code:doc.code,title:doc.title,currentRev:doc.rev,rev:'Rev '+doc.rev,revRaw:doc.rev,
+      pic:doc.owner||'Document owner',due:'',reason:'Returned from final approval',reference:'',
+      initiatedBy:doc.owner||'Document owner',sourceRequest:null,mode:'return',
+      stage:'Returned for changes',downloaded:true,createdAt:new Date().toISOString(),
+      space:activeSpace?.name||''
+    };
+    openRevisions[doc.code].stage='Returned for changes';
+    openRevisions[doc.code].downloaded=true;
+    doc.status='Returned for changes';
+    doc.kind='warning';
+    doc.effective='Not effective';
+  }else if(normalized==='published'){
+    const revision=openRevisions[doc.code];
+    if(revision?.revRaw) doc.rev=revision.revRaw;
+    delete openRevisions[doc.code];
+    delete revisionRequests[doc.code];
+    doc.status='Effective';
+    doc.kind='success';
+    doc.effective='23 Sep 2026';
+    doc.review=doc.review==='—'?'23 Sep 2027':doc.review;
+    removeApprovalTaskForDocument(doc.code);
+  }
+  persistOpenRevisions();
+  persistRevisionRequests();
+  syncDocumentStatusRows(doc);
+  refreshRevisionTasks();
+  refreshRevisionDashboard();
+}
 function prototypeDecision(result){
+  const doc=activeControlledDoc();
   const comment=document.getElementById('approvalDecisionComment')?.value.trim();
-  toast('Revision '+result.toLowerCase(),comment||('The '+result.toLowerCase()+' decision was recorded in the prototype audit trail.'));
+  if(!doc) return;
+  applyFinalWorkflowDecision(doc,result);
+  selectSpaceDocument(doc,documentModalReturnFocus);
+  const normalized=String(result||'').toLowerCase();
+  if(normalized==='published'){
+    toast('Revision published',comment||('Rev '+doc.rev+' is now effective. The final approval and publish action were recorded in the audit trail.'));
+  }else if(normalized==='returned'){
+    toast('Revision returned',comment||('Rev '+doc.rev+' stays open for correction. No new revision number was created.'));
+  }else{
+    toast('Decision recorded',comment||'The workflow decision was recorded.');
+  }
+}
+function taskDecisionFromButton(button){
+  taskDecision(button?.dataset?.decision||'Published');
+}
+function taskDecision(result){
+  const item=document.querySelector('#approvals .approvalItem.selected[data-document-code]');
+  const code=item?.dataset.documentCode;
+  const found=code?findDocByCode(code):null;
+  if(!found) return;
+  const normalized=String(result||'').toLowerCase();
+  if(normalized==='published'||normalized==='returned'){
+    applyFinalWorkflowDecision(found.doc,result);
+    if(normalized==='published'){
+      toast('Revision published',found.doc.code+' Rev '+found.doc.rev+' is now effective and the approval route is closed.');
+      const next=document.querySelector('#approvals .approvalItem[data-document-code]');
+      if(next) selectApprovalTaskByCode(next.dataset.documentCode,next);
+    }else{
+      selectApprovalTaskByCode(code,item);
+      toast('Revision returned',found.doc.code+' Rev '+found.doc.rev+' remains the same working revision for correction.');
+    }
+    return;
+  }
+  toast(result==='Acknowledged'?'Acknowledgement recorded':'Review completed',found.doc.code+' was updated in the prototype workflow.');
 }
 
 let activeSpace=null;
@@ -2008,7 +2171,7 @@ function openEvidenceDetail(key){
   set('recordTraceabilityTitle',d.title.replace(/ — .*/,'')); set('retentionPanelPeriod',d.retention); set('retentionPanelAccess',d.access);
   setTag(document.getElementById('recordDetailStatus'),d.status,d.kind);
   setRecordDetailTab('record');
-  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Records & evidence / '+d.process+' / '+d.code;
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Records & Evidence / '+d.process+' / '+d.code;
   window.scrollTo({top:0,behavior:'smooth'});
   refreshIcons();
 }
@@ -2017,7 +2180,7 @@ function closeEvidenceDetail(){
   const detail=document.getElementById('recordDetail');
   if(detail) detail.style.display='none';
   if(hub) hub.style.display='block';
-  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Records & evidence';
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Records & Evidence';
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function setRecordDetailTab(tab='record'){
