@@ -50,6 +50,33 @@ test('document details retain tabs, trap focus, and restore the list', async ({ 
   await expect(page.locator('.mainArea')).not.toHaveAttribute('inert');
 });
 
+test('task documents open in context without navigating to Documents', async ({ page }) => {
+  await page.goto('/#/approvals');
+  const task = page.locator('#approvals .taskQueue > .approvalItem[data-document-code="SOP-QA-014"]');
+  const openButton = page.locator('#openTaskDocument');
+
+  await task.click();
+  await expect(page.locator('#approvals .approvalHero h2')).toHaveText('Control of Nonconforming Outputs');
+  await openButton.click();
+  await expect(page).toHaveURL(/#\/approvals$/);
+  await expect(page.locator('#approvals')).toBeVisible();
+  await expect(page.locator('#repository')).toBeHidden();
+  await expect(page.locator('#repositoryDocument')).toBeVisible();
+  await expect(page.locator('#repositoryDocument')).toHaveAttribute('data-context', 'task');
+  await expect(page.locator('#docContextBreadcrumb')).toHaveText('My tasks');
+  await expect(page.locator('#docTitle')).toHaveText('Control of Nonconforming Outputs');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#repositoryDocument')).toBeHidden();
+  await expect(page).toHaveURL(/#\/approvals$/);
+  await expect(openButton).toBeFocused();
+
+  const revisionTask = page.locator('#revisionTaskQueue .approvalItem').first();
+  await revisionTask.click();
+  await expect(page.locator('#repositoryDocument')).toBeVisible();
+  await expect(page.locator('#docContextBreadcrumb')).toHaveText('My tasks');
+  await expect(page).toHaveURL(/#\/approvals$/);
+});
+
 test('global document search works from Overview with keyboard selection', async ({ page }) => {
   await page.goto('/');
   await page.keyboard.press('Control+k');

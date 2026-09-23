@@ -720,14 +720,14 @@ function refreshRevisionTasks(){
   const requests=Object.values(revisionRequests);
 
   const requestRows=requests.map(r=>
-    '<button class="approvalItem revisionRequestTaskItem" onclick="openControlledDocumentByCode(\''+escapeHtml(r.code)+'\')">'
+    '<button class="approvalItem revisionRequestTaskItem" data-document-code="'+escapeHtml(r.code)+'" onclick="openTaskDocumentByCode(\''+escapeHtml(r.code)+'\',this)">'
     +'<div class="approvalTop"><span class="tag warning">Revision requested</span><small>Action for PIC</small></div>'
     +'<b>'+escapeHtml(r.code)+'</b><strong>'+escapeHtml(r.title)+'</strong>'
     +'<span>Requestor: '+escapeHtml(r.requestor||'—')+' · PIC: '+escapeHtml(r.pic)+' · No revision number yet · Due '+escapeHtml(r.due||'Not set')+'</span></button>'
   ).join('');
 
   const revisionRows=revisions.map(r=>
-    '<button class="approvalItem revisionTaskItem" onclick="openControlledDocumentByCode(\''+escapeHtml(r.code)+'\')">'
+    '<button class="approvalItem revisionTaskItem" data-document-code="'+escapeHtml(r.code)+'" onclick="openTaskDocumentByCode(\''+escapeHtml(r.code)+'\',this)">'
     +'<div class="approvalTop"><span class="tag info">'+escapeHtml(r.downloaded?'In progress':'Revision open')+'</span><small>Working revision</small></div>'
     +'<b>'+escapeHtml(r.code)+' · '+escapeHtml(r.rev)+'</b><strong>'+escapeHtml(r.title)+'</strong>'
     +'<span>PIC: '+escapeHtml(r.pic)+' · Due '+escapeHtml(r.due||'Not set')+'</span></button>'
@@ -750,6 +750,19 @@ function findDocByCode(code){
 function openControlledDocumentByCode(code){
   const found=findDocByCode(code);
   if(found) openControlledDocument(found.spaceId,code);
+}
+function openTaskDocumentByCode(code,trigger=null){
+  const found=findDocByCode(code);
+  if(!found) return;
+  activeSpace=spaceDefinitions[found.spaceId];
+  activeRepositorySpaceId=found.spaceId;
+  documentReturnContext='task';
+  selectSpaceDocument(found.doc,trigger||document.activeElement);
+}
+function openSelectedTaskDocument(trigger){
+  const code=trigger?.dataset.documentCode
+    ||document.querySelector('#approvals .approvalItem.selected[data-document-code]')?.dataset.documentCode;
+  if(code) openTaskDocumentByCode(code,trigger);
 }
 function refreshRevisionDashboard(){
   const work=document.getElementById('overviewWorkList');
@@ -1209,6 +1222,11 @@ let dmsDocumentTypeFilter='all';
 let documentReturnContext='hub';
 let documentModalReturnFocus=null;
 
+// The viewer is shared by Documents and My tasks. Keeping it outside either
+// route lets task reviews open in place instead of navigating to Documents.
+const sharedDocumentViewer=document.getElementById('repositoryDocument');
+document.querySelector('.mainArea')?.append(sharedDocumentViewer);
+
 function spaceIconName(spaceId){
   return {
     management:'landmark',quality:'shield-check',recruitment:'user-round-search',operations:'workflow',
@@ -1460,6 +1478,7 @@ function renderSpaceRows(space){
 }
 
 function selectSpaceDocument(doc,row){
+  const isTaskContext=documentReturnContext==='task';
   documentModalReturnFocus=row||document.activeElement;
   activeTraceabilityDoc=doc;
   renderDocumentTraceability(doc);
@@ -1467,7 +1486,10 @@ function selectSpaceDocument(doc,row){
   document.querySelectorAll('#repositorySpace .spaceDocumentItem').forEach(x=>x.classList.remove('selected'));
   row?.classList.add('selected');
   const docView=document.getElementById('repositoryDocument');
-  if(docView) docView.style.display='block';
+  if(docView){
+    docView.dataset.context=isTaskContext?'task':'documents';
+    docView.style.display='block';
+  }
   document.body.classList.add('document-modal-open');
 
   const title=document.getElementById('docTitle');
@@ -1479,10 +1501,14 @@ function selectSpaceDocument(doc,row){
   title.textContent=doc.title;
   document.getElementById('docCode').textContent=doc.code;
   const codeHeader=document.getElementById('docCodeHeader');
+  const contextBreadcrumb=document.getElementById('docContextBreadcrumb');
   const spaceBreadcrumb=document.getElementById('docSpaceBreadcrumb');
   if(codeHeader) codeHeader.textContent=doc.code;
+  if(contextBreadcrumb) contextBreadcrumb.textContent=isTaskContext?'My tasks':'Controlled information';
   if(spaceBreadcrumb) spaceBreadcrumb.textContent=activeSpace?.name||'Primary space';
-  if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information / '+(activeSpace?.name||'Space')+' / '+doc.code;
+  if(breadcrumbCurrent) breadcrumbCurrent.textContent=isTaskContext
+    ? 'My tasks / '+doc.code
+    : 'Controlled information / '+(activeSpace?.name||'Space')+' / '+doc.code;
   document.getElementById('docRev').textContent=normalizedRev;
   setTag(document.getElementById('docStatus'),doc.status,doc.kind);
   document.getElementById('docOwner').textContent=doc.owner;
@@ -1588,7 +1614,9 @@ function closeDocumentDetail(){
   const doc=document.getElementById('repositoryDocument');
   if(doc) doc.style.display='none';
   document.body.classList.remove('document-modal-open');
-  if(documentReturnContext==='hub'){
+  if(documentReturnContext==='task'){
+    if(breadcrumbCurrent) breadcrumbCurrent.textContent='My tasks';
+  }else if(documentReturnContext==='hub'){
     if(space) space.style.display='none';
     if(hub) hub.style.display='block';
     if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information';
@@ -1599,6 +1627,7 @@ function closeDocumentDetail(){
   }
   const returnFocus=documentModalReturnFocus;
   documentModalReturnFocus=null;
+  documentReturnContext='hub';
   // Restore after the dialog boundary releases inert siblings, without a delayed
   // timer that can steal focus from the user's next search or keyboard action.
   queueMicrotask(()=>{
@@ -1809,6 +1838,18 @@ document.querySelectorAll('.approvalItem').forEach(item=>{
   item.addEventListener('click',()=>{
     document.querySelectorAll('.approvalItem').forEach(x=>x.classList.remove('selected'));
     item.classList.add('selected');
+    const code=item.dataset.documentCode;
+    const found=code?findDocByCode(code):null;
+    const openButton=document.getElementById('openTaskDocument');
+    if(found&&openButton){
+      openButton.dataset.documentCode=code;
+      const hero=document.querySelector('#approvals .approvalHero');
+      const meta=hero?.querySelector('.recordMeta');
+      if(hero?.querySelector('h2')) hero.querySelector('h2').textContent=found.doc.title;
+      if(meta?.querySelector('b')) meta.querySelector('b').textContent=found.doc.code;
+      if(meta?.querySelector('span')) meta.querySelector('span').textContent='Rev '+found.doc.rev;
+      setTag(meta?.querySelector('.tag'),found.doc.status,found.doc.kind);
+    }
   });
 });
 document.querySelectorAll('.queueTabs button').forEach(tab=>{
