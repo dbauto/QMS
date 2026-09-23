@@ -25,13 +25,16 @@ NexusQMS should feel like a serious operational quality system, not a generic AI
 - Content width: fluid; avoid artificial centered max-width on operational screens
 
 ## Global shell
-- 236px left navigation
-- 56px top command bar
-- Global search in top bar
-- Workspace/tenant switcher in sidebar
-- Primary nav groups: Workspace, Control, Intelligence, Administration
-- Profile and notifications remain compact
-- No oversized branding, gradients or decorative glass effects
+- Desktop navigation uses a dark-green QMS identity.
+- Unpinned desktop navigation is compact (~58px) and expands on hover or keyboard focus.
+- A visible pin control appears when expanded; pinned navigation remains open (~228px) until unpinned.
+- Hover expansion overlays the workspace rather than pushing content; pinned expansion reserves layout width.
+- Mobile navigation remains an off-canvas drawer.
+- Global search stays in the top command bar.
+- Workspace/tenant switcher stays in the sidebar.
+- Primary nav groups: Workspace, Quality assurance, Administration.
+- Profile and notifications remain compact; do not use floating numeric notification bubbles.
+- No oversized branding, gradients or decorative glass effects.
 
 ## Core page patterns
 
@@ -53,12 +56,16 @@ Purpose: find, inspect and control documents.
 - selected row state must be obvious
 - avoid wrapping folder counts beneath labels
 
-### My Tasks
-Purpose: complete governed actions.
-- queue on left
-- selected approval detail on right
-- decision area anchored at bottom
-- change reason and route history always visible
+### Documents in Review
+Purpose: complete governed review, approval and publication actions.
+- queue on left; selected document detail on right
+- default desktop split is 50:50
+- divider is keyboard and pointer resizable; the chosen ratio may persist for the browser session
+- clicking a queue row selects it and updates the detail pane only
+- opening the controlled document is always an explicit **Open document** action
+- decision area is anchored at the bottom
+- change reason and route history remain visible
+- final approver action is **Publish**, not Approve
 
 ### Register
 Purpose: authoritative canonical register.
