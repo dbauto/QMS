@@ -4683,3 +4683,77 @@ body.navExpanded .navMeta{
 @media(max-width:1250px){.isoOverviewCard{grid-template-columns:1fr 1fr}.isoAttentionPreview{grid-column:1/-1;border-left:0!important;border-top:1px solid var(--line)}.complianceWorkspace{grid-template-columns:1fr}.complianceSideColumn{display:grid;grid-template-columns:1fr 1fr}.generatedPlan{grid-column:1/-1}.complianceScoreGrid{grid-template-columns:1fr 1fr}}
 @media(max-width:900px){.isoOverviewCard{grid-template-columns:1fr}.isoOverviewCard>div+div{border-left:0;border-top:1px solid var(--line)}.isoAttentionPreview{grid-column:auto}.complianceScoreGrid{grid-template-columns:1fr 1fr}.clauseAssessmentPanel{overflow-x:auto}.clauseTableHead,.clauseRow{min-width:760px}.complianceSideColumn{grid-template-columns:1fr}.complianceAssessmentMeta{overflow-x:auto;white-space:nowrap}.compliancePageHeader{align-items:flex-start;flex-direction:column}.complianceWorkspace{display:block}.complianceSideColumn{margin-top:12px}}
 @media(max-width:620px){.isoOverviewSummary{align-items:flex-start;flex-direction:column}.isoScoreRing{width:96px;height:96px;flex-basis:96px}.complianceScoreGrid{grid-template-columns:1fr}.complianceAssessmentMeta span{padding:0 8px}.complianceSectionHead{align-items:flex-start;flex-direction:column}.complianceFilters{width:100%;overflow:auto}.findingAssessment,.assessmentBasis{grid-template-columns:1fr}.complianceDrawer>footer{flex-wrap:wrap}.complianceDrawer>footer .btn{flex:1}}
+
+
+/* Controlled document register — aligned governance columns */
+.dmsDocumentHead,
+.dmsDocumentRow{
+  grid-template-columns:minmax(340px,1.7fr) 108px 86px 132px 116px 118px 18px!important;
+  column-gap:14px!important;
+  box-sizing:border-box;
+}
+.dmsDocumentHead{min-height:38px!important;padding:0 18px!important;font-size:10px!important;letter-spacing:.055em!important}
+.dmsDocumentRow{min-height:82px!important;padding:10px 18px!important}
+.dmsDocumentHead>span,
+.dmsDocumentRow>span{min-width:0}
+.dmsDocumentHead>span:nth-child(3),
+.dmsDocumentRow>.dmsRevisionCell{justify-self:center;text-align:center}
+.dmsDocumentHead>span:nth-child(5),
+.dmsDocumentHead>span:nth-child(6),
+.dmsDocumentRow>.dmsStatusCell,
+.dmsDocumentRow>.dmsReviewCell{justify-self:start;text-align:left}
+.dmsDocumentRow>div b{font-size:10px!important}
+.dmsDocumentRow>div strong{font-size:13px!important;line-height:1.35}
+.dmsDocumentRow>div small{font-size:10px!important;line-height:1.35}
+.dmsDocumentRow>span:not(.tag):not(.dmsRevisionCell){font-size:11px!important;line-height:1.4}
+.revisionColumnHead{color:#146b5f!important;font-weight:900!important}
+.dmsRevisionCell{
+  width:58px;
+  min-height:38px;
+  padding:4px 7px;
+  border:1px solid #c9e6df;
+  border-radius:7px;
+  background:#eff9f6;
+  color:#135f54;
+  display:flex!important;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-variant-numeric:tabular-nums;
+}
+.dmsRevisionCell small,
+.dmsRevisionCell b{display:block;line-height:1}
+.dmsRevisionCell small{font-size:8px;text-transform:uppercase;letter-spacing:.07em;color:#568a81}
+.dmsRevisionCell b{margin-top:4px;font-size:13px;color:#135f54}
+.dmsOwnerCell{white-space:normal}
+.dmsStatusCell{min-width:88px!important;padding:5px 9px!important;font-size:10px!important;text-align:center!important}
+.dmsReviewCell{white-space:nowrap;font-variant-numeric:tabular-nums}
+.dmsDocumentRow>div .revisionOpenInline,
+.dmsDocumentRow>div .revisionRequestInline,
+.spaceDocumentItem .docMain .revisionOpenInline,
+.spaceDocumentItem .docMain .revisionRequestInline{
+  width:max-content;
+  margin:6px 0 0!important;
+  padding:3px 7px;
+  font-size:9px!important;
+}
+
+.spaceDocumentTableHead,
+.spaceDocumentListSurface .spaceDocumentItem{
+  grid-template-columns:minmax(300px,1.65fr) 112px 86px 135px 116px 118px 20px!important;
+  column-gap:14px!important;
+  box-sizing:border-box;
+}
+.spaceDocumentTableHead{min-height:38px!important;padding:0 16px!important;font-size:9px!important}
+.spaceDocumentListSurface .spaceDocumentItem{min-height:80px!important;padding:9px 16px!important}
+.spaceDocumentTableHead>span:nth-child(3),
+.spaceDocumentListSurface .spaceDocumentItem>.dmsRevisionCell{justify-self:center;text-align:center}
+.spaceDocumentListSurface .spaceDocumentItem>.dmsStatusCell,
+.spaceDocumentListSurface .spaceDocumentItem>.dmsReviewCell{justify-self:start}
+
+@media(max-width:1180px){
+  .dmsContextPanel[data-dms-context-panel="documents"],
+  .spaceDocumentListSurface{overflow-x:auto}
+  .dmsDocumentHead,.dmsDocumentRow{min-width:1040px}
+  .spaceDocumentTableHead,.spaceDocumentListSurface .spaceDocumentItem{min-width:1020px}
+}

@@ -1263,9 +1263,12 @@ function renderDmsDocuments(){
     const statusClass=doc.kind||'neutral';
     const type=(doc.type||'Controlled document').split(' · ')[0];
     return '<button class="dmsDocumentRow" data-code="'+escapeHtml(doc.code)+'">'
-      +'<div><b>'+escapeHtml(doc.code)+'</b><strong>'+escapeHtml(doc.title)+'</strong><small>'+escapeHtml(space.name)+(revisionStateBadge(doc.code)?' '+revisionStateBadge(doc.code):'')+'</small></div>'
-      +'<span>'+escapeHtml(type)+'</span><span>'+escapeHtml(doc.rev||'—')+'</span><span>'+escapeHtml(doc.owner||'—')+'</span>'
-      +'<span class="tag '+statusClass+'">'+escapeHtml(doc.status||'—')+'</span><span>'+escapeHtml(doc.review||'—')+'</span><i data-lucide="chevron-right"></i></button>';
+      +'<div><b>'+escapeHtml(doc.code)+'</b><strong>'+escapeHtml(doc.title)+'</strong><small>'+escapeHtml(space.name)+'</small>'+(revisionStateBadge(doc.code)||'')+'</div>'
+      +'<span class="dmsTypeCell">'+escapeHtml(type)+'</span>'
+      +'<span class="dmsRevisionCell"><small>Rev</small><b>'+escapeHtml(doc.rev||'—')+'</b></span>'
+      +'<span class="dmsOwnerCell">'+escapeHtml(doc.owner||'—')+'</span>'
+      +'<span class="tag '+statusClass+' dmsStatusCell">'+escapeHtml(doc.status||'—')+'</span>'
+      +'<span class="dmsReviewCell">'+escapeHtml(doc.review||'—')+'</span><i data-lucide="chevron-right"></i></button>';
   }).join('');
   const empty=document.getElementById('dmsDocumentEmpty');
   if(empty) empty.style.display=docs.length?'none':'grid';
@@ -1423,12 +1426,12 @@ function renderSpaceRows(space){
     const typeName=(d.type||'Controlled document').split(' · ')[0];
     return `
       <button class="spaceDocumentItem" data-space-doc-index="${i}">
-        <span class="docMain"><b>${escapeHtml(d.code)}</b><strong>${escapeHtml(d.title)}</strong><small>${escapeHtml(d.type||'Controlled document')}${revisionStateBadge(d.code)?' '+revisionStateBadge(d.code):''}</small></span>
-        <span>${escapeHtml(typeName)}</span>
-        <span>${escapeHtml(d.rev||'—')}</span>
-        <span>${escapeHtml(d.owner||'—')}</span>
-        <span class="tag ${escapeHtml(d.kind)}">${escapeHtml(d.status)}</span>
-        <span>${d.review==='—'?'—':escapeHtml(d.review||'—')}</span>
+        <span class="docMain"><b>${escapeHtml(d.code)}</b><strong>${escapeHtml(d.title)}</strong><small>${escapeHtml(d.type||'Controlled document')}</small>${revisionStateBadge(d.code)||''}</span>
+        <span class="dmsTypeCell">${escapeHtml(typeName)}</span>
+        <span class="dmsRevisionCell"><small>Rev</small><b>${escapeHtml(d.rev||'—')}</b></span>
+        <span class="dmsOwnerCell">${escapeHtml(d.owner||'—')}</span>
+        <span class="tag ${escapeHtml(d.kind)} dmsStatusCell">${escapeHtml(d.status)}</span>
+        <span class="dmsReviewCell">${d.review==='—'?'—':escapeHtml(d.review||'—')}</span>
         <span class="rowChevron"><i data-lucide="chevron-right"></i></span>
       </button>`;
   }).join('');

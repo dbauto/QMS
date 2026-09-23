@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="iqms-build" content="20260922-document-types-readable1">
+<meta name="iqms-build" content="20260922-document-register-columns1">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260922-document-types-readable1">
+<link rel="stylesheet" href="./styles.css?v=20260922-document-register-columns1">
 
 <style id="nexus-shell-critical">
 /* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
@@ -419,7 +419,7 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
                     <button class="iconButton" title="More filters"><i data-lucide="sliders-horizontal"></i></button>
                   </div>
 
-                  <div class="dmsDocumentHead"><span>Document</span><span>Type</span><span>Rev</span><span>Owner</span><span>Status</span><span>Next review</span><span></span></div>
+                  <div class="dmsDocumentHead"><span>Document</span><span>Type</span><span class="revisionColumnHead">Revision</span><span>Owner</span><span>Status</span><span>Next review</span><span></span></div>
                   <div class="dmsDocumentRows" id="dmsDocumentRows"></div>
                   <div class="dmsEmpty" id="dmsDocumentEmpty" style="display:none">
                     <i data-lucide="file-search"></i><b>No documents match this view</b><span>Try another filter or register a controlled document in this space.</span>
@@ -508,7 +508,7 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
               <div class="filterSearch"><span><i data-lucide="search"></i></span><input id="spaceDocSearch" placeholder="Search this space..."></div>
               <div class="libraryFilterTabs"><button class="active">All</button><button>Effective</button><button>In workflow</button><button>Due</button></div>
             </div>
-            <div class="spaceDocumentTableHead"><span>Document</span><span>Type</span><span>Rev</span><span>Owner</span><span>Status</span><span>Next review</span><span></span></div>
+            <div class="spaceDocumentTableHead"><span>Document</span><span>Type</span><span class="revisionColumnHead">Revision</span><span>Owner</span><span>Status</span><span>Next review</span><span></span></div>
             <div class="spaceDocumentRows" id="spaceDocumentRows"></div>
             <div class="spaceEmptyState" id="spaceEmptyState" style="display:none">
               <span><i data-lucide="folder-open"></i></span><h3>No controlled information yet</h3>
@@ -2047,6 +2047,6 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260922-document-types-readable1"></script>
+<script src="./app.js?v=20260922-document-register-columns1"></script>
 </body>
 </html>
