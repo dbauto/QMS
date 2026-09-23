@@ -257,7 +257,8 @@ body.calmUI{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;font-size:
   .calmUI .sideStatus>i{width:7px!important;height:7px!important;background:#45d39f!important}
   .calmUI .sidebarPin{display:none!important}
 
-  .calmUI.navExpanded .sideNav{width:228px!important;padding:22px 14px 16px!important;align-items:stretch!important;overflow-y:auto!important;overflow-x:hidden!important}
+  .calmUI.navExpanded .sideNav{width:228px!important;padding:22px 14px 16px!important;align-items:stretch!important;overflow-y:auto!important;overflow-x:hidden!important;scrollbar-width:none;-ms-overflow-style:none}
+  .calmUI.navExpanded .sideNav::-webkit-scrollbar{display:none}
   .calmUI.navExpanded:not(.navPinned) .sideNav{box-shadow:12px 0 28px rgba(4,35,30,.24)!important}
   .calmUI.navExpanded .mainArea{margin-left:58px!important}
   .calmUI.navPinned .mainArea{margin-left:228px!important}
@@ -275,9 +276,10 @@ body.calmUI{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;font-size:
   .calmUI.navExpanded .primaryNav{align-items:stretch!important}
   .calmUI.navExpanded .navGroup{width:auto!important;height:auto!important;margin:15px 10px 7px!important;padding:0!important;background:transparent!important;color:#78a99f!important;font-size:9px!important;overflow:visible!important}
   .calmUI.navExpanded .navGroup:first-child{margin-top:0!important}
-  .calmUI.navExpanded .navItem{width:100%!important;height:42px!important;padding:0 11px!important;justify-content:flex-start!important;gap:11px!important;font-size:13px!important}
+  .calmUI.navExpanded .navItem{width:100%!important;height:42px!important;padding:0 11px!important;justify-content:flex-start!important;gap:0!important;font-size:13px!important}
+  .calmUI.navExpanded .navItem .navIcon{margin-right:11px!important}
   .calmUI.navExpanded .navItem>span:not(.navIcon){display:block!important}
-  .calmUI.navExpanded .navBadge{display:grid!important;background:#0b5046!important;color:#d5f7f0!important}
+  .calmUI.navExpanded .navBadge{display:inline-flex!important;margin-left:8px!important;background:#0b5046!important;color:#d5f7f0!important}
   .calmUI.navExpanded .navDisclosure{width:auto;margin-top:16px;padding-top:10px;border-color:#ffffff24}
   .calmUI.navExpanded .navDisclosure summary{width:100%;min-height:42px;padding:0 11px;justify-content:flex-start;gap:11px;color:#a5c8c1;font-size:13px}
   .calmUI.navExpanded .navDisclosure summary>.lucide:last-child{display:block;margin-left:auto}
