@@ -30,8 +30,9 @@ test('document filters combine, show an empty state, and can be cleared', async 
   await page.locator('#documentEmpty button').click();
   await expect(page.locator('.controlledLibraryRow:visible')).toHaveCount(6);
   await page.locator('[data-controlled-status="workflow"]').click();
-  await expect(page.locator('.controlledLibraryRow:visible')).toHaveCount(1);
+  await expect(page.locator('.controlledLibraryRow:visible')).toHaveCount(2);
   await expect(page.locator('.controlledLibraryRow:visible')).toContainText('Final Inspection');
+  await expect(page.locator('.controlledLibraryRow:visible')).toContainText('Control of Nonconforming Outputs');
 });
 
 test('document details retain tabs, trap focus, and restore the list', async ({ page }) => {
@@ -80,6 +81,25 @@ test('task documents open in context without navigating to Documents', async ({ 
   await expect(page.locator('#repositoryDocument')).toBeVisible();
   await expect(page.locator('#docContextBreadcrumb')).toHaveText('My tasks');
   await expect(page).toHaveURL(/#\/approvals$/);
+});
+
+
+test('active approval locks parallel revisions and the final approver publishes', async ({ page }) => {
+  await page.goto('/#/repository');
+  await page.locator('.controlledLibraryRow', { hasText: 'Final Inspection Work Instruction' }).click();
+
+  await expect(page.locator('#docStatus')).toHaveText('In approval');
+  await expect(page.locator('#workflowLockBanner')).toBeVisible();
+  await expect(page.locator('#requestRevisionBtn')).toBeDisabled();
+  await expect(page.locator('#startRevisionBtn')).toBeDisabled();
+  await expect(page.locator('#approvalDecision')).toContainText('Publish');
+  await expect(page.locator('#repositoryDocument .reviewWorkflow')).toContainText('Final approval & publish');
+
+  await page.locator('#approvalDecision .btn.primary').click();
+  await expect(page.locator('#docStatus')).toHaveText('Effective');
+  await expect(page.locator('#approvalDecision')).toBeHidden();
+  await expect(page.locator('#requestRevisionBtn')).toBeEnabled();
+  await expect(page.locator('#startRevisionBtn')).toBeEnabled();
 });
 
 test('global document search works from Overview with keyboard selection', async ({ page }) => {
