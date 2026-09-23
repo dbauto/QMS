@@ -95,7 +95,7 @@ Purpose: permission-aware quality assistant.
 - action boundaries visible but not visually dominant
 - controlled write actions require confirmation
 
-### ISO Readiness
+### ISO 9001 Readiness
 Purpose: show management how well the QMS is documented, implemented and effective.
 - dashboard summary separates documentation coverage, implementation evidence and overall readiness
 - dedicated clause assessment for clauses 4–10 with risk-weighted status
@@ -116,7 +116,7 @@ Purpose: guided migration/onboarding.
 - commit only after human confirmation
 
 ## Interaction standards
-- Buttons use verb-first labels: Add document, Create revision, Link resource, Approve revision.
+- Buttons use verb-first labels: Add document, Create revision, Link resource, Publish revision when acting as the final approver.
 - Primary action: one per page/section when possible.
 - Secondary actions: neutral outline.
 - Table rows have hover and selected states.
@@ -132,3 +132,11 @@ Purpose: guided migration/onboarding.
 4. Replace Document Types cards with configuration table + inspector.
 5. Normalize Overview, My Tasks, Register and settings to the same design system.
 6. Preserve manual setup and AI repository builder flows.
+
+
+## Controlled revision workflow rule
+
+- Only one active revision / approval workflow may exist for a document at a time.
+- While a document is in draft, review, approval, or returned-for-change state, starting or requesting another revision is blocked.
+- A returned decision keeps the same working revision open; it does not create a new revision number.
+- The final approver action is **Publish**. Publishing records the final approval, closes the route, and makes that revision effective.
