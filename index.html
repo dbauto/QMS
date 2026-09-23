@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="iqms-build" content="enterprise-workspace-20">
+<meta name="iqms-build" content="enterprise-workspace-19">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>Overview · iQMS</title>
 <meta name="description" content="A calmer quality workspace for documents, evidence and your next action.">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./styles.css?v=enterprise-workspace-20">
+<link rel="stylesheet" href="./styles.css?v=enterprise-workspace-19">
 
-<link rel="stylesheet" href="./calm.css?v=enterprise-workspace-20">
+<link rel="stylesheet" href="./calm.css?v=enterprise-workspace-19">
 </head>
 <body class="calmUI">
 <a class="skipLink" href="#pageContent">Skip to content</a>
@@ -1723,7 +1723,7 @@
     <div class="wizardProgress"><div class="wp active">1 Company</div><div class="wp">2 Sources</div><div class="wp">3 Interview</div><div class="wp">4 Proposal</div><div class="wp">5 Review</div></div>
 
     <div class="wiz" id="wiz1">
-      <div class="wizardGrid"><div><h3>Tell us about the company</h3><p class="muted">Quality Assistant will use this context to propose departments, types and relationships.</p><label class="fieldLabel">Company name</label><input class="fieldInput" value="Apex Precision Manufacturing"><label class="fieldLabel">What does the company do?</label><textarea class="fieldInput">We manufacture precision metal components for automotive customers.</textarea></div><div class="aiHelp"><span><i data-lucide="sparkles"></i></span><h3>Quality Assistant will help</h3><p>Identify departments and processes</p><p>Recognize SOPs, WIs, forms and records</p><p>Detect likely revisions and duplicates</p><p>Find references and evidence</p><p>Propose approval routes</p></div></div>
+      <div class="wizardGrid"><div><h3>Tell us about the company</h3><p class="muted">QMS AI will use this context to propose departments, types and relationships.</p><label class="fieldLabel">Company name</label><input class="fieldInput" value="Apex Precision Manufacturing"><label class="fieldLabel">What does the company do?</label><textarea class="fieldInput">We manufacture precision metal components for automotive customers.</textarea></div><div class="aiHelp"><span><i data-lucide="sparkles"></i></span><h3>QMS AI will help</h3><p>Identify departments and processes</p><p>Recognize SOPs, WIs, forms and records</p><p>Detect likely revisions and duplicates</p><p>Find references and evidence</p><p>Propose approval routes</p></div></div>
     </div>
 
     <div class="wiz" id="wiz2" style="display:none">
@@ -1734,9 +1734,9 @@
 
     <div class="wiz" id="wiz3" style="display:none">
       <div class="scanSummary"><div><b>1,428</b><span>Files found</span></div><div><b>6</b><span>Likely departments</span></div><div><b>11</b><span>Document types</span></div><div><b>74</b><span>Need clarification</span></div></div>
-      <div class="bubble ai"><b>Quality Assistant</b><br>I found Quality, Production, Engineering, Purchasing, HR and Management. Should these become your top-level departments?</div>
+      <div class="bubble ai"><b>QMS AI</b><br>I found Quality, Production, Engineering, Purchasing, HR and Management. Should these become your top-level departments?</div>
       <div class="bubble user">Yes, but rename Production to Operations.</div>
-      <div class="bubble ai"><b>Quality Assistant</b><br>I also found SOP-QA-001 Rev1 through Rev5. I can group these as revisions, but I will not decide which revision is effective. Who confirms the current revision?</div>
+      <div class="bubble ai"><b>QMS AI</b><br>I also found SOP-QA-001 Rev1 through Rev5. I can group these as revisions, but I will not decide which revision is effective. Who confirms the current revision?</div>
       <div class="chatComposer inline"><input value="The Quality Manager confirms it."><button class="btn primary" onclick="addAIReply()">Send</button></div>
     </div>
 
@@ -1763,18 +1763,18 @@
       <button class="iconButton" onclick="closeComplianceFinding()" aria-label="Close assessment detail"><i data-lucide="x"></i></button>
     </header>
     <div class="findingBody">
-      <section class="findingAssessment"><div><span>Assessment</span><b id="findingAssessment">Likely gap</b></div><div><span>Confidence</span><b id="findingConfidence">96%</b></div><div><span>Status</span><b id="findingStatus">Open</b></div></section>
+      <section class="findingAssessment"><div><span>AI assessment</span><b id="findingAssessment">Likely gap</b></div><div><span>Confidence</span><b id="findingConfidence">96%</b></div><div><span>Status</span><b id="findingStatus">Open</b></div></section>
       <section><h3>Why this was raised</h3><p id="findingReason">Internal audit evidence has not been found for the required review period.</p></section>
       <section><h3>Evidence checked</h3><div class="evidenceChecked" id="findingEvidence"></div></section>
       <section class="findingRecommendation"><span><i data-lucide="sparkles"></i></span><div><h3>Recommended action</h3><p id="findingRecommendation">Schedule the internal audit and attach the approved report and resulting findings.</p></div></section>
       <section><h3>Assessment basis</h3><div class="assessmentBasis"><span><i data-lucide="file-check-2"></i><b>Documented</b><small id="findingDocumented">Procedure exists</small></span><span><i data-lucide="archive"></i><b>Implemented</b><small id="findingImplemented">Evidence missing</small></span><span><i data-lucide="chart-no-axes-combined"></i><b>Effective</b><small id="findingEffective">Cannot verify</small></span></div></section>
     </div>
-    <footer><button class="btn secondary" onclick="showView('ai');closeComplianceFinding()"><i data-lucide="message-circle-question"></i>Ask Quality Assistant</button><button class="btn secondary" onclick="toast('Evidence view opened','Showing the records and controlled information used by this assessment.')"><i data-lucide="folder-search"></i>View evidence</button><button class="btn primary" onclick="createFindingAction(this)"><i data-lucide="circle-plus"></i>Create action</button></footer>
+    <footer><button class="btn secondary" onclick="showView('ai');closeComplianceFinding()"><i data-lucide="message-circle-question"></i>Ask QMS AI</button><button class="btn secondary" onclick="toast('Evidence view opened','Showing the records and controlled information used by this assessment.')"><i data-lucide="folder-search"></i>View evidence</button><button class="btn primary" onclick="createFindingAction(this)"><i data-lucide="circle-plus"></i>Create action</button></footer>
   </div>
 </div>
 
-<script defer src="./vendor/lucide.min.js?v=enterprise-workspace-20"></script>
-<script defer src="./app.js?v=enterprise-workspace-20"></script>
-<script defer src="./calm.js?v=enterprise-workspace-20"></script>
+<script defer src="./vendor/lucide.min.js?v=enterprise-workspace-19"></script>
+<script defer src="./app.js?v=enterprise-workspace-19"></script>
+<script defer src="./calm.js?v=enterprise-workspace-19"></script>
 </body>
 </html>
