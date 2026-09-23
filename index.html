@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="iqms-build" content="enterprise-workspace-19">
+<meta name="iqms-build" content="calm-workspace-18">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>Overview · iQMS</title>
 <meta name="description" content="A calmer quality workspace for documents, evidence and your next action.">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./styles.css?v=enterprise-workspace-19">
+<link rel="stylesheet" href="./styles.css?v=calm-workspace-18">
 
-<link rel="stylesheet" href="./calm.css?v=enterprise-workspace-19">
+<link rel="stylesheet" href="./calm.css?v=calm-workspace-18">
 </head>
 <body class="calmUI">
 <a class="skipLink" href="#pageContent">Skip to content</a>
@@ -37,7 +37,7 @@
 <button class="navItem" data-view="compliance"><span class="navIcon"><i data-lucide="badge-check"></i></span><span>ISO 9001 readiness</span></button><button class="navItem" data-view="audit"><span class="navIcon"><i data-lucide="history"></i></span><span>Audit trail</span></button>
       <details class="navDisclosure"><summary><i data-lucide="settings-2"></i>Administration<i data-lucide="chevron-down"></i></summary>
 <button class="navItem" data-view="types"><span class="navIcon"><i data-lucide="file-cog"></i></span><span>Document types</span></button><button class="navItem" data-view="structure"><span class="navIcon"><i data-lucide="folders"></i></span><span>Spaces</span></button><button class="navItem" data-view="users"><span class="navIcon"><i data-lucide="users"></i></span><span>Users & access</span></button><button class="navItem" data-view="settings"><span class="navIcon"><i data-lucide="settings"></i></span><span>Settings</span></button><button class="navItem" onclick="openBuilder()"><span class="navIcon"><i data-lucide="folder-input"></i></span><span>Repository builder</span></button></details>
-      <div class="navAssistant"><button class="navItem" data-view="ai"><span class="navIcon"><i data-lucide="message-circle-question"></i></span><span>Quality Assistant</span></button></div>
+      <div class="navAssistant"><button class="navItem" data-view="ai"><span class="navIcon"><i data-lucide="sparkles"></i></span><span>Ask QMS AI</span></button></div>
     </nav>
 
     <div class="sideStatus"><i></i><div><b>Protected workspace</b><span>MFA · RBAC · audit logging</span></div></div>
@@ -62,7 +62,7 @@
       <div id="dashboard" class="view active">
         <div class="pageHeader overviewHeader">
           <div><span class="pageEyebrow">YOUR QUALITY WORKSPACE</span><h1>Overview</h1><p>A clear view of what needs your attention.</p></div>
-          <div class="pageActions"><button class="btn primary" onclick="showView('approvals')">Review documents <i data-lucide="arrow-right"></i></button></div>
+          <div class="pageActions"><button class="btn primary" onclick="showView('approvals')">View documents in review <i data-lucide="arrow-right"></i></button></div>
         </div>
         <div class="overviewIntro"><div class="introIcon"><i data-lucide="sun"></i></div><div><b>Welcome back, Maria.</b><p>You have 9 documents in review. Start with the approval due today.</p></div><span class="introDate">23 September 2026</span></div>
         <div class="overviewBoard">
@@ -852,11 +852,11 @@
       </div>
 
       <div id="ai" class="view">
-        <div class="pageHeader"><div><h1>Quality Assistant</h1><p>Search controlled documents, trace evidence and prepare governed actions using authorized QMS data.</p></div><div class="pageActions"><button class="btn secondary" onclick="openBuilder()">Repository builder</button></div></div>
+        <div class="pageHeader"><div><h1>QMS AI</h1><p>Permission-aware assistance grounded in current documents, relationships and audit history.</p></div><div class="pageActions"><button class="btn secondary" onclick="openBuilder()">Repository builder</button></div></div>
         <div class="aiWorkspace">
           <section class="aiChat">
-            <div class="aiIntro"><div class="aiOrb"><i data-lucide="search-check"></i></div><div><b>Quality Assistant</b><span>Uses only the QMS information you are authorized to access</span></div></div>
-            <div class="bubble ai"><b>Quality Assistant</b><br>Search effective documents, trace evidence, compare revisions, or prepare a controlled action for your review.</div>
+            <div class="aiIntro"><div class="aiOrb"><i data-lucide="sparkles"></i></div><div><b>iQMS AI</b><span>Grounded in your authorized quality-system data</span></div></div>
+            <div class="bubble ai"><b>QMS AI</b><br>I can search effective documents, trace evidence, compare revisions and prepare controlled actions for your approval.</div>
             <div class="bubble user">What procedure applies when incoming material fails inspection?</div>
             <div class="bubble ai">The current effective procedure is <b>SOP-QA-014 Rev 06 — Control of Nonconforming Outputs</b>. It references <b>WI-QA-003</b> for inspection and <b>FORM-QA-011</b> for NCR recording. I found <b>23 linked evidence records</b>.</div>
             <div class="answerSources"><span>Sources</span><button>SOP-QA-014 · Rev 06</button><button>WI-QA-003</button><button>FORM-QA-011</button></div>
@@ -1773,8 +1773,8 @@
   </div>
 </div>
 
-<script defer src="./vendor/lucide.min.js?v=enterprise-workspace-19"></script>
-<script defer src="./app.js?v=enterprise-workspace-19"></script>
-<script defer src="./calm.js?v=enterprise-workspace-19"></script>
+<script defer src="./vendor/lucide.min.js?v=calm-workspace-18"></script>
+<script defer src="./app.js?v=calm-workspace-18"></script>
+<script defer src="./calm.js?v=calm-workspace-18"></script>
 </body>
 </html>

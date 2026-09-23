@@ -20,8 +20,8 @@ NexusQMS should feel like a serious operational quality system, not a generic AI
 - Spacing grid: 4 / 8 / 12 / 16 / 24 / 32
 - Radius: 6–10px, not highly rounded
 - Borders: neutral gray; shadows limited to floating surfaces
-- Primary accent: deep quality green used sparingly for active navigation and primary actions
-- Navigation: dark green desktop rail with compact/hover/pin behavior
+- Primary accent: deep teal
+- Navigation: neutral light surface with strong active state
 - Content width: fluid; avoid artificial centered max-width on operational screens
 
 ## Global shell
@@ -147,14 +147,3 @@ Purpose: guided migration/onboarding.
 - While a document is in draft, review, approval, or returned-for-change state, starting or requesting another revision is blocked.
 - A returned decision keeps the same working revision open; it does not create a new revision number.
 - The final approver action is **Publish**. Publishing records the final approval, closes the route, and makes that revision effective.
-
-
-## Anti-AI visual rule
-The product must not look like a generic generated SaaS dashboard.
-- Prefer border-led enterprise work areas over floating rounded cards.
-- Avoid welcome-back banners, decorative hero surfaces, gradient accents, oversized KPI cards, glass effects and excessive pills.
-- Use compact application chrome, explicit tabs, toolbars, tables, inspectors and record-detail patterns.
-- AI is a secondary capability called **Quality Assistant**; it must not dominate navigation or visual identity.
-- Established enterprise products such as CRM, ERP and document-control tools are the interaction reference: consistent tables, predictable record pages, restrained color, dense-but-readable layouts and strong state clarity.
-- Use rounded corners sparingly (generally 3–6px). Shadows are reserved for true overlays such as modals.
-- Status color is semantic, not decorative.
