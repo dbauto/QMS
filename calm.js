@@ -211,6 +211,56 @@
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
   });
+
+  /* Preserve the user's review split for this browser session.
+     app.js owns the resize mechanics; this layer only restores the chosen ratio
+     after navigation instead of forcing the user back to 50:50 every time. */
+  const taskWorkspace = document.querySelector('#approvals .taskWorkspace');
+  const taskSplitter = document.getElementById('taskSplitter');
+  const TASK_SPLIT_KEY = 'iqms.taskSplitRatio';
+
+  function saveTaskSplitPreference() {
+    if (!taskWorkspace || matchMedia('(max-width:1100px)').matches) return;
+    const width = taskWorkspace.getBoundingClientRect().width;
+    const queueWidth = taskWorkspace.querySelector('.taskQueue')?.getBoundingClientRect().width || 0;
+    if (width > 0 && queueWidth > 0) {
+      const ratio = Math.max(.28, Math.min(.66, queueWidth / width));
+      try { sessionStorage.setItem(TASK_SPLIT_KEY, String(ratio)); } catch (e) {}
+    }
+  }
+
+  function restoreTaskSplitPreference() {
+    if (!taskWorkspace || matchMedia('(max-width:1100px)').matches) return;
+    let ratio = 0;
+    try { ratio = Number(sessionStorage.getItem(TASK_SPLIT_KEY) || 0); } catch (e) {}
+    if (!(ratio >= .28 && ratio <= .66)) return;
+    requestAnimationFrame(() => {
+      const width = taskWorkspace.getBoundingClientRect().width;
+      if (width > 0) taskWorkspace.style.setProperty('--task-queue-width', Math.round(width * ratio) + 'px');
+    });
+  }
+
+  taskSplitter?.addEventListener('pointerup', saveTaskSplitPreference);
+  taskSplitter?.addEventListener('keydown', event => {
+    if (['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) requestAnimationFrame(saveTaskSplitPreference);
+  });
+  taskSplitter?.addEventListener('dblclick', () => {
+    try { sessionStorage.removeItem(TASK_SPLIT_KEY); } catch (e) {}
+  });
+  document.addEventListener('qms:viewchange', event => {
+    if (event.detail?.id === 'approvals') requestAnimationFrame(restoreTaskSplitPreference);
+  });
+  restoreTaskSplitPreference();
+
+  /* The review queue is selection-first. Opening the file is always explicit. */
+  document.querySelectorAll('#approvals .approvalItem[data-document-code]').forEach(item => {
+    item.setAttribute('aria-describedby', 'openTaskDocument');
+  });
+  document.getElementById('openTaskDocument')?.setAttribute('aria-label', 'Open selected document');
+
+  /* Defensive cleanup for older cached markup. */
+  document.querySelectorAll('.notificationCount').forEach(element => element.remove());
+
   const toastHost = document.querySelector('.toast');
   if (toastHost) { toastHost.setAttribute('role', 'status'); toastHost.setAttribute('aria-live', 'polite'); }
   refreshIcons();
