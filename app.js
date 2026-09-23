@@ -849,7 +849,7 @@ function selectApprovalTaskByCode(code,trigger=null){
   }
 
   if(openButton){
-    openButton.innerHTML='<i data-lucide="file-search"></i>Review document';
+    openButton.innerHTML='<i data-lucide="file-search"></i>Open document';
   }
 
   const taskPrimary=document.getElementById('taskPrimaryDecision');
