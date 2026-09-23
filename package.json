@@ -1,0 +1,30 @@
+{
+  "name": "qms",
+  "version": "1.0.0",
+  "description": "iQMS UI testing preview",
+  "scripts": {
+    "start": "node scripts/serve.cjs",
+    "build:icons": "node scripts/build-icons.cjs",
+    "test": "playwright test",
+    "test:ui": "playwright test --headed",
+    "audit": "node scripts/audit.cjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dbauto/QMS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dbauto/QMS/issues"
+  },
+  "homepage": "https://github.com/dbauto/QMS#readme",
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0",
+    "lighthouse": "^13.5.0",
+    "lucide": "^1.47.0"
+  },
+  "private": true
+}

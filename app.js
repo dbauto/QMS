@@ -3,58 +3,8 @@ function refreshIcons(){
 }
 const navItems=[...document.querySelectorAll('.navItem[data-view]')];
 
-/* Hover-expand navigation with a persistent pin state */
-const sideNav=document.querySelector('.sideNav');
-const sidebarPin=document.getElementById('sidebarPin');
-
-function renderSidebarPin(){
-  const pinned=document.body.classList.contains('navPinned');
-  if(sidebarPin){
-    sidebarPin.innerHTML=pinned?'<i data-lucide="pin-off"></i>':'<i data-lucide="pin"></i>';
-    sidebarPin.title=pinned?'Unpin sidebar':'Pin sidebar';
-    sidebarPin.setAttribute('aria-label',sidebarPin.title);
-    sidebarPin.setAttribute('aria-pressed',pinned?'true':'false');
-  }
-  refreshIcons();
-}
-
-function setSidebarPinned(pinned){
-  document.body.classList.toggle('navPinned',pinned);
-  document.body.classList.toggle('navExpanded',pinned||Boolean(sideNav?.matches(':hover')));
-  try{
-    localStorage.setItem('nexus.navPinned',pinned?'1':'0');
-    localStorage.removeItem('nexus.navExpanded');
-  }catch(e){}
-  renderSidebarPin();
-}
-
-function setSidebarHover(expanded){
-  if(document.body.classList.contains('navPinned')) return;
-  document.body.classList.toggle('navExpanded',expanded);
-  renderSidebarPin();
-}
-
-let savedPinned=false;
-try{
-  const storedPin=localStorage.getItem('nexus.navPinned');
-  savedPinned=storedPin==='1'||(storedPin===null&&localStorage.getItem('nexus.navExpanded')==='1');
-  localStorage.removeItem('nexus.navExpanded');
-  localStorage.removeItem('nexus.navHidden');
-}catch(e){}
-document.body.classList.remove('navHidden');
-setSidebarPinned(savedPinned);
-sideNav?.addEventListener('mouseenter',()=>setSidebarHover(true));
-sideNav?.addEventListener('mouseleave',()=>setSidebarHover(false));
-sideNav?.addEventListener('focusin',()=>setSidebarHover(true));
-sideNav?.addEventListener('focusout',()=>{
-  requestAnimationFrame(()=>{
-    if(sideNav&&!sideNav.contains(document.activeElement)&&!sideNav.matches(':hover')) setSidebarHover(false);
-  });
-});
-sidebarPin?.addEventListener('click',event=>{
-  event.stopPropagation();
-  setSidebarPinned(!document.body.classList.contains('navPinned'));
-});
+/* Navigation remains labeled and stable; the testing shell handles the mobile drawer. */
+function setSidebarPinned() {}
 
 function wirePanel(workspaceSelector,hideId,showId,className='inspectorHidden'){
   const workspace=document.querySelector(workspaceSelector);
@@ -211,7 +161,7 @@ function saveSettingsProfile(){
   if(headerAvatar) headerAvatar.textContent=initials;
   if(settingsAvatar) settingsAvatar.textContent=initials;
   try{
-    localStorage.setItem('iqms.profile',JSON.stringify({
+    localStorage.setItem('iqms-testing.iqms.profile',JSON.stringify({
       name,title,
       department:document.getElementById('profileDepartment')?.value,
       email:document.getElementById('profileEmail')?.value,
@@ -237,7 +187,7 @@ function saveSettingsCompany(){
   const ws=document.querySelector('.workspaceSwitch');
   if(ws) ws.title=name;
   try{
-    localStorage.setItem('iqms.company',JSON.stringify({
+    localStorage.setItem('iqms-testing.iqms.company',JSON.stringify({
       name,
       legalName:document.getElementById('companyLegalName')?.value,
       workspace,
@@ -264,8 +214,8 @@ document.getElementById('removeCompanyLogoBtn')?.addEventListener('click',()=>to
 let revisionRequestMode='request';
 let openRevisions={};
 let revisionRequests={};
-try{openRevisions=JSON.parse(localStorage.getItem('iqms.openRevisions')||'{}')||{}}catch(e){openRevisions={}}
-try{revisionRequests=JSON.parse(localStorage.getItem('iqms.revisionRequests')||'{}')||{}}catch(e){revisionRequests={}}
+try{openRevisions=JSON.parse(localStorage.getItem('iqms-testing.iqms.openRevisions')||'{}')||{}}catch(e){openRevisions={}}
+try{revisionRequests=JSON.parse(localStorage.getItem('iqms-testing.iqms.revisionRequests')||'{}')||{}}catch(e){revisionRequests={}}
 
 if(!Object.keys(openRevisions).length){
   openRevisions['QMS-PRO-REC-001']={
@@ -286,7 +236,7 @@ if(!Object.keys(openRevisions).length){
     downloadedAt:'2026-09-22T09:26:00+08:00',
     space:'Recruitment'
   };
-  try{localStorage.setItem('iqms.openRevisions',JSON.stringify(openRevisions))}catch(e){}
+  try{localStorage.setItem('iqms-testing.iqms.openRevisions',JSON.stringify(openRevisions))}catch(e){}
 }
 if(!Object.keys(revisionRequests).length && !openRevisions['SOP-QA-014']){
   revisionRequests['SOP-QA-014']={
@@ -301,7 +251,7 @@ if(!Object.keys(revisionRequests).length && !openRevisions['SOP-QA-014']){
     space:'Quality Management',
     stage:'Awaiting PIC to start revision'
   };
-  try{localStorage.setItem('iqms.revisionRequests',JSON.stringify(revisionRequests))}catch(e){}
+  try{localStorage.setItem('iqms-testing.iqms.revisionRequests',JSON.stringify(revisionRequests))}catch(e){}
 }
 
 function activeControlledDoc(){
@@ -429,10 +379,10 @@ function profileEmailForPic(pic){
   return map[pic]||'user@abc.com';
 }
 function persistOpenRevisions(){
-  try{localStorage.setItem('iqms.openRevisions',JSON.stringify(openRevisions))}catch(e){}
+  try{localStorage.setItem('iqms-testing.iqms.openRevisions',JSON.stringify(openRevisions))}catch(e){}
 }
 function persistRevisionRequests(){
-  try{localStorage.setItem('iqms.revisionRequests',JSON.stringify(revisionRequests))}catch(e){}
+  try{localStorage.setItem('iqms-testing.iqms.revisionRequests',JSON.stringify(revisionRequests))}catch(e){}
 }
 function revisionStateBadge(code){
   if(openRevisions[code]) return '<em class="revisionOpenInline">'+escapeHtml(openRevisions[code].rev)+' open</em>';
@@ -778,8 +728,8 @@ function refreshRevisionDashboard(){
 }
 
 const viewLabels={
-  dashboard:'Dashboard',
-  repository:'Controlled information',
+  dashboard:'Overview',
+  repository:'Documents',
   records:'Records & evidence',
   approvals:'My tasks',
   audit:'Audit trail',
@@ -1032,7 +982,8 @@ function showView(id){
   navItems.forEach(item=>item.classList.toggle('active',item.dataset.view===id));
   if(id==='repository') resetControlledInformation();
   if(breadcrumbCurrent && id!=='repository') breadcrumbCurrent.textContent=viewLabels[id]||'Workspace';
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'instant'});
+  document.dispatchEvent(new CustomEvent('qms:viewchange',{detail:{id}}));
 }
 navItems.forEach(item=>item.addEventListener('click',()=>showView(item.dataset.view)));
 
@@ -1316,7 +1267,7 @@ document.getElementById('repositoryDocument')?.addEventListener('click',e=>{
 });
 document.addEventListener('keydown',e=>{
   const modal=document.getElementById('repositoryDocument');
-  if(e.key==='Escape'&&modal?.style.display!=='none') closeDocumentDetail();
+  if(e.key==='Escape'&&modal?.style.display!=='none'&&!document.querySelector('.modal.show,.complianceDrawerBackdrop.show')) closeDocumentDetail();
 });
 document.querySelectorAll('#dmsContextTabs [data-dms-context]').forEach(button=>button.addEventListener('click',()=>{
   const tab=button.dataset.dmsContext;
@@ -1336,6 +1287,7 @@ function applyControlledLibraryFilters(){
     const matchesStatus=controlledStatusFilter==='all'||row.dataset.status===controlledStatusFilter;
     row.style.display=matchesSearch&&matchesType&&matchesSpace&&matchesStatus?'grid':'none';
   });
+  document.dispatchEvent(new Event('qms:documentsfiltered'));
 }
 document.getElementById('controlledSearch')?.addEventListener('input',applyControlledLibraryFilters);
 document.getElementById('controlledTypeFilter')?.addEventListener('change',applyControlledLibraryFilters);
@@ -1540,7 +1492,7 @@ function resetControlledInformation(){
   if(doc) doc.style.display='none';
   document.body.classList.remove('document-modal-open');
   activeSpace=spaceDefinitions[activeRepositorySpaceId]||spaceDefinitions.quality;
-  setRepositoryPanel('spaces');
+  setRepositoryPanel('all');
   renderDmsSpace(activeRepositorySpaceId||'quality');
   if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information';
 }
@@ -1666,10 +1618,10 @@ function openSpaceModal(){
 function closeSpaceModal(){document.getElementById('spaceModal')?.classList.remove('show')}
 
 function loadCustomSpaces(){
-  try{return JSON.parse(localStorage.getItem('nexus.customSpaces')||'[]')}catch(e){return[]}
+  try{return JSON.parse(localStorage.getItem('iqms-testing.nexus.customSpaces')||'[]')}catch(e){return[]}
 }
 function saveCustomSpaces(spaces){
-  try{localStorage.setItem('nexus.customSpaces',JSON.stringify(spaces))}catch(e){}
+  try{localStorage.setItem('iqms-testing.nexus.customSpaces',JSON.stringify(spaces))}catch(e){}
 }
 function renderCustomSpaceCard(space){
   if(!spacesHost||document.querySelector('[data-space-id="'+space.id+'"]')) return;
@@ -1978,10 +1930,10 @@ function selectTypeConfiguration(row,key){
 document.querySelectorAll('.typeRow').forEach(row=>row.addEventListener('click',()=>selectTypeConfiguration(row,row.dataset.type)));
 
 function loadCustomDocumentTypes(){
-  try{return JSON.parse(localStorage.getItem('nexus.customDocumentTypes')||'[]')}catch(e){return[]}
+  try{return JSON.parse(localStorage.getItem('iqms-testing.nexus.customDocumentTypes')||'[]')}catch(e){return[]}
 }
 function saveCustomDocumentTypes(types){
-  try{localStorage.setItem('nexus.customDocumentTypes',JSON.stringify(types))}catch(e){}
+  try{localStorage.setItem('iqms-testing.nexus.customDocumentTypes',JSON.stringify(types))}catch(e){}
 }
 function renderCustomDocumentTypeRow(type){
   if(!type?.id||document.querySelector('.typeRow[data-type="'+type.id+'"]')) return;
@@ -2003,18 +1955,6 @@ function renderCustomDocumentTypeRow(type){
   pane.appendChild(row);
 }
 loadCustomDocumentTypes().forEach(renderCustomDocumentTypeRow);
-
-/* Prototype search within the active operational list */
-const globalSearch=document.getElementById('globalSearch');
-globalSearch?.addEventListener('input',()=>{
-  const q=globalSearch.value.trim().toLowerCase();
-  const active=document.querySelector('.view.active');
-  if(!active) return;
-  active.querySelectorAll('.documentRow,.resourceRow,.controlledLibraryRow,.evidenceRow,.dataTable tbody tr').forEach(row=>{
-    row.style.display=!q||row.textContent.toLowerCase().includes(q)?'':'none';
-  });
-});
-
 
 /* Canonical QMS resource registration */
 let registrationStep=1;
@@ -2202,7 +2142,7 @@ function nextControlledSequence(typeCode,spaceCode){
     }
   });
   try{
-    const saved=JSON.parse(localStorage.getItem('nexus.registeredControlledIds')||'[]');
+    const saved=JSON.parse(localStorage.getItem('iqms-testing.nexus.registeredControlledIds')||'[]');
     saved.forEach(id=>{
       if(String(id).startsWith(prefix)){
         const n=parseInt(String(id).slice(prefix.length),10);
@@ -2811,9 +2751,9 @@ function finishResourceRegistration(){
     const generatedId=document.getElementById('regId')?.value;
     if(generatedId){
       try{
-        const saved=JSON.parse(localStorage.getItem('nexus.registeredControlledIds')||'[]');
+        const saved=JSON.parse(localStorage.getItem('iqms-testing.nexus.registeredControlledIds')||'[]');
         if(!saved.includes(generatedId)) saved.push(generatedId);
-        localStorage.setItem('nexus.registeredControlledIds',JSON.stringify(saved));
+        localStorage.setItem('iqms-testing.nexus.registeredControlledIds',JSON.stringify(saved));
       }catch(e){}
     }
     showView('repository');
@@ -2947,7 +2887,7 @@ renderDmsSpace('quality');
 selectAccessUser('maria',document.querySelector('.accessUserRow[data-user-id="maria"]'));
 
 try{
-  const p=JSON.parse(localStorage.getItem('iqms.profile')||'null');
+  const p=JSON.parse(localStorage.getItem('iqms-testing.iqms.profile')||'null');
   if(p){
     if(document.getElementById('profileFullName')) document.getElementById('profileFullName').value=p.name||'';
     if(document.getElementById('profileJobTitle')) document.getElementById('profileJobTitle').value=p.title||'';
@@ -2958,7 +2898,7 @@ try{
     if(document.getElementById('profileLanguage')) document.getElementById('profileLanguage').value=p.language||'English';
     saveSettingsProfile();
   }
-  const co=JSON.parse(localStorage.getItem('iqms.company')||'null');
+  const co=JSON.parse(localStorage.getItem('iqms-testing.iqms.company')||'null');
   if(co){
     if(document.getElementById('companyDisplayName')) document.getElementById('companyDisplayName').value=co.name||'';
     if(document.getElementById('companyLegalName')) document.getElementById('companyLegalName').value=co.legalName||'';
