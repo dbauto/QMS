@@ -18,6 +18,11 @@ test('home starts with the action queue and has no runtime or network errors', a
 test('document filters combine, show an empty state, and can be cleared', async ({ page }) => {
   await page.goto('/#/repository');
   await expect(page.locator('[data-repository-panel="all"]')).toBeVisible();
+  const statusTabs = await page.locator('#controlledStatusTabs').evaluate(element => ({
+    clientHeight: element.clientHeight,
+    scrollHeight: element.scrollHeight,
+  }));
+  expect(statusTabs.scrollHeight).toBe(statusTabs.clientHeight);
   await page.locator('#controlledSearch').fill('Recruitment');
   await expect(page.locator('.controlledLibraryRow:visible')).toHaveCount(1);
   await page.locator('#controlledTypeFilter').selectOption('SOP');

@@ -45,7 +45,7 @@ body.calmUI{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;font-size:
 .calmUI .navItem.active{background:#dce8d9!important;color:#234d35!important;font-weight:650!important}
 .calmUI .navItem>span:not(.navIcon){display:block!important;white-space:nowrap}
 .calmUI .navItem .navIcon{width:19px!important;display:grid!important;place-items:center!important;color:inherit!important}
-.calmUI .navBadge{position:static!important;margin-left:auto!important;display:grid!important;place-items:center!important;border:0!important;border-radius:5px!important;background:#e1e7dd!important;color:#486041!important;font-size:11px!important;width:22px!important;height:22px!important;padding:0!important;min-width:22px!important}
+.calmUI .navBadge{position:static!important;margin-left:auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;border:0!important;border-radius:999px!important;background:#e1e7dd!important;color:#486041!important;font-size:10px!important;line-height:1!important;width:auto!important;height:20px!important;padding:0 6px!important;min-width:20px!important;font-variant-numeric:tabular-nums}
 .calmUI .navDisclosure{border-top:1px solid #d9e2d5;margin-top:18px;padding-top:12px}
 .calmUI .navDisclosure summary{display:flex;align-items:center;gap:11px;min-height:44px;cursor:pointer;font-size:13px;color:#55675b;padding:0 12px;border-radius:7px;list-style:none}
 .navDisclosure summary::-webkit-details-marker{display:none}
@@ -154,10 +154,11 @@ body.calmUI{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;font-size:
 .calmUI .repositoryModeTabs button.active{color:var(--brand);border-bottom-color:var(--brand);background:none}
 .calmUI .controlledLibrarySurface{border:1px solid var(--line);border-radius:10px;box-shadow:none;overflow:hidden}
 .calmUI .controlledLibraryTop{padding:0 20px;border-bottom:1px solid var(--line)}
-.calmUI .controlledStatusTabs{gap:22px;min-width:0;overflow-x:auto}
-.calmUI .controlledStatusTabs button{min-height:57px;padding:0;font-size:12px;white-space:nowrap;color:var(--muted)}
+.calmUI .controlledStatusTabs{flex:1 1 auto;gap:22px;min-width:0;max-width:100%;height:57px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+.calmUI .controlledStatusTabs::-webkit-scrollbar{display:none}
+.calmUI .controlledStatusTabs button{height:57px;min-height:57px;padding:0;font-size:12px;white-space:nowrap;color:var(--muted)}
 .calmUI .controlledStatusTabs button.active{color:var(--brand);border-color:var(--brand)}
-.calmUI .controlledStatusTabs b{font-size:10px;background:#f1f4ee;color:#5e7154;font-weight:500}
+.calmUI .controlledStatusTabs b{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;margin-left:5px;padding:0 6px;border-radius:999px;font-size:10px;line-height:1;background:#f1f4ee;color:#5e7154;font-weight:600;font-variant-numeric:tabular-nums}
 .calmUI .allDocsHint{display:none}
 .calmUI .controlledLibraryToolbar{padding:18px 20px;display:flex;gap:10px;flex-wrap:wrap;background:#fff}
 .calmUI .controlledLibraryToolbar .filterSearch{flex:1;min-width:200px}
