@@ -32,9 +32,9 @@
 
     <nav class="primaryNav" aria-label="Main navigation">
       <div class="navGroup">Your workspace</div>
-<button class="navItem" data-view="dashboard"><span class="navIcon"><i data-lucide="layout-dashboard"></i></span><span>Overview</span></button><button class="navItem" data-view="approvals"><span class="navIcon"><i data-lucide="clipboard-check"></i></span><span class="navItemLabel">Documents in Review</span></button><button class="navItem" data-view="repository"><span class="navIcon"><i data-lucide="files"></i></span><span>Documents</span></button><button class="navItem" data-view="records"><span class="navIcon"><i data-lucide="archive"></i></span><span>Records & evidence</span></button>
+<button class="navItem" data-view="dashboard"><span class="navIcon"><i data-lucide="layout-dashboard"></i></span><span>Overview</span></button><button class="navItem" data-view="approvals"><span class="navIcon"><i data-lucide="clipboard-check"></i></span><span class="navItemLabel">Documents in Review</span></button><button class="navItem" data-view="repository"><span class="navIcon"><i data-lucide="files"></i></span><span>Documents</span></button><button class="navItem" data-view="records"><span class="navIcon"><i data-lucide="archive"></i></span><span>Records & Evidence</span></button>
       <div class="navGroup">Quality assurance</div>
-<button class="navItem" data-view="compliance"><span class="navIcon"><i data-lucide="badge-check"></i></span><span>ISO readiness</span></button><button class="navItem" data-view="audit"><span class="navIcon"><i data-lucide="history"></i></span><span>Audit trail</span></button>
+<button class="navItem" data-view="compliance"><span class="navIcon"><i data-lucide="badge-check"></i></span><span>ISO 9001 readiness</span></button><button class="navItem" data-view="audit"><span class="navIcon"><i data-lucide="history"></i></span><span>Audit trail</span></button>
       <details class="navDisclosure"><summary><i data-lucide="settings-2"></i>Administration<i data-lucide="chevron-down"></i></summary>
 <button class="navItem" data-view="types"><span class="navIcon"><i data-lucide="file-cog"></i></span><span>Document types</span></button><button class="navItem" data-view="structure"><span class="navIcon"><i data-lucide="folders"></i></span><span>Spaces</span></button><button class="navItem" data-view="users"><span class="navIcon"><i data-lucide="users"></i></span><span>Users & access</span></button><button class="navItem" data-view="settings"><span class="navIcon"><i data-lucide="settings"></i></span><span>Settings</span></button><button class="navItem" onclick="openBuilder()"><span class="navIcon"><i data-lucide="folder-input"></i></span><span>Repository builder</span></button></details>
       <div class="navAssistant"><button class="navItem" data-view="ai"><span class="navIcon"><i data-lucide="sparkles"></i></span><span>Ask QMS AI</span></button></div>
@@ -113,7 +113,7 @@
               <div class="overviewActivityList" id="overviewActivityList">
                 <div><span>10:16</span><i class="activityIcon success"><i data-lucide="check"></i></i><p><b>SOP-QA-001 Rev 05 released</b><small>Approval route AR-882 completed · System</small></p><span class="tag success">Released</span></div>
                 <div><span>09:41</span><i class="activityIcon"><i data-lucide="link-2"></i></i><p><b>Calibration certificate linked</b><small>CAL-CERT-2026-0084 · Ana Reyes</small></p><span class="tag neutral">Evidence</span></div>
-                <div><span>09:10</span><i class="activityIcon success"><i data-lucide="check"></i></i><p><b>WI-PROD-018 Rev 02 approved</b><small>Final approval · Maria Santos</small></p><span class="tag success">Approved</span></div>
+                <div><span>09:10</span><i class="activityIcon success"><i data-lucide="check"></i></i><p><b>WI-PROD-018 Rev 02 published</b><small>Final approval · Maria Santos</small></p><span class="tag success">Published</span></div>
                 <div><span>08:42</span><i class="activityIcon"><i data-lucide="download"></i></i><p><b>SOP-QA-001 Rev 04 downloaded</b><small>Controlled copy · John Cruz</small></p><span class="tag neutral">Access</span></div>
               </div>
             </div>
@@ -236,7 +236,7 @@
 
                 <div class="dmsContextTabs" id="dmsContextTabs">
                   <button class="active" data-dms-context="documents">Documents <span id="dmsDocTabCount">486</span></button>
-                  <button data-dms-context="evidence">Records & evidence</button>
+                  <button data-dms-context="evidence">Records & Evidence</button>
                   <button data-dms-context="requirements">Requirements</button>
                   <button data-dms-context="activity">Activity</button>
                 </div>
@@ -264,7 +264,7 @@
                 <div class="dmsContextPanel" data-dms-context-panel="evidence">
                   <div class="dmsContextPlaceholder">
                     <span><i data-lucide="archive"></i></span>
-                    <div><h3>Records & evidence for <b class="dmsContextSpaceName">Quality Management</b></h3><p>Evidence linked to this primary space appears here without duplicating the canonical Records & Evidence library.</p></div>
+                    <div><h3>Records & Evidence for <b class="dmsContextSpaceName">Quality Management</b></h3><p>Evidence linked to this primary space appears here without duplicating the canonical Records & Evidence library.</p></div>
                     <button class="btn secondary" onclick="showView('records')">Open evidence library</button>
                   </div>
                 </div>
@@ -279,7 +279,7 @@
 
                 <div class="dmsContextPanel" data-dms-context-panel="activity">
                   <div class="dmsActivityList">
-                    <div><span>10:16</span><i class="activityIcon success"><i data-lucide="check"></i></i><p><b>Controlled document released</b><small>Latest approved revision became effective</small></p></div>
+                    <div><span>10:16</span><i class="activityIcon success"><i data-lucide="check"></i></i><p><b>Controlled document published</b><small>Final approval completed · revision became effective</small></p></div>
                     <div><span>09:41</span><i class="activityIcon"><i data-lucide="link-2"></i></i><p><b>Evidence linked</b><small>New record connected to this space</small></p></div>
                     <div><span>Yesterday</span><i class="activityIcon"><i data-lucide="history"></i></i><p><b>Review date updated</b><small>Document Control updated the next review schedule</small></p></div>
                   </div>
@@ -309,7 +309,7 @@
               <div class="controlledLibraryHead"><span>Document</span><span>Type</span><span>Primary space</span><span>Rev</span><span>Owner</span><span>Status</span><span>Next review</span></div>
               <div id="documentEmpty" class="calmEmpty" hidden><i data-lucide="file-search"></i><h3>No matching documents</h3><p>Try a different title, owner or document ID.</p><button class="btn secondary" onclick="clearDocumentFilters()">Clear filters</button></div><div id="controlledLibraryRows">
                 <button class="controlledLibraryRow" data-type="Procedure" data-space="Recruitment" data-status="effective" onclick="openControlledDocument('recruitment','QMS-PRO-REC-001')"><div><b>QMS-PRO-REC-001</b><strong>Recruitment Procedure</strong><small>ISO 8.1 · 8.5</small></div><span>Procedure</span><span>Recruitment</span><span>03</span><span>Recruitment Manager</span><span class="tag success">Effective</span><span>01 Sep 2027</span></button>
-                <button class="controlledLibraryRow" data-type="SOP" data-space="Quality Management" data-status="effective" onclick="openControlledDocument('quality','SOP-QA-014')"><div><b>SOP-QA-014</b><strong>Control of Nonconforming Outputs</strong><small>ISO 8.7</small></div><span>SOP</span><span>Quality Management</span><span>06</span><span>Quality Manager</span><span class="tag success">Effective</span><span>15 Sep 2027</span></button>
+                <button class="controlledLibraryRow" data-type="SOP" data-space="Quality Management" data-status="workflow" onclick="openControlledDocument('quality','SOP-QA-014')"><div><b>SOP-QA-014</b><strong>Control of Nonconforming Outputs</strong><small>ISO 8.7</small></div><span>SOP</span><span>Quality Management</span><span>06</span><span>Quality Manager</span><span class="tag info">In approval</span><span>—</span></button>
                 <button class="controlledLibraryRow" data-type="Work Instruction" data-space="Operations" data-status="workflow" onclick="openControlledDocument('operations','WI-PROD-021')"><div><b>WI-PROD-021</b><strong>Final Inspection Work Instruction</strong><small>ISO 8.5</small></div><span>Work Instruction</span><span>Operations</span><span>03</span><span>Ana Reyes</span><span class="tag info">In approval</span><span>—</span></button>
                 <button class="controlledLibraryRow" data-type="Procedure" data-space="Purchasing & Supplier Quality" data-status="review due" onclick="openControlledDocument('purchasing','SOP-PUR-012')"><div><b>SOP-PUR-012</b><strong>Supplier Control Procedure</strong><small>ISO 8.4</small></div><span>Procedure</span><span>Purchasing & Supplier Quality</span><span>05</span><span>John Cruz</span><span class="tag warning">Review due</span><span>28 Sep 2026</span></button>
                 <button class="controlledLibraryRow" data-type="External Document" data-space="External Standards" data-status="effective" onclick="openControlledDocument('external','EXT-STD-002')"><div><b>EXT-STD-002</b><strong>Customer Quality Specification</strong><small>External source · currency tracked</small></div><span>External Document</span><span>External Standards</span><span>2026.2</span><span>Document Control</span><span class="tag success">Current</span><span>01 Feb 2027</span></button>
@@ -364,8 +364,8 @@
             </div>
             <div class="pageActions documentRevisionActions">
               <button class="btn secondary" onclick="downloadControlledPdf()"><i data-lucide="file-down"></i>Download PDF</button>
-              <button class="btn secondary" onclick="openRevisionRequest('request')"><i data-lucide="message-square-plus"></i>Request revision</button>
-              <button class="btn primary" onclick="openRevisionRequest('start')"><i data-lucide="git-branch-plus"></i>Start revision</button>
+              <button class="btn secondary" id="requestRevisionBtn" onclick="openRevisionRequest('request')"><i data-lucide="message-square-plus"></i>Request revision</button>
+              <button class="btn primary" id="startRevisionBtn" onclick="openRevisionRequest('start')"><i data-lucide="git-branch-plus"></i>Start revision</button>
             </div>
           </div>
 
@@ -378,6 +378,16 @@
             </div>
             <div class="openRevisionReason"><small>Change request</small><b id="openRevisionReason">—</b></div>
             <div class="openRevisionButtons"><button class="btn secondary" onclick="openSecureRevisionDownload()"><i data-lucide="file-down"></i>Working copy</button><button class="btn link" onclick="showView('approvals')">View task</button></div>
+          </div>
+
+          <div class="workflowLockBanner" id="workflowLockBanner" style="display:none">
+            <div class="workflowLockIcon"><i data-lucide="lock-keyhole"></i></div>
+            <div class="workflowLockSummary">
+              <span class="recordLabel">ACTIVE WORKFLOW</span>
+              <b>Another revision cannot be requested right now</b>
+              <small id="workflowLockText">Complete or return the current workflow before starting another revision.</small>
+            </div>
+            <button class="btn secondary" onclick="showView('approvals')"><i data-lucide="list-checks"></i>View workflow</button>
           </div>
 
           <div class="revisionRequestBanner" id="revisionRequestBanner" style="display:none">
@@ -441,7 +451,7 @@
 
               <section class="reviewPanelSection"><h3>Workflow</h3><div class="reviewWorkflow"></div></section>
 
-              <div class="approvalDecision" id="approvalDecision" style="display:none"><label>Decision comment<textarea id="approvalDecisionComment" placeholder="Add a reason or comment for the audit trail..."></textarea></label><div><button class="btn dangerOutline" onclick="prototypeDecision('Returned')">Return</button><button class="btn primary" onclick="prototypeDecision('Approved')">Approve</button></div></div>
+              <div class="approvalDecision" id="approvalDecision" style="display:none"><label>Decision comment<textarea id="approvalDecisionComment" placeholder="Add a reason or comment for the audit trail..."></textarea></label><p class="approvalDecisionHint">Publishing completes the final approval and makes this revision effective. Returning keeps the same working revision open for correction.</p><div><button class="btn dangerOutline" onclick="prototypeDecision('Returned')">Return</button><button class="btn primary" onclick="prototypeDecision('Published')"><i data-lucide="send"></i>Publish</button></div></div>
             </aside>
           </div>
           </div>
@@ -474,7 +484,7 @@
                 </section>
 
                 <section class="traceSection">
-                  <div class="traceSectionHead"><span class="traceSectionIcon evidence"><i data-lucide="archive"></i></span><div><h3>Records & evidence produced</h3><p>Proof created when this process is carried out.</p></div></div>
+                  <div class="traceSectionHead"><span class="traceSectionIcon evidence"><i data-lucide="archive"></i></span><div><h3>Records & Evidence produced</h3><p>Proof created when this process is carried out.</p></div></div>
                   <div class="traceItems" id="docTraceEvidence"></div>
                 </section>
 
@@ -563,7 +573,7 @@
       <div id="records" class="view">
         <div id="recordsHub">
           <div class="pageHeader recordsPageHeader">
-            <div><h1>Records & evidence</h1><p>Find retained proof by process, then open a record only when you need its detail or traceability.</p></div>
+            <div><h1>Records & Evidence</h1><p>Find retained proof by process, then open a record only when you need its detail or traceability.</p></div>
             <div class="pageActions"><button class="btn secondary"><i data-lucide="link-2"></i>Link existing</button><button class="btn primary" onclick="openRegisterResource('record')"><i data-lucide="plus"></i>Register record / evidence</button></div>
           </div>
 
@@ -633,7 +643,7 @@
           <div class="levelHeader recordLevelHeader">
             <button class="backButton" onclick="closeEvidenceDetail()" aria-label="Back to records and evidence"><i data-lucide="arrow-left"></i></button>
             <div class="levelHeaderTitle">
-              <span class="levelPath">Records & evidence <i data-lucide="chevron-right"></i> <span id="recordDetailProcess">Recruitment</span> <i data-lucide="chevron-right"></i> <b id="recordDetailCode">REC-SCR-2026-0918</b></span>
+              <span class="levelPath">Records & Evidence <i data-lucide="chevron-right"></i> <span id="recordDetailProcess">Recruitment</span> <i data-lucide="chevron-right"></i> <b id="recordDetailCode">REC-SCR-2026-0918</b></span>
               <h1 id="recordDetailTitle">Candidate Screening Record — Batch 0918</h1>
               <div class="recordMeta"><b id="recordDetailCodeMeta">REC-SCR-2026-0918</b><span id="recordDetailType">Completed form</span><span id="recordDetailStatus" class="tag success">Retained</span></div>
             </div>
@@ -706,10 +716,10 @@
           <section class="approvalDetail">
             <div class="approvalHero"><div><span class="recordLabel">Final approval</span><h2>Final Inspection Work Instruction</h2><div class="recordMeta"><b>WI-PROD-021</b><span>Rev 03</span><span class="tag warning">In approval</span></div></div><button class="btn secondary" id="openTaskDocument" type="button" data-document-code="WI-PROD-021" onclick="openSelectedTaskDocument(this)"><i data-lucide="file-search"></i>Review document</button></div>
             <div class="changeBox"><span>Change reason</span><p>Updated final inspection criteria to align with customer specification CS-204 Rev 8 and added digital gauge verification.</p></div>
-            <div class="routeTimeline"><div class="routeNode done"><i><i data-lucide="check"></i></i><div><b>Author</b><span>Ana Reyes · 18 Sep 09:12</span></div></div><div class="routeNode done"><i><i data-lucide="check"></i></i><div><b>Department review</b><span>Operations Supervisor · 19 Sep 11:44</span></div></div><div class="routeNode active"><i>3</i><div><b>Final approval</b><span>Maria Santos · Waiting for your action</span></div></div><div class="routeNode"><i>4</i><div><b>Release</b><span>System controlled</span></div></div></div>
+            <div class="routeTimeline"><div class="routeNode done"><i><i data-lucide="check"></i></i><div><b>Author</b><span>Ana Reyes · 18 Sep 09:12</span></div></div><div class="routeNode done"><i><i data-lucide="check"></i></i><div><b>Department review</b><span>Operations Supervisor · 19 Sep 11:44</span></div></div><div class="routeNode active"><i>3</i><div><b>Final approval & publish</b><span>Maria Santos · Waiting for your action</span></div></div></div>
             <label class="commentLabel">Decision comment <span>optional</span></label>
             <textarea class="commentBox" placeholder="Add a comment for the audit trail..."></textarea>
-            <div class="decisionBar"><button class="btn dangerOutline">Reject / return</button><div></div><button class="btn secondary">Request changes</button><button class="btn primary" data-toast-title="Revision approved" data-toast-message="The decision was recorded and the workflow can continue to release.">Approve revision</button></div>
+            <div class="decisionBar"><button class="btn dangerOutline" id="taskReturnDecision" onclick="taskDecision('Returned')">Return</button><div></div><button class="btn primary" id="taskPrimaryDecision" data-decision="Published" onclick="taskDecisionFromButton(this)">Publish</button></div>
           </section>
         </div>
       </div>
@@ -1649,7 +1659,7 @@
       <label>Purpose<textarea id="newSpacePurpose" class="fieldInput" placeholder="What controlled information belongs in this space?"></textarea></label>
       <div class="spaceFormGrid">
         <label>Default owner<select id="newSpaceOwner" class="fieldInput"><option>Quality Department</option><option>Operations</option><option>Engineering</option><option>Purchasing</option><option>Human Resources</option><option>Document Control</option></select></label>
-        <label>Default resource view<select id="newSpaceView" class="fieldInput"><option>Controlled documents</option><option>Documents + records</option><option>Records & evidence</option><option>External documents</option></select></label>
+        <label>Default resource view<select id="newSpaceView" class="fieldInput"><option>Controlled documents</option><option>Documents + records</option><option>Records & Evidence</option><option>External documents</option></select></label>
       </div>
       <div class="spaceGovernanceNote"><i data-lucide="info"></i><div><b>Space is a navigation layer</b><span>Creating a space does not create a separate copy of files. Documents keep their universal resource ID, revision history, approval state and audit trail.</span></div></div>
     </div>
