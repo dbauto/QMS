@@ -3011,15 +3011,20 @@ function initTaskWorkspaceResize(){
   const splitter=document.getElementById('taskSplitter');
   if(!workspace||!splitter) return;
 
-  const STORAGE_KEY='iqms.reviewQueueWidth';
+  const STORAGE_KEY='iqms.reviewQueueWidth.v2';
   const MIN_QUEUE=260;
   const MIN_DETAIL=520;
   const STEP=20;
 
   const limits=()=>{
     const width=workspace.getBoundingClientRect().width;
-    const chrome=44; // splitter + gaps + breathing room
-    return {min:MIN_QUEUE,max:Math.max(MIN_QUEUE,width-MIN_DETAIL-chrome)};
+    const chrome=32; // 12px splitter + two 10px grid gaps
+    return {min:MIN_QUEUE,max:Math.max(MIN_QUEUE,width-MIN_DETAIL-chrome),width,chrome};
+  };
+
+  const defaultWidth=()=>{
+    const {width,chrome}=limits();
+    return Math.max(MIN_QUEUE,(width-chrome)/2);
   };
 
   const applyWidth=(value,persist=false)=>{
@@ -3035,10 +3040,12 @@ function initTaskWorkspaceResize(){
     return width;
   };
 
+  let restored=false;
   try{
     const saved=Number(localStorage.getItem(STORAGE_KEY));
-    if(saved) applyWidth(saved);
+    if(saved){applyWidth(saved);restored=true}
   }catch(e){}
+  if(!restored) applyWidth(defaultWidth());
 
   let dragging=false;
   let startX=0;
@@ -3048,7 +3055,7 @@ function initTaskWorkspaceResize(){
     if(window.matchMedia('(max-width:1100px)').matches) return;
     dragging=true;
     startX=e.clientX;
-    startWidth=parseFloat(getComputedStyle(workspace).getPropertyValue('--task-queue-width'))||workspace.querySelector('.taskQueue')?.getBoundingClientRect().width||320;
+    startWidth=parseFloat(getComputedStyle(workspace).getPropertyValue('--task-queue-width'))||workspace.querySelector('.taskQueue')?.getBoundingClientRect().width||defaultWidth();
     splitter.classList.add('isDragging');
     document.body.classList.add('resizingTasks');
     splitter.setPointerCapture?.(e.pointerId);
@@ -3065,7 +3072,7 @@ function initTaskWorkspaceResize(){
     dragging=false;
     splitter.classList.remove('isDragging');
     document.body.classList.remove('resizingTasks');
-    const current=parseFloat(getComputedStyle(workspace).getPropertyValue('--task-queue-width'))||320;
+    const current=parseFloat(getComputedStyle(workspace).getPropertyValue('--task-queue-width'))||defaultWidth();
     applyWidth(current,true);
     if(e?.pointerId!=null && splitter.hasPointerCapture?.(e.pointerId)) splitter.releasePointerCapture(e.pointerId);
   };
@@ -3074,18 +3081,18 @@ function initTaskWorkspaceResize(){
 
   splitter.addEventListener('keydown',e=>{
     if(window.matchMedia('(max-width:1100px)').matches) return;
-    const current=parseFloat(getComputedStyle(workspace).getPropertyValue('--task-queue-width'))||320;
+    const current=parseFloat(getComputedStyle(workspace).getPropertyValue('--task-queue-width'))||defaultWidth();
     if(e.key==='ArrowLeft'){applyWidth(current-STEP,true);e.preventDefault()}
     else if(e.key==='ArrowRight'){applyWidth(current+STEP,true);e.preventDefault()}
     else if(e.key==='Home'){applyWidth(MIN_QUEUE,true);e.preventDefault()}
     else if(e.key==='End'){applyWidth(limits().max,true);e.preventDefault()}
   });
 
-  splitter.addEventListener('dblclick',()=>applyWidth(320,true));
+  splitter.addEventListener('dblclick',()=>applyWidth(defaultWidth(),true));
 
   window.addEventListener('resize',()=>{
     if(window.matchMedia('(max-width:1100px)').matches) return;
-    const current=parseFloat(getComputedStyle(workspace).getPropertyValue('--task-queue-width'))||320;
+    const current=parseFloat(getComputedStyle(workspace).getPropertyValue('--task-queue-width'))||defaultWidth();
     applyWidth(current);
   });
 }
