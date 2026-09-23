@@ -78,9 +78,13 @@ test('task documents open in context without navigating to Documents', async ({ 
 
   const revisionTask = page.locator('#revisionTaskQueue .approvalItem').first();
   await revisionTask.click();
+  await expect(page.locator('#repositoryDocument')).toBeHidden();
+  await expect(revisionTask).toHaveClass(/selected/);
+  await expect(page.locator('#openTaskDocument')).toHaveAttribute('data-document-code', await revisionTask.getAttribute('data-document-code'));
+  await page.locator('#openTaskDocument').click();
   await expect(page.locator('#repositoryDocument')).toBeVisible();
   await expect(page.locator('#docContextBreadcrumb')).toHaveText('My tasks');
-  await expect(page).toHaveURL(/#\/approvals$/);
+  await expect(page).toHaveURL(/#\\/approvals$/);
 });
 
 
