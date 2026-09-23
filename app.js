@@ -3,9 +3,10 @@ function refreshIcons(){
 }
 const navItems=[...document.querySelectorAll('.navItem[data-view]')];
 
-/* Hover-expand navigation with a persistent pin state */
+/* Hover-expand navigation with a persistent pin state on desktop. */
 const sideNav=document.querySelector('.sideNav');
 const sidebarPin=document.getElementById('sidebarPin');
+const desktopNavigation=()=>window.matchMedia('(min-width: 781px)').matches;
 
 function renderSidebarPin(){
   const pinned=document.body.classList.contains('navPinned');
@@ -19,8 +20,10 @@ function renderSidebarPin(){
 }
 
 function setSidebarPinned(pinned){
+  if(!desktopNavigation()) return;
+  savedPinned=pinned;
   document.body.classList.toggle('navPinned',pinned);
-  document.body.classList.toggle('navExpanded',pinned||Boolean(sideNav?.matches(':hover')));
+  document.body.classList.toggle('navExpanded',pinned||Boolean(sideNav?.matches(':hover'))||Boolean(sideNav?.contains(document.activeElement)));
   try{
     localStorage.setItem('nexus.navPinned',pinned?'1':'0');
     localStorage.removeItem('nexus.navExpanded');
@@ -29,7 +32,7 @@ function setSidebarPinned(pinned){
 }
 
 function setSidebarHover(expanded){
-  if(document.body.classList.contains('navPinned')) return;
+  if(!desktopNavigation()||document.body.classList.contains('navPinned')) return;
   document.body.classList.toggle('navExpanded',expanded);
   renderSidebarPin();
 }
@@ -42,7 +45,7 @@ try{
   localStorage.removeItem('nexus.navHidden');
 }catch(e){}
 document.body.classList.remove('navHidden');
-setSidebarPinned(savedPinned);
+if(desktopNavigation()) setSidebarPinned(savedPinned);
 sideNav?.addEventListener('mouseenter',()=>setSidebarHover(true));
 sideNav?.addEventListener('mouseleave',()=>setSidebarHover(false));
 sideNav?.addEventListener('focusin',()=>setSidebarHover(true));
@@ -51,9 +54,14 @@ sideNav?.addEventListener('focusout',()=>{
     if(sideNav&&!sideNav.contains(document.activeElement)&&!sideNav.matches(':hover')) setSidebarHover(false);
   });
 });
-sidebarPin?.addEventListener('click',event=>{
+window.setSidebarPinned=setSidebarPinned;
+window.toggleSidebarPin=event=>{
   event.stopPropagation();
   setSidebarPinned(!document.body.classList.contains('navPinned'));
+};
+window.matchMedia('(min-width: 781px)').addEventListener('change',event=>{
+  if(event.matches) setSidebarPinned(savedPinned||document.body.classList.contains('navPinned'));
+  else document.body.classList.remove('navExpanded','navPinned');
 });
 
 function wirePanel(workspaceSelector,hideId,showId,className='inspectorHidden'){
@@ -778,8 +786,8 @@ function refreshRevisionDashboard(){
 }
 
 const viewLabels={
-  dashboard:'Dashboard',
-  repository:'Controlled information',
+  dashboard:'Overview',
+  repository:'Documents',
   records:'Records & evidence',
   approvals:'My tasks',
   audit:'Audit trail',
@@ -1032,7 +1040,8 @@ function showView(id){
   navItems.forEach(item=>item.classList.toggle('active',item.dataset.view===id));
   if(id==='repository') resetControlledInformation();
   if(breadcrumbCurrent && id!=='repository') breadcrumbCurrent.textContent=viewLabels[id]||'Workspace';
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'instant'});
+  document.dispatchEvent(new CustomEvent('qms:viewchange',{detail:{id}}));
 }
 navItems.forEach(item=>item.addEventListener('click',()=>showView(item.dataset.view)));
 
@@ -1316,7 +1325,7 @@ document.getElementById('repositoryDocument')?.addEventListener('click',e=>{
 });
 document.addEventListener('keydown',e=>{
   const modal=document.getElementById('repositoryDocument');
-  if(e.key==='Escape'&&modal?.style.display!=='none') closeDocumentDetail();
+  if(e.key==='Escape'&&modal?.style.display!=='none'&&!document.querySelector('.modal.show,.complianceDrawerBackdrop.show')) closeDocumentDetail();
 });
 document.querySelectorAll('#dmsContextTabs [data-dms-context]').forEach(button=>button.addEventListener('click',()=>{
   const tab=button.dataset.dmsContext;
@@ -1336,6 +1345,7 @@ function applyControlledLibraryFilters(){
     const matchesStatus=controlledStatusFilter==='all'||row.dataset.status===controlledStatusFilter;
     row.style.display=matchesSearch&&matchesType&&matchesSpace&&matchesStatus?'grid':'none';
   });
+  document.dispatchEvent(new Event('qms:documentsfiltered'));
 }
 document.getElementById('controlledSearch')?.addEventListener('input',applyControlledLibraryFilters);
 document.getElementById('controlledTypeFilter')?.addEventListener('change',applyControlledLibraryFilters);
@@ -1540,7 +1550,7 @@ function resetControlledInformation(){
   if(doc) doc.style.display='none';
   document.body.classList.remove('document-modal-open');
   activeSpace=spaceDefinitions[activeRepositorySpaceId]||spaceDefinitions.quality;
-  setRepositoryPanel('spaces');
+  setRepositoryPanel('all');
   renderDmsSpace(activeRepositorySpaceId||'quality');
   if(breadcrumbCurrent) breadcrumbCurrent.textContent='Controlled information';
 }
@@ -1589,7 +1599,11 @@ function closeDocumentDetail(){
   }
   const returnFocus=documentModalReturnFocus;
   documentModalReturnFocus=null;
-  setTimeout(()=>returnFocus?.focus?.(),50);
+  // Restore after the dialog boundary releases inert siblings, without a delayed
+  // timer that can steal focus from the user's next search or keyboard action.
+  queueMicrotask(()=>{
+    if(returnFocus?.isConnected && returnFocus.getClientRects().length) returnFocus.focus?.({preventScroll:true});
+  });
 }
 
 function closeDocumentSpace(){
@@ -2003,18 +2017,6 @@ function renderCustomDocumentTypeRow(type){
   pane.appendChild(row);
 }
 loadCustomDocumentTypes().forEach(renderCustomDocumentTypeRow);
-
-/* Prototype search within the active operational list */
-const globalSearch=document.getElementById('globalSearch');
-globalSearch?.addEventListener('input',()=>{
-  const q=globalSearch.value.trim().toLowerCase();
-  const active=document.querySelector('.view.active');
-  if(!active) return;
-  active.querySelectorAll('.documentRow,.resourceRow,.controlledLibraryRow,.evidenceRow,.dataTable tbody tr').forEach(row=>{
-    row.style.display=!q||row.textContent.toLowerCase().includes(q)?'':'none';
-  });
-});
-
 
 /* Canonical QMS resource registration */
 let registrationStep=1;

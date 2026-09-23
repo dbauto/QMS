@@ -1,0 +1,309 @@
+/* Testing design: one stable shell, a clear work queue, and details on demand.
+   Kept separate from the legacy stylesheet so the experiment is easy to review. */
+:root{--bg:#f6f7f5;--surface:#fff;--surface-subtle:#f6f8f6;--ink:#20372f;--text:#35463e;--muted:#64716a;--subtle:#68756e;--line:#e1e6e1;--line-strong:#b8c4bc;--brand:#24634c;--brand-hover:#194c39;--brand-soft:#eaf2ec;--shadow:0 2px 5px #20372f03;--shadow-lg:0 20px 60px #20372f22}
+html{scroll-behavior:auto;color-scheme:light}
+body.calmUI{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.5;background:var(--bg);color:var(--text)}
+.calmUI button,.calmUI input,.calmUI select,.calmUI textarea{font-family:inherit}
+.calmUI button{transition:background-color .16s,color .16s,border-color .16s}
+.calmUI :focus-visible{outline:3px solid #36765b;outline-offset:3px}
+.calmUI [hidden]{display:none!important}
+.calmUI .lucide{width:18px;height:18px;stroke-width:1.7;flex-shrink:0}
+.calmUI .btn{min-height:42px;padding:9px 15px;gap:8px;border-radius:7px;font-size:13px;font-weight:600;box-shadow:none;white-space:normal}
+.calmUI .btn.primary{background:var(--brand);border-color:var(--brand);color:white}
+.calmUI .btn.primary:hover{background:var(--brand-hover)}
+.calmUI .btn.secondary{background:#fff;border-color:var(--line-strong);color:var(--text)}
+.calmUI .btn.link,.calmUI .btn.text{background:transparent;color:var(--brand)}
+.calmUI .iconButton,.calmUI .headerIconButton{width:42px;height:42px;min-width:42px;border-radius:7px}
+.calmUI .tag{font-size:12px;font-weight:500;padding:3px 9px;line-height:1.5;white-space:nowrap;border-radius:5px;min-height:25px;width:fit-content}
+.calmUI .tag.neutral{color:#546158;background:#f0f3f0;border-color:#e1e6e1}
+.calmUI .tag.success{color:#24634c;background:#eef5ef;border-color:#d5e5da}
+.calmUI .tag.warning{color:#805715;background:#fbf4e6;border-color:#ecdcb7}
+.calmUI .tag.danger{color:#a33f30;background:#fcf0ed;border-color:#f1d8d1}
+.calmUI .tag.info{color:#35618a;background:#eff5fa;border-color:#d7e5ef}
+.skipLink{position:fixed;left:16px;top:-80px;z-index:200;background:var(--brand);color:white;padding:12px 18px;border-radius:6px}
+.skipLink:focus{top:12px}
+
+/* A stable, labeled sidebar eliminates hover expansion and icon guessing. */
+.calmUI .sideNav{width:238px!important;padding:28px 16px 18px!important;background:#eef2ec!important;border-right:1px solid #dfe5dc!important;align-items:stretch!important;overflow-y:auto!important;overflow-x:hidden!important;transition:none!important;box-shadow:none!important}
+.calmUI .mainArea{margin-left:238px!important;min-width:0;transition:none!important}
+.calmUI .brand{width:auto!important;height:auto!important;padding:0 12px!important;margin:0 0 30px!important;display:flex!important;justify-content:flex-start!important;gap:11px!important}
+.calmUI .brandMark{background:#285a45!important;border-radius:9px!important;width:36px!important;height:36px!important;color:white!important}
+.calmUI .brandMark .lucide{width:21px!important;height:21px!important}
+.calmUI .brandText{display:block!important}
+.calmUI .brandText strong{font-size:22px!important;letter-spacing:-.9px;color:#234532!important;line-height:1.1}
+.calmUI .brandText span{font-size:10px!important;color:#5d6e60!important;margin-top:4px;letter-spacing:.01em}
+.calmUI .workspaceSwitch{display:flex!important;align-items:center;gap:10px;width:auto!important;padding:12px 10px!important;margin:0 0 18px!important;background:#ffffff85!important;border:1px solid #dee5db!important;border-radius:8px!important;cursor:default}
+.calmUI .workspaceAvatar{width:32px;height:32px;display:grid;place-items:center;border:1px solid #d5ddd1;background:#e4ebdf;color:#4e614d;border-radius:7px;font-size:11px;font-weight:600}
+.calmUI .workspaceText{display:block!important;min-width:0}
+.calmUI .workspaceText b{font-size:12px!important;color:#3c4e40!important;font-weight:600}
+.calmUI .workspaceText small{display:block;font-size:10px!important;color:#667460!important;margin-top:2px}
+.calmUI .primaryNav{display:flex!important;flex-direction:column!important;align-items:stretch!important;width:100%!important;gap:4px!important;flex:1}
+.calmUI .navGroup{display:block!important;width:auto!important;height:auto!important;margin:16px 12px 8px!important;padding:0!important;font-size:10px!important;letter-spacing:.09em;color:#606e63!important;background:none!important;font-weight:600;overflow:visible!important}
+.calmUI .navGroup:first-child{margin-top:0!important}
+.calmUI .navItem{display:flex!important;width:100%!important;height:43px!important;padding:0 12px!important;gap:11px!important;align-items:center!important;justify-content:flex-start!important;background:transparent!important;color:#55675b!important;border:0!important;border-radius:7px!important;font-size:13px!important;font-weight:500!important;box-shadow:none!important;text-align:left}
+.calmUI .navItem:hover{background:#e2e9de!important;color:#244e37!important}
+.calmUI .navItem.active{background:#dce8d9!important;color:#234d35!important;font-weight:650!important}
+.calmUI .navItem>span:not(.navIcon){display:block!important;white-space:nowrap}
+.calmUI .navItem .navIcon{width:19px!important;display:grid!important;place-items:center!important;color:inherit!important}
+.calmUI .navBadge{position:static!important;margin-left:auto!important;display:grid!important;place-items:center!important;border:0!important;border-radius:5px!important;background:#e1e7dd!important;color:#486041!important;font-size:11px!important;width:22px!important;height:22px!important;padding:0!important;min-width:22px!important}
+.calmUI .navDisclosure{border-top:1px solid #d9e2d5;margin-top:18px;padding-top:12px}
+.calmUI .navDisclosure summary{display:flex;align-items:center;gap:11px;min-height:44px;cursor:pointer;font-size:13px;color:#55675b;padding:0 12px;border-radius:7px;list-style:none}
+.navDisclosure summary::-webkit-details-marker{display:none}
+.navDisclosure summary>.lucide:last-child{margin-left:auto;width:14px}
+.navDisclosure[open] summary>.lucide:last-child{transform:rotate(180deg)}
+.calmUI .navDisclosure[open] summary{margin-bottom:8px}
+.calmUI .navDisclosure .navItem{padding-left:17px!important}
+.calmUI .navAssistant{margin-top:auto;padding-top:28px}
+.calmUI .navAssistant .navItem{border:1px solid #d9e2d5!important;background:#f8faf6!important}
+.calmUI .sideStatus{display:flex!important;margin:14px 12px 0!important;border:0!important;padding:0!important;gap:7px;align-items:center}
+.calmUI .sideStatus>i{width:6px!important;height:6px!important;display:block!important;background:#66825e!important;border-radius:50%}
+.calmUI .sideStatus b{font-size:10px!important;color:#606e63!important;font-weight:400!important}
+.calmUI .sideStatus span{display:none!important}
+.calmUI .mobileNavToggle,.calmUI .mobileNavClose{display:none}
+
+.calmUI .commandBar{height:72px!important;min-width:0;padding:0 36px!important;background:#fff!important;border-bottom:1px solid var(--line)!important;gap:20px!important;position:sticky!important;top:0!important;z-index:25!important;backdrop-filter:none!important}
+.calmUI .breadcrumb{gap:12px!important;font-size:12px!important;color:var(--muted)!important;white-space:nowrap}
+.calmUI .breadcrumb>.lucide{display:none}
+.calmUI .breadcrumb b{color:var(--ink)!important;font-weight:500!important}
+.calmUI .previewBadge{font-size:10px;font-weight:500;background:#f6f3e9;color:#756139;border:1px solid #e9e1ce;border-radius:4px;padding:3px 7px;display:flex;gap:5px;align-items:center;white-space:nowrap}
+.previewBadge>span{width:5px;height:5px;border-radius:50%;background:#9a8150}
+.previewBadge small{font-size:10px}
+.calmUI .commandActions{margin-left:auto;gap:8px;min-width:0}
+.calmUI .headerSearch{position:relative;display:flex!important;align-items:center!important;background:#f7f9f6!important;border:1px solid #e3e9df!important;border-radius:7px!important;height:38px!important;padding:0!important}
+.calmUI .headerSearch input{width:156px!important;opacity:1!important;pointer-events:auto!important;padding:0 8px 0 0!important;background:transparent!important;font-size:12px!important;border:0!important;outline-offset:3px;color:var(--text)}
+.calmUI .headerSearch .headerIconButton{width:34px;min-width:34px;height:34px;color:#64785e}
+.calmUI .profileButton{padding:0 0 0 14px!important;border-left:1px solid var(--line)!important;border-radius:0!important;background:transparent!important;gap:9px!important;min-height:42px}
+.calmUI .profileButton b{font-size:12px!important}
+.calmUI .profileButton small{font-size:10px!important;color:var(--muted)}
+.calmUI .profileButton .avatar{width:33px!important;height:33px!important;background:#eceee7!important;color:#596645!important;border:1px solid #e0e6d7;font-weight:600}
+.calmUI .notificationCount{font-size:10px;min-width:16px;height:16px;background:#a4553d;right:1px;top:0}
+.calmUI .searchResults{position:absolute;right:0;top:calc(100% + 10px);width:390px;max-width:calc(100vw - 32px);max-height:60vh;overflow:auto;background:white;border:1px solid var(--line);box-shadow:var(--shadow-lg);border-radius:9px;padding:6px;z-index:40}
+.searchResults button{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:0;background:white;border-radius:5px;padding:12px;color:var(--text)}
+.searchResults button:hover{background:var(--brand-soft)}
+.searchResults b,.searchResults small{display:block}.searchResults b{font-size:13px;font-weight:600}.searchResults small{font-size:11px;color:var(--muted);margin-top:3px}.searchResults p{padding:8px 12px;font-size:13px}
+
+.calmUI .pageBody{padding:34px 36px 24px;min-width:0;outline:none}
+.calmUI .view{min-width:0;max-width:100%}
+.calmUI .pageHeader{margin-bottom:26px;gap:20px;align-items:center}
+.calmUI .pageHeader h1{font-size:29px;line-height:1.2;letter-spacing:-.8px;font-weight:650;color:var(--ink);margin:0 0 8px}
+.calmUI .pageHeader p{font-size:14px;line-height:1.5;color:var(--muted);max-width:650px}
+.calmUI .pageEyebrow{display:block;font-size:10px;letter-spacing:.13em;font-weight:600;color:#5f7057;margin-bottom:10px}
+.calmUI .surface{border:1px solid var(--line);border-radius:10px;background:white;box-shadow:var(--shadow);overflow:hidden}
+.calmUI .overviewIntro{display:flex;gap:13px;align-items:center;margin:0 0 24px;padding:17px 19px;border:1px solid #dce5d7;border-radius:9px;background:#eef4e9}
+.introIcon{width:37px;height:37px;background:#e3ecdb;color:#73825b;border-radius:50%;display:grid;place-items:center;flex-shrink:0}
+.overviewIntro b{font-size:14px;font-weight:600;color:#3f5839}
+.overviewIntro p{font-size:12px;margin:3px 0 0;color:#5c7152}
+.introDate{margin-left:auto;font-size:11px;color:#586d4d;white-space:nowrap}
+.calmUI .overviewBoard{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start;margin:0}
+.calmUI .overviewMainPanel{min-width:0;padding:0}
+.calmUI .overviewPanelTabs{height:59px;display:flex;gap:24px;padding:0 24px;border-bottom:1px solid var(--line)}
+.calmUI .overviewPanelTabs button{padding:0 0 2px;min-height:44px;background:transparent;border:0;border-bottom:2px solid transparent;color:var(--muted);font-size:13px;font-weight:500}
+.calmUI .overviewPanelTabs button.active{border-bottom-color:var(--brand);color:var(--brand);font-weight:650}
+.calmUI .overviewPanelTabs span{font-size:11px;background:#eef3eb;color:#426137;border-radius:4px;margin-left:6px;padding:2px 6px}
+.calmUI .overviewPanelHeader{display:flex;align-items:center;justify-content:space-between;padding:22px 24px 16px;border:0}
+.calmUI .overviewPanelHeader h2{font-size:16px;font-weight:600;color:var(--ink);margin:0 0 4px}
+.calmUI .overviewPanelHeader p{font-size:12px;color:var(--muted);margin:0}
+.calmUI .overviewPanelHeader .btn{font-size:12px;padding:7px 0;min-width:54px}
+.calmUI .overviewWorkList{padding:0 24px 8px}
+.calmUI .overviewWorkRow{position:relative;width:100%;min-height:82px;display:grid;grid-template-columns:minmax(0,1fr) auto 14px;gap:5px 12px;padding:17px 0 15px;border:0;border-bottom:1px solid #edf0eb;background:white;text-align:left;align-items:center;border-radius:0}
+.calmUI .overviewWorkRow:last-child{border-bottom:0}
+.calmUI .overviewWorkRow:hover{background:#f7faf5}
+.calmUI .overviewWorkRow .workType{grid-column:1;grid-row:2;font-size:11px;color:#72816d;padding:0;margin:0}
+.calmUI .overviewWorkRow>div{grid-row:1;grid-column:1;min-width:0}
+.calmUI .overviewWorkRow b{display:block;color:#304536;font-size:14px;font-weight:600;line-height:1.4}
+.calmUI .overviewWorkRow small{display:block;font-size:11px;color:var(--muted);line-height:1.4;margin-top:4px;overflow-wrap:anywhere}
+.calmUI .overviewWorkRow .tag{grid-column:2;grid-row:1 / 3;font-size:11px;justify-self:end}
+.calmUI .overviewWorkRow>.lucide{grid-column:3;grid-row:1 / 3;width:14px;color:#81917d}
+.calmUI .overviewWorkRow .workType{display:none}
+.calmUI .overviewSideColumn{display:flex;flex-direction:column;gap:20px}
+.calmReadiness{padding:23px}
+.calmSectionHeading{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.calmSectionHeading h2{font-size:15px;font-weight:600;margin:0;color:var(--ink)}
+.calmSectionHeading>.lucide{color:#7b8f75}
+.readinessNumber{display:flex;align-items:baseline;gap:12px;margin:16px 0 10px}
+.readinessNumber>strong{font-size:42px;font-weight:600;letter-spacing:-1.6px;line-height:1.2;color:var(--ink)}
+.readinessNumber strong span{font-size:24px;letter-spacing:-.5px}
+.readinessNumber>span{font-size:11px;color:var(--muted)}
+.readinessProgress{height:6px;background:#e8eee3;border-radius:4px;overflow:hidden}.readinessProgress span{display:block;width:73%;height:100%;background:#7d9b68;border-radius:4px}
+.calmReadiness p{display:flex;align-items:center;gap:7px;font-size:12px;color:#866132;margin:15px 0 18px}
+.attentionDot{width:6px;height:6px;background:#b68a46;border-radius:50%;flex-shrink:0}
+.quietLink{background:transparent;border:0;color:var(--brand);display:flex;gap:9px;align-items:center;font-size:12px;font-weight:600;min-height:34px;padding:0}
+.quietLink .lucide{width:14px}
+.calmDeadlines{padding:21px 23px 8px}
+.calmDeadlines .calmSectionHeading{margin-bottom:12px}
+.deadlineRow{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:16px 0;background:white;border:0;border-bottom:1px solid #edf0eb;color:var(--text)}
+.deadlineRow:hover{background:#f7faf5}.deadlineRow:last-child{border-bottom:0}.deadlineRow>span:nth-child(2){flex:1;min-width:0}.deadlineRow>span>b{display:block;font-size:12px;font-weight:600}.deadlineRow>span>small{display:block;font-size:11px;margin-top:3px;color:var(--muted)}.deadlineRow>.lucide{width:13px;color:#85937d}
+.deadlineDate{width:37px;height:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f3f5ef;border-radius:6px;flex-shrink:0;color:#5b6a4f}
+.deadlineDate small{font-size:8px!important;letter-spacing:.04em;line-height:1.1;margin:0!important}.deadlineDate b{font-size:16px!important;font-weight:600;line-height:1.2}
+.deadlineDate.overdue{background:#faf0e8;color:#b17e55}.deadlineRow .overdueText{color:#986138}
+.workspaceSnapshot{display:grid;grid-template-columns:1.1fr repeat(3,1fr);align-items:center;gap:18px;margin-top:28px;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.snapshotHeading{display:flex;gap:10px;align-items:center;color:#5c6e53;font-size:12px;max-width:145px}
+.workspaceSnapshot button{display:grid;grid-template-columns:1fr 14px;align-items:center;text-align:left;border:0;border-left:1px solid var(--line);background:transparent;padding:0 0 0 24px;gap:2px 6px;color:var(--text);min-height:52px}
+.workspaceSnapshot button:hover{background:#edf2e9}.workspaceSnapshot strong{font-size:23px;font-weight:600;color:var(--ink);letter-spacing:-.5px}.workspaceSnapshot button>span{font-size:11px;color:var(--muted);grid-row:2}.workspaceSnapshot button>.lucide{width:14px;color:#84917b;grid-column:2;grid-row:1 / 3}
+.previewFootnote{font-size:10px;color:#626f5b;margin:18px 0 0;text-align:center}
+.calmUI .overviewActivityList>div{padding:18px 24px;min-height:80px}.calmUI .overviewActivityList p b{font-size:13px}.calmUI .overviewActivityList p small{font-size:12px}
+
+/* Shared operational surfaces. Keep metadata with each record and reduce borders. */
+.calmUI .pageBody h2{color:var(--ink)}
+.calmUI .recordLabel{font-size:11px;letter-spacing:.04em;color:var(--muted)}
+.calmUI .sectionHeader h2{font-size:16px}.calmUI .sectionHeader p{font-size:12px}
+.calmUI .filterSearch input,.calmUI select,.calmUI .formField input,.calmUI .formField textarea{font-size:13px;min-height:40px}
+.calmUI .filterSearch{min-height:42px;min-width:150px;background:white;border-color:var(--line-strong)}
+.calmUI .repositoryModeTabs{margin-bottom:20px;padding:0;gap:24px;border-bottom:1px solid var(--line);background:none;border-radius:0}
+.calmUI .repositoryModeTabs button{font-size:13px;padding:10px 0;min-height:45px;border-radius:0;background:transparent;border:0;border-bottom:2px solid transparent;color:var(--muted)}
+.calmUI .repositoryModeTabs button.active{color:var(--brand);border-bottom-color:var(--brand);background:none}
+.calmUI .controlledLibrarySurface{border:1px solid var(--line);border-radius:10px;box-shadow:none;overflow:hidden}
+.calmUI .controlledLibraryTop{padding:0 20px;border-bottom:1px solid var(--line)}
+.calmUI .controlledStatusTabs{gap:22px;min-width:0;overflow-x:auto}
+.calmUI .controlledStatusTabs button{min-height:57px;padding:0;font-size:12px;white-space:nowrap;color:var(--muted)}
+.calmUI .controlledStatusTabs button.active{color:var(--brand);border-color:var(--brand)}
+.calmUI .controlledStatusTabs b{font-size:10px;background:#f1f4ee;color:#5e7154;font-weight:500}
+.calmUI .allDocsHint{display:none}
+.calmUI .controlledLibraryToolbar{padding:18px 20px;display:flex;gap:10px;flex-wrap:wrap;background:#fff}
+.calmUI .controlledLibraryToolbar .filterSearch{flex:1;min-width:200px}
+.calmUI .controlledLibraryToolbar select{max-width:190px;min-width:0;background:#fff;border-color:var(--line-strong);border-radius:6px}
+.calmUI .controlledLibraryToolbar>.iconButton{display:none}
+.calmUI .controlledLibraryHead,.calmUI .controlledLibraryRow{display:grid;grid-template-columns:minmax(210px,2.3fr) minmax(75px,.85fr) minmax(90px,1fr) 40px minmax(85px,1fr) 94px 86px;gap:15px;padding:16px 20px;align-items:center;min-width:0;width:100%;font-size:12px}
+.calmUI .controlledLibraryHead{background:#f8faf6;color:#67745e;font-size:11px;min-height:42px;padding-top:11px;padding-bottom:11px;letter-spacing:0;text-transform:none}
+.calmUI .controlledLibraryRow{min-height:94px;border-bottom:1px solid #edf0eb;color:var(--muted)}
+.calmUI .controlledLibraryRow:hover{background:#f8fbf6}
+.calmUI .controlledLibraryRow>div{display:flex;flex-direction:column;gap:4px;min-width:0}
+.calmUI .controlledLibraryRow>div strong{font-size:14px;font-weight:600;color:var(--ink);line-height:1.35;order:0}
+.calmUI .controlledLibraryRow>div b{font-size:11px;font-weight:400;color:var(--muted);order:1}
+.calmUI .controlledLibraryRow>div small{display:none}
+.calmUI .controlledLibraryRow>span{font-size:12px;overflow-wrap:anywhere}
+.calmUI .controlledLibraryRow>.tag{font-size:11px}
+.calmUI .controlledLibraryFooter{padding:15px 20px;font-size:12px;gap:14px}.calmUI .controlledLibraryFooter .btn{font-size:12px}
+.calmEmpty{text-align:center;padding:50px 24px;color:var(--muted)}.calmEmpty>.lucide{width:30px;height:30px;margin-bottom:8px}.calmEmpty h3{font-size:17px;margin:8px 0;color:var(--ink)}.calmEmpty p{font-size:13px;margin:0 0 20px}
+.calmUI .dmsWorkspace{grid-template-columns:210px minmax(0,1fr);border-color:var(--line);border-radius:9px}
+.calmUI .dmsSpaceRail{background:#f5f8f2}.calmUI .dmsTabIcon{background:transparent!important;color:#6c805d!important}
+.calmUI .dmsSpaceTabs button{padding:13px 10px;min-height:60px}.calmUI .dmsSpaceTabs b{font-size:12px}.calmUI .dmsSpaceTabs small{font-size:11px}
+.calmUI .dmsSpaceHeader{padding:22px}.calmUI .dmsSpaceHeader .recordLabel,.calmUI .dmsSpaceHeroIcon,.calmUI .dmsSpaceActions{display:none}.calmUI .dmsSpaceHeader h2{font-size:20px}.calmUI .dmsSpaceHeader p{font-size:12px}
+.calmUI .dmsDocumentToolbar{padding:16px;flex-wrap:wrap}.calmUI .dmsDocumentTypeTabs{overflow:auto;max-width:100%}.calmUI .dmsDocumentTypeTabs button{font-size:12px;min-height:36px}.calmUI .dmsContextTabs button{font-size:12px;min-height:43px}
+.calmUI .dmsDocumentHead,.calmUI .dmsDocumentRow{grid-template-columns:minmax(200px,2fr) 90px 64px 80px 90px 80px 14px!important;gap:12px!important;min-width:0!important}
+.calmUI .dmsDocumentHead{font-size:11px!important;text-transform:none;letter-spacing:0}.calmUI .dmsDocumentRow>div b{font-size:11px!important}.calmUI .dmsDocumentRow>div strong{font-size:14px!important}.calmUI .dmsDocumentRow>span{font-size:12px!important}.calmUI .dmsRevisionValue{font-size:12px!important}
+.calmUI .taskWorkspace{grid-template-columns:320px minmax(0,1fr);gap:24px;background:transparent;border:0;box-shadow:none;align-items:start}.calmUI .taskQueue,.calmUI .approvalDetail{background:#fff;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.calmUI .queueTabs{display:flex;flex-wrap:wrap;padding:10px;gap:4px}.calmUI .queueTabs button{font-size:12px;min-height:40px;padding:8px}.calmUI .approvalItem{padding:20px;font-size:13px}.calmUI .approvalItem strong{font-size:14px}.calmUI .approvalItem>span,.calmUI .approvalItem small{font-size:12px}.calmUI .approvalItem>b{font-size:11px}
+.calmUI .approvalDetail{padding:26px}.calmUI .approvalHero h2{font-size:22px}.calmUI .changeBox p{font-size:13px}.calmUI .routeNode b{font-size:13px}.calmUI .routeNode span{font-size:12px}.calmUI .decisionBar{gap:8px;flex-wrap:wrap}
+.calmUI .tableSurface,.calmUI .typeListPane,.calmUI .accessTableShell{overflow:auto}.calmUI .dataTable{font-size:13px}.calmUI .dataTable th{font-size:11px}.calmUI .dataTable td{padding:17px 16px}
+.calmUI .filterBar{flex-wrap:wrap}.calmUI .filterBar select{max-width:100%}.calmUI .typeWorkspace,.calmUI .resourceWorkspace{min-width:0}
+.calmUI #repositoryDocument .documentLevelHeader h1{font-size:22px}.calmUI #repositoryDocument .documentDetailTabs button{font-size:13px;min-height:44px}.calmUI #repositoryDocument .documentReviewPane p{font-size:13px}.calmUI #repositoryDocument .detailField span,.calmUI #repositoryDocument .detailField b{font-size:12px}
+.calmUI .overviewPanelTabs button:disabled,.calmUI button:disabled{opacity:.5;cursor:not-allowed}
+.calmUI .toast{font-size:13px}
+
+@media(min-width:1600px){.calmUI .pageBody{padding:40px 48px}.calmUI #dashboard{max-width:1440px;margin:0 auto}.calmUI .overviewBoard{grid-template-columns:minmax(0,1fr) 340px}.calmUI .overviewWorkRow{min-height:90px}}
+@media(max-width:1300px){.calmUI .sideNav{width:218px!important;padding-inline:12px!important}.calmUI .mainArea{margin-left:218px!important}.calmUI .commandBar{padding-inline:26px!important;gap:14px!important}.calmUI .pageBody{padding:28px 26px}.calmUI .previewBadge small,.calmUI .workspaceCrumb,.calmUI .breadcrumb .crumbSep{display:none}.calmUI .profileButton>span:not(.avatar){display:none}.calmUI .overviewBoard{grid-template-columns:minmax(0,1fr) 275px;gap:20px}.calmUI .controlledLibraryHead,.calmUI .controlledLibraryRow{grid-template-columns:minmax(210px,2fr) 45px 100px 90px 86px}.calmUI .controlledLibraryHead>:nth-child(2),.calmUI .controlledLibraryRow>:nth-child(2),.calmUI .controlledLibraryHead>:nth-child(3),.calmUI .controlledLibraryRow>:nth-child(3){display:none}.calmUI .dmsDocumentHead,.calmUI .dmsDocumentRow{grid-template-columns:minmax(180px,2fr) 65px 94px 14px!important}.calmUI .dmsDocumentHead>:nth-child(2),.calmUI .dmsDocumentRow>:nth-child(2),.calmUI .dmsDocumentHead>:nth-child(4),.calmUI .dmsDocumentRow>:nth-child(4),.calmUI .dmsDocumentHead>:nth-child(6),.calmUI .dmsDocumentRow>:nth-child(6){display:none!important}.calmUI .taskWorkspace{grid-template-columns:285px minmax(0,1fr)}.calmUI .approvalDetail{padding:20px}}
+@media(max-width:1100px){.calmUI .overviewBoard{grid-template-columns:minmax(0,1fr)}.calmUI .overviewSideColumn{display:grid;grid-template-columns:1fr 1fr;gap:20px}.calmUI .calmDeadlines{padding-top:22px}.calmUI .deadlineRow{padding-block:11px}.workspaceSnapshot{grid-template-columns:repeat(3,1fr)}.snapshotHeading{grid-column:1 / -1;max-width:none}.workspaceSnapshot button:nth-child(2){border-left:0;padding-left:0}.calmUI .taskWorkspace{grid-template-columns:1fr}.calmUI .taskQueue{max-height:480px;overflow:auto}.calmUI .controlledLibraryHead,.calmUI .controlledLibraryRow{grid-template-columns:minmax(180px,2fr) 40px 90px 86px}.calmUI .controlledLibraryHead>:nth-child(5),.calmUI .controlledLibraryRow>:nth-child(5){display:none}.calmUI .dmsWorkspace{grid-template-columns:170px minmax(0,1fr)}.calmUI .dmsDocumentHead,.calmUI .dmsDocumentRow{grid-template-columns:minmax(135px,2fr) 85px!important}.calmUI .dmsDocumentHead>:nth-child(3),.calmUI .dmsDocumentRow>:nth-child(3),.calmUI .dmsDocumentHead>:last-child,.calmUI .dmsDocumentRow>:last-child{display:none!important}}
+@media(max-width:780px){.calmUI .sideNav{width:260px!important;transform:translateX(-100%);z-index:90!important;visibility:hidden!important;padding:22px 16px!important}.calmUI.mobileNavOpen .sideNav{transform:translateX(0);visibility:visible!important;box-shadow:0 0 0 100vmax #162c2255!important}.calmUI .mainArea{margin-left:0!important}.calmUI .mobileNavToggle,.calmUI .mobileNavClose{display:grid;place-items:center;background:transparent;border:0;flex-shrink:0}.calmUI .mobileNavClose{margin-left:auto;width:32px;min-width:32px}.calmUI .commandBar{height:64px!important;padding:0 16px!important;gap:12px!important}.calmUI .breadcrumb{font-size:12px!important}.calmUI .previewBadge{margin-left:auto}.calmUI .commandActions{margin-left:0;gap:4px}.calmUI .headerSearch{background:transparent!important;border:0!important}.calmUI .headerSearch input{width:0!important;padding:0!important;opacity:0!important;pointer-events:none!important}.calmUI .headerSearch.open{position:absolute!important;left:16px;right:16px;z-index:2;background:white!important;border:1px solid var(--line-strong)!important;height:42px!important}.calmUI .headerSearch.open input{width:100%!important;opacity:1!important;pointer-events:auto!important}.calmUI .profileButton{padding-left:5px!important;border:0!important}.calmUI .notification{display:none}.calmUI .pageBody{padding:26px 20px}.calmUI .pageHeader{gap:16px;flex-wrap:wrap}.calmUI .pageHeader h1{font-size:28px}.calmUI .pageHeader p{font-size:13px}.calmUI .pageActions{margin:0}.calmUI .overviewHeader{align-items:flex-start}.calmUI .overviewIntro{padding:16px;align-items:flex-start}.introDate{display:none}.calmUI .overviewBoard{gap:18px}.calmUI .overviewPanelHeader{padding:20px 18px 12px}.calmUI .overviewPanelHeader p{font-size:11px}.calmUI .overviewPanelTabs{padding-inline:18px}.calmUI .overviewWorkList{padding-inline:18px}.calmUI .overviewWorkRow{grid-template-columns:minmax(0,1fr) auto;gap:8px;min-height:90px;padding-block:16px}.calmUI .overviewWorkRow>.lucide{display:none}.calmUI .overviewWorkRow .tag{font-size:10px;padding:3px 6px}.calmUI .overviewWorkRow b{font-size:13px}.calmUI .overviewWorkRow small{font-size:11px}.calmUI .overviewSideColumn{gap:18px}.calmReadiness{padding:20px}.calmDeadlines{padding:20px 20px 8px}.workspaceSnapshot{gap:16px}.workspaceSnapshot button{padding-left:14px}.workspaceSnapshot strong{font-size:20px}.workspaceSnapshot button>span{font-size:10px}.workspaceSnapshot button>.lucide{display:none}.calmUI .controlledLibraryHead,.calmUI .controlledLibraryRow{grid-template-columns:minmax(0,1fr) 92px;gap:12px}.calmUI .controlledLibraryHead>:nth-child(4),.calmUI .controlledLibraryRow>:nth-child(4),.calmUI .controlledLibraryHead>:nth-child(7),.calmUI .controlledLibraryRow>:nth-child(7){display:none}.calmUI .controlledLibraryToolbar{padding:14px}.calmUI .controlledLibraryToolbar select{flex:1;max-width:none;width:calc(50% - 5px);font-size:12px}.calmUI .controlledLibraryHead,.calmUI .controlledLibraryRow{padding-inline:16px}.calmUI .controlledLibraryRow strong{font-size:13px!important}.calmUI .controlledLibraryTop{padding-inline:16px}.calmUI .controlledStatusTabs{gap:18px}.calmUI .controlledLibraryFooter{padding:12px 16px;flex-wrap:wrap;font-size:11px}.calmUI .dmsWorkspace{grid-template-columns:1fr}.calmUI .dmsSpaceRail{border-right:0;border-bottom:1px solid var(--line)}.calmUI .dmsSpaceTabs{display:flex;overflow:auto;max-height:170px;padding:8px}.calmUI .dmsSpaceTabs button{min-width:155px;max-width:170px;border-radius:6px}.calmUI .dmsRailHeader{padding:15px}.calmUI .dmsRailSearch,.calmUI .dmsRailFooter{display:none}.calmUI .dmsDocumentHead,.calmUI .dmsDocumentRow{grid-template-columns:minmax(0,1fr) 94px!important}.calmUI .dmsContextTabs{overflow:auto;white-space:nowrap}.calmUI .taskWorkspace{gap:18px}.calmUI .approvalHero{flex-wrap:wrap}.calmUI .routeTimeline{overflow:auto}.calmUI .recordsWorkspace,.calmUI .recordsLibraryWorkspace,.calmUI .resourceWorkspace,.calmUI .typeWorkspace,.calmUI .complianceWorkspace,.calmUI .traceabilityWorkspace{grid-template-columns:1fr}.calmUI .dataTable{min-width:700px}.calmUI .decisionBar>div{display:none}.calmUI .decisionBar .btn{flex:1}.calmUI .searchResults{width:100%;right:0}}
+@media(max-width:520px){.calmUI .commandBar{padding-inline:10px!important;gap:6px!important}.calmUI .previewBadge{font-size:9px;padding:3px 5px}.calmUI .headerSearch .headerIconButton{width:30px;min-width:30px}.calmUI .profileButton{display:none!important}.calmUI .pageBody{padding:24px 16px}.calmUI .overviewHeader .pageActions{width:100%}.calmUI .overviewHeader .btn{width:100%;justify-content:center}.calmUI .overviewIntro .introIcon{display:none}.calmUI .overviewSideColumn{grid-template-columns:1fr}.calmUI .overviewWorkRow{display:flex;flex-wrap:wrap;gap:10px}.calmUI .overviewWorkRow>div{width:100%}.calmUI .overviewWorkRow .tag{font-size:11px}.calmUI .overviewPanelHeader{align-items:flex-start;gap:10px}.calmUI .overviewPanelHeader h2{font-size:15px}.calmUI .overviewPanelHeader .btn{min-width:44px;font-size:11px}.calmUI .overviewActivityList>div{grid-template-columns:40px 1fr}.calmUI .overviewActivityList .activityIcon{display:none}.calmUI .overviewActivityList>div>.tag{grid-column:2}.workspaceSnapshot{grid-template-columns:1fr;gap:14px;padding-block:20px}.workspaceSnapshot button{grid-template-columns:70px 1fr 16px!important;border:0!important;padding:0!important;min-height:32px}.workspaceSnapshot button>span{grid-row:1;font-size:12px}.workspaceSnapshot button>.lucide{display:block;grid-column:3}.snapshotHeading{margin-bottom:4px}.calmUI .pageActions{flex-wrap:wrap}.calmUI .pageActions .btn{font-size:12px}.calmUI .controlledLibraryRow>.tag{font-size:10px}.calmUI .controlledStatusTabs b{display:none}.calmUI .recordLabel{font-size:10px}.calmUI .complianceSideColumn{grid-template-columns:1fr}.calmUI .isoOverviewCard{grid-template-columns:1fr}.calmUI .isoOverviewCard>div{min-width:0}.calmUI .formGrid{grid-template-columns:1fr}.calmUI .settingsPageTabs{overflow:auto;white-space:nowrap}.calmUI .settingsProfileHeader{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){.calmUI *,.calmUI *::before,.calmUI *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.navigationBackdrop{position:fixed;inset:0;background:#162c2255;z-index:89}.calmUI.mobileNavOpen .sideNav{box-shadow:none!important}
+/* Normalize the remaining operational lists against the same readable scale. */
+.calmUI .pageBody small{font-size:12px;color:var(--muted)}
+.calmUI .traceItem>div>span,.calmUI .adminNotice>div>span,.calmUI .accessGuidance>div>span,.calmUI .profileAccessIntro>div>span{font-size:12px;color:#576b60}
+.calmUI .typeTableHeader,.calmUI .spaceAdminHead{font-size:11px;color:#62705e;background:#f7f9f5;text-transform:none;letter-spacing:0}
+.calmUI .typeRow>div small{color:#62705e;font-size:12px}
+.calmUI .recordsDmsWorkspace{grid-template-columns:205px minmax(0,1fr);border-color:var(--line);box-shadow:none;min-height:620px}
+.calmUI .recordsProcessRail{background:#f5f8f2;border-color:var(--line)}
+.calmUI .recordsRailHeader{padding:20px 16px 12px}.calmUI .recordsRailHeader h2{font-size:15px}
+.calmUI .recordsRailSearch{margin-inline:12px;height:40px;border-color:var(--line-strong)}.calmUI .recordsRailSearch input{font-size:12px}
+.calmUI .recordsProcessTabs>button{min-height:62px;padding:10px 8px}.calmUI .recordsProcessTabs b{font-size:12px}.calmUI .recordsProcessTabs small{font-size:11px;color:var(--muted)}
+.calmUI .recordsRailIcon{background:#eaf0e5;color:#687e5b}.calmUI .recordsProcessTabs>button.active{background:#e4eddd;box-shadow:none}
+.calmUI .recordsLibraryHeader{padding:22px 20px}.calmUI .recordsLibraryHeader p{font-size:12px;color:var(--muted)}.calmUI .recordsLibraryStats small{font-size:11px;color:var(--muted)}
+.calmUI .recordsLibraryTabs{padding-inline:20px;gap:20px}.calmUI .recordsLibraryTabs button{font-size:12px;color:var(--muted);min-height:44px}.calmUI .recordsLibraryTabs button.active{color:var(--brand);border-color:var(--brand)}
+.calmUI .recordsLibraryToolbar{padding:16px 20px;background:#fff}
+.calmUI .recordsLibraryHead,.calmUI .recordsLibraryRows .evidenceRow{grid-template-columns:minmax(200px,2fr) 85px 130px 90px 80px 14px;gap:12px;padding:14px 20px}
+.calmUI .recordsLibraryHead{font-size:11px;text-transform:none;color:var(--muted);background:#f8faf6}
+.calmUI .recordsLibraryRows .evidenceRow{min-height:88px;border-color:#edf0eb}
+.calmUI .recordsLibraryRows .evidenceRow>div strong{font-size:14px;color:var(--ink)}.calmUI .recordsLibraryRows .evidenceRow>div b{font-size:11px;color:var(--muted)}.calmUI .recordsLibraryRows .evidenceRow>div small{font-size:11px;color:var(--muted)}.calmUI .recordsLibraryRows .evidenceRow>span:not(.tag){font-size:12px}
+.calmUI .recordsLibraryFooter{font-size:12px;color:var(--muted);background:#f8faf6;padding:16px 20px}
+.calmUI .revisionOpenInline,.calmUI .revisionRequestInline{width:fit-content;align-self:flex-start;font-size:10px!important;padding:2px 5px!important;margin-left:0!important}
+.calmUI h1[tabindex="-1"]:focus{outline:none}
+.calmUI .accessWorkspace{min-width:0;max-width:100%}.calmUI .accessUserDetail{min-width:0;max-width:100%;overflow:hidden}
+@media(max-width:1300px){.calmUI .recordsLibraryHead,.calmUI .recordsLibraryRows .evidenceRow{grid-template-columns:minmax(160px,2fr) 85px 90px 80px 14px}.calmUI .recordsLibraryHead>:nth-child(3),.calmUI .recordsLibraryRows .evidenceRow>:nth-child(3){display:none}}
+@media(max-width:1100px){.calmUI .recordsLibraryHead,.calmUI .recordsLibraryRows .evidenceRow{grid-template-columns:minmax(150px,2fr) 80px 14px}.calmUI .recordsLibraryHead>:nth-child(2),.calmUI .recordsLibraryHead>:nth-child(4),.calmUI .recordsLibraryRows .evidenceRow>:nth-child(2),.calmUI .recordsLibraryRows .evidenceRow>:nth-child(4){display:none}.calmUI .recordsLibraryStats{display:none}}
+@media(max-width:780px){.calmUI .breadcrumb{flex:1;min-width:0;overflow:hidden}.calmUI .breadcrumb b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.calmUI .headerSearch:not(.open) input{display:none}.calmUI .previewBadge{margin-left:0;flex-shrink:0}.calmUI .commandActions{flex-shrink:0}.calmUI .recordsDmsWorkspace{grid-template-columns:1fr}.calmUI .recordsProcessRail{border-bottom:1px solid var(--line)}.calmUI .recordsProcessTabs{display:flex;flex-direction:row;overflow:auto}.calmUI .recordsProcessTabs>button{min-width:150px}.calmUI .recordsRailSearch{display:none}.calmUI .recordsLibraryHead,.calmUI .recordsLibraryRows .evidenceRow{grid-template-columns:minmax(0,1fr) 80px;gap:12px;padding-inline:16px}.calmUI .recordsLibraryHead>:last-child,.calmUI .recordsLibraryRows .evidenceRow>:last-child{display:none}.calmUI .recordsLibraryToolbar{padding:14px}.calmUI .recordsLibraryTabs{overflow:auto;white-space:nowrap;padding-inline:16px;gap:18px}.calmUI .recordsLibraryFooter{flex-wrap:wrap;font-size:11px}.calmUI .recordsLibraryRows .evidenceRow>div strong{font-size:13px}.calmUI .recordsLibraryHead{font-size:10px}.calmUI .recordsLibraryRows .evidenceRow .tag{font-size:10px}.calmUI .accessToolbar{display:flex;flex-wrap:wrap}.calmUI .accessToolbar .filterSearch{flex:1;min-width:100%}.calmUI .accessToolbar select{flex:1;min-width:0}.calmUI .accessDetailGrid{grid-template-columns:1fr}.calmUI .settingsWorkspace{min-width:0}.calmUI .settingsNavGroup{min-width:0}}
+.calmUI .accessMatrixWrap{position:relative;isolation:isolate}.calmUI .recordsProcessTabs>button.active small{color:#596951}
+.calmUI .complianceDrawerBackdrop:not(.show){visibility:hidden}.calmUI .permissionCheck{position:relative}.calmUI .permissionCheck input:focus-visible+span{outline:3px solid var(--brand);outline-offset:3px}
+.calmUI .traceSection h3,.calmUI .tracePathHeader h3{font-size:14px}.calmUI .traceSection header p,.calmUI .traceSectionHeader p,.calmUI .tracePathHeader p,.calmUI .tracePathNote{font-size:12px;line-height:1.5}.calmUI .traceItem b,.calmUI .tracePathStep b{font-size:12px}.calmUI .traceSection{padding:18px}.calmUI .tracePathStep small{font-size:10px}.calmUI .traceItem{min-height:62px}
+@media(max-width:520px){.workspaceSnapshot button>strong{grid-column:1;grid-row:1}.workspaceSnapshot button>span{grid-column:2;grid-row:1}}
+
+/* Dark green navigation rail: compact by default, expands on hover or keyboard focus,
+   and stays open when pinned. The redesigned grouping remains unchanged. */
+@media(min-width:781px){
+  .calmUI .sideNav{width:58px!important;padding:22px 9px 16px!important;background:#083d35!important;border-right:0!important;align-items:center!important;overflow:hidden!important;transition:width .18s ease,box-shadow .18s ease!important}
+  .calmUI .mainArea{margin-left:58px!important;transition:margin-left .18s ease!important}
+  .calmUI .brand{position:relative!important;width:40px!important;height:40px!important;padding:0!important;margin:0 0 22px!important;justify-content:center!important;gap:0!important;flex:0 0 auto}
+  .calmUI .brandMark{width:36px!important;height:36px!important;background:#19a68f!important;color:#fff!important}
+  .calmUI .brandText,.calmUI .workspaceSwitch,.calmUI .sideStatus>div{display:none!important}
+  .calmUI .primaryNav{align-items:center!important;gap:4px!important;overflow:visible!important}
+  .calmUI .navGroup{width:40px!important;height:1px!important;margin:11px 0 8px!important;padding:0!important;background:#ffffff24!important;color:transparent!important;font-size:0!important;overflow:hidden!important}
+  .calmUI .navGroup:first-child{margin-top:0!important}
+  .calmUI .navItem{position:relative;width:40px!important;height:42px!important;padding:0!important;justify-content:center!important;gap:0!important;color:#a5c8c1!important;border:0!important;background:transparent!important}
+  .calmUI .navItem>span:not(.navIcon){display:none!important}
+  .calmUI .navItem .navIcon{width:20px!important;color:inherit!important}
+  .calmUI .navItem:hover{background:rgba(255,255,255,.09)!important;color:#fff!important}
+  .calmUI .navItem.active{background:#176a5c!important;color:#fff!important}
+  .calmUI .navDisclosure{width:40px;margin-top:11px;padding-top:9px;border-top:1px solid #ffffff24}
+  .calmUI .navDisclosure summary{width:40px;min-height:42px;padding:0;justify-content:center;gap:0;color:#a5c8c1;font-size:0}
+  .calmUI .navDisclosure summary:hover{background:rgba(255,255,255,.09);color:#fff}
+  .calmUI .navDisclosure summary>.lucide:last-child{display:none}
+  .calmUI .navDisclosure .navItem{display:none!important}
+  .calmUI .navAssistant{width:40px;margin-top:auto;padding-top:22px}
+  .calmUI .navAssistant .navItem{border:0!important;background:transparent!important}
+  .calmUI .navAssistant .navItem:hover{background:rgba(255,255,255,.09)!important}
+  .calmUI .sideStatus{width:40px!important;justify-content:center;margin:12px 0 0!important;padding:11px 0 0!important;border-top:1px solid #ffffff24!important}
+  .calmUI .sideStatus>i{width:7px!important;height:7px!important;background:#45d39f!important}
+  .calmUI .sidebarPin{display:none!important}
+
+  .calmUI.navExpanded .sideNav{width:228px!important;padding:22px 14px 16px!important;align-items:stretch!important;overflow-y:auto!important;overflow-x:hidden!important}
+  .calmUI.navExpanded:not(.navPinned) .sideNav{box-shadow:12px 0 28px rgba(4,35,30,.24)!important}
+  .calmUI.navExpanded .mainArea{margin-left:58px!important}
+  .calmUI.navPinned .mainArea{margin-left:228px!important}
+  .calmUI.navExpanded .brand{width:auto!important;height:40px!important;margin:0 0 22px!important;padding:0 42px 0 6px!important;justify-content:flex-start!important;gap:10px!important}
+  .calmUI.navExpanded .brandText{display:block!important;min-width:0}
+  .calmUI.navExpanded .brandText strong{color:#fff!important;font-size:18px!important;letter-spacing:-.5px}
+  .calmUI.navExpanded .brandText span{color:#89b1a9!important;font-size:9px!important}
+  .calmUI.navExpanded .sidebarPin{display:grid!important;position:absolute!important;right:0;top:2px;width:36px!important;height:36px!important;min-width:36px;color:#a5c8c1;background:transparent;border:0}
+  .calmUI.navExpanded .sidebarPin:hover{background:rgba(255,255,255,.12)!important;color:#fff}
+  .calmUI.navExpanded .workspaceSwitch{display:flex!important;width:100%!important;margin:0 0 14px!important;padding:10px!important;background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.12)!important}
+  .calmUI.navExpanded .workspaceAvatar{background:#165f54;color:#d5f7f0;border-color:#26796c}
+  .calmUI.navExpanded .workspaceText{display:block!important}
+  .calmUI.navExpanded .workspaceText b{color:#fff!important}
+  .calmUI.navExpanded .workspaceText small{color:#89b1a9!important}
+  .calmUI.navExpanded .primaryNav{align-items:stretch!important}
+  .calmUI.navExpanded .navGroup{width:auto!important;height:auto!important;margin:15px 10px 7px!important;padding:0!important;background:transparent!important;color:#78a99f!important;font-size:9px!important;overflow:visible!important}
+  .calmUI.navExpanded .navGroup:first-child{margin-top:0!important}
+  .calmUI.navExpanded .navItem{width:100%!important;height:42px!important;padding:0 11px!important;justify-content:flex-start!important;gap:11px!important;font-size:13px!important}
+  .calmUI.navExpanded .navItem>span:not(.navIcon){display:block!important}
+  .calmUI.navExpanded .navBadge{display:grid!important;background:#0b5046!important;color:#d5f7f0!important}
+  .calmUI.navExpanded .navDisclosure{width:auto;margin-top:16px;padding-top:10px;border-color:#ffffff24}
+  .calmUI.navExpanded .navDisclosure summary{width:100%;min-height:42px;padding:0 11px;justify-content:flex-start;gap:11px;color:#a5c8c1;font-size:13px}
+  .calmUI.navExpanded .navDisclosure summary>.lucide:last-child{display:block;margin-left:auto}
+  .calmUI.navExpanded .navDisclosure[open] .navItem{display:flex!important;padding-left:16px!important}
+  .calmUI.navExpanded .navAssistant{width:auto;padding-top:22px}
+  .calmUI.navExpanded .navAssistant .navItem{border:1px solid rgba(255,255,255,.13)!important;background:rgba(255,255,255,.05)!important}
+  .calmUI.navExpanded .sideStatus{display:flex!important;width:auto!important;justify-content:flex-start;margin:12px 9px 0!important;padding:12px 0 0!important}
+  .calmUI.navExpanded .sideStatus>div{display:block!important}
+  .calmUI.navExpanded .sideStatus b{color:#e1f2ee!important;font-size:10px!important}
+  .calmUI.navExpanded .sideStatus span{display:block!important;color:#82a69f!important;font-size:9px!important}
+}
+
+@media(max-width:780px){
+  .calmUI .sideNav{background:#083d35!important;border-right:0!important}
+  .calmUI .brandText strong{color:#fff!important}
+  .calmUI .brandText span,.calmUI .workspaceText small{color:#89b1a9!important}
+  .calmUI .brandMark{background:#19a68f!important}
+  .calmUI .workspaceSwitch{background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.12)!important}
+  .calmUI .workspaceAvatar{background:#165f54;color:#d5f7f0;border-color:#26796c}
+  .calmUI .workspaceText b{color:#fff!important}
+  .calmUI .navGroup{color:#78a99f!important}
+  .calmUI .navItem,.calmUI .navDisclosure summary{color:#a5c8c1!important}
+  .calmUI .navItem:hover{background:rgba(255,255,255,.09)!important;color:#fff!important}
+  .calmUI .navItem.active{background:#176a5c!important;color:#fff!important}
+  .calmUI .navDisclosure{border-color:#ffffff24}
+  .calmUI .navAssistant .navItem{border-color:rgba(255,255,255,.13)!important;background:rgba(255,255,255,.05)!important}
+  .calmUI .sideStatus b{color:#e1f2ee!important}
+  .calmUI .mobileNavClose{color:#d5f7f0}
+  .calmUI .sidebarPin{display:none!important}
+}

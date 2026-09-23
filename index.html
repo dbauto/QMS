@@ -3,160 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="iqms-build" content="20260923-document-modal3">
+<meta name="iqms-build" content="calm-workspace-2">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>iQMS — Quality Workspace</title>
-<link rel="stylesheet" href="./styles.css?v=20260923-document-modal3">
+<title>Overview · iQMS</title>
+<meta name="description" content="A calmer quality workspace for documents, evidence and your next action.">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./styles.css?v=calm-workspace-2">
 
-<style id="nexus-shell-critical">
-/* Critical shell styles kept inline so GitHub Pages/CDN cannot mix a new HTML shell with an older stylesheet. */
-.sideNav{position:fixed!important;left:0!important;top:0!important;bottom:0!important;width:58px!important;background:#083d35!important;border-right:0!important;padding:14px 8px 12px!important;display:flex!important;flex-direction:column!important;align-items:center!important;z-index:30!important;overflow:visible!important;transition:width .18s ease,box-shadow .18s ease!important}
-.mainArea{margin-left:58px!important;min-height:100vh!important;transition:margin-left .18s ease!important}
-.brand{position:relative!important;width:42px!important;height:42px!important;padding:0!important;margin:0 0 14px!important;display:flex!important;align-items:center!important;justify-content:center!important}
-.brandText{display:none!important}
-.brandMark{width:30px!important;height:30px!important;border-radius:9px!important;background:#19a68f!important;color:#fff!important;display:grid!important;place-items:center!important}
-.brandMark .lucide{width:17px!important;height:17px!important}
-.workspaceSwitch{display:none!important}
-.primaryNav{width:100%!important;display:flex!important;flex-direction:column!important;gap:4px!important;align-items:center!important}
-.navGroup{width:30px!important;height:1px!important;padding:0!important;margin:8px 0 5px!important;overflow:hidden!important;color:transparent!important;background:rgba(255,255,255,.08)!important;font-size:0!important}
-.navItem{width:40px!important;height:40px!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important;border:0!important;border-radius:8px!important;background:transparent!important;color:#a5c8c1!important;position:relative!important}
-.navItem:hover{background:rgba(255,255,255,.09)!important;color:#fff!important}
-.navItem.active{background:#176a5c!important;color:#fff!important;box-shadow:none!important}
-.navItem>span:not(.navIcon):not(.navBadge):not(.navMeta){display:none!important}
-.navMeta{display:none!important}
-.navIcon{width:auto!important;color:inherit!important;display:grid!important;place-items:center!important}
-.navIcon .lucide{width:17px!important;height:17px!important}
-.navBadge{position:absolute!important;right:2px!important;top:2px!important;width:7px!important;min-width:7px!important;height:7px!important;padding:0!important;font-size:0!important;border-radius:50%!important;background:#f79009!important;border:1px solid #083d35!important}
-.sideStatus{display:none!important}
-.railControls{display:none!important}
-.sidebarPin{display:none!important;position:absolute!important;right:4px!important;top:1px!important;width:28px!important;height:28px!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:7px!important;background:rgba(255,255,255,.06)!important;color:#cbe5df!important;place-items:center!important;padding:0!important;cursor:pointer!important}
-.sidebarPin:hover{background:rgba(255,255,255,.14)!important;color:#fff!important}
-.sidebarPin .lucide{width:14px!important;height:14px!important}
-.railExpand,.railCollapse{width:40px!important;height:40px!important;border:0!important;border-radius:8px!important;background:transparent!important;color:#90a0b4!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important}
-.railExpand:hover,.railCollapse:hover{background:rgba(255,255,255,.07)!important;color:#fff!important}
-.railExpand span,.railCollapse span{display:none!important;font-size:10px!important}
-.railExpand .lucide,.railCollapse .lucide{width:17px!important;height:17px!important}
-.railCollapse{margin-top:0!important;width:40px!important;height:40px!important;border:0!important;border-radius:8px!important;background:transparent!important;color:#90a0b4!important;display:grid!important;place-items:center!important;padding:0!important}
-.railCollapse:hover{background:rgba(255,255,255,.07)!important;color:#fff!important}
-.railCollapse .lucide{width:17px!important;height:17px!important}
-.railReveal{display:none;position:fixed;left:10px;top:11px;z-index:60;width:34px;height:34px;border:1px solid #e4e7ec;border-radius:7px;background:#fff;color:#475467;place-items:center}
-
-body.navExpanded .sideNav{width:228px!important;align-items:stretch!important;padding:14px 12px 12px!important;overflow:auto!important}
-body.navExpanded:not(.navPinned) .sideNav{box-shadow:12px 0 28px rgba(4,35,30,.22)!important}
-body.navExpanded .mainArea{margin-left:58px!important}
-body.navPinned .mainArea{margin-left:228px!important}
-body.navExpanded .brand{width:auto!important;height:auto!important;justify-content:flex-start!important;padding:0 42px 0 6px!important;margin:0 0 14px!important;gap:10px!important}
-body.navExpanded .sidebarPin{display:grid!important}
-body.navExpanded .brandText{display:block!important;min-width:0!important}
-body.navExpanded .brandText strong{display:block!important;color:#fff!important;font-size:14px!important}
-body.navExpanded .brandText span{display:block!important;color:#89b1a9!important;font-size:9px!important}
-
-body.navExpanded .workspaceSwitch{
-  display:flex!important;
-  width:100%!important;
-  height:auto!important;
-  padding:9px 10px!important;
-  margin:0 0 12px!important;
-  justify-content:flex-start!important;
-  gap:9px!important;
-  border:1px solid rgba(255,255,255,.09)!important;
-  background:rgba(255,255,255,.04)!important;
-  border-radius:8px!important;
-}
-body.navExpanded .workspaceSwitch:hover{background:rgba(255,255,255,.07)!important}
-body.navExpanded .workspaceAvatar{
-  width:28px!important;height:28px!important;border-radius:7px!important;
-  background:#165f54!important;color:#d5f7f0!important;display:grid!important;place-items:center!important
-}
-body.navExpanded .workspaceText{display:block!important;min-width:0!important;flex:1!important}
-body.navExpanded .workspaceText b{display:block!important;color:#fff!important;font-size:11px!important}
-body.navExpanded .workspaceText small{display:block!important;color:#89b1a9!important;font-size:9px!important;margin-top:1px!important}
-body.navExpanded .workspaceChevron{display:grid!important;place-items:center!important;color:#8db7af!important}
-body.navExpanded .sideStatus{
-  display:flex!important;margin-top:10px!important;border-top:1px solid rgba(255,255,255,.08)!important;
-  padding:12px 8px 2px!important;align-items:center!important;gap:8px!important
-}
-body.navExpanded .sideStatus>i{display:block!important;width:7px!important;height:7px!important;border-radius:50%!important;background:#12b76a!important;flex:0 0 auto!important}
-body.navExpanded .sideStatus>div{display:block!important}
-body.navExpanded .sideStatus b{display:block!important;color:#e1f2ee!important;font-size:9px!important}
-body.navExpanded .sideStatus span{display:block!important;color:#82a69f!important;font-size:8px!important;margin-top:1px!important}
-
-body.navExpanded .primaryNav{align-items:stretch!important}
-body.navExpanded .navGroup{width:auto!important;height:auto!important;padding:12px 9px 5px!important;margin:0!important;overflow:visible!important;color:#78a99f!important;background:transparent!important;font-size:8px!important;letter-spacing:.1em!important}
-body.navExpanded .navItem{width:100%!important;height:36px!important;padding:0 9px!important;justify-content:flex-start!important;gap:9px!important;font-size:10px!important;line-height:1!important}
-body.navExpanded .navItem>span:not(.navIcon):not(.navBadge):not(.navMeta){display:block!important;white-space:nowrap!important;overflow:visible!important;line-height:1!important}
-body.navExpanded .navMeta{display:inline!important;margin-left:auto!important;color:#8db7af!important;font-size:8px!important;white-space:nowrap!important;flex:0 0 auto!important}
-body.navExpanded .navBadge{position:static!important;margin-left:auto!important;width:auto!important;min-width:18px!important;height:17px!important;padding:0 5px!important;font-size:9px!important;border:0!important;border-radius:9px!important;background:#6a4308!important;color:#ffd58a!important}
-.commandBar{height:56px!important;background:#fff!important;border-bottom:1px solid #edf0f3!important;position:sticky!important;top:0!important;z-index:20!important;display:flex!important;align-items:center!important;gap:12px!important;padding:0 20px!important;backdrop-filter:none!important}
-.breadcrumb{min-width:0!important;display:flex!important;align-items:center!important;gap:8px!important;color:#8a94a3!important;font-size:11px!important;white-space:nowrap!important}
-.breadcrumb>.lucide{width:13px!important;height:13px!important}
-.breadcrumb b{color:#5e6876!important;font-weight:500!important;overflow:hidden!important;text-overflow:ellipsis!important}
-.crumbSep{color:#c2c8d0!important}
-.commandActions{margin-left:auto!important;display:flex!important;align-items:center!important;gap:5px!important}
-.headerIconButton{width:34px!important;height:34px!important;border:0!important;border-radius:7px!important;background:transparent!important;color:#667085!important;display:grid!important;place-items:center!important;position:relative!important;padding:0!important}
-.headerIconButton:hover{background:#f5f7fa!important;color:#344054!important}
-.headerIconButton>.lucide{width:16px!important;height:16px!important}
-.headerSearch{display:flex!important;align-items:center!important;justify-content:flex-end!important;height:36px!important;border:0!important;background:transparent!important}
-.headerSearch input{width:0!important;opacity:0!important;border:0!important;padding:0!important;pointer-events:none!important;font-size:11px!important;background:#fff!important}
-.headerSearch.open{border:1px solid #e4e7ec!important;border-radius:8px!important;padding-right:8px!important;background:#fff!important}
-.headerSearch.open input{width:240px!important;opacity:1!important;pointer-events:auto!important;padding:0 6px 0 2px!important;outline:0!important}
-.profileButton{border:0!important;background:transparent!important;display:flex!important;align-items:center!important;gap:7px!important;padding:3px 2px 3px 8px!important;margin-left:2px!important;text-align:left!important}
-.profileButton:hover{background:#f8fafb!important;border-radius:8px!important}
-.profileButton .avatar{width:30px!important;height:30px!important;background:#e9eef5!important;color:#44546a!important}
-.profileButton b{font-size:10px!important;font-weight:600!important}
-.profileButton small{font-size:8px!important}
-.profileChevron .lucide{width:12px!important;height:12px!important}
-.notificationCount{right:-2px!important;top:-2px!important;min-width:14px!important;height:14px!important;font-size:8px!important;border:2px solid #fff!important}
-@media(max-width:780px){
-  .sideNav{width:54px!important;padding:12px 7px!important}
-  .mainArea{margin-left:54px!important}
-  body.navExpanded .mainArea{margin-left:54px!important}
-  body.navPinned .mainArea{margin-left:210px!important}
-  body.navExpanded .sideNav{width:210px!important}
-  .navItem,.railCollapse{width:38px!important;height:38px!important}
-  .commandBar{padding:0 12px!important}
-  .profileButton>span:not(.avatar){display:none!important}
-  .headerSearch.open input{width:min(210px,42vw)!important}
-}
-</style>
+<link rel="stylesheet" href="./calm.css?v=calm-workspace-2">
 </head>
-<body>
+<body class="calmUI">
+<a class="skipLink" href="#pageContent">Skip to content</a>
 <div class="appShell">
-  <aside class="sideNav">
+  <aside class="sideNav" id="mainNavigation" aria-label="Workspace navigation">
     <div class="brand">
       <div class="brandMark" title="iQMS"><i data-lucide="shield-check"></i></div>
       <div class="brandText"><strong>iQMS</strong><span>Quality Management</span></div>
-      <button class="sidebarPin" id="sidebarPin" aria-label="Pin sidebar" aria-pressed="false" title="Pin sidebar"><i data-lucide="pin"></i></button>
+      <button class="iconButton sidebarPin" id="sidebarPin" type="button" aria-label="Pin sidebar" aria-pressed="false" onpointerdown="window.toggleSidebarPin(event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.toggleSidebarPin(event)}"><i data-lucide="pin"></i></button>
+      <button class="iconButton mobileNavClose" id="closeNavigation" aria-label="Close navigation"><i data-lucide="x"></i></button>
     </div>
 
-    <button class="workspaceSwitch">
+    <div class="workspaceSwitch">
       <span class="workspaceAvatar" id="workspaceAvatar">AM</span>
       <span class="workspaceText"><b id="workspaceCompanyName">ABC Manufacturing</b><small id="workspaceDisplayName">Production workspace</small></span>
-      <span class="workspaceChevron"><i data-lucide="chevron-down"></i></span>
-    </button>
+      </div>
 
-    <nav class="primaryNav">
-      <div class="navGroup">Workspace</div>
-      <button class="navItem active" data-view="dashboard"><span class="navIcon"><i data-lucide="layout-dashboard"></i></span><span>Overview</span></button>
-      <button class="navItem" data-view="repository"><span class="navIcon"><i data-lucide="files"></i></span><span>Controlled information</span><span class="navMeta">1,428</span></button>
-      <button class="navItem" data-view="records"><span class="navIcon"><i data-lucide="archive"></i></span><span>Records & evidence</span><span class="navMeta">8,942</span></button>
-      <button class="navItem" data-view="approvals"><span class="navIcon"><i data-lucide="clipboard-check"></i></span><span>My tasks</span><span class="navBadge">9</span></button>
-      <button class="navItem" data-view="audit"><span class="navIcon"><i data-lucide="history"></i></span><span>Audit trail</span></button>
-
-      <div class="navGroup">Control</div>
-      <button class="navItem" data-view="relationships"><span class="navIcon"><i data-lucide="waypoints"></i></span><span>Traceability</span></button>
-      <button class="navItem" data-view="types"><span class="navIcon"><i data-lucide="file-cog"></i></span><span>Document types</span></button>
-
-      <div class="navGroup">Intelligence</div>
-      <button class="navItem" data-view="compliance"><span class="navIcon"><i data-lucide="badge-check"></i></span><span>ISO readiness</span><span class="navBadge">5</span></button>
-      <button class="navItem" data-view="ai"><span class="navIcon"><i data-lucide="sparkles"></i></span><span>QMS AI</span></button>
-      <button class="navItem" onclick="openBuilder()"><span class="navIcon"><i data-lucide="folder-input"></i></span><span>Repository builder</span></button>
-
-      <div class="navGroup">Administration</div>
-      <button class="navItem" data-view="users"><span class="navIcon"><i data-lucide="users"></i></span><span>Users & access</span></button>
-      <button class="navItem" data-view="settings"><span class="navIcon"><i data-lucide="settings"></i></span><span>Settings</span></button>
+    <nav class="primaryNav" aria-label="Main navigation">
+      <div class="navGroup">Your workspace</div>
+<button class="navItem" data-view="dashboard"><span class="navIcon"><i data-lucide="layout-dashboard"></i></span><span>Overview</span></button><button class="navItem" data-view="approvals"><span class="navIcon"><i data-lucide="clipboard-check"></i></span><span>My tasks</span><span class="navBadge">9</span></button><button class="navItem" data-view="repository"><span class="navIcon"><i data-lucide="files"></i></span><span>Documents</span></button><button class="navItem" data-view="records"><span class="navIcon"><i data-lucide="archive"></i></span><span>Records & evidence</span></button>
+      <div class="navGroup">Quality assurance</div>
+<button class="navItem" data-view="compliance"><span class="navIcon"><i data-lucide="badge-check"></i></span><span>ISO readiness</span></button><button class="navItem" data-view="relationships"><span class="navIcon"><i data-lucide="waypoints"></i></span><span>Traceability</span></button><button class="navItem" data-view="audit"><span class="navIcon"><i data-lucide="history"></i></span><span>Audit trail</span></button>
+      <details class="navDisclosure"><summary><i data-lucide="settings-2"></i>Administration<i data-lucide="chevron-down"></i></summary>
+<button class="navItem" data-view="types"><span class="navIcon"><i data-lucide="file-cog"></i></span><span>Document types</span></button><button class="navItem" data-view="structure"><span class="navIcon"><i data-lucide="folders"></i></span><span>Spaces</span></button><button class="navItem" data-view="users"><span class="navIcon"><i data-lucide="users"></i></span><span>Users & access</span></button><button class="navItem" data-view="settings"><span class="navIcon"><i data-lucide="settings"></i></span><span>Settings</span></button><button class="navItem" onclick="openBuilder()"><span class="navIcon"><i data-lucide="folder-input"></i></span><span>Repository builder</span></button></details>
+      <div class="navAssistant"><button class="navItem" data-view="ai"><span class="navIcon"><i data-lucide="sparkles"></i></span><span>Ask QMS AI</span></button></div>
     </nav>
 
     <div class="sideStatus"><i></i><div><b>Protected workspace</b><span>MFA · RBAC · audit logging</span></div></div>
@@ -164,66 +45,26 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
 
   <main class="mainArea">
     <header class="commandBar">
-      <div class="breadcrumb">
-        <i data-lucide="house"></i>
-        <span class="crumbSep">/</span>
-        <span>ABC Manufacturing</span>
-        <span class="crumbSep">/</span>
-        <b id="breadcrumbCurrent">Dashboard</b>
-      </div>
+      <button class="iconButton mobileNavToggle" id="openNavigation" aria-label="Open navigation" aria-controls="mainNavigation" aria-expanded="false"><i data-lucide="menu"></i></button>
+      <div class="breadcrumb"><span class="workspaceCrumb">ABC Manufacturing</span><span class="crumbSep">/</span><b id="breadcrumbCurrent">Overview</b></div>
+      <span class="previewBadge"><span></span>Sample workspace</span>
       <div class="commandActions">
         <div class="headerSearch" id="headerSearch">
           <button class="headerIconButton" id="searchToggle" aria-label="Search" title="Search"><i data-lucide="search"></i></button>
-          <input id="globalSearch" placeholder="Search documents, records, evidence...">
+          <input id="globalSearch" placeholder="Find a document…" aria-label="Find a document" autocomplete="off" aria-controls="searchResults"><div id="searchResults" class="searchResults" role="region" aria-label="Search results" hidden></div>
         </div>
-        <button class="headerIconButton notification" aria-label="Notifications" title="Notifications"><i data-lucide="bell"></i><i class="notificationCount">3</i></button>
+        <button class="headerIconButton notification" onclick="showView('approvals')" aria-label="View pending tasks" title="View pending tasks"><i data-lucide="bell"></i><i class="notificationCount">3</i></button>
         <button class="profileButton" onclick="openSettingsTab('profile')" title="My profile"><span class="avatar" id="headerProfileAvatar">MS</span><span><b id="headerProfileName">Maria Santos</b><small id="headerProfileTitle">Quality Manager</small></span><span class="profileChevron"><i data-lucide="chevron-down"></i></span></button>
       </div>
     </header>
 
-    <section class="pageBody">
+    <section class="pageBody" id="pageContent" tabindex="-1">
       <div id="dashboard" class="view active">
         <div class="pageHeader overviewHeader">
-          <div>
-            <h1>Dashboard</h1>
-            <p>Monitor quality performance, ISO readiness and the work requiring your attention.</p>
-          </div>
-          <div class="pageActions">
-            <button class="btn secondary" onclick="openBuilder()"><i data-lucide="folder-input"></i>Onboard repository</button>
-            <button class="btn primary" onclick="openRegisterResource('controlled')"><i data-lucide="plus"></i>Create</button>
-          </div>
+          <div><span class="pageEyebrow">YOUR QUALITY WORKSPACE</span><h1>Overview</h1><p>A clear view of what needs your attention.</p></div>
+          <div class="pageActions"><button class="btn primary" onclick="showView('approvals')">Go to my tasks <i data-lucide="arrow-right"></i></button></div>
         </div>
-
-        <div class="referenceDashboardTop">
-          <div class="referenceDashboardMain">
-            <section class="referenceWelcomeCard">
-              <div class="referenceWelcomeCopy">
-                <span class="welcomeEyebrow"><i data-lucide="sparkles"></i>AI QUALITY MONITOR</span>
-                <h2>Welcome back, Maria!</h2>
-                <p>Your quality system is <b>73% ready</b>. Two ISO areas require immediate attention, while documentation coverage remains strong.</p>
-                <button onclick="showView('compliance')">Review ISO readiness <i data-lucide="arrow-right"></i></button>
-              </div>
-              <div class="referenceWelcomeVisual" aria-hidden="true">
-                <div class="welcomeGauge"><span><b>73%</b><small>ready</small></span></div>
-                <span class="welcomeShield"><i data-lucide="shield-check"></i></span>
-              </div>
-            </section>
-
-            <div class="referenceMetricCards">
-              <button onclick="showView('repository')"><span>Controlled documents</span><b>1,428</b><small><i data-lucide="trending-up"></i>34 added this month</small></button>
-              <button onclick="showView('records')"><span>Linked evidence</span><b>8,942</b><small><i data-lucide="circle-check"></i>78% implementation coverage</small></button>
-              <button onclick="showView('approvals')"><span>Pending actions</span><b>24</b><small class="needsAttention"><i data-lucide="clock-3"></i>9 assigned to you</small></button>
-            </div>
-          </div>
-
-          <aside class="referenceCalendar surface">
-            <div class="referenceCalendarHead"><div><h2>September 2026</h2><span>Quality schedule</span></div><div><button aria-label="Previous month"><i data-lucide="chevron-left"></i></button><button aria-label="Next month"><i data-lucide="chevron-right"></i></button></div></div>
-            <div class="calendarWeek"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
-            <div class="calendarDays"><span class="mutedDay">30</span><span class="mutedDay">31</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span class="calendarToday">22</span><span class="hasEvent warning">23</span><span>24</span><span class="hasEvent critical">25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span><span class="mutedDay">1</span><span class="mutedDay">2</span><span class="mutedDay">3</span></div>
-            <div class="calendarLegend"><span><i class="warning"></i>Review</span><span><i class="critical"></i>Audit / CAPA</span></div>
-          </aside>
-        </div>
-
+        <div class="overviewIntro"><div class="introIcon"><i data-lucide="sun"></i></div><div><b>Welcome back, Maria.</b><p>You have 9 assigned tasks. Start with the approval due today.</p></div><span class="introDate">23 September 2026</span></div>
         <div class="overviewBoard">
           <section class="overviewMainPanel surface">
             <div class="overviewPanelTabs" id="overviewPanelTabs">
@@ -233,7 +74,7 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
 
             <div class="overviewTabPanel active" data-overview-panel="work">
               <div class="overviewPanelHeader">
-                <div><h2>Items requiring your action</h2><p>Prioritized by due date and workflow stage.</p></div>
+                <div><h2>Your next actions</h2><p>Approvals, reviews and changes assigned to you.</p></div>
                 <button class="btn link" onclick="showView('approvals')">View all</button>
               </div>
               <div class="overviewWorkList" id="overviewWorkList">
@@ -278,38 +119,32 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
             </div>
           </section>
 
-          <aside class="overviewSideColumn">
-            <section class="surface referenceReadinessPanel">
-              <div class="sectionHeader compactHeader"><div><h2>ISO readiness distribution</h2><p>Evidence-based assessment by status</p></div><button class="btn link" onclick="showView('compliance')">View details</button></div>
-              <div class="referenceReadinessBody">
-                <button class="readinessDonut" onclick="showView('compliance')"><span><b>73%</b><small>overall</small></span></button>
-                <div class="readinessLegend">
-                  <button onclick="showView('compliance');filterCompliance('good')"><i class="ready"></i><span><b>On track</b><small>2 clauses</small></span><strong>29%</strong></button>
-                  <button onclick="showView('compliance');filterCompliance('warning')"><i class="risk"></i><span><b>At risk</b><small>3 clauses</small></span><strong>42%</strong></button>
-                  <button onclick="showView('compliance');filterCompliance('critical')"><i class="critical"></i><span><b>Critical</b><small>2 clauses</small></span><strong>29%</strong></button>
-                </div>
-              </div>
+          <aside class="overviewSideColumn" aria-label="Quality summary">
+            <section class="calmReadiness surface">
+              <div class="calmSectionHeading"><h2>ISO readiness</h2><i data-lucide="shield-check"></i></div>
+              <div class="readinessNumber"><strong>73<span>%</span></strong><span>Overall readiness</span></div>
+              <div class="readinessProgress" role="meter" aria-label="Overall ISO readiness" aria-valuenow="73" aria-valuemin="0" aria-valuemax="100"><span></span></div>
+              <p><span class="attentionDot"></span>2 critical areas need attention</p>
+              <button class="quietLink" onclick="showView('compliance')">Review assessment <i data-lucide="arrow-right"></i></button>
             </section>
-
-            <section class="surface upcomingPanel">
-              <div class="sectionHeader compactHeader"><div><h2>Schedule & deadlines</h2><p>Next 30 days</p></div><button class="btn link" onclick="showView('repository')">View all</button></div>
-              <div class="upcomingList referenceScheduleList">
-                <button onclick="openComplianceFinding('audit')"><span class="scheduleIcon critical"><i data-lucide="clipboard-check"></i></span><div><b>Internal audit</b><span>Overdue by 32 days</span></div><strong>High</strong></button>
-                <button onclick="openComplianceFinding('supplier')"><span class="scheduleIcon warning"><i data-lucide="handshake"></i></span><div><b>Supplier evaluation</b><span>Due 06 Oct 2026</span></div><strong>14 days</strong></button>
-                <button onclick="openControlledDocument('purchasing','SOP-PUR-012')"><span class="scheduleIcon"><i data-lucide="file-clock"></i></span><div><b>Supplier Control Procedure</b><span>SOP-PUR-012 · Review</span></div><strong>8 days</strong></button>
-                <button onclick="openComplianceFinding('training')"><span class="scheduleIcon"><i data-lucide="graduation-cap"></i></span><div><b>Competency records</b><span>7 employees missing proof</span></div><strong>Open</strong></button>
-              </div>
+            <section class="calmDeadlines surface">
+              <div class="calmSectionHeading"><h2>Coming up</h2><i data-lucide="calendar-days"></i></div>
+              <button class="deadlineRow" onclick="showView('compliance');openComplianceFinding('audit')"><span class="deadlineDate overdue"><i data-lucide="clock-alert"></i></span><span><b>Internal audit</b><small class="overdueText">Overdue · 32 days</small></span><i data-lucide="chevron-right"></i></button>
+              <button class="deadlineRow" onclick="openControlledDocument('purchasing','SOP-PUR-012')"><span class="deadlineDate"><small>SEP</small><b>28</b></span><span><b>Supplier procedure</b><small>Scheduled review</small></span><i data-lucide="chevron-right"></i></button>
+              <button class="deadlineRow" onclick="showView('compliance');openComplianceFinding('supplier')"><span class="deadlineDate"><small>OCT</small><b>06</b></span><span><b>Supplier evaluation</b><small>Evidence due</small></span><i data-lucide="chevron-right"></i></button>
             </section>
           </aside>
         </div>
+        <section class="workspaceSnapshot" aria-label="Workspace at a glance"><div class="snapshotHeading"><i data-lucide="chart-no-axes-combined"></i><span>Workspace at a glance</span></div><button onclick="showView('repository')"><strong>1,428</strong><span>Controlled documents</span><i data-lucide="arrow-up-right"></i></button><button onclick="showView('records')"><strong>8,942</strong><span>Linked evidence</span><i data-lucide="arrow-up-right"></i></button><button onclick="showView('approvals')"><strong>24</strong><span>Workspace actions</span><i data-lucide="arrow-up-right"></i></button></section>
+        <p class="previewFootnote">Sample records and assessments for workspace review.</p>
       </div>
 
       <div id="repository" class="view">
         <div id="repositoryHub">
           <div class="pageHeader repositoryPageHeader">
             <div>
-              <h1>Controlled information</h1>
-              <p>Browse from QMS area to document. Use All documents only when you need a cross-system search.</p>
+              <h1>Documents</h1>
+              <p>Find the right document, then open it to review its details.</p>
             </div>
             <div class="pageActions">
               <button class="btn secondary" onclick="showView('structure')"><i data-lucide="settings-2"></i>Manage spaces</button>
@@ -320,7 +155,7 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
           
 
           <div class="repositoryModeTabs" id="repositoryBrowseTabs">
-            <button class="active" data-repository-tab="spaces"><i data-lucide="panels-top-left"></i>Workspace</button>
+            <button class="active" data-repository-tab="spaces"><i data-lucide="panels-top-left"></i>Browse by area</button>
             <button data-repository-tab="all"><i data-lucide="list"></i>All documents</button>
           </div>
 
@@ -472,7 +307,7 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
                 <button class="iconButton" title="More filters"><i data-lucide="sliders-horizontal"></i></button>
               </div>
               <div class="controlledLibraryHead"><span>Document</span><span>Type</span><span>Primary space</span><span>Rev</span><span>Owner</span><span>Status</span><span>Next review</span></div>
-              <div id="controlledLibraryRows">
+              <div id="documentEmpty" class="calmEmpty" hidden><i data-lucide="file-search"></i><h3>No matching documents</h3><p>Try a different title, owner or document ID.</p><button class="btn secondary" onclick="clearDocumentFilters()">Clear filters</button></div><div id="controlledLibraryRows">
                 <button class="controlledLibraryRow" data-type="Procedure" data-space="Recruitment" data-status="effective" onclick="openControlledDocument('recruitment','QMS-PRO-REC-001')"><div><b>QMS-PRO-REC-001</b><strong>Recruitment Procedure</strong><small>ISO 8.1 · 8.5</small></div><span>Procedure</span><span>Recruitment</span><span>03</span><span>Recruitment Manager</span><span class="tag success">Effective</span><span>01 Sep 2027</span></button>
                 <button class="controlledLibraryRow" data-type="SOP" data-space="Quality Management" data-status="effective" onclick="openControlledDocument('quality','SOP-QA-014')"><div><b>SOP-QA-014</b><strong>Control of Nonconforming Outputs</strong><small>ISO 8.7</small></div><span>SOP</span><span>Quality Management</span><span>06</span><span>Quality Manager</span><span class="tag success">Effective</span><span>15 Sep 2027</span></button>
                 <button class="controlledLibraryRow" data-type="Work Instruction" data-space="Operations" data-status="workflow" onclick="openControlledDocument('operations','WI-PROD-021')"><div><b>WI-PROD-021</b><strong>Final Inspection Work Instruction</strong><small>ISO 8.5</small></div><span>Work Instruction</span><span>Operations</span><span>03</span><span>Ana Reyes</span><span class="tag info">In approval</span><span>—</span></button>
@@ -480,7 +315,7 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
                 <button class="controlledLibraryRow" data-type="External Document" data-space="External Standards" data-status="effective" onclick="openControlledDocument('external','EXT-STD-002')"><div><b>EXT-STD-002</b><strong>Customer Quality Specification</strong><small>External source · currency tracked</small></div><span>External Document</span><span>External Standards</span><span>2026.2</span><span>Document Control</span><span class="tag success">Current</span><span>01 Feb 2027</span></button>
                 <button class="controlledLibraryRow" data-type="Policy" data-space="Management System" data-status="effective" onclick="openControlledDocument('management','POL-001')"><div><b>POL-001</b><strong>Quality Policy</strong><small>ISO 5.2</small></div><span>Policy</span><span>Management System</span><span>05</span><span>Executive Management</span><span class="tag success">Effective</span><span>01 Jan 2028</span></button>
               </div>
-              <div class="controlledLibraryFooter"><span>Showing 6 sample documents of 1,428 controlled resources</span><div><button class="btn text" disabled>Previous</button><button class="btn text">Next</button></div></div>
+              <div class="controlledLibraryFooter"><span id="documentResultCount" aria-live="polite">6 sample documents · 1,428 in the workspace</span><button class="btn text" onclick="clearDocumentFilters()">Clear filters</button></div>
             </section>
           </section>
         </div>
@@ -1069,7 +904,7 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
 
         <div class="complianceScoreGrid">
           <button onclick="filterCompliance('all')"><span class="scoreIcon blue"><i data-lucide="files"></i></span><span><small>Documentation coverage</small><b>94%</b><em>58 of 62 requirements mapped</em></span></button>
-          <button onclick="filterCompliance('all')"><span class="scoreIcon teal"><i data-lucide="archive-check"></i></span><span><small>Implementation evidence</small><b>78%</b><em>48 requirements have current proof</em></span></button>
+          <button onclick="filterCompliance('all')"><span class="scoreIcon teal"><i data-lucide="archive"></i></span><span><small>Implementation evidence</small><b>78%</b><em>48 requirements have current proof</em></span></button>
           <button onclick="filterCompliance('all')"><span class="scoreIcon amber"><i data-lucide="gauge"></i></span><span><small>Overall QMS readiness</small><b>73%</b><em>Risk weighted across clauses 4–10</em></span></button>
           <button onclick="filterCompliance('critical')"><span class="scoreIcon red"><i data-lucide="triangle-alert"></i></span><span><small>Attention required</small><b>5</b><em>Critical findings need an owner</em></span></button>
         </div>
@@ -2032,7 +1867,7 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
 
 
 <div class="complianceDrawerBackdrop" id="complianceDrawerBackdrop" onclick="closeComplianceFinding(event)">
-  <aside class="complianceDrawer" role="dialog" aria-modal="true" aria-labelledby="findingTitle">
+  <div class="complianceDrawer" role="dialog" aria-modal="true" aria-labelledby="findingTitle">
     <header>
       <div><span class="findingSeverity" id="findingSeverity"><i></i>High risk</span><h2 id="findingTitle">Internal audit overdue</h2><p id="findingClause">ISO 9001:2026 · Clause 9.2</p></div>
       <button class="iconButton" onclick="closeComplianceFinding()" aria-label="Close assessment detail"><i data-lucide="x"></i></button>
@@ -2045,10 +1880,11 @@ body.navExpanded .navBadge{position:static!important;margin-left:auto!important;
       <section><h3>Assessment basis</h3><div class="assessmentBasis"><span><i data-lucide="file-check-2"></i><b>Documented</b><small id="findingDocumented">Procedure exists</small></span><span><i data-lucide="archive"></i><b>Implemented</b><small id="findingImplemented">Evidence missing</small></span><span><i data-lucide="chart-no-axes-combined"></i><b>Effective</b><small id="findingEffective">Cannot verify</small></span></div></section>
     </div>
     <footer><button class="btn secondary" onclick="showView('ai');closeComplianceFinding()"><i data-lucide="message-circle-question"></i>Ask QMS AI</button><button class="btn secondary" onclick="toast('Evidence view opened','Showing the records and controlled information used by this assessment.')"><i data-lucide="folder-search"></i>View evidence</button><button class="btn primary" onclick="createFindingAction(this)"><i data-lucide="circle-plus"></i>Create action</button></footer>
-  </aside>
+  </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-<script src="./app.js?v=20260923-document-modal3"></script>
+<script defer src="./vendor/lucide.min.js?v=calm-workspace-2"></script>
+<script defer src="./app.js?v=calm-workspace-2"></script>
+<script defer src="./calm.js?v=calm-workspace-2"></script>
 </body>
 </html>
