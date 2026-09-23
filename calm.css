@@ -560,3 +560,59 @@ body.calmUI{font-size:15px!important;line-height:1.55!important}
   gap:8px!important;
 }
 
+
+
+/* Active document workflow guard — one working revision / approval route at a time. */
+.calmUI .workflowLockBanner{
+  display:grid;
+  grid-template-columns:38px minmax(0,1fr) auto;
+  gap:12px;
+  align-items:center;
+  min-height:76px;
+  margin-bottom:12px;
+  padding:12px 14px;
+  border:1px solid #d8e3dc;
+  border-left:3px solid #557565;
+  border-radius:9px;
+  background:#f7faf7;
+}
+.calmUI .workflowLockIcon{
+  width:36px;
+  height:36px;
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+  background:#e7efe9;
+  color:#365848;
+}
+.calmUI .workflowLockIcon .lucide{width:18px;height:18px}
+.calmUI .workflowLockSummary>b,
+.calmUI .workflowLockSummary>small{display:block}
+.calmUI .workflowLockSummary>b{margin:2px 0 3px;font-size:14px;color:var(--ink)}
+.calmUI .workflowLockSummary>small{font-size:12px;line-height:1.5;color:var(--muted)}
+.calmUI #repositoryDocument .documentRevisionActions button:disabled{
+  opacity:.48!important;
+  border-style:dashed!important;
+}
+.calmUI #repositoryDocument .approvalDecisionHint{
+  margin:10px 0 0!important;
+  padding:10px 12px;
+  border-radius:7px;
+  background:#f7faf7;
+  color:#52675c;
+  font-size:12px!important;
+  line-height:1.5!important;
+}
+.calmUI #repositoryDocument .approvalDecision>div{
+  grid-template-columns:1fr 1fr!important;
+}
+.calmUI #approvals .decisionBar{
+  grid-template-columns:auto 1fr auto!important;
+}
+.calmUI #approvals #taskPrimaryDecision{
+  min-width:112px;
+}
+@media(max-width:780px){
+  .calmUI .workflowLockBanner{grid-template-columns:36px minmax(0,1fr)}
+  .calmUI .workflowLockBanner>.btn{grid-column:2;justify-self:start}
+}
