@@ -720,14 +720,14 @@ function refreshRevisionTasks(){
   const requests=Object.values(revisionRequests);
 
   const requestRows=requests.map(r=>
-    '<button class="approvalItem revisionRequestTaskItem" data-document-code="'+escapeHtml(r.code)+'" onclick="openTaskDocumentByCode(\''+escapeHtml(r.code)+'\',this)">'
+    '<button class="approvalItem revisionRequestTaskItem" data-document-code="'+escapeHtml(r.code)+'" onclick="selectApprovalTaskByCode(\''+escapeHtml(r.code)+'\',this)">'
     +'<div class="approvalTop"><span class="tag warning">Revision requested</span><small>Action for PIC</small></div>'
     +'<b>'+escapeHtml(r.code)+'</b><strong>'+escapeHtml(r.title)+'</strong>'
     +'<span>Requestor: '+escapeHtml(r.requestor||'—')+' · PIC: '+escapeHtml(r.pic)+' · No revision number yet · Due '+escapeHtml(r.due||'Not set')+'</span></button>'
   ).join('');
 
   const revisionRows=revisions.map(r=>
-    '<button class="approvalItem revisionTaskItem" data-document-code="'+escapeHtml(r.code)+'" onclick="openTaskDocumentByCode(\''+escapeHtml(r.code)+'\',this)">'
+    '<button class="approvalItem revisionTaskItem" data-document-code="'+escapeHtml(r.code)+'" onclick="selectApprovalTaskByCode(\''+escapeHtml(r.code)+'\',this)">'
     +'<div class="approvalTop"><span class="tag info">'+escapeHtml(r.downloaded?'In progress':'Revision open')+'</span><small>Working revision</small></div>'
     +'<b>'+escapeHtml(r.code)+' · '+escapeHtml(r.rev)+'</b><strong>'+escapeHtml(r.title)+'</strong>'
     +'<span>PIC: '+escapeHtml(r.pic)+' · Due '+escapeHtml(r.due||'Not set')+'</span></button>'
@@ -751,6 +751,57 @@ function openControlledDocumentByCode(code){
   const found=findDocByCode(code);
   if(found) openControlledDocument(found.spaceId,code);
 }
+function selectApprovalTaskByCode(code,trigger=null){
+  const item=trigger?.closest?.('.approvalItem')
+    || [...document.querySelectorAll('#approvals .approvalItem[data-document-code]')].find(x=>x.dataset.documentCode===code);
+
+  document.querySelectorAll('#approvals .approvalItem').forEach(x=>x.classList.remove('selected'));
+  if(item) item.classList.add('selected');
+
+  const found=findDocByCode(code);
+  if(!found) return;
+
+  const openButton=document.getElementById('openTaskDocument');
+  if(openButton) openButton.dataset.documentCode=code;
+
+  const hero=document.querySelector('#approvals .approvalHero');
+  const meta=hero?.querySelector('.recordMeta');
+  const taskLabel=item?.querySelector('.approvalTop small')?.textContent?.trim();
+  const revisionRequest=revisionRequests[code];
+  const openRevision=openRevisions[code];
+
+  if(hero?.querySelector('h2')) hero.querySelector('h2').textContent=found.doc.title;
+  if(hero?.querySelector('.recordLabel')) hero.querySelector('.recordLabel').textContent=taskLabel||'Document review';
+  if(meta?.querySelector('b')) meta.querySelector('b').textContent=found.doc.code;
+
+  const metaSpans=meta ? [...meta.querySelectorAll(':scope > span:not(.tag)')] : [];
+  if(metaSpans[0]){
+    metaSpans[0].textContent=revisionRequest
+      ? 'No revision yet'
+      : openRevision?.rev || ('Rev '+found.doc.rev);
+  }
+
+  const statusTag=meta?.querySelector('.tag');
+  if(statusTag){
+    if(revisionRequest) setTag(statusTag,'Revision requested','warning');
+    else if(openRevision) setTag(statusTag,openRevision.downloaded?'In progress':'Revision open','info');
+    else setTag(statusTag,found.doc.status,found.doc.kind);
+  }
+
+  const changeText=document.querySelector('#approvals .changeBox p');
+  if(changeText){
+    changeText.textContent=revisionRequest?.reason
+      || openRevision?.reason
+      || found.doc.purpose
+      || 'Review the controlled change and supporting document before making a decision.';
+  }
+
+  if(openButton){
+    openButton.innerHTML='<i data-lucide="file-search"></i>Review document';
+  }
+  refreshIcons();
+}
+
 function openTaskDocumentByCode(code,trigger=null){
   const found=findDocByCode(code);
   if(!found) return;
@@ -1835,20 +1886,8 @@ document.querySelectorAll('.inspectorTabs button[data-tab]').forEach(tab=>{
 /* Approval queue */
 document.querySelectorAll('.approvalItem').forEach(item=>{
   item.addEventListener('click',()=>{
-    document.querySelectorAll('.approvalItem').forEach(x=>x.classList.remove('selected'));
-    item.classList.add('selected');
     const code=item.dataset.documentCode;
-    const found=code?findDocByCode(code):null;
-    const openButton=document.getElementById('openTaskDocument');
-    if(found&&openButton){
-      openButton.dataset.documentCode=code;
-      const hero=document.querySelector('#approvals .approvalHero');
-      const meta=hero?.querySelector('.recordMeta');
-      if(hero?.querySelector('h2')) hero.querySelector('h2').textContent=found.doc.title;
-      if(meta?.querySelector('b')) meta.querySelector('b').textContent=found.doc.code;
-      if(meta?.querySelector('span')) meta.querySelector('span').textContent='Rev '+found.doc.rev;
-      setTag(meta?.querySelector('.tag'),found.doc.status,found.doc.kind);
-    }
+    if(code) selectApprovalTaskByCode(code,item);
   });
 });
 document.querySelectorAll('.queueTabs button').forEach(tab=>{
