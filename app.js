@@ -247,6 +247,8 @@ function openSettingsTab(tab='profile'){
   activeSettingsTab=tab;
   document.querySelectorAll('[data-settings-tab]').forEach(button=>button.classList.toggle('active',button.dataset.settingsTab===tab));
   document.querySelectorAll('[data-settings-panel]').forEach(panel=>panel.classList.toggle('active',panel.dataset.settingsPanel===tab));
+  const saveSettings=document.getElementById('saveSettingsBtn');
+  if(saveSettings) saveSettings.hidden=tab==='m365';
   if(breadcrumbCurrent){
     const labels={profile:'Settings / My profile',company:'Settings / Company profile',m365:'Settings / Microsoft 365 storage',qms:'Settings / QMS defaults',security:'Settings / Security & notifications'};
     breadcrumbCurrent.textContent=labels[tab]||'Settings';
@@ -347,7 +349,6 @@ function saveM365State(){
 }
 function m365SitePath(site){
   if(site==='Quality Hub') return '/sites/Quality';
-  if(site==='Create new QMS site') return '/sites/QMS';
   return '/sites/QMS';
 }
 function renderM365State(){
