@@ -10,6 +10,7 @@ This project is a calm quality-management workspace. It is a static prototype wi
 - **Records:** consistent type sizes, spacing, and status colors.
 - **Mobile:** a keyboard-accessible navigation drawer, stacked content, and record lists that fit the screen.
 - **Interactions:** document search (`Ctrl/Cmd + K`), combined filters with a clear empty state, deep links, browser Back, and dialog focus management.
+- **Microsoft 365 storage:** Administration includes a client-owned SharePoint storage connection view with selected-site scope, data-ownership boundaries, connection health, and a simulated connection flow. Document registration surfaces the active storage destination.
 
 ![Desktop overview](docs/overview-desktop.png)
 
