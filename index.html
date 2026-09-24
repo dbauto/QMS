@@ -928,7 +928,7 @@
         <div class="pageHeader settingsPageHeader">
           <div>
             <h1>Settings</h1>
-            <p>Manage your profile, company identity and workspace-wide QMS defaults.</p>
+            <p>Manage your profile, organization, Microsoft 365 storage and workspace-wide QMS defaults.</p>
           </div>
           <div class="pageActions"><button class="btn primary" id="saveSettingsBtn"><i data-lucide="save"></i>Save changes</button></div>
         </div>
@@ -1077,7 +1077,7 @@
 
                   <div class="m365SetupForm">
                     <label>Organization / tenant<input id="m365TenantInput" value="ABC Manufacturing" autocomplete="organization"></label>
-                    <label>QMS SharePoint site<select id="m365SiteSelect"><option value="Quality Management System" selected>Quality Management System · /sites/QMS</option><option value="Quality Hub">Quality Hub · /sites/Quality</option><option value="Create new QMS site">Create a new dedicated QMS site</option></select></label>
+                    <label>Authorized QMS SharePoint site<select id="m365SiteSelect"><option value="Quality Management System" selected>Quality Management System · /sites/QMS</option><option value="Quality Hub">Quality Hub · /sites/Quality</option></select><small class="m365FieldHelp">The client administrator selects and authorizes an existing QMS site. iQMS does not request tenant-wide SharePoint access.</small></label>
                     <label>Document library<select id="m365LibrarySelect"><option selected>QMS Controlled Documents</option><option>Documents</option><option>Create new QMS library</option></select></label>
                   </div>
 
