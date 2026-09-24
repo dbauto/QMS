@@ -131,7 +131,7 @@ function accessRowHtml(user){
     '<div class="accessRowRoles">'+(user.roles.length?user.roles.map(rolePillHtml).join(''):'<span class="accessMuted">No QMS duties</span>')+'</div>'+
     '<span class="accessRowDepartment">'+department+'</span><span class="accessRowScope">'+escapeHtml(scope)+'</span>'+
     '<span class="userStatus '+status+'">'+status[0].toUpperCase()+status.slice(1)+'</span>'+
-    '<div class="accessRowActions"><button class="iconButton rowMenu" type="button" data-access-action="menu" data-user-id="'+id+'" aria-label="Actions for '+name+'" aria-expanded="false"><i data-lucide="ellipsis"></i></button><div class="accessMenu" hidden><button type="button" data-access-action="edit" data-user-id="'+id+'">Edit user &amp; access</button><button type="button" data-access-action="delete" data-user-id="'+id+'">Remove user</button></div></div></div>';
+    '<div class="accessRowActions"><button class="iconButton rowMenu" type="button" data-access-action="menu" data-user-id="'+id+'" aria-label="Options for '+name+'" aria-expanded="false"><i data-lucide="ellipsis"></i></button><div class="accessMenu" hidden><button type="button" data-access-action="edit" data-user-id="'+id+'">Edit user &amp; access</button><button type="button" data-access-action="delete" data-user-id="'+id+'">Remove user</button></div></div></div>';
 }
 function renderAccessUsers(){
   const query=(document.getElementById('userAccessSearch')?.value||'').trim().toLowerCase();

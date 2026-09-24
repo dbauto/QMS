@@ -25,7 +25,7 @@ test('user management keeps the list readable and edits access in a modal', asyn
   await expect(page.locator('.accessUserRow', { hasText: 'Jane Rivera' })).toBeVisible();
   await page.locator('#userAccessSearch').fill('Jane');
   await expect(page.locator('.accessUserRow')).toHaveCount(1);
-  await page.getByRole('button', { name: 'Actions for Jane Rivera' }).click();
+  await page.getByRole('button', { name: 'Options for Jane Rivera' }).click();
   await page.getByRole('button', { name: 'Remove user', exact: true }).click();
   await expect(page.locator('#deleteUserModal')).toBeVisible();
   await page.locator('#confirmDeleteUser').click();
