@@ -1047,3 +1047,80 @@ body.calmUI{
   .calmUI .pageHeader h1{font-size:27px}
   .calmUI .pageHeader p{font-size:14px}
 }
+
+/* Users & access: readable directory with permissions in the editor. */
+.calmUI #users .usersAccessHeader{align-items:end}
+.calmUI #users .accessWorkspace{overflow:visible;box-shadow:none}
+.calmUI #users .accessToolbar{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:19px 22px;background:#fff;min-height:76px}
+.calmUI #users .accessToolbar h2{font-size:18px;line-height:1.3;margin:0;color:var(--ink);white-space:nowrap}
+.calmUI #users .accessToolbar h2 span{color:var(--muted);font-weight:500}
+.calmUI #users .accessTools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.calmUI #users .accessSearch{height:40px;display:flex;align-items:center;gap:8px;width:240px;padding:0 12px;border:1px solid var(--line-strong);border-radius:7px;background:#fff}
+.calmUI #users .accessSearch .lucide{width:18px;height:18px;color:var(--muted);flex-shrink:0}
+.calmUI #users .accessSearch input{min-width:0;width:100%;border:0;outline:0;background:transparent;font-size:14px;color:var(--ink)}
+.calmUI #users .accessFilter{display:block;position:relative}
+.calmUI #users .accessFilter>span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.calmUI #users .accessFilter select{height:40px;min-width:142px;border:1px solid var(--line-strong);border-radius:7px;background:#fff;padding:0 10px;font-size:13px;color:var(--ink)}
+.calmUI #users .accessMatrixWrap{overflow:visible}
+.calmUI #users .accessMatrixHead,.calmUI #users .accessUserRow{min-width:0;display:grid;grid-template-columns:minmax(230px,2fr) minmax(185px,1.6fr) minmax(105px,.8fr) minmax(105px,.85fr) 95px 42px;gap:14px;align-items:center;padding:0 22px}
+.calmUI #users .accessMatrixHead{min-height:44px;background:#fafbfc;color:#667085;font-size:12px!important;font-weight:650!important;text-transform:none;letter-spacing:0}
+.calmUI #users .accessUserRow{min-height:76px;padding-top:9px;padding-bottom:9px;box-shadow:none;border-bottom:1px solid var(--line);font-size:13px}
+.calmUI #users .accessUserRow:last-child{border-bottom:0}
+.calmUI #users .accessUserRow:hover{background:#f9fbfa}
+.calmUI #users .userIdentity{display:flex;align-items:center;gap:12px;cursor:pointer;border-radius:5px}
+.calmUI #users .userIdentity:hover b{text-decoration:underline;text-underline-offset:2px}
+.calmUI #users .userAvatar{width:38px;height:38px;flex:0 0 38px;font-size:12px}
+.calmUI #users .userIdentity b{font-size:14px;line-height:1.4;font-weight:650}
+.calmUI #users .userIdentity small{font-size:12px;line-height:1.35;margin-top:2px}
+.calmUI #users .accessRowRoles{display:flex;align-items:center;gap:5px;flex-wrap:wrap;min-width:0}
+.calmUI #users .rolePill{font-size:11px;line-height:1.3;padding:4px 8px;min-height:25px;border-radius:14px;font-weight:600}
+.calmUI #users .accessRowDepartment,.calmUI #users .accessRowScope{color:#475467;overflow-wrap:anywhere}
+.calmUI #users .accessMuted{color:var(--muted);font-size:12px}
+.calmUI #users .userStatus{justify-self:start;height:27px;font-size:11px;padding:0 10px}
+.calmUI #users .userStatus.invited{background:#fff5e9;color:#955700}
+.calmUI #users .userStatus.suspended{background:#f2f4f7;color:#475467}
+.calmUI #users .accessRowActions{position:relative;justify-self:end}
+.calmUI #users .accessRowActions .rowMenu{width:34px;height:34px}
+.calmUI #users .accessMenu{position:absolute;top:36px;right:0;z-index:8;width:190px;background:#fff;border:1px solid var(--line-strong);border-radius:8px;box-shadow:var(--shadow-lg);padding:5px}
+.calmUI #users .accessMenu[hidden],.calmUI #users .accessEmpty[hidden]{display:none}
+.calmUI #users .accessMenu button{width:100%;padding:10px 11px;text-align:left;border:0;border-radius:5px;background:#fff;color:var(--ink);font-size:13px;cursor:pointer}
+.calmUI #users .accessMenu button:hover,.calmUI #users .accessMenu button:focus-visible{background:#f2f6f4}
+.calmUI #users .accessMenu button:last-child{color:#a1262c}
+.calmUI #users .accessEmpty{padding:36px 22px;text-align:center;color:var(--muted);font-size:14px}
+.calmUI #users .accessFootnote{display:flex;align-items:center;gap:9px;margin:0;padding:15px 22px;border-top:1px solid var(--line);color:#596a65;font-size:12px;line-height:1.5}
+.calmUI #users .accessFootnote .lucide{width:16px;height:16px;color:var(--brand);flex-shrink:0}
+.calmUI #users .userAccessModalBox{width:min(690px,calc(100vw - 32px));padding:24px 26px}
+.calmUI #users .deleteUserBox{width:min(460px,calc(100vw - 32px));padding:24px 26px}
+.calmUI #users .modalHead p{font-size:13px;line-height:1.5}
+.calmUI #users .accessFormGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.calmUI #users .accessFormGrid label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:650;color:#344054}
+.calmUI #users .accessFormGrid input,.calmUI #users .accessFormGrid select{height:40px;width:100%;padding:0 11px;background:#fff;border:1px solid var(--line-strong);border-radius:7px;color:var(--ink);font-size:14px;font-weight:400}
+.calmUI #users .accessFormSection{border:0;border-top:1px solid var(--line);padding:16px 0 0;margin:20px 0 0;min-width:0}
+.calmUI #users .accessFormSection legend{font-size:15px;font-weight:650;color:var(--ink);padding:0 8px 0 0}
+.calmUI #users .accessFormSection p{margin:0 0 12px;color:var(--muted);font-size:12px;line-height:1.5}
+.calmUI #users .accessChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.calmUI #users .accessChoices label{display:flex;align-items:center;gap:9px;min-height:40px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;cursor:pointer;font-size:13px;color:var(--ink)}
+.calmUI #users .accessChoices input{width:16px;height:16px;accent-color:var(--brand);flex-shrink:0}
+.calmUI #users .modalActions{margin-top:22px}
+.calmUI #users :is(button,input,select):focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+@media(max-width:1080px){
+  .calmUI #users .accessMatrixHead,.calmUI #users .accessUserRow{grid-template-columns:minmax(200px,1.8fr) minmax(160px,1.3fr) minmax(95px,.8fr) 85px 38px;gap:10px}
+  .calmUI #users .accessMatrixHead>:nth-child(4),.calmUI #users .accessRowScope{display:none}
+}
+@media(max-width:760px){
+  .calmUI #users .accessToolbar{padding:16px;align-items:stretch}
+  .calmUI #users .accessTools{width:100%}
+  .calmUI #users .accessSearch{width:100%}
+  .calmUI #users .accessFilter{flex:1;min-width:120px}
+  .calmUI #users .accessFilter select{width:100%;min-width:0}
+  .calmUI #users .accessMatrixHead{display:none}
+  .calmUI #users .accessUserRow{grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:16px;min-height:0}
+  .calmUI #users .userIdentity{grid-column:1}
+  .calmUI #users .accessRowActions{grid-column:2;grid-row:1}
+  .calmUI #users .accessRowRoles{grid-column:1 / -1;margin-top:4px}
+  .calmUI #users .accessRowDepartment{grid-column:1;font-size:12px}
+  .calmUI #users .userStatus{grid-column:2;grid-row:3}
+  .calmUI #users .accessFormGrid,.calmUI #users .accessChoices{grid-template-columns:1fr}
+  .calmUI #users .modal{padding:12px}
+  .calmUI #users .userAccessModalBox{max-height:94vh;padding:18px}
+}

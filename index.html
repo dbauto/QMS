@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="iqms-build" content="calm-workspace-18">
+<meta name="iqms-build" content="calm-workspace-19">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>Overview · iQMS</title>
 <meta name="description" content="A calmer quality workspace for documents, evidence and your next action.">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./styles.css?v=calm-workspace-18">
+<link rel="stylesheet" href="./styles.css?v=calm-workspace-19">
 
-<link rel="stylesheet" href="./calm.css?v=calm-workspace-18">
+<link rel="stylesheet" href="./calm.css?v=calm-workspace-19">
 </head>
 <body class="calmUI">
 <a class="skipLink" href="#pageContent">Skip to content</a>
@@ -871,174 +871,51 @@
 
       <div id="users" class="view">
         <div class="pageHeader usersAccessHeader">
-          <div>
-            <h1>Users & access</h1>
-            <p>Manage user type, QMS duties, permissions and scope. A person can hold more than one QMS role.</p>
-          </div>
-          <div class="pageActions">
-            <button class="btn secondary" id="accessProfilesBtn"><i data-lucide="shield-check"></i>Access profiles</button>
-            <button class="btn primary" id="inviteUserBtn"><i data-lucide="user-plus"></i>Invite user</button>
-          </div>
+          <div><h1>Users &amp; access</h1><p>Manage who can use the workspace and what they can do.</p></div>
+          <div class="pageActions"><button class="btn primary" id="inviteUserBtn" type="button"><i data-lucide="user-plus"></i>Add user</button></div>
         </div>
 
-        <div class="accessSummaryStrip">
-          <div><span>Active users</span><b>48</b><small>50 licensed</small></div>
-          <div><span>Managers</span><b>9</b><small>Organizational role</small></div>
-          <div><span>Reviewers</span><b>12</b><small>QMS duty</small></div>
-          <div><span>Approvers</span><b>6</b><small>QMS authority</small></div>
-          <div><span>Auditors</span><b>3</b><small>Read + audit access</small></div>
-        </div>
-
-        <section class="accessWorkspace">
+        <section class="accessWorkspace" aria-label="Workspace users">
           <div class="accessToolbar">
-            <div class="filterSearch"><span><i data-lucide="search"></i></span><input id="userAccessSearch" placeholder="Search user, department or role..."></div>
-            <select id="userDepartmentFilter"><option value="all">All departments</option><option>Quality</option><option>Operations</option><option>Recruitment</option><option>Purchasing</option><option>IT</option></select>
-            <select id="userStatusFilter"><option value="all">All users</option><option value="active">Active</option><option value="invited">Invited</option><option value="suspended">Suspended</option></select>
-            <button class="iconButton" title="More filters"><i data-lucide="sliders-horizontal"></i></button>
+            <h2>All users <span id="accessUserCount">6</span></h2>
+            <div class="accessTools">
+              <label class="accessSearch"><i data-lucide="search"></i><input id="userAccessSearch" type="search" placeholder="Search users" aria-label="Search users"></label>
+              <label class="accessFilter"><span>Department</span><select id="userDepartmentFilter" aria-label="Filter by department"><option value="all">All departments</option><option>Quality</option><option>Operations</option><option>Recruitment</option><option>Purchasing</option><option>IT</option></select></label>
+              <label class="accessFilter"><span>Status</span><select id="userStatusFilter" aria-label="Filter by status"><option value="all">All statuses</option><option value="active">Active</option><option value="invited">Invited</option><option value="suspended">Suspended</option></select></label>
+            </div>
           </div>
-
-          <div class="accessGuidance">
-            <i data-lucide="info"></i>
-            <div><b>User type and QMS role are different.</b><span>A Department Manager does not automatically become an Approver. Review, approval, document-control and admin rights are assigned separately.</span></div>
-          </div>
-
           <div class="accessMatrixWrap">
-            <div class="accessMatrixHead">
-              <span>User</span><span>User type</span><span>QMS role(s)</span><span>Scope</span>
-              <span class="permissionHead">View</span><span class="permissionHead">Create / edit</span><span class="permissionHead">Review</span><span class="permissionHead">Approve</span><span class="permissionHead">Control</span><span class="permissionHead">Admin</span><span>Status</span><span></span>
-            </div>
-            <div id="accessUserRows">
-              <div class="accessUserRow selected" data-user-id="maria" data-dept="Quality" data-status="active">
-                <button class="userIdentity" onclick="selectAccessUser('maria',this.closest('.accessUserRow'))"><span class="userAvatar">MS</span><span><b>Maria Santos</b><small>Quality · maria.santos@abc.com</small></span></button>
-                <select class="userTypeSelect" data-field="type"><option>Employee</option><option>Department Manager</option><option selected>Quality Manager</option><option>Auditor</option><option>System Administrator</option></select>
-                <button class="roleCell" onclick="openRoleEditor('maria')"><span class="rolePill approve">Approver</span><span class="rolePill">Document Owner</span><i data-lucide="pencil"></i></button>
-                <select class="scopeSelect"><option selected>All QMS</option><option>Quality</option><option>Assigned documents</option></select>
-                <label class="permissionCheck" title="Can view"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck" title="Can create and edit drafts"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck" title="Can review"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck" title="Can approve"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck" title="Document control authority"><input type="checkbox"><span></span></label>
-                <label class="permissionCheck" title="System administration"><input type="checkbox"><span></span></label>
-                <span class="userStatus active">Active</span>
-                <button class="iconButton rowMenu"><i data-lucide="ellipsis"></i></button>
-              </div>
-
-              <div class="accessUserRow" data-user-id="ana" data-dept="Quality" data-status="active">
-                <button class="userIdentity" onclick="selectAccessUser('ana',this.closest('.accessUserRow'))"><span class="userAvatar">AR</span><span><b>Ana Reyes</b><small>Quality · ana.reyes@abc.com</small></span></button>
-                <select class="userTypeSelect"><option selected>Employee</option><option>Department Manager</option><option>Quality Manager</option><option>Auditor</option><option>System Administrator</option></select>
-                <button class="roleCell" onclick="openRoleEditor('ana')"><span class="rolePill review">Reviewer</span><span class="rolePill">Document Owner</span><i data-lucide="pencil"></i></button>
-                <select class="scopeSelect"><option>All QMS</option><option selected>Quality</option><option>Assigned documents</option></select>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <span class="userStatus active">Active</span>
-                <button class="iconButton rowMenu"><i data-lucide="ellipsis"></i></button>
-              </div>
-
-              <div class="accessUserRow" data-user-id="oscar" data-dept="Operations" data-status="active">
-                <button class="userIdentity" onclick="selectAccessUser('oscar',this.closest('.accessUserRow'))"><span class="userAvatar">OF</span><span><b>Oscar Flores</b><small>Operations · oscar.flores@abc.com</small></span></button>
-                <select class="userTypeSelect"><option>Employee</option><option selected>Department Manager</option><option>Quality Manager</option><option>Auditor</option><option>System Administrator</option></select>
-                <button class="roleCell" onclick="openRoleEditor('oscar')"><span class="rolePill review">Reviewer</span><span class="rolePill">Document Owner</span><i data-lucide="pencil"></i></button>
-                <select class="scopeSelect"><option>All QMS</option><option selected>Operations</option><option>Assigned documents</option></select>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <span class="userStatus active">Active</span>
-                <button class="iconButton rowMenu"><i data-lucide="ellipsis"></i></button>
-              </div>
-
-              <div class="accessUserRow" data-user-id="lea" data-dept="Recruitment" data-status="active">
-                <button class="userIdentity" onclick="selectAccessUser('lea',this.closest('.accessUserRow'))"><span class="userAvatar">LG</span><span><b>Lea Garcia</b><small>Recruitment · lea.garcia@abc.com</small></span></button>
-                <select class="userTypeSelect"><option>Employee</option><option selected>Department Manager</option><option>Quality Manager</option><option>Auditor</option><option>System Administrator</option></select>
-                <button class="roleCell" onclick="openRoleEditor('lea')"><span class="rolePill approve">Approver</span><span class="rolePill">Document Owner</span><i data-lucide="pencil"></i></button>
-                <select class="scopeSelect"><option>All QMS</option><option selected>Recruitment</option><option>Assigned documents</option></select>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <span class="userStatus active">Active</span>
-                <button class="iconButton rowMenu"><i data-lucide="ellipsis"></i></button>
-              </div>
-
-              <div class="accessUserRow" data-user-id="mika" data-dept="Quality" data-status="active">
-                <button class="userIdentity" onclick="selectAccessUser('mika',this.closest('.accessUserRow'))"><span class="userAvatar">MT</span><span><b>Mika Torres</b><small>Quality · mika.torres@abc.com</small></span></button>
-                <select class="userTypeSelect"><option selected>Employee</option><option>Department Manager</option><option>Quality Manager</option><option>Auditor</option><option>System Administrator</option></select>
-                <button class="roleCell" onclick="openRoleEditor('mika')"><span class="rolePill control">Document Controller</span><i data-lucide="pencil"></i></button>
-                <select class="scopeSelect"><option selected>All QMS</option><option>Quality</option><option>Assigned documents</option></select>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <span class="userStatus active">Active</span>
-                <button class="iconButton rowMenu"><i data-lucide="ellipsis"></i></button>
-              </div>
-
-              <div class="accessUserRow" data-user-id="aaron" data-dept="IT" data-status="active">
-                <button class="userIdentity" onclick="selectAccessUser('aaron',this.closest('.accessUserRow'))"><span class="userAvatar">AL</span><span><b>Aaron Lim</b><small>IT · aaron.lim@abc.com</small></span></button>
-                <select class="userTypeSelect"><option>Employee</option><option>Department Manager</option><option>Quality Manager</option><option>Auditor</option><option selected>System Administrator</option></select>
-                <button class="roleCell" onclick="openRoleEditor('aaron')"><span class="rolePill admin">System Admin</span><i data-lucide="pencil"></i></button>
-                <select class="scopeSelect"><option selected>All QMS</option><option>IT</option></select>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <label class="permissionCheck"><input type="checkbox"><span></span></label>
-                <label class="permissionCheck"><input type="checkbox" checked><span></span></label>
-                <span class="userStatus active">Active</span>
-                <button class="iconButton rowMenu"><i data-lucide="ellipsis"></i></button>
-              </div>
-            </div>
+            <div class="accessMatrixHead" aria-hidden="true"><span>User</span><span>Access</span><span>Department</span><span>Scope</span><span>Status</span><span>Actions</span></div>
+            <div id="accessUserRows"></div>
+            <p class="accessEmpty" id="accessEmpty" hidden>No users match these filters.</p>
           </div>
-
-          <div class="accessFooter">
-            <div><i data-lucide="shield-check"></i><span><b>Separation of duties is enforced.</b> System administration does not grant document approval authority.</span></div>
-            <button class="btn secondary" id="saveAccessChanges"><i data-lucide="save"></i>Save access changes</button>
-          </div>
+          <p class="accessFootnote"><i data-lucide="shield-check"></i>User type, QMS duties, and permissions are managed separately. System administration does not grant approval authority.</p>
         </section>
 
-        <section class="accessUserDetail" id="accessUserDetail">
-          <div class="accessDetailHeader">
-            <div><span class="recordLabel">SELECTED USER</span><h2 id="accessDetailName">Maria Santos</h2><p id="accessDetailSubtitle">Quality Manager · Quality</p></div>
-            <span class="tag success">Active</span>
+        <div class="modal" id="userAccessModal" role="dialog" aria-modal="true" aria-labelledby="userAccessModalTitle">
+          <div class="modalBox userAccessModalBox">
+            <div class="modalHead"><div><span class="eyebrow">USER MANAGEMENT</span><h2 id="userAccessModalTitle">Add user</h2><p id="userAccessModalDescription">Set up their account and access to this workspace.</p></div><button class="iconButton" type="button" data-close-user-modal aria-label="Close user form"><i data-lucide="x"></i></button></div>
+            <form id="userAccessForm">
+              <div class="accessFormGrid">
+                <label>Full name<input name="name" required autocomplete="name" placeholder="e.g. Jane Rivera"></label>
+                <label>Email address<input name="email" type="email" required autocomplete="email" placeholder="jane@company.com"></label>
+                <label>Department<select name="department" required><option value="">Select department</option><option>Quality</option><option>Operations</option><option>Recruitment</option><option>Purchasing</option><option>IT</option></select></label>
+                <label>User type<select name="type"><option>Employee</option><option>Department Manager</option><option>Quality Manager</option><option>Auditor</option><option>System Administrator</option></select></label>
+                <label>Access scope<select name="scope"><option>All QMS</option><option>Department only</option><option>Assigned documents</option></select></label>
+                <label>Status<select name="status"><option value="active">Active</option><option value="invited">Invited</option><option value="suspended">Suspended</option></select></label>
+              </div>
+              <fieldset class="accessFormSection"><legend>QMS duties</legend><p>Choose each role this person needs. A job title does not assign approval rights.</p><div class="accessChoices" id="userRoleChoices">
+                <label><input type="checkbox" value="Document Owner"><span>Document Owner</span></label><label><input type="checkbox" value="Reviewer"><span>Reviewer</span></label><label><input type="checkbox" value="Approver"><span>Approver</span></label><label><input type="checkbox" value="Document Controller"><span>Document Controller</span></label><label><input type="checkbox" value="Auditor"><span>Auditor</span></label><label><input type="checkbox" value="System Admin"><span>System Admin</span></label>
+              </div></fieldset>
+              <fieldset class="accessFormSection"><legend>Permissions</legend><p>Configure the access available within the selected scope.</p><div class="accessChoices" id="userRightChoices">
+                <label><input type="checkbox" value="View"><span>View documents</span></label><label><input type="checkbox" value="Create/Edit"><span>Create / edit drafts</span></label><label><input type="checkbox" value="Review"><span>Review</span></label><label><input type="checkbox" value="Approve"><span>Approve</span></label><label><input type="checkbox" value="Document Control"><span>Document control</span></label><label><input type="checkbox" value="Admin"><span>Administration</span></label>
+              </div></fieldset>
+              <div class="modalActions"><button class="btn secondary" type="button" data-close-user-modal>Cancel</button><button class="btn primary" type="submit" id="saveUserAccessBtn">Add user</button></div>
+            </form>
           </div>
-          <div class="accessDetailGrid">
-            <div>
-              <span class="accessDetailLabel">QMS roles</span>
-              <div class="accessRoleList" id="accessDetailRoles"><span class="rolePill approve">Approver</span><span class="rolePill">Document Owner</span></div>
-            </div>
-            <div>
-              <span class="accessDetailLabel">Access scope</span>
-              <b id="accessDetailScope">All QMS</b>
-            </div>
-            <div>
-              <span class="accessDetailLabel">Effective rights</span>
-              <b id="accessDetailRights">View · Create/Edit · Review · Approve</b>
-            </div>
-          </div>
-        </section>
-
-        <div class="modal" id="roleEditorModal">
-          <div class="modalBox roleEditorBox">
-            <div class="modalHead"><div><span class="eyebrow">QMS DUTIES</span><h2 id="roleEditorTitle">Edit QMS roles</h2><p>Roles can be combined. They do not automatically change organizational job title.</p></div><button class="iconButton" onclick="closeRoleEditor()"><i data-lucide="x"></i></button></div>
-            <div class="roleOptionList">
-              <label><input type="checkbox" value="Document Owner"><span><i data-lucide="file-user"></i></span><div><b>Document Owner</b><small>Owns assigned controlled information and initiates revisions.</small></div></label>
-              <label><input type="checkbox" value="Reviewer"><span><i data-lucide="messages-square"></i></span><div><b>Reviewer</b><small>Reviews content and returns comments before approval.</small></div></label>
-              <label><input type="checkbox" value="Approver"><span><i data-lucide="badge-check"></i></span><div><b>Approver</b><small>Authorizes revisions according to configured approval routes.</small></div></label>
-              <label><input type="checkbox" value="Document Controller"><span><i data-lucide="files"></i></span><div><b>Document Controller</b><small>Manages numbering, release, obsolete status and controlled copies.</small></div></label>
-              <label><input type="checkbox" value="Auditor"><span><i data-lucide="search-check"></i></span><div><b>Auditor</b><small>Read-only audit access plus evidence and traceability review.</small></div></label>
-            </div>
-            <div class="modalActions"><button class="btn secondary" onclick="closeRoleEditor()">Cancel</button><button class="btn primary" onclick="saveRoleEditor()">Save roles</button></div>
-          </div>
+        </div>
+        <div class="modal" id="deleteUserModal" role="alertdialog" aria-modal="true" aria-labelledby="deleteUserTitle" aria-describedby="deleteUserDescription">
+          <div class="modalBox deleteUserBox"><div class="modalHead"><div><h2 id="deleteUserTitle">Remove user?</h2><p id="deleteUserDescription"></p></div><button class="iconButton" type="button" data-close-user-modal aria-label="Cancel removal"><i data-lucide="x"></i></button></div><div class="modalActions"><button class="btn secondary" type="button" data-close-user-modal>Cancel</button><button class="btn primary" type="button" id="confirmDeleteUser">Remove user</button></div></div>
         </div>
       </div>
 
@@ -1773,8 +1650,8 @@
   </div>
 </div>
 
-<script defer src="./vendor/lucide.min.js?v=calm-workspace-18"></script>
-<script defer src="./app.js?v=calm-workspace-18"></script>
-<script defer src="./calm.js?v=calm-workspace-18"></script>
+<script defer src="./vendor/lucide.min.js?v=calm-workspace-19"></script>
+<script defer src="./app.js?v=calm-workspace-19"></script>
+<script defer src="./calm.js?v=calm-workspace-19"></script>
 </body>
 </html>

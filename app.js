@@ -92,17 +92,27 @@ document.addEventListener('keydown',e=>{
 });
 
 
-const accessUsers={
-  maria:{name:'Maria Santos',subtitle:'Quality Manager · Quality',roles:['Approver','Document Owner']},
-  ana:{name:'Ana Reyes',subtitle:'Employee · Quality',roles:['Reviewer','Document Owner']},
-  oscar:{name:'Oscar Flores',subtitle:'Department Manager · Operations',roles:['Reviewer','Document Owner']},
-  lea:{name:'Lea Garcia',subtitle:'Department Manager · Recruitment',roles:['Approver','Document Owner']},
-  mika:{name:'Mika Torres',subtitle:'Employee · Quality',roles:['Document Controller']},
-  aaron:{name:'Aaron Lim',subtitle:'System Administrator · IT',roles:['System Admin']}
-};
-let activeAccessUser='maria';
-let editingRoleUser=null;
-
+// Sample workspace data. Changes to this prototype are kept in this browser only.
+const initialAccessUsers=[
+  {id:'maria',name:'Maria Santos',email:'maria.santos@abc.com',department:'Quality',type:'Quality Manager',scope:'All QMS',status:'active',roles:['Approver','Document Owner'],rights:['View','Create/Edit','Review','Approve']},
+  {id:'ana',name:'Ana Reyes',email:'ana.reyes@abc.com',department:'Quality',type:'Employee',scope:'Department only',status:'active',roles:['Reviewer','Document Owner'],rights:['View','Create/Edit','Review']},
+  {id:'oscar',name:'Oscar Flores',email:'oscar.flores@abc.com',department:'Operations',type:'Department Manager',scope:'Department only',status:'active',roles:['Reviewer','Document Owner'],rights:['View','Create/Edit','Review']},
+  {id:'lea',name:'Lea Garcia',email:'lea.garcia@abc.com',department:'Recruitment',type:'Department Manager',scope:'Department only',status:'active',roles:['Approver','Document Owner'],rights:['View','Create/Edit','Review','Approve']},
+  {id:'mika',name:'Mika Torres',email:'mika.torres@abc.com',department:'Quality',type:'Employee',scope:'All QMS',status:'active',roles:['Document Controller'],rights:['View','Create/Edit','Document Control']},
+  {id:'aaron',name:'Aaron Lim',email:'aaron.lim@abc.com',department:'IT',type:'System Administrator',scope:'All QMS',status:'active',roles:['System Admin'],rights:['View','Admin']}
+];
+const accessStorageKey='iqms.sampleUsers.v1';
+let accessUsers=initialAccessUsers.map(user=>({...user}));
+try{
+  const saved=JSON.parse(localStorage.getItem(accessStorageKey));
+  if(Array.isArray(saved)&&saved.every(user=>user&&typeof user.id==='string'&&typeof user.name==='string'&&Array.isArray(user.roles)&&Array.isArray(user.rights))) accessUsers=saved;
+}catch(error){/* Keep sample data if browser storage is unavailable or damaged. */}
+let editingAccessId=null;
+let deletingAccessId=null;
+let userModalTrigger=null;
+function saveSampleUsers(){
+  try{localStorage.setItem(accessStorageKey,JSON.stringify(accessUsers));}catch(error){/* In-memory changes still work. */}
+}
 function roleClass(role){
   if(role==='Approver') return 'approve';
   if(role==='Reviewer') return 'review';
@@ -111,79 +121,124 @@ function roleClass(role){
   if(role==='Auditor') return 'audit';
   return '';
 }
-function rolePillHtml(role){
-  return '<span class="rolePill '+roleClass(role)+'">'+escapeHtml(role)+'</span>';
+function rolePillHtml(role){return '<span class="rolePill '+roleClass(role)+'">'+escapeHtml(role)+'</span>';}
+function accessRowHtml(user){
+  const id=escapeHtml(user.id), name=escapeHtml(user.name), email=escapeHtml(user.email), department=escapeHtml(user.department);
+  const status=['active','invited','suspended'].includes(user.status)?user.status:'invited';
+  const scope=user.scope==='Department only'?user.department:user.scope;
+  return '<div class="accessUserRow" data-user-id="'+id+'">'+
+    '<button class="userIdentity" type="button" data-access-action="edit" data-user-id="'+id+'" aria-label="Edit '+name+'"><span class="userAvatar">'+escapeHtml(initialsFromName(user.name))+'</span><span><b>'+name+'</b><small>'+email+'</small></span></button>'+
+    '<div class="accessRowRoles">'+(user.roles.length?user.roles.map(rolePillHtml).join(''):'<span class="accessMuted">No QMS duties</span>')+'</div>'+
+    '<span class="accessRowDepartment">'+department+'</span><span class="accessRowScope">'+escapeHtml(scope)+'</span>'+
+    '<span class="userStatus '+status+'">'+status[0].toUpperCase()+status.slice(1)+'</span>'+
+    '<div class="accessRowActions"><button class="iconButton rowMenu" type="button" data-access-action="menu" data-user-id="'+id+'" aria-label="Actions for '+name+'" aria-expanded="false"><i data-lucide="ellipsis"></i></button><div class="accessMenu" hidden><button type="button" data-access-action="edit" data-user-id="'+id+'">Edit user &amp; access</button><button type="button" data-access-action="delete" data-user-id="'+id+'">Remove user</button></div></div></div>';
 }
-function getAccessRow(userId){
-  return document.querySelector('.accessUserRow[data-user-id="'+userId+'"]');
-}
-function getEffectiveRights(row){
-  if(!row) return [];
-  const labels=['View','Create/Edit','Review','Approve','Document Control','Admin'];
-  return [...row.querySelectorAll('.permissionCheck input')].map((input,i)=>input.checked?labels[i]:null).filter(Boolean);
-}
-function selectAccessUser(userId,row){
-  activeAccessUser=userId;
-  document.querySelectorAll('.accessUserRow').forEach(x=>x.classList.toggle('selected',x===row));
-  const user=accessUsers[userId];
-  if(!user) return;
-  const type=row?.querySelector('.userTypeSelect')?.value||user.subtitle.split(' · ')[0];
-  const dept=row?.dataset.dept||'';
-  const scope=row?.querySelector('.scopeSelect')?.value||'Assigned';
-  const roles=user.roles||[];
-  document.getElementById('accessDetailName').textContent=user.name;
-  document.getElementById('accessDetailSubtitle').textContent=type+' · '+dept;
-  document.getElementById('accessDetailRoles').innerHTML=roles.map(rolePillHtml).join('');
-  document.getElementById('accessDetailScope').textContent=scope;
-  const rights=getEffectiveRights(row);
-  document.getElementById('accessDetailRights').textContent=rights.length?rights.join(' · '):'No direct permissions';
-  refreshIcons();
-}
-function openRoleEditor(userId){
-  editingRoleUser=userId;
-  const user=accessUsers[userId];
-  if(!user) return;
-  document.getElementById('roleEditorTitle').textContent='Edit roles · '+user.name;
-  document.querySelectorAll('#roleEditorModal .roleOptionList input').forEach(input=>input.checked=(user.roles||[]).includes(input.value));
-  document.getElementById('roleEditorModal')?.classList.add('show');
-  refreshIcons();
-}
-function closeRoleEditor(){
-  document.getElementById('roleEditorModal')?.classList.remove('show');
-  editingRoleUser=null;
-}
-function saveRoleEditor(){
-  if(!editingRoleUser) return;
-  const user=accessUsers[editingRoleUser];
-  user.roles=[...document.querySelectorAll('#roleEditorModal .roleOptionList input:checked')].map(x=>x.value);
-  const row=getAccessRow(editingRoleUser);
-  const cell=row?.querySelector('.roleCell');
-  if(cell){
-    cell.innerHTML=user.roles.map(rolePillHtml).join('')+'<i data-lucide="pencil"></i>';
-  }
-  closeRoleEditor();
-  selectAccessUser(editingRoleUser||activeAccessUser,row);
-  toast('QMS roles updated',user.name+' now has '+(user.roles.length?user.roles.join(', '):'no assigned QMS duties')+'.');
-}
-function applyUserAccessFilters(){
-  const q=(document.getElementById('userAccessSearch')?.value||'').trim().toLowerCase();
-  const dept=document.getElementById('userDepartmentFilter')?.value||'all';
+function renderAccessUsers(){
+  const query=(document.getElementById('userAccessSearch')?.value||'').trim().toLowerCase();
+  const department=document.getElementById('userDepartmentFilter')?.value||'all';
   const status=document.getElementById('userStatusFilter')?.value||'all';
-  document.querySelectorAll('.accessUserRow').forEach(row=>{
-    const show=(!q||row.textContent.toLowerCase().includes(q))&&(dept==='all'||row.dataset.dept===dept)&&(status==='all'||row.dataset.status===status);
-    row.style.display=show?'grid':'none';
-  });
+  const matched=accessUsers.filter(user=>(department==='all'||user.department===department)&&(status==='all'||user.status===status)&&(!query||[user.name,user.email,user.department,user.type,...user.roles].join(' ').toLowerCase().includes(query)));
+  document.getElementById('accessUserRows').innerHTML=matched.map(accessRowHtml).join('');
+  document.getElementById('accessUserCount').textContent=accessUsers.length;
+  document.getElementById('accessEmpty').hidden=matched.length>0;
+  refreshIcons();
 }
-document.getElementById('userAccessSearch')?.addEventListener('input',applyUserAccessFilters);
-document.getElementById('userDepartmentFilter')?.addEventListener('change',applyUserAccessFilters);
-document.getElementById('userStatusFilter')?.addEventListener('change',applyUserAccessFilters);
-document.querySelectorAll('.accessUserRow input[type="checkbox"],.accessUserRow select').forEach(control=>control.addEventListener('change',()=>{
-  const row=control.closest('.accessUserRow');
-  if(row?.dataset.userId===activeAccessUser) selectAccessUser(activeAccessUser,row);
-}));
-document.getElementById('saveAccessChanges')?.addEventListener('click',()=>toast('Access changes saved','User permissions, scope and QMS duties were saved for this prototype.'));
-document.getElementById('inviteUserBtn')?.addEventListener('click',()=>toast('Invite user','User invitation setup will collect email, user type, QMS roles and initial access scope.'));
-document.getElementById('accessProfilesBtn')?.addEventListener('click',()=>toast('Access profiles','Profiles can provide safe defaults, while individual permissions and scopes remain configurable.'));
+function closeAccessMenus(){
+  document.querySelectorAll('.accessMenu').forEach(menu=>menu.hidden=true);
+  document.querySelectorAll('.accessRowActions .rowMenu').forEach(button=>button.setAttribute('aria-expanded','false'));
+}
+function openAccessModal(id=null,trigger=document.activeElement){
+  closeAccessMenus();
+  editingAccessId=id;
+  userModalTrigger=trigger;
+  const user=accessUsers.find(item=>item.id===id);
+  const form=document.getElementById('userAccessForm');
+  form.reset();
+  for(const field of ['name','email','department','type','scope','status']){
+    if(user) form.elements[field].value=user[field];
+  }
+  document.querySelectorAll('#userRoleChoices input').forEach(input=>input.checked=!!user?.roles.includes(input.value));
+  document.querySelectorAll('#userRightChoices input').forEach(input=>input.checked=!!user?.rights.includes(input.value));
+  document.getElementById('userAccessModalTitle').textContent=user?'Edit user · '+user.name:'Add user';
+  document.getElementById('userAccessModalDescription').textContent=user?'Update their account, QMS duties, and permissions.':'Set up their account and access to this workspace.';
+  document.getElementById('saveUserAccessBtn').textContent=user?'Save changes':'Add user';
+  document.getElementById('userAccessModal').classList.add('show');
+  form.elements.name.focus();
+}
+function openDeleteUser(id,trigger=document.activeElement){
+  closeAccessMenus();
+  const user=accessUsers.find(item=>item.id===id);
+  if(!user) return;
+  deletingAccessId=id;
+  userModalTrigger=trigger;
+  document.getElementById('deleteUserDescription').textContent='Remove '+user.name+' from this sample workspace? Their entry will be removed from this browser.';
+  document.getElementById('deleteUserModal').classList.add('show');
+  document.querySelector('#deleteUserModal [data-close-user-modal]').focus();
+}
+function closeUserModal(){
+  document.querySelectorAll('#userAccessModal,#deleteUserModal').forEach(modal=>modal.classList.remove('show'));
+  editingAccessId=null;
+  deletingAccessId=null;
+  if(userModalTrigger?.isConnected) userModalTrigger.focus();
+  userModalTrigger=null;
+}
+document.getElementById('inviteUserBtn')?.addEventListener('click',event=>openAccessModal(null,event.currentTarget));
+for(const id of ['userAccessSearch','userDepartmentFilter','userStatusFilter']) document.getElementById(id)?.addEventListener(id==='userAccessSearch'?'input':'change',renderAccessUsers);
+document.getElementById('accessUserRows')?.addEventListener('click',event=>{
+  const button=event.target.closest('[data-access-action]');
+  if(!button) return;
+  const action=button.dataset.accessAction;
+  if(action==='menu'){
+    const wasOpen=button.getAttribute('aria-expanded')==='true';
+    closeAccessMenus();
+    if(!wasOpen){button.setAttribute('aria-expanded','true');button.nextElementSibling.hidden=false;}
+  }else if(action==='edit') openAccessModal(button.dataset.userId,button);
+  else if(action==='delete') openDeleteUser(button.dataset.userId,button);
+});
+document.addEventListener('click',event=>{if(!event.target.closest('.accessRowActions')) closeAccessMenus();});
+document.querySelectorAll('[data-close-user-modal]').forEach(button=>button.addEventListener('click',closeUserModal));
+document.querySelectorAll('#userAccessModal,#deleteUserModal').forEach(modal=>modal.addEventListener('mousedown',event=>{if(event.target===modal) closeUserModal();}));
+document.getElementById('userAccessForm')?.addEventListener('submit',event=>{
+  event.preventDefault();
+  const form=event.currentTarget;
+  const email=form.elements.email.value.trim();
+  if(accessUsers.some(user=>user.email.toLowerCase()===email.toLowerCase()&&user.id!==editingAccessId)){
+    form.elements.email.setCustomValidity('This email is already used by another user.');
+    form.reportValidity();
+    return;
+  }
+  const user={
+    id:editingAccessId||'user-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),
+    name:form.elements.name.value.trim(),email,department:form.elements.department.value,
+    type:form.elements.type.value,scope:form.elements.scope.value,status:form.elements.status.value,
+    roles:[...document.querySelectorAll('#userRoleChoices input:checked')].map(input=>input.value),
+    rights:[...document.querySelectorAll('#userRightChoices input:checked')].map(input=>input.value)
+  };
+  if(editingAccessId) accessUsers=accessUsers.map(item=>item.id===editingAccessId?user:item);
+  else accessUsers.push(user);
+  const message=editingAccessId?'User updated':'User added';
+  saveSampleUsers();closeUserModal();renderAccessUsers();toast(message,user.name+' · sample workspace');
+});
+document.querySelector('#userAccessForm [name="email"]')?.addEventListener('input',event=>event.currentTarget.setCustomValidity(''));
+document.getElementById('confirmDeleteUser')?.addEventListener('click',()=>{
+  const user=accessUsers.find(item=>item.id===deletingAccessId);
+  if(!user) return;
+  accessUsers=accessUsers.filter(item=>item.id!==deletingAccessId);
+  saveSampleUsers();closeUserModal();renderAccessUsers();toast('User removed',user.name+' was removed from this sample workspace.');
+});
+document.addEventListener('keydown',event=>{
+  const modal=document.querySelector('#userAccessModal.show,#deleteUserModal.show');
+  if(event.key==='Escape'){
+    if(modal){event.preventDefault();closeUserModal();}
+    else closeAccessMenus();
+  }
+  if(event.key==='Tab'&&modal){
+    const focusable=[...modal.querySelectorAll('button:not([disabled]),input:not([disabled]),select:not([disabled])')];
+    if(event.shiftKey&&document.activeElement===focusable[0]){event.preventDefault();focusable.at(-1).focus();}
+    else if(!event.shiftKey&&document.activeElement===focusable.at(-1)){event.preventDefault();focusable[0].focus();}
+  }
+});
+renderAccessUsers();
 
 let activeSettingsTab='profile';
 
@@ -3311,7 +3366,7 @@ renderTraceability('QMS-PRO-REC-001');
 
 renderDmsSpace('quality');
 
-selectAccessUser('maria',document.querySelector('.accessUserRow[data-user-id="maria"]'));
+
 
 try{
   const p=JSON.parse(localStorage.getItem('iqms.profile')||'null');
