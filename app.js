@@ -247,7 +247,10 @@ function openSettingsTab(tab='profile'){
   activeSettingsTab=tab;
   document.querySelectorAll('[data-settings-tab]').forEach(button=>button.classList.toggle('active',button.dataset.settingsTab===tab));
   document.querySelectorAll('[data-settings-panel]').forEach(panel=>panel.classList.toggle('active',panel.dataset.settingsPanel===tab));
-  if(breadcrumbCurrent) breadcrumbCurrent.textContent=tab==='profile'?'Settings / My profile':tab==='company'?'Settings / Company profile':tab==='qms'?'Settings / QMS defaults':'Settings / Security & notifications';
+  if(breadcrumbCurrent){
+    const labels={profile:'Settings / My profile',company:'Settings / Company profile',m365:'Settings / Microsoft 365 storage',qms:'Settings / QMS defaults',security:'Settings / Security & notifications'};
+    breadcrumbCurrent.textContent=labels[tab]||'Settings';
+  }
   refreshIcons();
 }
 
@@ -323,6 +326,134 @@ document.getElementById('changeProfilePhotoBtn')?.addEventListener('click',()=>t
 document.getElementById('removeProfilePhotoBtn')?.addEventListener('click',()=>toast('Profile photo removed','The profile will use your initials.'));
 document.getElementById('uploadCompanyLogoBtn')?.addEventListener('click',()=>toast('Company logo','Logo upload can be connected to organization storage in production.'));
 document.getElementById('removeCompanyLogoBtn')?.addEventListener('click',()=>toast('Company logo removed','The workspace will use company initials.'));
+
+const defaultM365State={
+  connected:true,
+  tenant:'ABC Manufacturing',
+  tenantId:'86f2••••••••41ab',
+  site:'Quality Management System',
+  sitePath:'/sites/QMS',
+  library:'QMS Controlled Documents',
+  lastChecked:'Checked just now'
+};
+let m365State={...defaultM365State};
+try{
+  const savedM365=JSON.parse(localStorage.getItem('iqms.m365')||'null');
+  if(savedM365&&typeof savedM365==='object') m365State={...defaultM365State,...savedM365};
+}catch(e){}
+
+function saveM365State(){
+  try{localStorage.setItem('iqms.m365',JSON.stringify(m365State));}catch(e){}
+}
+function m365SitePath(site){
+  if(site==='Quality Hub') return '/sites/Quality';
+  if(site==='Create new QMS site') return '/sites/QMS';
+  return '/sites/QMS';
+}
+function renderM365State(){
+  const connected=Boolean(m365State.connected);
+  const setText=(id,value)=>{const el=document.getElementById(id);if(el) el.textContent=value;};
+  setText('m365ConnectionTitle',connected?m365State.tenant:'Microsoft 365');
+  setText('m365ConnectionSubtitle',connected?'Connected to the organization\'s dedicated QMS SharePoint site.':'No Microsoft 365 tenant is connected to this workspace.');
+  setText('m365TenantName',connected?m365State.tenant:'Not connected');
+  setText('m365TenantId',connected?'Tenant ID · '+m365State.tenantId:'Connect a Microsoft 365 tenant');
+  setText('m365SiteName',connected?m365State.site:'No QMS site selected');
+  setText('m365SitePath',connected?m365State.sitePath:'—');
+  setText('m365LibraryName',connected?m365State.library:'No library selected');
+  setText('m365HealthText',connected?'Healthy':'Setup required');
+  setText('m365LastChecked',connected?(m365State.lastChecked||'Checked just now'):'Not checked');
+  setText('m365LibraryHealth',connected?m365State.library+' is available.':'Connect Microsoft 365 to check a library.');
+  setText('repositoryStorageLabel',connected?'Microsoft 365':'Storage setup');
+  setText('repositoryStorageDetail',connected?m365State.site:'Microsoft 365 not connected');
+  setText('repositoryStorageState',connected?'Connected':'Required');
+  setText('registrationStorageText',connected?'Microsoft 365 · '+m365State.site+' / '+m365State.library:'Microsoft 365 connection required before tenant-owned storage is available.');
+
+  const status=document.getElementById('m365StatusPill');
+  if(status){
+    status.className='m365StatusPill '+(connected?'connected':'disconnected');
+    status.innerHTML=connected?'<i data-lucide="check"></i><span>Connected</span>':'<span>Not connected</span>';
+  }
+  const badge=document.getElementById('repositoryStorageBadge');
+  if(badge) badge.classList.toggle('needsSetup',!connected);
+  document.getElementById('m365SummaryGrid')?.toggleAttribute('hidden',!connected);
+  document.querySelectorAll('[data-settings-panel="m365"] .m365Section,[data-settings-panel="m365"] .m365OwnershipGrid').forEach(el=>el.toggleAttribute('hidden',!connected));
+  document.getElementById('m365DisconnectedState')?.toggleAttribute('hidden',connected);
+  const disconnect=document.getElementById('disconnectM365Btn');
+  if(disconnect) disconnect.hidden=!connected;
+  const manage=document.getElementById('manageM365ConnectionBtn');
+  if(manage) manage.innerHTML=connected?'<i data-lucide="settings-2"></i>Manage connection':'<i data-lucide="cloud"></i>Connect Microsoft 365';
+  refreshIcons();
+}
+function openM365Connection(){
+  openSettingsTab('m365');
+  const modal=document.getElementById('m365ConnectionModal');
+  if(!modal) return;
+  const tenant=document.getElementById('m365TenantInput');
+  const site=document.getElementById('m365SiteSelect');
+  const library=document.getElementById('m365LibrarySelect');
+  if(tenant) tenant.value=m365State.tenant||'ABC Manufacturing';
+  if(site){
+    const available=[...site.options].some(option=>option.value===m365State.site);
+    site.value=available?m365State.site:'Quality Management System';
+  }
+  if(library){
+    const available=[...library.options].some(option=>option.value===m365State.library);
+    library.value=available?m365State.library:'QMS Controlled Documents';
+  }
+  const title=document.getElementById('m365ModalTitle');
+  const save=document.getElementById('saveM365ConnectionBtn');
+  if(title) title.textContent=m365State.connected?'Manage Microsoft 365 connection':'Connect Microsoft 365';
+  if(save) save.innerHTML=m365State.connected?'<i data-lucide="check"></i>Save connection':'<i data-lucide="cloud"></i>Connect Microsoft 365';
+  modal.classList.add('show');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('m365TenantInput')?.focus(),0);
+  refreshIcons();
+}
+function closeM365Connection(){
+  document.getElementById('m365ConnectionModal')?.classList.remove('show');
+  document.body.style.overflow='';
+}
+function connectM365(){
+  const tenant=document.getElementById('m365TenantInput')?.value.trim()||'ABC Manufacturing';
+  const site=document.getElementById('m365SiteSelect')?.value||'Quality Management System';
+  const library=document.getElementById('m365LibrarySelect')?.value||'QMS Controlled Documents';
+  m365State={...m365State,connected:true,tenant,site,sitePath:m365SitePath(site),library,lastChecked:'Checked just now'};
+  saveM365State();
+  closeM365Connection();
+  renderM365State();
+  toast('Microsoft 365 connected',tenant+' · '+site+' is now the QMS storage location in this prototype.');
+}
+function disconnectM365(){
+  if(!m365State.connected){openM365Connection();return;}
+  const ok=window.confirm('Disconnect Microsoft 365 from this QMS workspace? Client files remain in Microsoft 365, but iQMS will no longer be able to access them.');
+  if(!ok) return;
+  m365State={...m365State,connected:false,lastChecked:'Not checked'};
+  saveM365State();
+  renderM365State();
+  toast('Microsoft 365 disconnected','The client-owned SharePoint data remains in Microsoft 365.');
+}
+function testM365Connection(){
+  if(!m365State.connected){openM365Connection();return;}
+  m365State.lastChecked='Checked just now';
+  saveM365State();
+  renderM365State();
+  toast('Connection healthy','The selected QMS SharePoint site and document library are reachable in this prototype.');
+}
+
+document.getElementById('manageM365ConnectionBtn')?.addEventListener('click',openM365Connection);
+document.getElementById('connectM365EmptyBtn')?.addEventListener('click',openM365Connection);
+document.getElementById('testM365ConnectionBtn')?.addEventListener('click',testM365Connection);
+document.getElementById('disconnectM365Btn')?.addEventListener('click',disconnectM365);
+document.getElementById('saveM365ConnectionBtn')?.addEventListener('click',connectM365);
+document.querySelectorAll('[data-close-m365-modal]').forEach(button=>button.addEventListener('click',closeM365Connection));
+document.getElementById('m365ConnectionModal')?.addEventListener('mousedown',event=>{if(event.target===event.currentTarget) closeM365Connection();});
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&document.getElementById('m365ConnectionModal')?.classList.contains('show')){
+    event.preventDefault();
+    closeM365Connection();
+  }
+});
+renderM365State();
 
 let revisionRequestMode='request';
 let openRevisions={};
