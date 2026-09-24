@@ -3333,6 +3333,102 @@ function initTaskWorkspaceResize(){
   });
 }
 
+function initDmsWorkspaceResize(){
+  const workspace=document.querySelector('#repository .dmsWorkspace');
+  const rail=document.getElementById('dmsSpaceRail');
+  const splitter=document.getElementById('dmsSplitter');
+  if(!workspace||!rail||!splitter||splitter.dataset.resizeReady==='true') return;
+  splitter.dataset.resizeReady='true';
+
+  const MIN_RAIL=160;
+  const MAX_RAIL=440;
+  const MIN_DOCUMENTS=420;
+  const HANDLE=10;
+  const STEP=20;
+  const STORAGE_KEY='iqms.dmsRailWidth';
+  const isStacked=()=>window.matchMedia('(max-width:780px)').matches;
+  const currentWidth=()=>rail.getBoundingClientRect().width;
+  const maxWidth=()=>Math.max(MIN_RAIL,Math.min(MAX_RAIL,workspace.getBoundingClientRect().width-HANDLE-MIN_DOCUMENTS));
+  const updateAria=()=>{
+    splitter.setAttribute('aria-valuemax',String(Math.round(maxWidth())));
+    splitter.setAttribute('aria-valuenow',String(Math.round(currentWidth())));
+  };
+  const applyWidth=value=>{
+    if(isStacked()||workspace.getBoundingClientRect().width===0) return;
+    const width=Math.round(Math.max(MIN_RAIL,Math.min(maxWidth(),value)));
+    workspace.style.setProperty('--dms-rail-width',width+'px');
+    updateAria();
+  };
+  const saveWidth=()=>{
+    try{sessionStorage.setItem(STORAGE_KEY,String(Math.round(currentWidth())));}catch(error){}
+  };
+  const restoreWidth=()=>{
+    if(isStacked()||workspace.getBoundingClientRect().width===0) return;
+    let saved=0;
+    try{saved=Number(sessionStorage.getItem(STORAGE_KEY));}catch(error){}
+    if(saved>=MIN_RAIL&&saved<=MAX_RAIL) applyWidth(saved);
+    else updateAria();
+  };
+  const resetWidth=()=>{
+    workspace.style.removeProperty('--dms-rail-width');
+    try{sessionStorage.removeItem(STORAGE_KEY);}catch(error){}
+    requestAnimationFrame(updateAria);
+  };
+
+  let activePointer=null;
+  let startX=0;
+  let startWidth=0;
+  splitter.addEventListener('pointerdown',event=>{
+    if(isStacked()||workspace.getBoundingClientRect().width===0||event.button!==0||activePointer!==null) return;
+    activePointer=event.pointerId;
+    startX=event.clientX;
+    startWidth=currentWidth();
+    splitter.classList.add('isDragging');
+    document.body.classList.add('resizingDms');
+    splitter.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  });
+  splitter.addEventListener('pointermove',event=>{
+    if(event.pointerId===activePointer) applyWidth(startWidth+event.clientX-startX);
+  });
+  const endDrag=event=>{
+    if(event.pointerId!==activePointer) return;
+    activePointer=null;
+    splitter.classList.remove('isDragging');
+    document.body.classList.remove('resizingDms');
+    if(splitter.hasPointerCapture(event.pointerId)) splitter.releasePointerCapture(event.pointerId);
+    if(event.type==='pointerup') saveWidth();
+  };
+  splitter.addEventListener('pointerup',endDrag);
+  splitter.addEventListener('pointercancel',endDrag);
+  splitter.addEventListener('keydown',event=>{
+    if(isStacked()) return;
+    if(event.key==='ArrowLeft') applyWidth(currentWidth()-STEP);
+    else if(event.key==='ArrowRight') applyWidth(currentWidth()+STEP);
+    else if(event.key==='Home') applyWidth(MIN_RAIL);
+    else if(event.key==='End') applyWidth(maxWidth());
+    else return;
+    event.preventDefault();
+    saveWidth();
+  });
+  splitter.addEventListener('dblclick',resetWidth);
+  document.querySelector('#repositoryBrowseTabs [data-repository-tab="spaces"]')?.addEventListener('click',()=>requestAnimationFrame(restoreWidth));
+  document.addEventListener('qms:viewchange',event=>{
+    if(event.detail?.id==='repository') requestAnimationFrame(restoreWidth);
+  });
+  window.addEventListener('resize',()=>{
+    if(isStacked()) return;
+    if(workspace.style.getPropertyValue('--dms-rail-width')) applyWidth(currentWidth());
+    else updateAria();
+  });
+  if(typeof ResizeObserver!=='undefined') new ResizeObserver(()=>{
+    if(isStacked()||workspace.getBoundingClientRect().width===0) return;
+    if(workspace.style.getPropertyValue('--dms-rail-width')) applyWidth(currentWidth());
+    else updateAria();
+  }).observe(workspace);
+  restoreWidth();
+}
+
 document.addEventListener('qms:viewchange',e=>{
   if(e.detail?.id==='approvals'){
     requestAnimationFrame(()=>{
@@ -3345,6 +3441,7 @@ document.addEventListener('qms:viewchange',e=>{
 document.addEventListener('DOMContentLoaded',()=>{
   refreshIcons();
   initTaskWorkspaceResize();
+  initDmsWorkspaceResize();
   if(document.getElementById('approvals')?.classList.contains('active')) resetTaskWorkspaceSplit();
 });
 refreshIcons();

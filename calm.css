@@ -1129,3 +1129,33 @@ body.calmUI{
   .calmUI #users .modal{padding:12px}
   .calmUI #users .userAccessModalBox{max-height:94vh;padding:18px}
 }
+
+/* Documents: resizable Primary Spaces panel. */
+.calmUI #repository .dmsWorkspace{
+  --dms-rail-width:210px;
+  grid-template-columns:var(--dms-rail-width) 10px minmax(0,1fr)!important;
+}
+.calmUI #repository .dmsSpaceRail{border-right:0}
+.calmUI #repository .dmsSplitter{
+  position:relative;min-width:10px;min-height:100%;cursor:col-resize;touch-action:none;
+  background:#f5f8f2;border-left:1px solid var(--line);border-right:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;outline:none;
+}
+.calmUI #repository .dmsSplitter::before{
+  content:"";position:absolute;inset:0 2px;background:transparent;transition:background .15s ease;
+}
+.calmUI #repository .dmsSplitter span{
+  position:relative;width:5px;height:34px;border-radius:6px;background:#cbd6d0;
+  transition:background .15s ease,box-shadow .15s ease;
+}
+.calmUI #repository .dmsSplitter:is(:hover,:focus-visible,.isDragging)::before{background:rgba(22,134,117,.08)}
+.calmUI #repository .dmsSplitter:is(:hover,:focus-visible,.isDragging) span{background:var(--brand);box-shadow:0 0 0 3px rgba(22,134,117,.12)}
+.calmUI.resizingDms,.calmUI.resizingDms *{cursor:col-resize!important;user-select:none!important}
+@media(min-width:781px) and (max-width:1100px){
+  .calmUI #repository .dmsWorkspace{--dms-rail-width:170px}
+}
+@media(max-width:780px){
+  .calmUI #repository .dmsWorkspace{grid-template-columns:minmax(0,1fr)!important}
+  .calmUI #repository .dmsSplitter{display:none!important}
+  .calmUI #repository .dmsSpaceRail{border-bottom:1px solid var(--line)}
+}

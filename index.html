@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="iqms-build" content="calm-workspace-20">
+<meta name="iqms-build" content="calm-workspace-21">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>Overview · iQMS</title>
 <meta name="description" content="A calmer quality workspace for documents, evidence and your next action.">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./styles.css?v=calm-workspace-20">
+<link rel="stylesheet" href="./styles.css?v=calm-workspace-21">
 
-<link rel="stylesheet" href="./calm.css?v=calm-workspace-20">
+<link rel="stylesheet" href="./calm.css?v=calm-workspace-21">
 </head>
 <body class="calmUI">
 <a class="skipLink" href="#pageContent">Skip to content</a>
@@ -161,7 +161,7 @@
 
           <section class="repositoryPanel active" data-repository-panel="spaces">
             <div class="dmsWorkspace">
-              <aside class="dmsSpaceRail">
+              <aside class="dmsSpaceRail" id="dmsSpaceRail">
                 <div class="dmsRailHeader">
                   <div><span class="recordLabel">PRIMARY SPACES</span><h2>QMS areas</h2></div>
                   <button class="iconButton" onclick="openSpaceModal()" title="Create space"><i data-lucide="plus"></i></button>
@@ -214,7 +214,9 @@
                 <button class="dmsRailFooter" onclick="showView('structure')"><i data-lucide="settings-2"></i><span>Manage spaces</span></button>
               </aside>
 
-              <section class="dmsSpaceWorkspace">
+              <div class="dmsSplitter" id="dmsSplitter" role="separator" tabindex="0" aria-label="Resize Primary Spaces panel" aria-orientation="vertical" aria-controls="dmsSpaceRail dmsSpaceWorkspace" aria-valuemin="160" aria-valuemax="440" aria-valuenow="210" title="Drag to resize · double-click to reset"><span aria-hidden="true"></span></div>
+
+              <section class="dmsSpaceWorkspace" id="dmsSpaceWorkspace">
                 <header class="dmsSpaceHeader">
                   <div class="dmsSpaceIdentity">
                     <span class="dmsSpaceHeroIcon toneBlue" id="dmsSpaceHeroIcon"><i data-lucide="shield-check"></i></span>
@@ -1650,8 +1652,8 @@
   </div>
 </div>
 
-<script defer src="./vendor/lucide.min.js?v=calm-workspace-20"></script>
-<script defer src="./app.js?v=calm-workspace-20"></script>
-<script defer src="./calm.js?v=calm-workspace-20"></script>
+<script defer src="./vendor/lucide.min.js?v=calm-workspace-21"></script>
+<script defer src="./app.js?v=calm-workspace-21"></script>
+<script defer src="./calm.js?v=calm-workspace-21"></script>
 </body>
 </html>
