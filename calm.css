@@ -1159,3 +1159,140 @@ body.calmUI{
   .calmUI #repository .dmsSplitter{display:none!important}
   .calmUI #repository .dmsSpaceRail{border-bottom:1px solid var(--line)}
 }
+
+
+/* Microsoft 365 client-owned storage integration — calm-workspace-22 */
+.calmUI .repositoryHeaderActions{align-items:stretch;flex-wrap:wrap}
+.calmUI .storageOriginBadge{
+  min-height:42px;border:1px solid #cfdcd7;border-radius:8px;background:#fff;color:var(--ink);
+  display:grid;grid-template-columns:28px minmax(118px,1fr) auto;align-items:center;gap:9px;
+  padding:6px 9px;text-align:left;cursor:pointer
+}
+.calmUI .storageOriginBadge:hover{border-color:#91b8ad;background:#f8fbfa}
+.calmUI .storageOriginBadge>.lucide{width:18px;height:18px;color:var(--brand)}
+.calmUI .storageOriginBadge span b,.calmUI .storageOriginBadge span small{display:block}
+.calmUI .storageOriginBadge span b{font-size:12px;line-height:1.25}
+.calmUI .storageOriginBadge span small{font-size:10px!important;color:var(--muted);margin-top:1px}
+.calmUI .storageOriginBadge em{font-style:normal;font-size:10px;font-weight:700;color:var(--green);background:var(--green-bg);border-radius:999px;padding:3px 7px}
+.calmUI .storageOriginBadge.needsSetup em{color:#8a5a12;background:#fff7e6}
+.calmUI .storageOriginBadge.needsSetup>.lucide{color:#8a5a12}
+
+.calmUI .m365PanelHeader{align-items:center}
+.calmUI .m365ConnectionCard{
+  border:1px solid #cfdcd7;border-radius:11px;background:#fbfdfc;padding:18px 20px;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:14px
+}
+.calmUI .m365ConnectionIdentity{display:grid;grid-template-columns:46px minmax(0,1fr) auto;align-items:center;gap:13px;min-width:0}
+.calmUI .m365CloudMark{width:46px;height:46px;border-radius:10px;background:#e8f4f1;color:#176a5c;display:grid;place-items:center}
+.calmUI .m365CloudMark .lucide{width:22px;height:22px}
+.calmUI .m365ConnectionIdentity h3{margin:2px 0 3px;font-size:18px;color:var(--ink)}
+.calmUI .m365ConnectionIdentity p{margin:0;font-size:12px;color:var(--muted);line-height:1.45}
+.calmUI .m365StatusPill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:700;white-space:nowrap}
+.calmUI .m365StatusPill.connected{background:var(--green-bg);color:var(--green)}
+.calmUI .m365StatusPill.disconnected{background:#fff7e6;color:#8a5a12}
+.calmUI .m365StatusPill .lucide{width:13px;height:13px}
+.calmUI .m365ConnectionActions{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.calmUI .dangerText{color:#b42318!important}
+
+.calmUI .m365SummaryGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 18px}
+.calmUI .m365SummaryGrid article{border:1px solid var(--line);border-radius:9px;background:#fff;padding:13px 14px;min-width:0}
+.calmUI .m365SummaryGrid span,.calmUI .m365SummaryGrid b,.calmUI .m365SummaryGrid small{display:block}
+.calmUI .m365SummaryGrid>article>span{font-size:11px;color:var(--muted)}
+.calmUI .m365SummaryGrid b{font-size:13px;margin:3px 0;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.calmUI .m365SummaryGrid small{font-size:10px!important;color:var(--muted)}
+
+.calmUI .m365Section{border-top:1px solid var(--line);padding-top:18px;margin-top:18px}
+.calmUI .m365SectionHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:10px}
+.calmUI .m365SectionHeader h3{font-size:15px;margin:0;color:var(--ink)}
+.calmUI .m365SectionHeader p{font-size:12px;margin:3px 0 0;color:var(--muted);line-height:1.5}
+.calmUI .scopeBadge{display:inline-flex;align-items:center;gap:6px;border:1px solid #cfe2da;background:#f3f9f7;color:#285d51;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:700;white-space:nowrap}
+.calmUI .scopeBadge .lucide{width:14px;height:14px}
+.calmUI .m365ScopeCard{border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden}
+.calmUI .m365ScopeRow{display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:center;gap:10px;padding:12px 14px;border-top:1px solid var(--line)}
+.calmUI .m365ScopeRow:first-child{border-top:0}
+.calmUI .scopeIcon{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700}
+.calmUI .scopeIcon.allowed{background:var(--green-bg);color:var(--green)}
+.calmUI .scopeIcon.blocked{background:#f2f4f7;color:#667085}
+.calmUI .scopeIcon .lucide{width:13px;height:13px}
+.calmUI .m365ScopeRow b,.calmUI .m365ScopeRow small{display:block}
+.calmUI .m365ScopeRow b{font-size:13px;color:var(--ink)}
+.calmUI .m365ScopeRow small{font-size:11px!important;color:var(--muted);margin-top:2px;line-height:1.45}
+.calmUI .m365TechnicalDetails{margin-top:9px;border:1px solid var(--line);border-radius:8px;background:#fafbfc}
+.calmUI .m365TechnicalDetails summary{cursor:pointer;padding:10px 12px;font-size:12px;font-weight:700;color:#475467}
+.calmUI .m365TechnicalDetails>div{padding:0 12px 12px;display:grid;gap:3px}
+.calmUI .m365TechnicalDetails b{font-size:12px}.calmUI .m365TechnicalDetails span{font-size:11px;color:var(--muted);line-height:1.55}
+
+.calmUI .m365OwnershipGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.calmUI .m365OwnershipGrid>section{border:1px solid var(--line);border-radius:10px;background:#fff;padding:16px}
+.calmUI .ownershipHeading{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.calmUI .ownershipIcon{width:36px;height:36px;border-radius:8px;display:grid;place-items:center}
+.calmUI .ownershipIcon.client{background:#e8f4f1;color:#176a5c}.calmUI .ownershipIcon.platform{background:#f2f4f7;color:#475467}
+.calmUI .ownershipIcon .lucide{width:17px;height:17px}
+.calmUI .ownershipHeading h3{font-size:14px;margin:1px 0 0;color:var(--ink)}
+.calmUI .m365OwnershipGrid ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.calmUI .m365OwnershipGrid li{display:grid;grid-template-columns:16px 1fr;gap:7px;align-items:start;font-size:12px;color:#475467;line-height:1.45}
+.calmUI .m365OwnershipGrid li .lucide{width:14px;height:14px;color:var(--green);margin-top:1px}
+.calmUI .m365OwnershipGrid>section>p{font-size:11px;color:var(--muted);line-height:1.5;margin:12px 0 0;padding-top:10px;border-top:1px solid var(--line)}
+
+.calmUI .m365HealthRows{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#fff}
+.calmUI .m365HealthRows>div{display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px 14px;border-top:1px solid var(--line)}
+.calmUI .m365HealthRows>div:first-child{border-top:0}
+.calmUI .m365HealthRows>div>span{width:24px;height:24px;border-radius:50%;background:var(--green-bg);color:var(--green);display:grid;place-items:center}
+.calmUI .m365HealthRows>div>span .lucide{width:13px;height:13px}
+.calmUI .m365HealthRows b,.calmUI .m365HealthRows small{display:block}
+.calmUI .m365HealthRows b{font-size:12px}.calmUI .m365HealthRows small{font-size:11px!important;color:var(--muted);margin-top:1px}
+.calmUI .m365HealthRows em{font-style:normal;font-size:11px;font-weight:700}
+
+.calmUI .m365DisconnectedState{border:1px dashed #c6d4cf;border-radius:10px;background:#fbfdfc;padding:22px;display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:14px}
+.calmUI .m365DisconnectedState[hidden]{display:none!important}
+.calmUI .m365DisconnectedState>span{width:42px;height:42px;border-radius:9px;background:#f2f4f7;color:#667085;display:grid;place-items:center}
+.calmUI .m365DisconnectedState h3{margin:0;font-size:15px}.calmUI .m365DisconnectedState p{margin:3px 0 0;font-size:12px;color:var(--muted);line-height:1.5}
+
+.calmUI .m365ConnectionModalBox{width:min(720px,96vw)}
+.calmUI .m365SetupSteps{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
+.calmUI .m365SetupSteps span{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--muted);background:#fafbfc}
+.calmUI .m365SetupSteps b{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#e4e7ec;color:#667085;font-size:10px}
+.calmUI .m365SetupSteps .done,.calmUI .m365SetupSteps .active{color:var(--ink);background:#fff}
+.calmUI .m365SetupSteps .done b{background:var(--green-bg);color:var(--green)}.calmUI .m365SetupSteps .active b{background:var(--brand);color:#fff}
+.calmUI .m365AuthNotice{display:grid;grid-template-columns:36px minmax(0,1fr) auto;align-items:center;gap:11px;border:1px solid #cfe2da;background:#f5faf8;border-radius:9px;padding:12px 13px;margin-bottom:14px}
+.calmUI .m365AuthNotice>span:first-child{width:34px;height:34px;border-radius:8px;background:#e2f1ed;color:#176a5c;display:grid;place-items:center}
+.calmUI .m365AuthNotice b{font-size:12px}.calmUI .m365AuthNotice p{font-size:11px;color:var(--muted);line-height:1.5;margin:2px 0 0}
+.calmUI .m365SetupForm{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.calmUI .m365SetupForm label:first-child{grid-column:1/-1}
+.calmUI .m365SetupForm label{font-size:12px;font-weight:650;color:#475467}
+.calmUI .m365SetupForm input,.calmUI .m365SetupForm select{display:block;width:100%;height:39px;margin-top:4px;border:1px solid var(--line-strong);border-radius:7px;background:#fff;padding:0 10px}
+.calmUI .m365ConsentPreview{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.calmUI .m365ConsentPreview>div{border:1px solid var(--line);border-radius:8px;padding:11px;display:grid;grid-template-columns:26px minmax(0,1fr);gap:9px;background:#fff}
+.calmUI .m365ConsentPreview p{margin:0}.calmUI .m365ConsentPreview b,.calmUI .m365ConsentPreview small{display:block}.calmUI .m365ConsentPreview b{font-size:12px}.calmUI .m365ConsentPreview small{font-size:11px!important;color:var(--muted);line-height:1.45;margin-top:2px}
+.calmUI .m365SetupNote{display:flex;gap:8px;align-items:flex-start;margin-top:12px;padding:10px 11px;border-radius:8px;background:#f7f8fa;color:#667085;font-size:11px;line-height:1.5}
+.calmUI .m365SetupNote .lucide{width:15px;height:15px;flex-shrink:0;margin-top:1px}
+
+.calmUI .storageDestinationNote{
+  width:100%;margin-top:9px;border:1px solid var(--line);border-radius:8px;background:#fafcfc;
+  display:grid;grid-template-columns:28px minmax(0,1fr) 18px;align-items:center;gap:9px;padding:9px 11px;text-align:left;color:#475467
+}
+.calmUI .storageDestinationNote:hover{border-color:#a9c7bf;background:#f5faf8}
+.calmUI .storageDestinationNote>.lucide:first-child{color:var(--brand)}
+.calmUI .storageDestinationNote>.lucide{width:16px;height:16px}
+.calmUI .storageDestinationNote b,.calmUI .storageDestinationNote small{display:block}
+.calmUI .storageDestinationNote b{font-size:11px}.calmUI .storageDestinationNote small{font-size:10px!important;color:var(--muted);margin-top:1px}
+
+@media(max-width:1100px){
+  .calmUI .m365SummaryGrid{grid-template-columns:1fr 1fr}
+  .calmUI .m365ConnectionCard{align-items:flex-start;flex-direction:column}
+  .calmUI .m365ConnectionActions{width:100%;justify-content:flex-end}
+}
+@media(max-width:780px){
+  .calmUI .repositoryHeaderActions{width:100%}
+  .calmUI .storageOriginBadge{width:100%;order:-1}
+  .calmUI .m365PanelHeader{align-items:flex-start}
+  .calmUI .m365PanelHeader>.btn{width:100%}
+  .calmUI .m365ConnectionIdentity{grid-template-columns:42px minmax(0,1fr)}
+  .calmUI .m365ConnectionIdentity .m365StatusPill{grid-column:2}
+  .calmUI .m365SummaryGrid,.calmUI .m365OwnershipGrid,.calmUI .m365ConsentPreview,.calmUI .m365SetupForm{grid-template-columns:1fr}
+  .calmUI .m365SetupForm label:first-child{grid-column:auto}
+  .calmUI .m365SectionHeader{flex-direction:column}
+  .calmUI .m365DisconnectedState{grid-template-columns:42px minmax(0,1fr)}
+  .calmUI .m365DisconnectedState .btn{grid-column:1/-1;width:100%}
+  .calmUI .m365ConnectionActions{justify-content:flex-start;flex-wrap:wrap}
+}
