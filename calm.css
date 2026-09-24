@@ -1261,6 +1261,7 @@ body.calmUI{
 .calmUI .m365SetupForm label:first-child{grid-column:1/-1}
 .calmUI .m365SetupForm label{font-size:12px;font-weight:650;color:#475467}
 .calmUI .m365SetupForm input,.calmUI .m365SetupForm select{display:block;width:100%;height:39px;margin-top:4px;border:1px solid var(--line-strong);border-radius:7px;background:#fff;padding:0 10px}
+.calmUI .m365FieldHelp{display:block;margin-top:5px;font-size:10px!important;font-weight:400;color:var(--muted);line-height:1.45}
 .calmUI .m365ConsentPreview{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
 .calmUI .m365ConsentPreview>div{border:1px solid var(--line);border-radius:8px;padding:11px;display:grid;grid-template-columns:26px minmax(0,1fr);gap:9px;background:#fff}
 .calmUI .m365ConsentPreview p{margin:0}.calmUI .m365ConsentPreview b,.calmUI .m365ConsentPreview small{display:block}.calmUI .m365ConsentPreview b{font-size:12px}.calmUI .m365ConsentPreview small{font-size:11px!important;color:var(--muted);line-height:1.45;margin-top:2px}
