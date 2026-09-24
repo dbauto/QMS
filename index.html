@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="iqms-build" content="calm-workspace-21">
+<meta name="iqms-build" content="calm-workspace-22">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>Overview · iQMS</title>
 <meta name="description" content="A calmer quality workspace for documents, evidence and your next action.">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./styles.css?v=calm-workspace-21">
+<link rel="stylesheet" href="./styles.css?v=calm-workspace-22">
 
-<link rel="stylesheet" href="./calm.css?v=calm-workspace-21">
+<link rel="stylesheet" href="./calm.css?v=calm-workspace-22">
 </head>
 <body class="calmUI">
 <a class="skipLink" href="#pageContent">Skip to content</a>
@@ -146,7 +146,10 @@
               <h1>Documents</h1>
               <p>Find the right document, then open it to review its details.</p>
             </div>
-            <div class="pageActions">
+            <div class="pageActions repositoryHeaderActions">
+              <button class="storageOriginBadge" id="repositoryStorageBadge" type="button" onclick="openSettingsTab('m365')" aria-label="Open Microsoft 365 storage settings">
+                <i data-lucide="cloud"></i><span><b id="repositoryStorageLabel">Microsoft 365</b><small id="repositoryStorageDetail">QMS SharePoint site</small></span><em id="repositoryStorageState">Connected</em>
+              </button>
               <button class="btn secondary" onclick="showView('structure')"><i data-lucide="settings-2"></i>Manage spaces</button>
               <button class="btn primary" onclick="openRegisterResource('controlled')"><i data-lucide="file-plus-2"></i>Register document</button>
             </div>
@@ -937,6 +940,7 @@
             </div>
             <div class="settingsNavGroup"><span>Organization</span>
               <button data-settings-tab="company"><i data-lucide="building-2"></i><div><b>Company profile</b><small>Identity and workspace details</small></div></button>
+              <button data-settings-tab="m365"><i data-lucide="cloud"></i><div><b>Microsoft 365 storage</b><small>SharePoint connection &amp; scope</small></div></button>
               <button data-settings-tab="qms"><i data-lucide="file-cog"></i><div><b>QMS defaults</b><small>Document-control defaults</small></div></button>
               <button data-settings-tab="security"><i data-lucide="shield-check"></i><div><b>Security & notifications</b><small>Protection and alerts</small></div></button>
             </div>
@@ -996,6 +1000,97 @@
               </div>
 
               <div class="companyProfileNote"><i data-lucide="info"></i><span>Company profile details identify the organization in iQMS. Certification claims are not created automatically and should only be entered where the organization can substantiate them.</span></div>
+            </section>
+
+            <section class="settingsPanel" data-settings-panel="m365">
+              <div class="settingsPanelHeader m365PanelHeader">
+                <div><span class="recordLabel">STORAGE INTEGRATION</span><h2>Microsoft 365 storage</h2><p>Keep QMS documents and organizational QMS records in your company's Microsoft 365 tenant while iQMS manages workflow, governance and the user experience.</p></div>
+                <button class="btn primary" id="manageM365ConnectionBtn" type="button"><i data-lucide="settings-2"></i>Manage connection</button>
+              </div>
+
+              <section class="m365ConnectionCard" aria-labelledby="m365ConnectionTitle">
+                <div class="m365ConnectionIdentity">
+                  <span class="m365CloudMark"><i data-lucide="cloud"></i></span>
+                  <div><span class="recordLabel">MICROSOFT 365 / SHAREPOINT ONLINE</span><h3 id="m365ConnectionTitle">ABC Manufacturing</h3><p id="m365ConnectionSubtitle">Connected to the organization's dedicated QMS SharePoint site.</p></div>
+                  <span class="m365StatusPill connected" id="m365StatusPill"><i data-lucide="check"></i><span>Connected</span></span>
+                </div>
+                <div class="m365ConnectionActions">
+                  <button class="btn secondary" id="testM365ConnectionBtn" type="button"><i data-lucide="shield-check"></i>Test connection</button>
+                  <button class="btn text dangerText" id="disconnectM365Btn" type="button">Disconnect</button>
+                </div>
+              </section>
+
+              <div class="m365SummaryGrid" id="m365SummaryGrid">
+                <article><span>Microsoft tenant</span><b id="m365TenantName">ABC Manufacturing</b><small id="m365TenantId">Tenant ID · 86f2••••••••41ab</small></article>
+                <article><span>QMS SharePoint site</span><b id="m365SiteName">Quality Management System</b><small id="m365SitePath">/sites/QMS</small></article>
+                <article><span>Document library</span><b id="m365LibraryName">QMS Controlled Documents</b><small>Files, evidence &amp; controlled revisions</small></article>
+                <article><span>Connection health</span><b class="good" id="m365HealthText">Healthy</b><small id="m365LastChecked">Checked just now</small></article>
+              </div>
+
+              <section class="m365Section">
+                <div class="m365SectionHeader"><div><h3>Access scope</h3><p>iQMS is designed to access only the SharePoint location approved for this QMS workspace.</p></div><span class="scopeBadge"><i data-lucide="shield-check"></i>Selected QMS site only</span></div>
+                <div class="m365ScopeCard">
+                  <div class="m365ScopeRow"><span class="scopeIcon allowed"><i data-lucide="check"></i></span><div><b>QMS document library</b><small>Read and write controlled documents, records, evidence and archived revisions.</small></div><span class="tag success">Allowed</span></div>
+                  <div class="m365ScopeRow"><span class="scopeIcon allowed"><i data-lucide="check"></i></span><div><b>QMS lists and metadata</b><small>Read and write document register, relationships, approval history and audit records used by the QMS.</small></div><span class="tag success">Allowed</span></div>
+                  <div class="m365ScopeRow"><span class="scopeIcon blocked">—</span><div><b>Other SharePoint sites</b><small>HR, Finance, Engineering and other company sites stay outside the QMS connection.</small></div><span class="tag neutral">No access</span></div>
+                  <div class="m365ScopeRow"><span class="scopeIcon blocked">—</span><div><b>User passwords</b><small>Microsoft sign-in and admin consent are handled by Microsoft. iQMS does not store Microsoft 365 passwords.</small></div><span class="tag neutral">Not stored</span></div>
+                </div>
+                <details class="m365TechnicalDetails">
+                  <summary>Technical access details</summary>
+                  <div><b>Production permission model</b><span>Microsoft Entra OAuth with restricted SharePoint application access (Sites.Selected). The client administrator authorizes the QMS site; iQMS stores connection identifiers, not a user's Microsoft 365 password.</span></div>
+                </details>
+              </section>
+
+              <div class="m365OwnershipGrid">
+                <section>
+                  <div class="ownershipHeading"><span class="ownershipIcon client"><i data-lucide="building-2"></i></span><div><span class="recordLabel">CLIENT-OWNED DATA</span><h3>Stored in Microsoft 365</h3></div></div>
+                  <ul><li><i data-lucide="check"></i>Controlled documents and published revisions</li><li><i data-lucide="check"></i>Records, evidence and reference files</li><li><i data-lucide="check"></i>Archived document revisions</li><li><i data-lucide="check"></i>QMS register, approval history and audit records</li></ul>
+                  <p>When the connection is removed, these records remain in the client's Microsoft 365 tenant.</p>
+                </section>
+                <section>
+                  <div class="ownershipHeading"><span class="ownershipIcon platform"><i data-lucide="settings-2"></i></span><div><span class="recordLabel">QMS PLATFORM</span><h3>Managed by iQMS</h3></div></div>
+                  <ul><li><i data-lucide="check"></i>Workflow and approval engine</li><li><i data-lucide="check"></i>ISO readiness and relationship logic</li><li><i data-lucide="check"></i>Tenant connection identifiers and configuration</li><li><i data-lucide="check"></i>Short-lived integration jobs and service logs</li></ul>
+                  <p>The application orchestrates the process without becoming the client's primary document warehouse.</p>
+                </section>
+              </div>
+
+              <section class="m365Section">
+                <div class="m365SectionHeader"><div><h3>Connection activity</h3><p>Operational health for the QMS storage connection.</p></div></div>
+                <div class="m365HealthRows">
+                  <div><span><i data-lucide="check"></i></span><div><b>SharePoint API access</b><small>Selected QMS site is reachable.</small></div><em class="good">Healthy</em></div>
+                  <div><span><i data-lucide="check"></i></span><div><b>Document library</b><small id="m365LibraryHealth">QMS Controlled Documents is available.</small></div><em class="good">Ready</em></div>
+                  <div><span><i data-lucide="check"></i></span><div><b>Change notifications</b><small>Document changes can be synchronized back to iQMS workflow state.</small></div><em class="good">Active</em></div>
+                </div>
+              </section>
+
+              <div class="m365DisconnectedState" id="m365DisconnectedState" hidden>
+                <span><i data-lucide="cloud"></i></span><div><h3>Microsoft 365 is not connected</h3><p>Connect the client's Microsoft 365 tenant and select the dedicated QMS SharePoint site before using tenant-owned document storage.</p></div><button class="btn primary" id="connectM365EmptyBtn" type="button">Connect Microsoft 365</button>
+              </div>
+
+              <div class="modal" id="m365ConnectionModal" role="dialog" aria-modal="true" aria-labelledby="m365ModalTitle">
+                <div class="modalBox m365ConnectionModalBox">
+                  <div class="modalHead"><div><span class="eyebrow">MICROSOFT 365 STORAGE</span><h2 id="m365ModalTitle">Connect Microsoft 365</h2><p>Authorize iQMS, choose the dedicated QMS site, and confirm the restricted storage scope.</p></div><button class="iconButton" type="button" data-close-m365-modal aria-label="Close Microsoft 365 connection setup"><i data-lucide="x"></i></button></div>
+
+                  <div class="m365SetupSteps" aria-label="Connection steps"><span class="done"><b>1</b>Authorize</span><span class="active"><b>2</b>Select QMS site</span><span><b>3</b>Confirm scope</span></div>
+
+                  <div class="m365AuthNotice"><span><i data-lucide="shield-check"></i></span><div><b>Microsoft administrator authorization</b><p>The client administrator signs in on Microsoft's authorization screen. iQMS receives an application authorization; the Microsoft 365 password is never entered into or stored by iQMS.</p></div><span class="tag success">Admin consent</span></div>
+
+                  <div class="m365SetupForm">
+                    <label>Organization / tenant<input id="m365TenantInput" value="ABC Manufacturing" autocomplete="organization"></label>
+                    <label>QMS SharePoint site<select id="m365SiteSelect"><option value="Quality Management System" selected>Quality Management System · /sites/QMS</option><option value="Quality Hub">Quality Hub · /sites/Quality</option><option value="Create new QMS site">Create a new dedicated QMS site</option></select></label>
+                    <label>Document library<select id="m365LibrarySelect"><option selected>QMS Controlled Documents</option><option>Documents</option><option>Create new QMS library</option></select></label>
+                  </div>
+
+                  <div class="m365ConsentPreview">
+                    <div><span class="scopeIcon allowed"><i data-lucide="check"></i></span><p><b>Requested access</b><small>Read and write only the selected QMS SharePoint site and its QMS lists/libraries.</small></p></div>
+                    <div><span class="scopeIcon blocked">—</span><p><b>Outside the connection</b><small>No access to unrelated SharePoint sites. No Microsoft 365 user password is stored.</small></p></div>
+                  </div>
+
+                  <div class="m365SetupNote"><i data-lucide="info"></i><span>This prototype simulates the connection. Production setup will complete Microsoft Entra OAuth/admin consent and persist the tenant, site and library identifiers in the backend.</span></div>
+
+                  <div class="modalActions"><button class="btn secondary" type="button" data-close-m365-modal>Cancel</button><span></span><button class="btn primary" type="button" id="saveM365ConnectionBtn"><i data-lucide="cloud"></i>Connect Microsoft 365</button></div>
+                </div>
+              </div>
             </section>
 
             <section class="settingsPanel" data-settings-panel="qms">
@@ -1248,6 +1343,7 @@
 
       <div class="sourceIntentPanel active" id="sourcePanelUpload">
         <div class="dropzone registrationDropzone"><div class="uploadIcon"><i data-lucide="upload"></i></div><b id="uploadPanelTitle">Drop the document file here</b><span id="registerDropHint">PDF, DOCX, XLSX or image · Example: Recruitment_Procedure_Rev3.docx</span><button class="btn secondary"><i data-lucide="folder-open"></i>Browse file</button></div>
+        <button class="storageDestinationNote" id="registrationStorageDestination" type="button" onclick="closeRegisterResource();openSettingsTab('m365')"><i data-lucide="cloud"></i><span><b>Storage destination</b><small id="registrationStorageText">Microsoft 365 · Quality Management System / QMS Controlled Documents</small></span><i data-lucide="settings-2"></i></button>
       </div>
 
       <div class="sourceIntentPanel" id="sourcePanelEffective">
@@ -1607,7 +1703,7 @@
 
     <div class="wiz" id="wiz2" style="display:none">
       <h3>Connect the existing repository</h3><p class="muted">Nothing is reorganized or deleted during discovery.</p>
-      <div class="choiceGrid"><button class="sourceChoice selected"><i data-lucide="folder-up"></i><b>Upload folders / ZIP</b><span>Existing file directory</span></button><button class="sourceChoice"><i data-lucide="building-2"></i><b>SharePoint / OneDrive</b><span>Company repository</span></button><button class="sourceChoice"><i data-lucide="hard-drive"></i><b>Google Drive</b><span>Shared drives / folders</span></button><button class="sourceChoice"><i data-lucide="cloud"></i><b>S3 / Cloud</b><span>Object storage</span></button></div>
+      <div class="choiceGrid"><button class="sourceChoice selected"><i data-lucide="folder-up"></i><b>Upload folders / ZIP</b><span>Existing file directory</span></button><button class="sourceChoice"><i data-lucide="building-2"></i><b>Microsoft 365 / SharePoint</b><span>Client-owned QMS storage</span></button><button class="sourceChoice"><i data-lucide="hard-drive"></i><b>Google Drive</b><span>Shared drives / folders</span></button><button class="sourceChoice"><i data-lucide="cloud"></i><b>S3 / Cloud</b><span>Object storage</span></button></div>
       <div class="dropzone"><div class="uploadIcon"><i data-lucide="upload"></i></div><b>Drop folders, ZIPs or files here</b><span>Mock source · Quality Management System · 1,428 files · 7.4 GB</span><button class="btn secondary">Browse files</button></div>
     </div>
 
@@ -1652,8 +1748,8 @@
   </div>
 </div>
 
-<script defer src="./vendor/lucide.min.js?v=calm-workspace-21"></script>
-<script defer src="./app.js?v=calm-workspace-21"></script>
-<script defer src="./calm.js?v=calm-workspace-21"></script>
+<script defer src="./vendor/lucide.min.js?v=calm-workspace-22"></script>
+<script defer src="./app.js?v=calm-workspace-22"></script>
+<script defer src="./calm.js?v=calm-workspace-22"></script>
 </body>
 </html>
